@@ -1,0 +1,15 @@
+{
+  "name": "chatgptplus",
+  "version": "1.0.0",
+  "description": "Скрипты сравнивают цены на ChatGPT Plus/подписки из двух каталогов:",
+  "main": "plati_chatgptplus_browser_crawler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}

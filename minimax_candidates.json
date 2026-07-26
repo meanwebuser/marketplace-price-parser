@@ -1,0 +1,27 @@
+{
+  "official": {
+    "label": "MiniMax Token Plan Max (official)",
+    "url": "https://platform.minimax.io/subscribe/token-plan?tab=individual__monthly",
+    "price": 50.0,
+    "currency": "USD",
+    "delivery": "official-existing-account",
+    "product_family": "minimax-token-plan"
+  },
+  "marketplace_urls": [
+    {
+      "source": "plati",
+      "label": "MiniMax AI Platform Plus/Max (new candidate)",
+      "url": "https://plati.market/itm/minimax-ai-platform-plan-plus-max-subscription-1-month-guarantee-and-fast-delivery/5957731"
+    },
+    {
+      "source": "ggsel",
+      "label": "MiniMax AI Plus/Max/Ultra (new candidate)",
+      "url": "https://ggsel.net/catalog/product/minimax-ai-podpiska-plus-max-ultra-1-mesiac-102607248"
+    },
+    {
+      "source": "ggsel",
+      "label": "MiniMax AI Platform/API Plus/Max/Ultra (new candidate)",
+      "url": "https://ggsel.net/catalog/product/minimax-ai-platform-minimax-api-plus-max-ultra-1-month-warranty-102369748"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+ggsel_plati/node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+graphify-out/
+.DS_Store

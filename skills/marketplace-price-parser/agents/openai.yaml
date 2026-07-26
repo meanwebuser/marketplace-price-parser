@@ -1,0 +1,4 @@
+interface:
+  display_name: "Парсер цен маркетплейсов"
+  short_description: "Сравнивает цены GGSEL и Plati"
+  default_prompt: "Используй $marketplace-price-parser, чтобы найти и сравнить предложения MiniMax Max на GGSEL и Plati."
