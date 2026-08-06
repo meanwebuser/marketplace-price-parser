@@ -85,17 +85,34 @@ def classify_duration(text: str) -> str:
 
 _DELIV_PATTERNS = [
     ("shared_account", re.compile(r"\bобщ(ая|ий|ее|ee|ie|iy)?\b.{0,15}\b(доступ|аккаунт|подписк)|общ.{0,10}1\s*месяц|общ.{0,15}\b(plus|pro|max)", re.I)),
-    ("own_account",   re.compile(r"на\s*ваш\w*\s*аккаунт|со\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|upgrade\s*on\s*your\s*personal\s*account|personal\s*account", re.I)),
+    ("own_account",   re.compile(r"на\s*ваш\w*\s*аккаунт|со\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\s*subscription", re.I)),
     ("own_account",   re.compile(r"без\s*входа|без\s*логина|по\s*токену|активация\s*по\s*токену", re.I)),  # own-no-login
-    ("new_account",   re.compile(r"готов\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email", re.I)),
+    ("new_account",   re.compile(r"готов\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email|pre.?made\s*account|ready\s*account|предложен\w*\s*на\s*перв\w*\s*месяц|first\s*month\s*offer", re.I)),
+]
+
+# Title hints used when the chip text doesn't say anything (e.g. "Max | 1 месяц").
+# Most cheap listings fall into "new_account" — seller activates on their
+# own email / hands you a ready account. "own_account" usually requires
+# explicit "Upgrade" / "Требуется Вход" wording in the chip itself.
+_TITLE_DELIV_HINTS = [
+    ("new_account",   re.compile(r"мгновенн\w*\s*доступ|instant\s*access|официальн\w*\s*активация|official\s*activation|pre.?made|ready\s*account", re.I)),
+    ("new_account",   re.compile(r"выда\w*\s*в\s*теч|персональн\w*\s*аккаунт|complete\s*account|full\s*access", re.I)),
+    ("own_account",   re.compile(r"\bобновлен\w*|продлен\w*|upgrade|renew|extend|сохран\w*\s*истори|сохран\w*\s*рабоч", re.I)),
 ]
 
 
-def classify_delivery(text: str) -> str:
-    """Map option text to delivery type. Order matters: shared-account
-    wins, then own-account, then new-account."""
+def classify_delivery(text: str, title: str = "") -> str:
+    """Map (option text, listing title) to delivery type. Order matters:
+    shared-account wins, then own-account, then new-account. The chip
+    text is authoritative; title hints only kick in when chip text is
+    silent (e.g. "Max | 1 месяц") so we don't misclassify an explicit
+    "Требуется Вход" listing from its title alone."""
+    text = text or ""
     for delivery, pat in _DELIV_PATTERNS:
-        if pat.search(text or ""):
+        if pat.search(text):
+            return delivery
+    for delivery, pat in _TITLE_DELIV_HINTS:
+        if pat.search(title or ""):
             return delivery
     return "unknown"
 
@@ -134,9 +151,10 @@ def main():
             if not opt.get("clicked"):
                 continue
             text = opt.get("text", "")
+            title = listing.get("title", "")
             tier = classify_tier(text)
             duration = classify_duration(text)
-            delivery = classify_delivery(text)
+            delivery = classify_delivery(text, title=title)
             if not tier or not duration:
                 continue
             price, strong = select_real_price(opt.get("prices", []))

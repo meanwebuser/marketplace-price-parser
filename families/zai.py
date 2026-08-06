@@ -8,7 +8,7 @@ CONFIG = FamilyConfig(
     marketplaces=["plati", "ggsel"],
     tier_filter=["Max"],
     duration_filter=["1m", "3m", "12m"],
-    delivery_filter=["own_account", "new_account"],
+    delivery_filter=["own_account", "new_account", "unknown"],
     purpose_preset="renew",
     ggssel_category="zai",
     # GGSEL auto-discovery is blocked by HTTP 401; manual IDs below cover

@@ -84,6 +84,26 @@ def test_classify_delivery_unknown():
     assert classify_delivery("обычное название без маркеров") == "unknown"
 
 
+def test_classify_delivery_title_hints_new_account():
+    # chip "Max | 1 месяц" alone is silent, title "Мгновенный доступ" => new_account
+    assert classify_delivery("Max | 1 месяц",
+                             "Z.AI | Lite • Pro • Max | Мгновенный доступ") == "new_account"
+    assert classify_delivery("Max | 1 месяц",
+                             "Официальная активация") == "new_account"
+
+
+def test_classify_delivery_first_month_offer():
+    # (предложение на первый месяц) => new_account (first-month promo)
+    assert classify_delivery("GLM Coding MAX | 1 месяц (предложение на первый месяц)",
+                             "anything") == "new_account"
+
+
+def test_classify_delivery_known_own_still_wins_over_title():
+    # chip with explicit own-account marker wins over title hint
+    assert classify_delivery("Апгрейд/Продление: Z.ai GLM Coding Max - 1 Месяц (Требуется Вход)",
+                             "Мгновенный доступ") == "own_account"
+
+
 # ---- FamilyConfig.matches_offer ----
 
 def _offer(tier, duration, delivery, glitched=False):
