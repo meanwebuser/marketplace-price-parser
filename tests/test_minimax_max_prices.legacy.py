@@ -11,8 +11,15 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import minimax_max_prices
-import minimax_discovery
+# minimax_max_prices is now a package: the __init__.py is a thin
+# wrapper that delegates to cli.py, and .legacy holds the original
+# implementation. We import the legacy module directly so the existing
+# tests keep validating the original (hand-curated + Gemma4) logic.
+from minimax_max_prices import legacy as minimax_max_prices
+# minimax_discovery was replaced by scanner/discover.py; the old module
+# is preserved on disk for reference but no longer on the path.
+import sys as _sys
+_sys.modules.pop("minimax_discovery", None)
 
 
 def test_official_offer_is_selected_for_existing_account():

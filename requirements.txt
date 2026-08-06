@@ -1,1 +1,4 @@
 impit>=0.13,<1
+crawlee[parsel,impit]>=0.6
+playwright>=1.60
+pytest>=8.0

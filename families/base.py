@@ -13,11 +13,13 @@ class FamilyConfig:
 
     name: str
     search_terms: list[str]
+    purpose_preset: str                           # "renew" | "new_account" | "any"
     marketplaces: list[str]                       # ["plati", "ggsel"]
     tier_filter: list[str]                        # ["Max"], ["Pro", "Pro+", "Max"], ...
     duration_filter: list[str]                    # ["1m", "3m", "12m"]
-    delivery_filter: list[str]                    # ["own_account", "new_account"]
-    purpose_preset: str                           # "renew" | "new_account" | "any"
+    delivery_filter: list[str]                    # include list, e.g. ["own_account"]
+    delivery_exclude: list[str] = field(default_factory=list)  # explicit ban list
+    forbid_shared: bool = True                    # always forbid shared-account
     ggssel_category: str | None = None
     ggsel_ids: list[str] = field(default_factory=list)  # manual GGSEL IDs
     eligibility_extra: Callable[[dict], bool] | None = None
@@ -29,6 +31,10 @@ class FamilyConfig:
         if offer.get("tier") not in self.tier_filter:
             return False
         if offer.get("duration") not in self.duration_filter:
+            return False
+        if self.forbid_shared and offer.get("delivery") == "shared_account":
+            return False
+        if offer.get("delivery") in self.delivery_exclude:
             return False
         if offer.get("delivery") not in self.delivery_filter:
             return False

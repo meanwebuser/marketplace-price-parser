@@ -27,6 +27,14 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Marketplace price scanner (Plati + GGSEL).")
     p.add_argument("--family", required=True, choices=list(FAMILY_REGISTRY),
                    help="Product family: minimax, zai, chatgpt, claude")
+    p.add_argument("--purpose", default=None,
+                   help="ChatGPT only: which preset to apply (renew, new-account, any)")
+    p.add_argument("--duration", default=None, choices=["1m", "3m", "12m", "6m"],
+                   help="Filter analysis output to one duration")
+    p.add_argument("--tier", default=None,
+                   help="Filter analysis output to one tier (Max, Pro+, Pro, Lite, Plus)")
+    p.add_argument("--delivery", default=None,
+                   help="Filter analysis output to one delivery type (own_account, new_account, shared_account)")
     p.add_argument("--max", type=int, default=80, help="Max candidates per marketplace")
     p.add_argument("--workers", type=int, default=6, help="Parallel browser workers")
     p.add_argument("--raw", default="/tmp/raw.json", help="Pass-1 raw collector output path")
@@ -37,6 +45,10 @@ def main(argv: list[str] | None = None) -> int:
     args = p.parse_args(argv)
 
     family = FAMILY_REGISTRY[args.family]
+    # ChatGPT: honor --purpose by rebuilding the config with the chosen preset
+    if args.family == "chatgpt" and args.purpose:
+        from families.chatgpt import _build
+        family = _build(args.purpose)
     raw_path = Path(args.raw)
     csv_path = Path(args.csv)
     md_path = Path(args.md)
@@ -69,11 +81,26 @@ def main(argv: list[str] | None = None) -> int:
     write_csv(offers, csv_path)
     write_markdown(offers, cheapest, family, md_path, source_path=raw_path)
 
+    # Apply output filters (filter only the printed table, not the raw CSV)
+    filtered_cheapest = cheapest
+    if args.duration or args.tier or args.delivery:
+        filtered_cheapest = {
+            (t, d, dl): offer
+            for (t, d, dl), offer in cheapest.items()
+            if (not args.duration or d == args.duration)
+            and (not args.tier or t == args.tier)
+            and (not args.delivery or dl == args.delivery)
+        }
     print(f"\n=== {family.name} cheapest per (tier, duration, delivery) ===")
-    for (tier, dur, delivery), offer in sorted(cheapest.items()):
+    for (tier, dur, delivery), offer in sorted(filtered_cheapest.items()):
         print(f"  {tier:6s} {dur:3s} {delivery:14s} {offer['price_rub']:>10.0f} ₽  {offer['marketplace']:5s}  {offer['url']}")
     print(f"\nCSV: {csv_path}  ({len(offers)} rows)")
     print(f"MD:  {md_path}")
+    if args.duration or args.tier or args.delivery:
+        filtered = len(filtered_cheapest)
+        total = len(cheapest)
+        if filtered < total:
+            print(f"\n(filtered: {filtered}/{total} matches --duration/--tier/--delivery)")
     return 0
 
 
