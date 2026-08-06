@@ -1,13 +1,24 @@
 """Family-aware discovery: find candidate listings on Plati + GGSEL that
-match a FamilyConfig. Replaces the MiniMax-specific minimax_discovery.py."""
+match a FamilyConfig.
+
+Plati: scraped via the Digiseller API (no auth required).
+GGSEL: scraped via Crawlee PlaywrightCrawler because the static HTML
+behind Cloudflare returns 401 to plain HTTP and ImpitHttpClient.
+
+Crawlee HTTP client options (per the crawlee docs):
+  ImpitHttpClient            — browser-impersonating HTTP (impit)
+  CurlImpersonateHttpClient  — curl-impersonate
+  HttpxHttpClient            — plain httpx
+  PlaywrightCrawler          — real browser for JS-rendered pages
+"""
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import re
-import site
-from pathlib import Path
+import sys
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -16,39 +27,9 @@ from families.base import FamilyConfig
 DEFAULT_PLATI_API_URL = "https://api.digiseller.com/api/cataloguer/front/products"
 DEFAULT_PLATI_BASE_URL = "https://plati.market"
 DEFAULT_GGSEL_BASE_URL = "https://ggsel.net"
-GGSEL_SEARCH_URL = f"{DEFAULT_GGSEL_BASE_URL}/search"
-GGSEL_CATALOG_URL = f"{DEFAULT_GGSEL_BASE_URL}/catalog/{{category}}"
-
-
-def _load_impit():
-    try:
-        from impit import Client
-        return Client
-    except ImportError:
-        root = Path(__file__).resolve().parents[1]
-        for site_path in (root / ".venv" / "lib").glob("python*/site-packages"):
-            site.addsitedir(str(site_path))
-        try:
-            from impit import Client
-            return Client
-        except ImportError:
-            return None
-
-
-def request_json(url: str) -> tuple[dict, str]:
-    headers = {"User-Agent": "Mozilla/5.0", "Accept": "application/json"}
-    client_type = _load_impit()
-    if client_type is not None:
-        try:
-            with client_type(http3=True, browser="chrome", timeout=30) as client:
-                resp = client.get(url, headers=headers)
-            if resp.status_code < 200 or resp.status_code >= 300:
-                raise RuntimeError(f"HTTP {resp.status_code}")
-            return resp.json(), "impit-http3"
-        except Exception:
-            pass
-    resp = urlopen(Request(url, headers=headers), timeout=30)
-    return json.loads(resp.read().decode("utf-8")), "urllib-fallback"
+GGSEL_CATEGORY_URL = f"{DEFAULT_GGSEL_BASE_URL}/catalog/{{category}}"
+GGSEL_SEARCH_URL = f"{DEFAULT_GGSEL_BASE_URL}/search?text={{q}}"
+CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 
 def normalise(value: str) -> str:
@@ -69,22 +50,19 @@ def _candidate_matches_family(text: str, family: FamilyConfig) -> bool:
     n = normalise(text)
     if not n:
         return False
-    # Universal rejects: credits, top-ups, balance refills, API keys
     if re.search(r"audio|agent|credit|кредит|top\s*-?up|попол\w*|api\s*key", n):
         return False
-    # Must mention at least one search term or family name
     terms = [normalise(t) for t in family.search_terms] + [family.name]
     if not any(term in n for term in terms):
         return False
-    # Must mention a tier OR a duration marker (loose — covers monthly subs)
     has_plan = re.search(r"max|макс|plus|плюс|pro|про|lite|лайт|plan|тариф|подпис\w*", n)
     has_term = re.search(r"1\s*(?:month|месяц|мес)|1m\b|3\s*(?:month|месяц|мес)|12m|год|year|\d+\s*(?:month|месяц)", n)
     return bool(has_plan and has_term)
 
 
+# ---- Plati discovery (no auth, GET API) ---------------------------------
+
 def discover_plati(family: FamilyConfig, max_results: int = 80) -> tuple[list[dict], str]:
-    """Return (candidates, transport). Each candidate: {source, native_id,
-    label, url, catalog_price_rub, seller, sales}."""
     api_url = os.getenv("PLATI_API_URL", DEFAULT_PLATI_API_URL)
     base_url = os.getenv("PLATI_BASE_URL", DEFAULT_PLATI_BASE_URL).rstrip("/")
     seen: set[str] = set()
@@ -102,9 +80,13 @@ def discover_plati(family: FamilyConfig, max_results: int = 80) -> tuple[list[di
             "includeAggregations": "true", "fuzzy": "false", "lang": "ru-RU",
         }
         try:
-            payload, transport = request_json(f"{api_url}?{urlencode(params)}")
+            url = f"{api_url}?{urlencode(params)}"
+            req = Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
+            with urlopen(req, timeout=30) as resp:
+                payload = json.loads(resp.read().decode("utf-8"))
+            transport = "urllib"
         except Exception as e:
-            print(f"  plati search '{query}': {e}", file=__import__("sys").stderr)
+            print(f"  plati search '{query}': {e}", file=sys.stderr)
             continue
         for item in (payload.get("content", {}) or {}).get("items", []) or []:
             label = name_from_locales(item)
@@ -127,83 +109,89 @@ def discover_plati(family: FamilyConfig, max_results: int = 80) -> tuple[list[di
     return out, transport
 
 
-def discover_ggsel(family: FamilyConfig, max_results: int = 80) -> tuple[list[dict], str]:
-    """Discover GGSEL listings via category page (when known) + search."""
-    headers = {"User-Agent": "Mozilla/5.0", "Accept-Language": "ru-RU,ru;q=0.9"}
+# ---- GGSEL discovery via Crawlee PlaywrightCrawler --------------------
+
+def _extract_ggsel_products(html: str, family: FamilyConfig) -> list[dict]:
+    """Extract unique product URLs from GGSEL page HTML, filter by family."""
     seen: set[str] = set()
     out: list[dict] = []
-    errors: list[str] = []
+    for m in re.finditer(r'href="(/catalog/product/([a-z0-9-]+)-(\d+))"', html):
+        href, slug, pid = m.group(1), m.group(2), m.group(3)
+        if pid in seen:
+            continue
+        ctx = html[m.end():m.end()+800]
+        title_match = re.search(r'title="([^"]{8,180})"', ctx)
+        title = title_match.group(1) if title_match else ""
+        if title and not _candidate_matches_family(title, family):
+            seen.add(pid)
+            continue
+        seen.add(pid)
+        out.append({
+            "source": "ggsel",
+            "native_id": pid,
+            "label": title,
+            "url": f"{DEFAULT_GGSEL_BASE_URL}{href}",
+            "catalog_price_rub": None,
+            "seller": None,
+            "sales": None,
+        })
+    return out
 
-    # Strategy 1: known category page
+
+async def _ggsel_crawl_async(family: FamilyConfig, max_results: int) -> list[dict]:
+    """Single PlaywrightCrawler run: category + search fallback. Other
+    crawlers (HttpCrawler with ImpitHttpClient) return 401 because GGSEL
+    is behind Cloudflare bot detection — only a real browser gets through."""
+    from crawlee.crawlers import PlaywrightCrawler
+    start_urls = []
     if family.ggssel_category:
-        url = f"{DEFAULT_GGSEL_BASE_URL}/catalog/{family.ggssel_category}"
+        start_urls.append(GGSEL_CATEGORY_URL.format(category=family.ggssel_category))
+    # GGSEL /search returns 404 (they removed the public search endpoint).
+    # Category page is the canonical discovery surface; fall back to
+    # known URLs in family.ggsel_ids if it returns nothing.
+    if not start_urls:
+        return []
+    products: list[dict] = []
+    crawler = PlaywrightCrawler(
+        max_requests_per_crawl=len(start_urls),
+        browser_type="chromium",
+        browser_launch_options={
+            "executable_path": CHROME_PATH,
+            "headless": True,
+            "args": ["--no-sandbox"],
+        },
+    )
+    @crawler.router.default_handler
+    async def handle(ctx):
         try:
-            body = urlopen(Request(url, headers=headers), timeout=30).read().decode("utf-8", "replace")
-            for m in re.finditer(r'href="(/catalog/product/[a-z0-9-]+-(\d+))"', body):
-                href, pid = m.group(1), m.group(2)
-                if pid in seen:
-                    continue
-                seen.add(pid)
-                # Extract nearby title
-                title_match = re.search(r'title="([^"]{8,180})"', body[m.end():m.end()+800])
-                title = title_match.group(1) if title_match else ""
-                if title and not _candidate_matches_family(title, family):
-                    continue
-                out.append({
-                    "source": "ggsel",
-                    "native_id": pid,
-                    "label": title,
-                    "url": f"{DEFAULT_GGSEL_BASE_URL}{href}",
-                    "catalog_price_rub": None,
-                    "seller": None,
-                    "sales": None,
-                })
-                if len(out) >= max_results:
-                    break
-        except Exception as e:
-            errors.append(f"category {family.ggssel_category}: {e}")
+            await ctx.page.wait_for_load_state("networkidle", timeout=15000)
+        except Exception:
+            pass
+        body = await ctx.page.content()
+        products.extend(_extract_ggsel_products(body, family))
+    await crawler.run(start_urls)
+    return products[:max_results]
 
-    # Strategy 2: search API as fallback
-    if len(out) < max_results:
-        for query in family.search_terms[:2]:
-            try:
-                url = f"{GGSEL_SEARCH_URL}?text={query.replace(' ', '+')}"
-                body = urlopen(Request(url, headers=headers), timeout=30).read().decode("utf-8", "replace")
-                for m in re.finditer(r'href="(/catalog/product/[a-z0-9-]+-(\d+))"', body):
-                    href, pid = m.group(1), m.group(2)
-                    if pid in seen:
-                        continue
-                    seen.add(pid)
-                    out.append({
-                        "source": "ggsel",
-                        "native_id": pid,
-                        "label": "",
-                        "url": f"{DEFAULT_GGSEL_BASE_URL}{href}",
-                        "catalog_price_rub": None,
-                        "seller": None,
-                        "sales": None,
-                    })
-                    if len(out) >= max_results:
-                        break
-            except Exception as e:
-                errors.append(f"search '{query}': {e}")
-            if len(out) >= max_results:
-                break
 
-    return out, "; ".join(errors) if errors else "ok"
+def discover_ggsel(family: FamilyConfig, max_results: int = 80) -> tuple[list[dict], str]:
+    """Run Playwright-based GGSEL discovery. Returns (products, transport)."""
+    try:
+        products = asyncio.run(_ggsel_crawl_async(family, max_results))
+        return products, "playwright"
+    except Exception as e:
+        return [], f"playwright-error: {e}"
 
 
 def discover_all(family: FamilyConfig, max_results: int = 80) -> dict:
-    """Return full discovery result for both marketplaces."""
     plati, plati_t = discover_plati(family, max_results)
-    ggsel, ggsel_e = discover_ggsel(family, max_results)
+    ggsel, ggsel_t = discover_ggsel(family, max_results)
     return {
         "family": family.name,
         "candidates": plati + ggsel,
         "plati_found": len(plati),
         "ggsel_found": len(ggsel),
-        "transports": {"plati": plati_t, "ggsel": ggsel_e},
-        "errors": ([ggsel_e] if ggsel_e != "ok" else []),
+        "transports": {"plati": plati_t, "ggsel": ggsel_t},
+        "errors": ([ggsel_t] if ggsel_t.startswith("playwright-error") else []),
     }
 
 
@@ -216,4 +204,7 @@ if __name__ == "__main__":
     p.add_argument("--max", type=int, default=80)
     args = p.parse_args()
     result = discover_all(FAMILY_REGISTRY[args.family], args.max)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    print(json.dumps({k: v for k, v in result.items() if k != "candidates"}, indent=2, ensure_ascii=False))
+    print(f"candidates: {len(result['candidates'])}")
+    for c in result["candidates"][:5]:
+        print(f"  [{c['source']}] {c['native_id']}  {c['url']}")
