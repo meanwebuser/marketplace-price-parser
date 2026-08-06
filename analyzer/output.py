@@ -26,9 +26,10 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
             if not opt.get("clicked"):
                 continue
             text = opt.get("text", "")
+            title = listing.get("title", "")
             tier = classify_tier(text)
             duration = classify_duration(text)
-            delivery = classify_delivery(text)
+            delivery = classify_delivery(text, title)
             if not tier or not duration:
                 continue
             price, strong = select_real_price(opt.get("prices", []))

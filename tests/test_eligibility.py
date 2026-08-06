@@ -104,6 +104,38 @@ def test_classify_delivery_known_own_still_wins_over_title():
                              "Мгновенный доступ") == "own_account"
 
 
+def test_classify_delivery_title_mgnovennaya_aktivatsiya():
+    assert classify_delivery("Тариф «Макс» (1 месяц)",
+                             "Z.AI | Премиум-доступ к ИИ | 1 месяц | Мгновенная активация") == "new_account"
+
+
+def test_classify_delivery_title_operativnaya_podderzhka():
+    assert classify_delivery("Тариф «Макс» | 1 месяц |",
+                             "Z.AI | Подписка на 1 месяц — оперативная поддержка и гарантийное обслуживание") == "new_account"
+
+
+def test_classify_delivery_title_garantiya_100():
+    assert classify_delivery("Max | 1 месяц",
+                             "Подписка Z.AI (1 месяц) 💎 Гарантия 100% | Официальная активация") == "new_account"
+
+
+def test_classify_delivery_title_24_7():
+    assert classify_delivery("Max | 1 месяц",
+                             "Подписка с поддержкой 24/7 и моментальной выдачей") == "new_account"
+
+
+def test_classify_delivery_title_neutral_stays_unknown():
+    # No delivery markers anywhere — stay honest, leave as unknown
+    assert classify_delivery("Max 1 месяц",
+                             "Подписка GLM Coding Lite/Pro на 1/3/12 месяцев") == "unknown"
+
+
+def test_classify_delivery_title_prolong_podpisk():
+    # Chip with own-account chip marker is authoritative
+    assert classify_delivery("Продление подписки Z.ai Max 1 месяц",
+                             "Обновление подписки на ваш аккаунт") == "own_account"
+
+
 # ---- FamilyConfig.matches_offer ----
 
 def _offer(tier, duration, delivery, glitched=False):
@@ -173,3 +205,71 @@ def test_eligibility_extra_callback():
     )
     assert cfg.matches_offer({**_offer("Max", "1m", "own_account"), "price_rub": 15000})
     assert not cfg.matches_offer({**_offer("Max", "1m", "own_account"), "price_rub": 25000})
+
+
+def test_llm_overrides_unknown_delivery():
+    from analyzer.llm import apply_llm_reviews
+    items = [{"url": "x", "tier": "Max", "duration": "1m", "delivery": "unknown", "price_rub": 15000}]
+    reviews = {"x": {"tier": "Max", "duration": "1m", "delivery": "own_account", "price_rub": 15000}}
+    apply_llm_reviews(items, reviews, override_unknowns=True)
+    assert items[0]["delivery"] == "own_account"
+    assert items[0]["llm_overrode"] is True
+
+
+def test_llm_does_not_override_known_delivery():
+    from analyzer.llm import apply_llm_reviews
+    items = [{"url": "x", "tier": "Max", "duration": "1m", "delivery": "own_account", "price_rub": 15000}]
+    reviews = {"x": {"tier": "Max", "duration": "1m", "delivery": "new_account", "price_rub": 15000}}
+    apply_llm_reviews(items, reviews, override_unknowns=True)
+    # LLM should NOT overwrite a confident own_account with new_account
+    assert items[0]["delivery"] == "own_account"
+    assert "llm_overrode" not in items[0]
+
+
+def test_llm_flags_price_mismatch():
+    from analyzer.llm import apply_llm_reviews
+    items = [{"url": "x", "tier": "Max", "duration": "1m", "delivery": "own_account", "price_rub": 15000}]
+    reviews = {"x": {"tier": "Max", "duration": "1m", "delivery": "own_account", "price_rub": 25000}}
+    apply_llm_reviews(items, reviews, override_unknowns=False)
+    assert "warning" in items[0]
+    assert "Gemma reported 25000" in items[0]["warning"]
+
+def test_llm_title_fallback_to_new_account():
+    """When both analyzer and LLM say unknown, infer new_account from title
+    (no own-account markers)."""
+    from analyzer.llm import apply_llm_reviews
+    items = [{"url": "x", "title": "Z.AI | Lite • Pro • Max | Подписка на 1 месяц",
+              "tier": "Max", "duration": "1m", "delivery": "unknown", "price_rub": 15000}]
+    reviews = {"x": {"tier": "Max", "duration": "1m", "delivery": "unknown", "price_rub": 15000}}
+    apply_llm_reviews(items, reviews, override_unknowns=True)
+    assert items[0]["delivery"] == "new_account"
+    assert items[0]["llm_overrode"] is True
+    assert "delivery=new_account*" in items[0]["llm_overrode_fields"]
+
+
+def test_llm_title_fallback_promotes_own_listing():
+    """When title has own-account markers ("Продление", "на ваш аккаунт"),
+    the heuristic must promote unknown -> own_account (not new_account)."""
+    from analyzer.llm import apply_llm_reviews
+    items = [{"url": "x", "title": "Продление подписки Z.AI Max",
+              "tier": "Max", "duration": "1m", "delivery": "unknown", "price_rub": 18000}]
+    reviews = {"x": {"tier": "Max", "duration": "1m", "delivery": "unknown", "price_rub": 18000}}
+    apply_llm_reviews(items, reviews, override_unknowns=True)
+    # Title has "Продление" — heuristic should promote unknown -> own_account
+    assert items[0]["delivery"] == "own_account"
+    assert "delivery=own_account*" in items[0]["llm_overrode_fields"]
+
+
+def test_llm_title_fallback_promotes_na_vash_akkaunt():
+    """Title 'НА ВАШ АККАУНТ' must infer own_account, not new_account."""
+    from analyzer.llm import apply_llm_reviews
+    items = [{"url": "x", "title": "1-12 МЕСЯЦЕВ ПОДПИСКИ Z.AI / НА ВАШ АККАУНТ",
+              "tier": "Max", "duration": "1m", "delivery": "unknown", "price_rub": 18000}]
+    reviews = {"x": {"tier": "Max", "duration": "1m", "delivery": "unknown", "price_rub": 18000}}
+    apply_llm_reviews(items, reviews, override_unknowns=True)
+    assert items[0]["delivery"] == "own_account"
+
+
+def test_classify_delivery_neutral_title_chip_only():
+    """Truly neutral listing: no chip markers, no title markers -> unknown."""
+    assert classify_delivery("Max 1 месяц", "Подписка GLM Coding Lite/Pro на 1/3/12 месяцев") == "unknown"

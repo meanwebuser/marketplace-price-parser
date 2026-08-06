@@ -94,10 +94,15 @@ _DELIV_PATTERNS = [
 # Most cheap listings fall into "new_account" — seller activates on their
 # own email / hands you a ready account. "own_account" usually requires
 # explicit "Upgrade" / "Требуется Вход" wording in the chip itself.
+# Heuristics added: "Мгновенная активация", "оперативная поддержка",
+# "Гарантия 100%", 24/7 / круглосуточная поддержка — classic ready-account
+# signals that the seller pre-registers the account and hands it over fast.
 _TITLE_DELIV_HINTS = [
-    ("new_account",   re.compile(r"мгновенн\w*\s*доступ|instant\s*access|официальн\w*\s*активация|official\s*activation|pre.?made|ready\s*account", re.I)),
-    ("new_account",   re.compile(r"выда\w*\s*в\s*теч|персональн\w*\s*аккаунт|complete\s*account|full\s*access", re.I)),
-    ("own_account",   re.compile(r"\bобновлен\w*|продлен\w*|upgrade|renew|extend|сохран\w*\s*истори|сохран\w*\s*рабоч", re.I)),
+    ("new_account",   re.compile(r"мгновенн\w*\s*(?:доступ|активация|выдач[аы]|получен)|instant\s*access|мгновенно|instantly", re.I)),
+    ("new_account",   re.compile(r"официальн\w*\s*активация|official\s*activation|pre.?made|ready\s*account", re.I)),
+    ("new_account",   re.compile(r"выда\w*\s*в\s*теч|персональн\w*\s*аккаунт|complete\s*account|full\s*access|персональн\w*\s*подписк", re.I)),
+    ("new_account",   re.compile(r"оперативн\w*\s*поддержка|круглосуточн\w*\s*поддержка|поддержк[аы]\s*24/7|24/7\s*support|гарантийн\w*\s*обслуживание|гарантия\s*100%|моментальн\w*\s*выдач", re.I)),
+    ("own_account",   re.compile(r"\bобновлен\w*|продлен\w*|upgrade|renew|extend|сохран\w*\s*истори|сохран\w*\s*рабоч|обновлен\w*\s*подписк|продлен\w*\s*подписк", re.I)),
 ]
 
 

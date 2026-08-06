@@ -105,8 +105,40 @@ def _call_llm(item: dict, api_key: str, base_url: str, model: str, timeout: int)
     return _extract_json(content)
 
 
-def apply_llm_reviews(items: list[dict], reviews: dict[str, dict]) -> None:
-    """Mutate each item in place: add llm_review + warning if mismatched."""
+_VALID_TIERS = {"Max", "Pro+", "Pro", "Plus", "Lite"}
+_VALID_DELIVERY = {"own_account", "new_account", "shared_account"}
+
+
+# Title-based fallback when both analyzer and LLM say "unknown". Most cheap
+# marketplace listings without explicit "Требуется Вход" / "Upgrade" markers
+# are pre-made accounts the seller activates on their own email.
+_OWN_MARKERS = re.compile(
+    r"обновлен\w*|продлен\w*|upgrade|renew|extend|"
+    r"на\s*ваш\w*\s*аккаунт|со\s*входом|требуется\s*вход|"
+    r"обновлен\w*\s*подписк|продлен\w*\s*подписк",
+    re.I,
+)
+
+
+def _infer_delivery_unknown(item: dict) -> str:
+    """Best-effort default for items both analyzer and LLM couldn't classify.
+    If the title has own_account markers (e.g. "НА ВАШ АККАУНТ",
+    "Требуется Вход"), infer own_account. Otherwise (most cheap
+    marketplace listings without explicit own-account markers are
+    pre-made accounts) infer new_account."""
+    title = item.get("title", "") or ""
+    if _OWN_MARKERS.search(title):
+        return "own_account"
+    return "new_account"
+
+
+def apply_llm_reviews(items: list[dict], reviews: dict[str, dict], *, override_unknowns: bool = True) -> None:
+    """Mutate each item in place: add llm_review + warning if mismatched.
+
+    When override_unknowns=True (default) and the analyzer still left tier,
+    duration or delivery as "unknown", the LLM verdict is applied (and a
+    final heuristic inference kicks in for delivery when the LLM also said
+    unknown — see _infer_delivery_unknown)."""
     for item in items:
         url = item.get("url", "")
         review = reviews.get(url)
@@ -127,3 +159,26 @@ def apply_llm_reviews(items: list[dict], reviews: dict[str, dict]) -> None:
             item["warning"] = (
                 f"Gemma reported {llm_price_n} ₽, browser shows {browser_price:.0f} ₽ (>10% delta)"
             )
+        if override_unknowns:
+            overrides = []
+            llm_tier = review.get("tier", "")
+            llm_dur = review.get("duration", "")
+            llm_del = review.get("delivery", "")
+            if item.get("tier") in ("", "unknown") and llm_tier in _VALID_TIERS:
+                item["tier"] = llm_tier
+                overrides.append(f"tier={llm_tier}")
+            if item.get("duration") in ("", "unknown") and llm_dur in ("1m", "3m", "12m", "6m"):
+                item["duration"] = llm_dur
+                overrides.append(f"duration={llm_dur}")
+            if item.get("delivery") in ("", "unknown") and llm_del in _VALID_DELIVERY:
+                item["delivery"] = llm_del
+                overrides.append(f"delivery={llm_del}")
+            elif item.get("delivery") in ("", "unknown") and llm_del in ("unknown", "", None):
+                # Both analyzer and LLM say unknown: apply title-based heuristic
+                inferred = _infer_delivery_unknown(item)
+                if inferred != "unknown":
+                    item["delivery"] = inferred
+                    overrides.append(f"delivery={inferred}*")
+            if overrides:
+                item["llm_overrode"] = True
+                item["llm_overrode_fields"] = ",".join(overrides)

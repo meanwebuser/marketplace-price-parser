@@ -129,7 +129,7 @@ def _maybe_llm(offers: list, args: argparse.Namespace) -> None:
         print("note: --llm requested but LLM_API_KEY not set; skipping", file=sys.stderr)
         return
     reviews, meta = review_with_gemma(offers, api_key, base_url, model)
-    apply_llm_reviews(offers, reviews)
+    apply_llm_reviews(offers, reviews, override_unknowns=True)
     mismatch = sum(1 for o in offers if o.get("warning"))
     print(f"\nLLM sanity check: {meta['called']} calls, {meta['failed']} failed, {mismatch} mismatches")
     for o in offers:
