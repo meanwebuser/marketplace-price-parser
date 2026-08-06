@@ -83,12 +83,20 @@ def classify_duration(text: str) -> str:
     return ""
 
 
+_DELIV_PATTERNS = [
+    ("shared_account", re.compile(r"\bобщ(ая|ий|ее|ee|ie|iy)?\b.{0,15}\b(доступ|аккаунт|подписк)|общ.{0,10}1\s*месяц|общ.{0,15}\b(plus|pro|max)", re.I)),
+    ("own_account",   re.compile(r"на\s*ваш\w*\s*аккаунт|со\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|upgrade\s*on\s*your\s*personal\s*account|personal\s*account", re.I)),
+    ("own_account",   re.compile(r"без\s*входа|без\s*логина|по\s*токену|активация\s*по\s*токену", re.I)),  # own-no-login
+    ("new_account",   re.compile(r"готов\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email", re.I)),
+]
+
+
 def classify_delivery(text: str) -> str:
-    t = text.lower()
-    if "случ" in t or "готов" in t or "выда" in t or "first month" in t or "перв" in t and "month" in t:
-        return "new_account"
-    if "продл" in t or "апгрейд" in t or "вход" in t or "требуется" in t or "first registration" in t or "ваш акк" in t:
-        return "own_account"
+    """Map option text to delivery type. Order matters: shared-account
+    wins, then own-account, then new-account."""
+    for delivery, pat in _DELIV_PATTERNS:
+        if pat.search(text or ""):
+            return delivery
     return "unknown"
 
 

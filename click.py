@@ -16,47 +16,44 @@ const { chromium } = require(
 
 const CHROME_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
-const PLATI_PIDS = [
-  5619379, 5523111, 5971847, 5840436, 5997168, 5585825, 5893342, 5450549,
-  5918664, 5955197, 6002805, 5526305, 5377500, 5885298,
-];
-const GGSEL_IDS = [
-  'apgreid-z-ai-lite-pro-max-glm-5-2-1-12-mesiaca-f-a-s-t-full-warranty-102109731',
-  'z-ai-glm-coding-plan-lite-pro-max-fast-activation-full-warranty-102458121',
-  'z-ai-glm-lite-pro-max-coding-plan-glm-5-2-licnaia-podpiska-polnaia-102610634',
-  'z-ai-glm-lite-pro-max-coding-plan-1-3-12-mesiacev-personalnaia-podpiska-polnaia-102438864',
-  'z-ai-podpiska-glm-coding-lite-pro-max-1-3-12-mesiacev-102010339',
-  'z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102358846',
-  'z-ai-glm-lite-pro-max-coding-plan-glm-5-2-personalnaia-podpiska-polnaia-102495696',
-  'upgrade-z-ai-glm-5-1-12m-f-a-s-t-full-warranty-102483517',
-  'z-ai-lite-pro-max-gotovyi-akkaunt-dostavka-v-tecenie-neskolkix-casov-102644827',
-  'z-ai-z-ai-podpiska-glm-coding-lite-pro-na-1-mesiac-5327293',
-  'z-ai-z-ai-podpiska-glm-coding-lite-pro-max-na-1-mesiac-102185754',
-  'z-ai-z-ai-podpiska-glm-coding-lite-pro-na-1-3-12-mesiacev-102234852',
-  'podpiska-z-ai-lite-pro-max-1-mesiac-na-vas-akkaunt-102584986',
-  'z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102662846',
-  'obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102303683',
-  'obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102618255',
-  'z-ai-z-ai-podpiska-glm-coding-lite-pro-max-1-12-mesiacev-102113607',
-  'z-ai-z-ai-podpiska-na-1-mesiac-lite-pro-max-dlia-programmirovaniia-zai-zai-5413116',
-  'z-ai-z-ai-pokupka-podpiski-1-3-12m-popolnit-balansa-kredity-102169054',
-  'podpiska-z-ai-na-vas-akkaunt-102651023',
-  'podpiska-z-ai-z-ai-oficialnaia-oplata-1-3-12-mesiacev-102583131',
-  'podpiska-z-ai-glm-coding-plan-1-12m-fast-delivery-full-warranty-102457859',
-  'oficialnaia-1-3-12-mes-podpiska-z-ai-z-ai-liubye-e-oformlenie-polnaia-g-arantiia-102296362',
-  'z-ai-lite-pro-max-1-mesiac-mgnovennyi-dostup-podderzka-24-7-i-102495673',
-  'z-ai-z-ai-lite-pro-max-1-3-12-mesiaca-vas-akkaunt-102104408',
-  'z-ai-lite-pro-max-premium-dostup-k-ii-1-mesiac-mgnovennaia-aktivaciia-102528209',
-  'z-ai-lite-pro-max-podpiska-na-1-mesiac-operativnaia-podderzka-i-garantiinoe-obsluzivanie-102528064',
-  'z-ai-podpiska-coding-lite-na-1-mesiac-102611308',
-];
+// Populated via --plati-pids / --ggsel-ids CLI args. Empty defaults.
+const PLATI_PIDS = [];
+const GGSEL_IDS = [];
 
-const args = Object.fromEntries(
-  process.argv.slice(2).filter((a) => a.startsWith('--')).map((a) => {
-    const [k, ...rest] = a.replace(/^--/, '').split('=');
-    return [k, rest.length ? rest.join('=') : true];
-  }),
-);
+// Parse --key=value OR --key value (next must not start with --)
+const argv = process.argv.slice(2);
+const args = {};
+for (let i = 0; i < argv.length; i++) {
+  const a = argv[i];
+  if (!a.startsWith('--')) continue;
+  let key, value;
+  const eq = a.indexOf('=');
+  if (eq >= 0) {
+    key = a.slice(2, eq);
+    value = a.slice(eq + 1);
+  } else {
+    key = a.slice(2);
+    const next = argv[i + 1];
+    if (next !== undefined && !next.startsWith('--')) {
+      value = next;
+      i++;
+    } else {
+      value = true;
+    }
+  }
+  args[key] = value;
+}
+// Merge --plati-pids / --ggsel-ids (comma-separated) into the empty defaults
+if (args['plati-pids']) {
+  for (const p of String(args['plati-pids']).split(',').map((s) => Number(s.trim())).filter(Boolean)) {
+    if (!PLATI_PIDS.includes(p)) PLATI_PIDS.push(p);
+  }
+}
+if (args['ggsel-ids']) {
+  for (const id of String(args['ggsel-ids']).split(',').map((s) => s.trim()).filter(Boolean)) {
+    if (!GGSEL_IDS.includes(id)) GGSEL_IDS.push(id);
+  }
+}
 const WORKERS = Number(args.workers || 6);
 const OUT_PATH = args.out || '/tmp/zai_raw.json';
 const PAGE_TIMEOUT_MS = Number(args['page-timeout'] || 35000);

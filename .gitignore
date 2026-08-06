@@ -5,3 +5,7 @@ __pycache__/
 .venv/
 graphify-out/
 .DS_Store
+storage/
+*.log
+zai_test_runner.js
+.agents/
