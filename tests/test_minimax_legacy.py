@@ -16,10 +16,9 @@ sys.path.insert(0, str(ROOT))
 # implementation. We import the legacy module directly so the existing
 # tests keep validating the original (hand-curated + Gemma4) logic.
 from minimax_max_prices import legacy as minimax_max_prices
-# minimax_discovery was replaced by scanner/discover.py; the old module
-# is preserved on disk for reference but no longer on the path.
-import sys as _sys
-_sys.modules.pop("minimax_discovery", None)
+# scanner/discover.py replaced minimax_discovery in the live pipeline, but
+# minimax_max_prices.legacy still imports it, so it must stay importable.
+import minimax_discovery
 
 
 def test_official_offer_is_selected_for_existing_account():
@@ -55,7 +54,7 @@ def test_official_offer_is_selected_for_existing_account():
 
 def test_cli_skip_marketplaces_is_an_integration_smoke():
     completed = subprocess.run(
-        [sys.executable, str(ROOT / "minimax_max_prices.py"), "--skip-marketplaces", "--json"],
+        [sys.executable, "-m", "minimax_max_prices.legacy", "--skip-marketplaces", "--json"],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -68,7 +67,7 @@ def test_cli_skip_marketplaces_is_an_integration_smoke():
 
 
 def test_marketplace_crawler_failure_is_reported_without_secrets():
-    with patch("minimax_max_prices.subprocess.run") as run:
+    with patch("minimax_max_prices.legacy.subprocess.run") as run:
         run.return_value.returncode = 1
         run.return_value.stderr = "browser failed"
         run.return_value.stdout = ""

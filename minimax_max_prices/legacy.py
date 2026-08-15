@@ -17,7 +17,9 @@ from urllib.request import Request, urlopen
 from minimax_discovery import discover_marketplaces
 
 
-ROOT = Path(__file__).resolve().parent
+# Repo root: minimax_candidates.json / minimax_browser_crawler.js stayed at
+# the root when this module moved from minimax_max_prices.py into the package.
+ROOT = Path(__file__).resolve().parents[1]
 CANDIDATES_PATH = ROOT / "minimax_candidates.json"
 CRAWLER_PATH = ROOT / "minimax_browser_crawler.js"
 DEFAULT_LLM_BASE_URL = "https://llm.bezrabotnyi.com/v1"

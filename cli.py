@@ -61,7 +61,11 @@ def _resolve_families(args: argparse.Namespace) -> list:
         fam = FAMILY_REGISTRY[name]
         if name == "chatgpt" and args.purpose:
             from families.chatgpt import _build
-            fam = _build(args.purpose)
+            preset = args.purpose.replace("-", "_")
+            if preset not in ("renew", "new_account", "any"):
+                print(f"ERROR: unknown purpose {args.purpose!r}. Choices: renew, new-account, any", file=sys.stderr)
+                sys.exit(2)
+            fam = _build(preset)
         families.append(fam)
     return families
 
@@ -85,13 +89,18 @@ def _run_one(family, args, raw_path: Path) -> dict:
     return raw
 
 
+def _tier_matches(tier: str, wanted: str) -> bool:
+    """Exact match, or variant prefix: --tier Pro covers "Pro 5X"/"Pro 20X"."""
+    return tier == wanted or tier.startswith(wanted + " ")
+
+
 def _print_table(cheapest: dict, args: argparse.Namespace, *, multi: bool) -> None:
     """Print the cheapest-per-tier table, applying output filters."""
     if args.duration or args.tier or args.delivery:
         filtered = {
             k: v for k, v in cheapest.items()
             if (not args.duration or k[-2] == args.duration)
-            and (not args.tier or k[-3] == args.tier)
+            and (not args.tier or _tier_matches(k[-3], args.tier))
             and (not args.delivery or k[-1] == args.delivery)
         }
     else:

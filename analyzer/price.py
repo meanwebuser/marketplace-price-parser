@@ -59,13 +59,23 @@ def select_real_price(prices: list[dict]) -> tuple[float | None, bool]:
 
 
 def classify_tier(text: str) -> str:
-    if re.search(r"\bMax\b|макс", text, re.IGNORECASE):
+    # Russian "макс(?:имум)?" as a standalone word only — "максимальная
+    # выгода" in marketing copy must not swallow a Plus/Pro listing.
+    if re.search(r"\bMax\b|\bмакс(?:имум)?\b", text, re.IGNORECASE):
         return "Max"
     if re.search(r"\bPro\s*\+|Pro\+|про\+", text, re.IGNORECASE):
         return "Pro+"
-    if re.search(r"\bPro\b", text, re.IGNORECASE):
+    # ChatGPT 2026: PRO X5 / X20 are distinct products (different price
+    # points) — split them before the plain-Pro fallback.
+    if re.search(r"\bpro\b", text, re.IGNORECASE):
+        if re.search(r"\b[xх]\s*20\b|\b20\s*[xх]\b", text, re.IGNORECASE):
+            return "Pro 20X"
+        if re.search(r"\b[xх]\s*5\b|\b5\s*[xх]\b", text, re.IGNORECASE):
+            return "Pro 5X"
         return "Pro"
-    if re.search(r"\bLite\b|лайт", text, re.IGNORECASE):
+    if re.search(r"\bPlus\b|\bплюс\b", text, re.IGNORECASE):
+        return "Plus"
+    if re.search(r"\bLite\b|\bлайт\b", text, re.IGNORECASE):
         return "Lite"
     return ""
 
@@ -85,9 +95,9 @@ def classify_duration(text: str) -> str:
 
 _DELIV_PATTERNS = [
     ("shared_account", re.compile(r"\bобщ(ая|ий|ее|ee|ie|iy)?\b.{0,15}\b(доступ|аккаунт|подписк)|общ.{0,10}1\s*месяц|общ.{0,15}\b(plus|pro|max)", re.I)),
-    ("own_account",   re.compile(r"на\s*ваш\w*\s*аккаунт|со\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\s*subscription", re.I)),
+    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|со\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|обновлен\w*|обновля\w*|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|ваш\w*\s*(?:e-?mail|почт\w*)|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\s*subscription", re.I)),
     ("own_account",   re.compile(r"без\s*входа|без\s*логина|по\s*токену|активация\s*по\s*токену", re.I)),  # own-no-login
-    ("new_account",   re.compile(r"готов\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email|pre.?made\s*account|ready\s*account|предложен\w*\s*на\s*перв\w*\s*месяц|first\s*month\s*offer", re.I)),
+    ("new_account",   re.compile(r"готов\w*\s*аккаунт|\bнов(?:ый|ая|ое|ые)?\s*аккаунт|созда\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email|pre.?made\s*account|ready\s*account|предложен\w*\s*на\s*перв\w*\s*месяц|first\s*month\s*offer", re.I)),
 ]
 
 # Title hints used when the chip text doesn't say anything (e.g. "Max | 1 месяц").
@@ -102,6 +112,12 @@ _TITLE_DELIV_HINTS = [
     ("new_account",   re.compile(r"официальн\w*\s*активация|official\s*activation|pre.?made|ready\s*account", re.I)),
     ("new_account",   re.compile(r"выда\w*\s*в\s*теч|персональн\w*\s*аккаунт|complete\s*account|full\s*access|персональн\w*\s*подписк", re.I)),
     ("new_account",   re.compile(r"оперативн\w*\s*поддержка|круглосуточн\w*\s*поддержка|поддержк[аы]\s*24/7|24/7\s*support|гарантийн\w*\s*обслуживание|гарантия\s*100%|моментальн\w*\s*выдач", re.I)),
+]
+# Own-account title hints are checked BEFORE the new-account hints above:
+# "на ваш аккаунт" in the title is a specific statement and must outrank
+# generic marketing markers like "мгновенная активация".
+_TITLE_DELIV_OWN_HINTS = [
+    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|ваш\w*\s*(?:e-?mail|почт\w*)", re.I)),
     ("own_account",   re.compile(r"\bобновлен\w*|продлен\w*|upgrade|renew|extend|сохран\w*\s*истори|сохран\w*\s*рабоч|обновлен\w*\s*подписк|продлен\w*\s*подписк", re.I)),
 ]
 
@@ -116,10 +132,30 @@ def classify_delivery(text: str, title: str = "") -> str:
     for delivery, pat in _DELIV_PATTERNS:
         if pat.search(text):
             return delivery
+    for delivery, pat in _TITLE_DELIV_OWN_HINTS:
+        if pat.search(title or ""):
+            return delivery
     for delivery, pat in _TITLE_DELIV_HINTS:
         if pat.search(title or ""):
             return delivery
     return "unknown"
+
+
+# "+N ₽" in an option chip is the surcharge over the listing's base
+# (cheapest) variant. When the clicked-variant price block hadn't
+# refreshed, the recorded "strong" price is still the stale base —
+# detect that as recorded_price < delta and add the delta back.
+_DELTA_RE = re.compile(r"\+\s*(\d[\d\s\xa0]*)\s*(?:₽|руб)", re.I)
+
+
+def apply_delta_correction(option_text: str, price: float) -> float:
+    m = _DELTA_RE.search(option_text or "")
+    if not m:
+        return price
+    delta = float(m.group(1).replace(" ", "").replace("\xa0", ""))
+    if not delta or price >= delta:
+        return price
+    return price + delta
 
 
 def is_glitched(price: float, duration: str, tier: str) -> tuple[bool, str]:
