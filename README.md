@@ -2,7 +2,7 @@
 
 Семейство-ориентированный парсер для двух маркетплейсов — [GGSEL](https://ggsel.net/) и [Plati](https://plati.market/). Канонический путь — `cli.py --family <name>`: добавить новый продукт (Cursor, Claude, Grok, Kimi) теперь стоит 30 строк конфига, а не копию всего сканера.
 
-Поддерживаемые семейства: `minimax` (Token Plan Max), `zai` (GLM Coding Max), `chatgpt` (Plus / Pro), `claude` (Pro / Max — placeholder).
+Поддерживаемые семейства: `minimax` (Token Plan Max), `zai` (GLM Coding Max), `chatgpt` (Plus / Pro / Pro X5 / Pro X20), `claude` (Pro / Max — placeholder).
 
 ## Что умеет
 
@@ -10,6 +10,8 @@
 - открывать карточки товаров в браузере и кликать каждый вариант (Max / Pro+ / Lite × 1/3/12 мес × свой аккаунт / случайный email);
 - читать финальную цену выбранного варианта, а не доверять минимальной цене каталога;
 - различать `own_account`, `new_account`, `shared_account` и `unknown` виды выдачи;
+- различать варианты ChatGPT Pro X5 / Pro X20 как отдельные тарифы;
+- чинить цену варианта, когда блок цены не успел обновиться после клика (чип «+N ₽» = наценка к базовой цене лота);
 - фильтровать по eligibility-правилам конкретного семейства (tier × duration × delivery, purpose preset);
 - детектить UI-глитчи цен (12-мес Max за 1.5M RUB вместо 162K — отбрасываем);
 - параллельный сбор через 6 Playwright-воркеров (~90 сек на 42 листинга);
