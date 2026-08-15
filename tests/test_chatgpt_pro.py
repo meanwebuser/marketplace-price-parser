@@ -10,7 +10,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from analyzer.price import classify_tier, classify_delivery, apply_delta_correction
+from analyzer.price import (
+    classify_tier,
+    classify_duration,
+    classify_duration_from_title,
+    classify_delivery,
+    apply_delta_correction,
+)
 from families.chatgpt import CONFIG, _build
 
 
@@ -150,3 +156,66 @@ def test_title_na_vash_akkaunt_hint_beats_generic_new_hints():
         "ChatGPT PRO 5x 1 месяц",
         "🏆ChatGPT - 1 месяц 5.6 PLUS | GO | PRO | НА ВАШ ЛЮБОЙ АККАУНТ✅ГАРАНТИЯ🔥",
     ) == "own_account"
+
+
+# ---- GGSEL numbered chips: duration only in the title ----
+
+def test_duration_title_fallback_unambiguous():
+    # Chip carries an option number, not a duration; title says "1 МЕСЯЦ".
+    assert classify_duration("1 - Продлить подписку [АВТО] | PRO X5 | ЧЕРЕЗ ТОКЕН") == ""
+    assert classify_duration_from_title(
+        "Купить 24/7 | ChatGPT 5.6 PRO X5 X20 | 1 МЕСЯЦ | ПОДПИСКА ЧЕРЕЗ ТОКЕН | АВТО | ЧатГПТ",
+    ) == "1m"
+
+
+def test_duration_title_fallback_ambiguous_stays_empty():
+    # Titles naming several durations must not collapse to one guess.
+    assert classify_duration_from_title(
+        "Подписка GLM Coding Lite/Pro на 1/3/12 месяцев",
+    ) == ""
+    assert classify_duration_from_title(
+        "Подписка ChatGPT 1 месяц / 12 месяцев",
+    ) == ""
+
+
+def test_duration_title_fallback_24_7_marker_is_not_enumeration():
+    # "24/7" is support hours, not a duration list — the single "1 МЕСЯЦ"
+    # in the title still resolves.
+    assert classify_duration_from_title(
+        "Купить 24/7 | ChatGPT 5.6 PRO X5 X20 | 1 МЕСЯЦ | ПОДПИСКА ЧЕРЕЗ ТОКЕН | АВТО",
+    ) == "1m"
+
+
+# ---- token / credentials delivery wording ----
+
+def test_classify_delivery_cherez_token():
+    assert classify_delivery(
+        "2 - Продлить подписку [АВТО] | PRO X20 | ЧЕРЕЗ ТОКЕН",
+    ) == "own_account"
+
+
+def test_classify_delivery_cherez_dannye():
+    assert classify_delivery(
+        "3 - Продлить подписку [РУЧНАЯ] | PRO X5 | ЧЕРЕЗ ДАННЫЕ",
+    ) == "own_account"
+
+
+def test_offers_from_raw_keeps_numbered_ggsel_chip():
+    """Regression for GGSEL 4658858: numbered chip with duration only in
+    the title and token-based delivery must yield a ranked offer."""
+    from analyzer.output import offers_from_raw
+    raw = {"listings": [{
+        "marketplace": "ggsel",
+        "pid": "4658858",
+        "url": "https://ggsel.net/catalog/product/4658858",
+        "title": "Купить 24/7 | ChatGPT 5.6 PRO X5 X20 | 1 МЕСЯЦ | ПОДПИСКА ЧЕРЕЗ ТОКЕН | АВТО | ЧатГПТ",
+        "options": [{
+            "clicked": True,
+            "text": "1 - Продлить подписку [АВТО]\nPRO X5\nЧЕРЕЗ ТОКЕН",
+            "prices": [{"cls": "ProductBuyBlock__amount", "text": "7 999 ₽"}],
+        }],
+    }]}
+    rows = list(offers_from_raw(raw))
+    assert len(rows) == 1
+    r = rows[0]
+    assert (r["tier"], r["duration"], r["delivery"], r["price_rub"]) == ("Pro 5X", "1m", "own_account", 7999.0)

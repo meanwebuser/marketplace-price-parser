@@ -13,6 +13,7 @@ from families.base import FamilyConfig
 from analyzer.price import (
     classify_tier,
     classify_duration,
+    classify_duration_from_title,
     classify_delivery,
     select_real_price,
     is_glitched,
@@ -29,7 +30,7 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
             text = opt.get("text", "")
             title = listing.get("title", "")
             tier = classify_tier(text)
-            duration = classify_duration(text)
+            duration = classify_duration(text) or classify_duration_from_title(title)
             delivery = classify_delivery(text, title)
             if not tier or not duration:
                 continue

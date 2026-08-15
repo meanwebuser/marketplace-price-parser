@@ -80,23 +80,39 @@ def classify_tier(text: str) -> str:
     return ""
 
 
+_DUR_RES = {
+    "12m": re.compile(r"\b1\s*год\b|1\s*year|12\s*месяц|12\s*month|1\s*y\b|365\s*дн"),
+    "6m":  re.compile(r"\b6\s*месяц|6m\b|6\s*month|180\s*дн"),
+    "3m":  re.compile(r"\b3\s*месяц|3m\b|3\s*month|90\s*дн"),
+    "1m":  re.compile(r"\b1\s*месяц|1m\b|1\s*month|30\s*дн|\bмесяц\b"),
+}
+
+
 def classify_duration(text: str) -> str:
     t = text.lower()
-    if re.search(r"\b1\s*год\b|1\s*year|12\s*месяц|12\s*month|1\s*y\b|365\s*дн", t):
-        return "12m"
-    if re.search(r"\b6\s*месяц|6m\b|6\s*month|180\s*дн", t):
-        return "6m"
-    if re.search(r"\b3\s*месяц|3m\b|3\s*month|90\s*дн", t):
-        return "3m"
-    if re.search(r"\b1\s*месяц|1m\b|1\s*month|30\s*дн|\bмесяц\b", t):
-        return "1m"
+    for dur in ("12m", "6m", "3m", "1m"):
+        if _DUR_RES[dur].search(t):
+            return dur
     return ""
+
+
+def classify_duration_from_title(title: str) -> str:
+    """Unambiguous duration from the listing title — fallback for chips
+    that carry no duration of their own (e.g. GGSEL numbered variants
+    "1 - Продлить подписку | PRO X5 | ЧЕРЕЗ ТОКЕН"). When the title names
+    several durations ("1/3/12 месяцев", "1 месяц / 12 месяцев"), stay
+    empty instead of guessing."""
+    t = (title or "").lower()
+    if re.search(r"\d\s*[/–—-]\s*\d.{0,8}мес", t):  # "1/3/12 месяцев" enumeration
+        return ""
+    found = {dur for dur, pat in _DUR_RES.items() if pat.search(t)}
+    return found.pop() if len(found) == 1 else ""
 
 
 _DELIV_PATTERNS = [
     ("shared_account", re.compile(r"\bобщ(ая|ий|ее|ee|ie|iy)?\b.{0,15}\b(доступ|аккаунт|подписк)|общ.{0,10}1\s*месяц|общ.{0,15}\b(plus|pro|max)", re.I)),
     ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|со\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|обновлен\w*|обновля\w*|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|ваш\w*\s*(?:e-?mail|почт\w*)|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\s*subscription", re.I)),
-    ("own_account",   re.compile(r"без\s*входа|без\s*логина|по\s*токену|активация\s*по\s*токену", re.I)),  # own-no-login
+    ("own_account",   re.compile(r"без\s*входа|без\s*логина|по\s*токену|через\s*токен|через\s*данн\w*|активация\s*по\s*токену", re.I)),  # own-no-login (token / credentials renewal)
     ("new_account",   re.compile(r"готов\w*\s*аккаунт|\bнов(?:ый|ая|ое|ые)?\s*аккаунт|созда\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email|pre.?made\s*account|ready\s*account|предложен\w*\s*на\s*перв\w*\s*месяц|first\s*month\s*offer", re.I)),
 ]
 
@@ -117,7 +133,7 @@ _TITLE_DELIV_HINTS = [
 # "на ваш аккаунт" in the title is a specific statement and must outrank
 # generic marketing markers like "мгновенная активация".
 _TITLE_DELIV_OWN_HINTS = [
-    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|ваш\w*\s*(?:e-?mail|почт\w*)", re.I)),
+    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|ваш\w*\s*(?:e-?mail|почт\w*)|через\s*токен", re.I)),
     ("own_account",   re.compile(r"\bобновлен\w*|продлен\w*|upgrade|renew|extend|сохран\w*\s*истори|сохран\w*\s*рабоч|обновлен\w*\s*подписк|продлен\w*\s*подписк", re.I)),
 ]
 
@@ -194,7 +210,7 @@ def main():
             text = opt.get("text", "")
             title = listing.get("title", "")
             tier = classify_tier(text)
-            duration = classify_duration(text)
+            duration = classify_duration(text) or classify_duration_from_title(title)
             delivery = classify_delivery(text, title=title)
             if not tier or not duration:
                 continue
