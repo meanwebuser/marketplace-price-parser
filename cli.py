@@ -46,7 +46,9 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--analyzer", default="auto", choices=["auto", "regex", "llm"],
                    help="pass-2 engine: llm = batched evidence packs, regex = offline heuristics, "
                         "auto = llm when LLM_API_KEY is set, else regex")
-    p.add_argument("--llm-batch-chars", type=int, default=24000)
+    p.add_argument("--llm-batch-chars", type=int, default=6000,
+                   help="evidence-pack chars per LLM batch; local models stop "
+                        "following the strict JSON schema above ~3 listings")
     p.add_argument("--llm-dry-run", action="store_true",
                    help="build LLM prompts, report context sizes, skip actual calls")
     p.add_argument("--llm", action="store_true",

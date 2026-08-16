@@ -71,6 +71,43 @@ def test_batches_respect_char_budget():
 
 # ---- LLM extractor: prompt/parse/guards ----
 
+def test_parse_llm_content_unwraps_object_and_fences():
+    from analyzer.llm_extract import _parse_llm_content
+    item = {"pid": "1", "rows": []}
+    assert _parse_llm_content(json.dumps([item])) == [item]
+    assert _parse_llm_content(json.dumps({"items": [item]})) == [item]
+    assert _parse_llm_content("```json\n" + json.dumps([item]) + "\n```") == [item]
+    assert _parse_llm_content(json.dumps(item)) == [item]
+    assert _parse_llm_content("no json here") is None
+
+
+def test_row_to_offer_normalizes_tier_spellings_and_drops_junk():
+    from analyzer.llm_extract import _row_to_offer
+    pack = {"mp": "ggsel", "pid": "1", "url": "u", "title": "t",
+            "opts": [{"t": "PRO X5", "c": 1, "strong": 7999, "p": []}],
+            "init_strong": [7999], "init": []}
+    o = _row_to_offer(pack, {"opt": "PRO X5", "tier": "Pro X5", "duration": "1m",
+                             "delivery": "own_account", "price_rub": 7999}, None)
+    assert o["tier"] == "Pro 5X"
+    assert _row_to_offer(pack, {"tier": "Go", "duration": "1m", "delivery": "own_account",
+                                "price_rub": 699}, None)["tier"] == "GO"
+    assert _row_to_offer(pack, {"tier": "undefined", "duration": "1m", "delivery": "own_account",
+                                "price_rub": 100}, None) is None
+
+
+def test_row_to_offer_flags_price_missing_from_evidence():
+    from analyzer.llm_extract import _row_to_offer
+    pack = {"mp": "ggsel", "pid": "1", "url": "u", "title": "t",
+            "opts": [{"t": "PRO X5", "c": 1, "strong": 7999, "p": []}],
+            "init_strong": [], "init": []}
+    o = _row_to_offer(pack, {"opt": "PRO X5", "tier": "Pro 5X", "duration": "1m",
+                             "delivery": "own_account", "price_rub": 7777}, None)
+    assert o["glitched"] is True
+    assert "evidence" in o["glitch_reason"]
+    ok = _row_to_offer(pack, {"opt": "PRO X5", "tier": "Pro 5X", "duration": "1m",
+                              "delivery": "own_account", "price_rub": 7999}, None)
+    assert ok["glitched"] is False
+
 def _fake_completion(handler_items):
     class H(BaseHTTPRequestHandler):
         def do_POST(self):
@@ -150,3 +187,39 @@ def test_extract_offers_survives_bad_batch():
         base_url=f"http://127.0.0.1:{server.server_port}/v1", model="test")
     server.shutdown()
     assert offers == [] and meta["failed"] == 1
+
+
+def test_extract_offers_retries_after_json_object_echo():
+    """Regression (gemma4, 2026-08-16): with response_format=json_object the
+    model echoed the input packs back; the retry without response_format
+    must rescue the batch."""
+    from analyzer.llm_extract import extract_offers
+    good = [{"pid": "123", "rows": [
+        {"opt": "GO 1 МЕСЯЦ | По Токену", "tier": "GO", "duration": "1m",
+         "delivery": "own_account", "price_rub": 699, "evidence": "go token"}]}]
+
+    class H(BaseHTTPRequestHandler):
+        def do_POST(self):
+            length = int(self.headers.get("Content-Length", 0))
+            req_body = self.rfile.read(length).decode()
+            if "response_format" in req_body:
+                content = req_body  # echo the input packs back
+            else:
+                content = "```json\n" + json.dumps(good) + "\n```"
+            body = json.dumps({"choices": [{"message": {"content": content}}]}).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *a):
+            return
+    server = ThreadingHTTPServer(("127.0.0.1", 0), H)
+    Thread(target=server.serve_forever, daemon=True).start()
+    offers, meta = extract_offers(
+        {"listings": [_listing()]}, api_key="k",
+        base_url=f"http://127.0.0.1:{server.server_port}/v1", model="test")
+    server.shutdown()
+    assert meta["failed"] == 0
+    assert [(o["tier"], o["price_rub"]) for o in offers] == [("GO", 699.0)]

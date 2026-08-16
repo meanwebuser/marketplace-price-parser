@@ -389,3 +389,18 @@ Verified-real findings (spot-checked against the live data):
    The analyzer only ranks clicked options and ignores `initialPrices`.
 4. 6 plati listings died on collector navigation timeout.
 5. The 4 cheapest rows driving purchase decisions are all correct.
+
+## 9. LLM analyzer run on the same data (2026-08-16, later that day)
+
+`cli.py --analyzer llm` over the same raw scan: 124/124 batches, 0 failed,
+186 offer rows (regex: 105). gemma4 via llm.bezrabotnyi.com; batches cut to
+~6K chars after both gemma4 and qwen3.5 stopped following the strict JSON
+schema above ~3 listings per batch (echo/prose). Deterministic post-guards:
+tier alias normalization ("Pro X5"→"Pro 5X", "Go"→"GO", junk dropped),
+price must appear in collected evidence (anti-hallucination), family floors.
+
+Cheapest own-account monthly per tier (LLM, all verified against captured
+buy-block prices): GO 523 ₽ plati 6004414; Plus 585 ₽ plati 5500735 (flat
+listing — invisible to regex); Pro 9 990 ₽ plati 5162565; Pro X5 7 999 ₽
+and Pro X20 16 698 ₽ ggsel 4658858. Regex missed GO entirely and the flat
+Plus listing; its Pro X5/X20 bests were 8 850/17 150.
