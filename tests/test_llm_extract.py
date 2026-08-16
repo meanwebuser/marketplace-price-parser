@@ -111,9 +111,11 @@ def test_row_to_offer_flags_price_missing_from_evidence():
 
 def test_system_prompt_defines_ready_account_wordings():
     # the LLM must see the exact wordings that mean a ready-account handover
+    # and the whose-mailbox rule: buyer's email => own, seller/random => new
     from analyzer.llm_extract import SYSTEM_PROMPT
     assert "предоставляем мы" in SYSTEM_PROMPT
     assert "Создание аккаунта" in SYSTEM_PROMPT
+    assert "на вашу почту" in SYSTEM_PROMPT
 
 def _fake_completion(handler_items):
     class H(BaseHTTPRequestHandler):

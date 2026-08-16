@@ -76,13 +76,16 @@ tier ONLY if separate prices exist; otherwise classify the cheapest named \
 tier and note ambiguity in evidence.
 - duration: "1m" | "3m" | "6m" | "12m" from the option text, else the title, \
 else the description. Never guess a duration absent everywhere.
-- delivery: "own_account" (activated/extended on the BUYER's account: «на \
-ваш аккаунт», «продление», «с/со входом», «через токен», «по токену», \
-«через данные», upgrade) | "new_account" (ready/fresh account handed \
-over: «готовый аккаунт», «новый аккаунт», «случайный email», «Создание \
-аккаунта», «аккаунт предоставляем мы» — including when the new account is \
-registered onto the buyer's own email) | "shared_account" (общий доступ) | \
-"unknown". Description (desc) is authoritative when the chip is silent.
+- delivery: whose mailbox/account decides the class. "own_account" = the \
+subscription lives on the BUYER's own account or their mailbox («на ваш \
+аккаунт», «продление», «с/со входом», «через токен», «по токену», \
+«через данные», upgrade, and account creation onto the buyer's mailbox: \
+«Создание аккаунта на вашу почту», «на ваш e-mail»). "new_account" = the \
+account lives on the seller's or a random mailbox and is handed over \
+(«готовый аккаунт», «новый аккаунт», «случайный email», «Создание \
+аккаунта» without your email, «аккаунт предоставляем мы»). "shared_account" \
+= общий доступ. "unknown" when nothing indicates either side. Description \
+(desc) is authoritative when the chip is silent.
 - Unrelated products (not a ChatGPT subscription) or empty evidence → rows: [].
 - price_rub: integer RUB a buyer pays for THAT variant; 0 if genuinely unknown.
 

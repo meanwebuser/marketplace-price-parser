@@ -72,8 +72,11 @@ def test_classify_delivery_akkaunt_predostavlyaem_my():
 
 
 def test_classify_delivery_sozdanie_akkaunta():
+    # seller creates the account — whose mailbox decides the class
     assert classify_delivery("Создание аккаунта + подписка PRO") == "new_account"
-    assert classify_delivery("Создание аккаунта на вашу почту + подписка PRO") == "new_account"
+    assert classify_delivery(
+        "Создание аккаунта на вашу почту + подписка PRO",
+    ) == "own_account"  # registered on the BUYER's mailbox => own
 
 
 # ---- cli --purpose alias ----
