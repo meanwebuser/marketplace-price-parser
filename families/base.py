@@ -23,6 +23,10 @@ class FamilyConfig:
     ggssel_category: str | None = None
     ggsel_ids: list[str] = field(default_factory=list)  # manual GGSEL IDs
     eligibility_extra: Callable[[dict], bool] | None = None
+    # Plausible RUB price floors per tier — passed to the LLM analyzer as a
+    # hallucination/stale-price guard (regex path enforces them via
+    # eligibility_extra).
+    price_floors: dict = field(default_factory=dict)
     description: str = ""
 
     def matches_offer(self, offer: dict) -> bool:

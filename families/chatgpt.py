@@ -30,13 +30,16 @@ _PURPOSE_PRESETS = {
 }
 
 
+PRO_PRICE_FLOORS = {"Pro": 3000, "Pro 5X": 3000, "Pro 20X": 5000}
+
+
 def _reject_stale_base_prices(offer: dict) -> bool:
     """ChatGPT Pro grey prices start well above ~8K ₽ (X5) / ~16K ₽ (X20).
     A far lower 'Pro' price means the buy block didn't refresh after the
     variant click and still shows the listing's base variant."""
     if offer.get("duration") != "1m" or not str(offer.get("tier", "")).startswith("Pro"):
         return True
-    floor = 3000 if offer["tier"] in ("Pro", "Pro 5X") else 5000
+    floor = PRO_PRICE_FLOORS.get(offer["tier"], 3000)
     return offer.get("price_rub", 0) >= floor
 
 
@@ -49,7 +52,7 @@ def _build(preset_name: str = "renew") -> FamilyConfig:
         # top-N; Pro-specific queries keep Pro coverage.
         search_terms=["ChatGPT", "GPT Plus", "chatgpt plus", "ChatGPT Pro", "GPT Pro"],
         marketplaces=["plati", "ggsel"],
-        tier_filter=["Plus", "Pro", "Pro 5X", "Pro 20X"],
+        tier_filter=["GO", "Plus", "Pro", "Pro 5X", "Pro 20X"],
         duration_filter=["1m"],
         delivery_filter=preset["delivery_filter"],
         delivery_exclude=preset["delivery_exclude"],
@@ -57,6 +60,7 @@ def _build(preset_name: str = "renew") -> FamilyConfig:
         purpose_preset=preset_name,
         ggssel_category="chatgpt-all",
         eligibility_extra=_reject_stale_base_prices,
+        price_floors=PRO_PRICE_FLOORS,
         description=f"ChatGPT Plus / Pro monthly subscription (purpose: {preset_name})",
     )
 

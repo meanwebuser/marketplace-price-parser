@@ -11,6 +11,11 @@
 - читать финальную цену выбранного варианта, а не доверять минимальной цене каталога;
 - различать `own_account`, `new_account`, `shared_account` и `unknown` виды выдачи;
 - различать варианты ChatGPT Pro X5 / Pro X20 как отдельные тарифы;
+- pass 2 через LLM: `--analyzer llm` строит компактные evidence-pack'и
+  (описание, зона товара, чипы с ценами, пропущенные варианты, цены
+  «плоских» лотов) и классифицирует батчами ~24 КБ — контекст не
+  накапливается, `--llm-dry-run` показывает точные размеры промптов;
+  регэксп-анализатор остаётся офлайн-фолбэком (`--analyzer regex`);
 - чинить цену варианта, когда блок цены не успел обновиться после клика (чип «+N ₽» = наценка к базовой цене лота);
 - фильтровать по eligibility-правилам конкретного семейства (tier × duration × delivery, purpose preset);
 - детектить UI-глитчи цен (12-мес Max за 1.5M RUB вместо 162K — отбрасываем);
@@ -39,6 +44,14 @@ PYTHONPATH=. .venv/bin/python cli.py --family zai --tier Max --duration 1m --del
 
 # ChatGPT в режиме «продлить на свой аккаунт» (purpose preset)
 PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --purpose renew
+
+# Pass 2 через LLM: батчи evidence-pack'ов, классификация без регэкспов
+# (нужен LLM_API_KEY; OpenAI-совместимый эндпоинт, по умолчанию gemma4)
+PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --purpose renew --analyzer llm
+
+# Проверить размер контекста LLM без реальных вызовов (дампы в /tmp/llm_prompts)
+PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --analyzer llm --llm-dry-run \
+  --skip-discover --raw docs/audits/data/2026-08-16-audit-raw.json
 ```
 
 Артефакты:

@@ -112,7 +112,7 @@ def write_markdown(
                 t_short = o["title"][:55].replace("|", "/")
                 f.write(f"| {o['tier']}{flag} | {o['delivery']} | {o['price_rub']:.0f} ₽ | {o['marketplace']} | {o['pid']} | {t_short} | [link]({o['url']}) |\n")
             f.write("\n**Cheapest per tier (eligible, non-glitched):**\n\n")
-            for tier in ("Max", "Pro+", "Pro 20X", "Pro 5X", "Pro", "Plus", "Lite"):
+            for tier in ("Max", "Pro+", "Pro 20X", "Pro 5X", "Pro", "Plus", "GO", "Lite"):
                 for delivery in ("own_account", "new_account"):
                     k = (tier, dur, delivery)
                     if k in cheapest:

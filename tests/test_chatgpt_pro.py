@@ -119,7 +119,7 @@ def test_classify_tier_plain_pro_still_exists():
 
 def test_chatgpt_family_accepts_pro_variants():
     fam = _build("renew")
-    assert fam.tier_filter == ["Plus", "Pro", "Pro 5X", "Pro 20X"]
+    assert fam.tier_filter == ["GO", "Plus", "Pro", "Pro 5X", "Pro 20X"]
 
 
 def test_chatgpt_rejects_implausibly_cheap_pro():

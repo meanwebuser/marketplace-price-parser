@@ -43,6 +43,12 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--csv", default="/tmp/table.csv")
     p.add_argument("--md", default="/tmp/table.md")
     p.add_argument("--skip-discover", action="store_true")
+    p.add_argument("--analyzer", default="auto", choices=["auto", "regex", "llm"],
+                   help="pass-2 engine: llm = batched evidence packs, regex = offline heuristics, "
+                        "auto = llm when LLM_API_KEY is set, else regex")
+    p.add_argument("--llm-batch-chars", type=int, default=24000)
+    p.add_argument("--llm-dry-run", action="store_true",
+                   help="build LLM prompts, report context sizes, skip actual calls")
     p.add_argument("--llm", action="store_true",
                    help="Gemma4 sanity check on collected offers")
     p.add_argument("--llm-base-url", default=None)
@@ -125,6 +131,8 @@ def _print_table(cheapest: dict, args: argparse.Namespace, *, multi: bool) -> No
 
 
 def _maybe_llm(offers: list, args: argparse.Namespace) -> None:
+    if args.analyzer == "llm" or (args.analyzer == "auto" and os.environ.get("LLM_API_KEY")):
+        return  # LLM already produced the offers; a second pass adds nothing
     if not (args.llm or os.environ.get("LLM_API_KEY")):
         return
     from analyzer.llm import review_with_gemma, apply_llm_reviews
@@ -146,6 +154,26 @@ def _maybe_llm(offers: list, args: argparse.Namespace) -> None:
             print(f"  WARN: {o['url']}\n    {o['warning']}")
 
 
+def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
+    """Run pass 2 with the selected analyzer. Returns (offers, meta)."""
+    use_llm = args.analyzer == "llm" or (args.analyzer == "auto" and os.environ.get("LLM_API_KEY"))
+    if not use_llm:
+        return list(dedupe(offers_from_raw(raw))), {"analyzer": "regex"}
+    from analyzer.llm_extract import extract_offers
+    base_url = args.llm_base_url or os.environ.get("LLM_BASE_URL", "https://llm.bezrabotnyi.com/v1")
+    model = args.llm_model or os.environ.get("LLM_MODEL", "gemma4")
+    offers, meta = extract_offers(
+        raw, api_key=os.environ.get("LLM_API_KEY", ""), base_url=base_url, model=model,
+        batch_chars=args.llm_batch_chars, min_price_by_tier=family.price_floors or None,
+        dry_run=args.llm_dry_run, dry_dir="/tmp/llm_prompts",
+    )
+    meta["analyzer"] = "llm-dry" if args.llm_dry_run else "llm"
+    if args.llm_dry_run:
+        # prompts are on disk; produce artifacts from the regex fallback
+        return list(dedupe(offers_from_raw(raw))), meta
+    return offers, meta
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     families = _resolve_families(args)
@@ -158,8 +186,16 @@ def main(argv: list[str] | None = None) -> int:
     for fam in families:
         fam_raw_path = raw_path if len(families) == 1 else Path(f"/tmp/{fam.name}_raw.json")
         raw = _run_one(fam, args, fam_raw_path)
-        fam_offers = list(offers_from_raw(raw))
-        fam_offers = dedupe(fam_offers)
+        fam_offers, meta = _analyze(raw, fam, args)
+        if meta["analyzer"] == "llm-dry":
+            sizes = meta.get("batch_bytes") or []
+            print(f"[{fam.name}] analyzer=llm-dry: {meta['batches']} batches, "
+                  f"total {sum(sizes)/1024:.0f} KB, max batch {max(sizes)/1024:.1f} KB "
+                  f"(~{max(sizes)*0.4:.0f} tokens) → /tmp/llm_prompts")
+        else:
+            print(f"[{fam.name}] analyzer={meta['analyzer']}"
+                  + (f", batches={meta.get('batches')}, called={meta.get('called')}, failed={meta.get('failed')}"
+                     if meta["analyzer"] == "llm" else ""))
         all_offers.extend(fam_offers)
         cheapest = cheapest_per_tier(fam_offers, fam)
         for k, v in cheapest.items():
