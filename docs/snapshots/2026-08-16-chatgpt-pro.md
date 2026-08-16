@@ -3,19 +3,21 @@
 **Run timestamp**: 2026-08-16 00:10–00:14 MSK (Europe/Moscow)
 **Updated**: 2026-08-16 (~01:20 MSK) after `26dc241` — see «Update» below
 **Commits**: `1f9c9a7` (initial analyzer fixes), `26dc241` (numbered-chip recovery)
-**Raw data**: `/tmp/chatgpt_raw.json` (sha256 of the original scan `ca66484f60cf90a1…`, 1 429 215 bytes, 129 listings; listing 4658858 replaced with a fresh live re-collection in the update pass)
+**Raw data**: [`data/2026-08-16-chatgpt-pro.raw.json`](data/2026-08-16-chatgpt-pro.raw.json) (129 listings; sha256 of the original scan `ca66484f60cf90a1…`; listing 4658858 replaced with a fresh live re-collection in the update pass)
+**Analyzer output**: [`data/2026-08-16-chatgpt-pro.csv`](data/2026-08-16-chatgpt-pro.csv) — all 104 offer rows with tier/duration/delivery classification
 **Offer rows**: 104 (30 of them are `Pro* × 1m × own_account`)
 
 ## How this snapshot was produced
 
 ```bash
-# 1. Discovery + collect (6 Playwright workers) → /tmp/chatgpt_raw.json
+# 1. Discovery + collect (6 Playwright workers) → raw JSON
 PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --purpose renew --tier Pro \
   --workers 6 --raw /tmp/chatgpt_raw.json --csv /tmp/chatgpt.csv --md /tmp/chatgpt.md
 
-# 2. Analyzer only (no fresh scrape needed):
+# 2. Analyzer only (no fresh scrape needed) — reproduces the committed CSV:
 PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --purpose renew --tier Pro \
-  --skip-discover --raw /tmp/chatgpt_raw.json --csv /tmp/chatgpt.csv --md /tmp/chatgpt.md
+  --skip-discover --raw docs/snapshots/data/2026-08-16-chatgpt-pro.raw.json \
+  --csv /tmp/table.csv --md /tmp/table.md
 ```
 
 ## Test suite at the time of this run
