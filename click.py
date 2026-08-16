@@ -148,23 +148,49 @@ const detectTemplate = () => {
   return 'plati-A';
 };
 
+const grabPageText = () => {
+  const t = (document.body && document.body.innerText) || '';
+  return t.replace(/[ \\t]+/g, ' ').replace(/\\n{3,}/g, '\\n\\n').trim().slice(0, 6000);
+};
+
+// Seller description is often collapsed behind a "Показать ещё" expander,
+// so innerText misses it; textContent of description containers still has it.
+const grabDescText = () => {
+  const sels = ['[itemprop="description"]', '[class*="escription"]', '[id*="escription"]', '[class*="desc"]'];
+  const parts = [];
+  for (const sel of sels) {
+    document.querySelectorAll(sel).forEach((el) => {
+      const t = (el.textContent || '').replace(/\\s+/g, ' ').trim();
+      if (t.length > 40 && parts.indexOf(t) === -1) parts.push(t);
+    });
+  }
+  return parts.slice(0, 5).join('\\n---\\n').slice(0, 5000);
+};
+
 const collectVariantControls = () => {
   const controls = [];
+  const skipped = [];
   const seen = new Set();
+  const seenSkipped = new Set();
+  // Keyword gate decides WHICH controls we click; everything else that
+  // looks like a variant control is still recorded into "skipped" so a
+  // manual audit can see variants the filter silently rejected.
+  const KEY = /Max|Pro|Lite|Plus|Плюс|GO|Токен|Месяц|Год|month|year|Первая|Продление|Subscription|Случайный|Требуется|месяц|год/i;
   const record = (kind, text, meta) => {
     const k = (text || '').trim();
     if (!k || k.length > 250 || seen.has(k)) return;
+    if (!KEY.test(k)) {
+      if (k.length >= 3 && !seenSkipped.has(k) && skipped.length < 80) {
+        seenSkipped.add(k);
+        skipped.push({ kind, text: k });
+      }
+      return;
+    }
     seen.add(k);
     controls.push({ kind, text: k, ...(meta || {}) });
   };
-  document.querySelectorAll('button').forEach(b => {
-    const t = (b.innerText || '').trim();
-    if (/Max|Pro|Lite|Месяц|Год|month|year|Первая|Продление/i.test(t)) record('button', t);
-  });
-  document.querySelectorAll('label').forEach(l => {
-    const t = (l.innerText || '').trim();
-    if (/Max|Pro|Lite|Месяц|Год|месяц|год|Subscription|Продление|Случайный|Требуется/i.test(t)) record('label', t);
-  });
+  document.querySelectorAll('button').forEach(b => record('button', b.innerText || ''));
+  document.querySelectorAll('label').forEach(l => record('label', l.innerText || ''));
   document.querySelectorAll('input[type="radio"]').forEach(i => {
     const lab = i.closest('label');
     let text = '';
@@ -180,7 +206,7 @@ const collectVariantControls = () => {
   document.querySelectorAll('select').forEach(s => {
     Array.from(s.options).forEach(o => record('select-option', (o.textContent || '').trim(), { value: o.value }));
   });
-  return controls;
+  return { controls, skipped };
 };
 
 const clickControl = (ctrl) => {
@@ -207,6 +233,16 @@ async function detectTemplate(page) {
 async function collectVariantControls(page) {
   return await page.evaluate(new Function(PAGE_FN + '\nreturn collectVariantControls();'));
 }
+async function grabPageText(page) {
+  try {
+    return await page.evaluate(new Function(PAGE_FN + '\nreturn grabPageText();'));
+  } catch (e) { return ''; }
+}
+async function grabDescText(page) {
+  try {
+    return await page.evaluate(new Function(PAGE_FN + '\nreturn grabDescText();'));
+  } catch (e) { return ''; }
+}
 async function snapshotPrices(page) {
   try {
     return await page.evaluate(new Function(PAGE_FN + '\nreturn snapshotPrices();'));
@@ -228,15 +264,18 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
   const url = urlBuilder(pid);
   const page = await context.newPage();
   page.setDefaultTimeout(PAGE_TIMEOUT_MS);
-  const out = { marketplace, pid, url, title: '', template: '', initialPrices: [], options: [], error: null };
+  const out = { marketplace, pid, url, title: '', template: '', initialPrices: [], pageText: '', descText: '', skippedControls: [], options: [], error: null };
   try {
     await withTimeout(page.goto(url, { waitUntil: 'domcontentloaded', timeout: PAGE_TIMEOUT_MS }), PAGE_TIMEOUT_MS + 5000, 'goto');
     await sleep(2500);
     out.title = await page.title();
     out.template = await detectTemplate(page);
     out.initialPrices = await snapshotPrices(page);
-    const ctrls = await collectVariantControls(page);
-    for (const ctrl of ctrls) {
+    out.pageText = await grabPageText(page);
+    out.descText = await grabDescText(page);
+    const { controls, skipped } = await collectVariantControls(page);
+    out.skippedControls = skipped;
+    for (const ctrl of controls) {
       let clicked = false;
       try {
         clicked = await withTimeout(clickControl(page, ctrl), CLICK_TIMEOUT_MS, 'click');
@@ -252,7 +291,7 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
       const prices = await snapshotPrices(page);
       out.options.push(Object.assign({}, ctrl, { clicked: true, prices }));
     }
-    out.controlCount = ctrls.length;
+    out.controlCount = controls.length;
     out.controlsClicked = out.options.filter((o) => o.clicked).length;
   } catch (e) {
     out.error = String(e.message || e);
