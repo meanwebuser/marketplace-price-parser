@@ -108,6 +108,13 @@ def test_row_to_offer_flags_price_missing_from_evidence():
                               "delivery": "own_account", "price_rub": 7999}, None)
     assert ok["glitched"] is False
 
+
+def test_system_prompt_defines_ready_account_wordings():
+    # the LLM must see the exact wordings that mean a ready-account handover
+    from analyzer.llm_extract import SYSTEM_PROMPT
+    assert "предоставляем мы" in SYSTEM_PROMPT
+    assert "Создание аккаунта" in SYSTEM_PROMPT
+
 def _fake_completion(handler_items):
     class H(BaseHTTPRequestHandler):
         def do_POST(self):

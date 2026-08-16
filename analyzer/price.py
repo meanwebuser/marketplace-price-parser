@@ -111,9 +111,11 @@ def classify_duration_from_title(title: str) -> str:
 
 _DELIV_PATTERNS = [
     ("shared_account", re.compile(r"\bобщ(ая|ий|ее|ee|ie|iy)?\b.{0,15}\b(доступ|аккаунт|подписк)|общ.{0,10}1\s*месяц|общ.{0,15}\b(plus|pro|max)", re.I)),
-    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|со\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|обновлен\w*|обновля\w*|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|ваш\w*\s*(?:e-?mail|почт\w*)|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\s*subscription", re.I)),
+    # Explicit ready-account handovers beat own-account hints below: "Создание
+    # аккаунта на вашу почту" is a new account even though it names your email.
+    ("new_account",   re.compile(r"готов\w*\s*аккаунт|\bнов(?:ый|ая|ое|ые)?\s*аккаунт|созда\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email|pre.?made\s*account|ready\s*account|предложен\w*\s*на\s*перв\w*\s*месяц|first\s*month\s*offer|аккаунт\s*предостав\w*|предостав\w*\s*аккаунт", re.I)),
+    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|со\s*входом|с\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|обновлен\w*|обновля\w*|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|ваш\w*\s*(?:e-?mail|почт\w*)|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\s*subscription", re.I)),
     ("own_account",   re.compile(r"без\s*входа|без\s*логина|по\s*токену|через\s*токен|через\s*данн\w*|активация\s*по\s*токену", re.I)),  # own-no-login (token / credentials renewal)
-    ("new_account",   re.compile(r"готов\w*\s*аккаунт|\bнов(?:ый|ая|ое|ые)?\s*аккаунт|созда\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email|pre.?made\s*account|ready\s*account|предложен\w*\s*на\s*перв\w*\s*месяц|first\s*month\s*offer", re.I)),
 ]
 
 # Title hints used when the chip text doesn't say anything (e.g. "Max | 1 месяц").

@@ -78,10 +78,11 @@ tier and note ambiguity in evidence.
 else the description. Never guess a duration absent everywhere.
 - delivery: "own_account" (activated/extended on the BUYER's account: «на \
 ваш аккаунт», «продление», «с/со входом», «через токен», «по токену», \
-«через данные», upgrade) | "new_account" (ready/fresh account handed over, \
-«готовый аккаунт», «новый аккаунт», «случайный email») | "shared_account" \
-(общий доступ) | "unknown". Description (desc) is authoritative when the \
-chip is silent.
+«через данные», upgrade) | "new_account" (ready/fresh account handed \
+over: «готовый аккаунт», «новый аккаунт», «случайный email», «Создание \
+аккаунта», «аккаунт предоставляем мы» — including when the new account is \
+registered onto the buyer's own email) | "shared_account" (общий доступ) | \
+"unknown". Description (desc) is authoritative when the chip is silent.
 - Unrelated products (not a ChatGPT subscription) or empty evidence → rows: [].
 - price_rub: integer RUB a buyer pays for THAT variant; 0 if genuinely unknown.
 

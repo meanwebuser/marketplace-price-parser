@@ -64,6 +64,18 @@ def test_classify_delivery_novyy_akkaunt():
     assert classify_delivery("Создадим аккаунт и оформим Pro") == "new_account"
 
 
+def test_classify_delivery_akkaunt_predostavlyaem_my():
+    # "we provide the account" => ready account handover
+    assert classify_delivery(
+        "[GPT Pro 5x] — 1 месяц (аккаунт предоставляем мы) | +99 ₽",
+    ) == "new_account"
+
+
+def test_classify_delivery_sozdanie_akkaunta():
+    assert classify_delivery("Создание аккаунта + подписка PRO") == "new_account"
+    assert classify_delivery("Создание аккаунта на вашу почту + подписка PRO") == "new_account"
+
+
 # ---- cli --purpose alias ----
 
 def test_purpose_new_account_dash_alias():
