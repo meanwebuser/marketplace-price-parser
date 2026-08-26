@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Актуальные предложения подписок на GGSEL и Plati" />
-    <title>Сравнение цен на AI-подписки</title>
+    <meta name="description" content="Последние сохранённые сканы AI-подписок на GGSEL и Plati" />
+    <title>Сравнение цен AI-подписок</title>
     <link rel="stylesheet" href="assets/site.css" />
   </head>
   <body>
     <main class="shell">
       <header class="hero">
-        <p class="eyebrow">MARKETPLACE PRICE SCANNER</p>
-        <h1>Подписки без лишнего шума</h1>
-        <p class="intro">Сравнивайте реальные цены вариантов, а не стартовые цены карточек.</p>
+        <p class="eyebrow" id="product-kicker">MARKETPLACE PRICE SCANNER</p>
+        <h1 id="product-title">Подписки без лишнего шума</h1>
+        <p class="intro" id="product-description">Сравнивайте реальные цены вариантов, а не стартовые цены карточек.</p>
         <p class="updated" id="updated">Загрузка снимка…</p>
       </header>
 
@@ -23,6 +23,7 @@
       </section>
 
       <section class="filters" aria-label="Фильтры предложений">
+        <label><span>Продукт</span><select id="product"><option value="">Загрузка…</option></select></label>
         <label class="search"><span>Поиск</span><input id="search" type="search" placeholder="Тариф, товар или площадка" /></label>
         <label><span>Тариф</span><select id="tier"><option value="">Все</option></select></label>
         <label><span>Срок</span><select id="duration"><option value="">Любой</option></select></label>
@@ -40,7 +41,7 @@
           <tbody id="offers"></tbody>
         </table>
       </section>
-      <p class="note">Тип выдачи «не определён» означает, что парсер увидел цену, но не смог надёжно связать её с выбранным способом входа. Проверяйте условия продавца перед оплатой.</p>
+      <p class="note" id="source-note">Тип выдачи «не определён» означает, что парсер увидел цену, но не смог надёжно связать её с выбранным способом входа. Проверяйте условия продавца перед оплатой.</p>
     </main>
     <script src="assets/app.js"></script>
   </body>
