@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Актуальные предложения подписок на GGSEL и Plati" />
+    <title>Сравнение цен на AI-подписки</title>
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">MARKETPLACE PRICE SCANNER</p>
+        <h1>Подписки без лишнего шума</h1>
+        <p class="intro">Сравнивайте реальные цены вариантов, а не стартовые цены карточек.</p>
+        <p class="updated" id="updated">Загрузка снимка…</p>
+      </header>
+
+      <section class="metrics" aria-label="Сводка">
+        <article><span>Подходящих вариантов</span><strong id="offer-count">—</strong></article>
+        <article><span>Минимальная цена</span><strong id="minimum-price">—</strong></article>
+        <article><span>Площадок</span><strong id="marketplace-count">—</strong></article>
+      </section>
+
+      <section class="filters" aria-label="Фильтры предложений">
+        <label class="search"><span>Поиск</span><input id="search" type="search" placeholder="Тариф, товар или площадка" /></label>
+        <label><span>Тариф</span><select id="tier"><option value="">Все</option></select></label>
+        <label><span>Срок</span><select id="duration"><option value="">Любой</option></select></label>
+        <label><span>Выдача</span><select id="delivery"><option value="">Любая</option></select></label>
+        <label><span>Площадка</span><select id="marketplace"><option value="">Все</option></select></label>
+        <label><span>Сортировка</span><select id="sort"><option value="price-asc">Сначала дешевле</option><option value="price-desc">Сначала дороже</option><option value="duration">По сроку</option></select></label>
+        <label class="checkbox"><input id="hide-glitched" type="checkbox" checked /> Скрыть подозрительные цены</label>
+        <button id="reset" type="button">Сбросить</button>
+      </section>
+
+      <p class="result" id="result" aria-live="polite"></p>
+      <section class="table-wrap" aria-label="Таблица предложений">
+        <table>
+          <thead><tr><th>Цена</th><th>Тариф</th><th>Срок</th><th>Выдача</th><th>Площадка</th><th>Предложение</th><th></th></tr></thead>
+          <tbody id="offers"></tbody>
+        </table>
+      </section>
+      <p class="note">Тип выдачи «не определён» означает, что парсер увидел цену, но не смог надёжно связать её с выбранным способом входа. Проверяйте условия продавца перед оплатой.</p>
+    </main>
+    <script src="assets/app.js"></script>
+  </body>
+</html>
