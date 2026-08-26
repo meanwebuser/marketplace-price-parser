@@ -63,7 +63,8 @@ def load_product(root: Path, product_id: str) -> dict | None:
         metadata["sourcePath"] = str(summary).replace("docs/", "")
     else:
         return None
-    return {"id": product_id, "label": PRODUCTS[product_id]["label"], "description": PRODUCTS[product_id]["description"], "metadata": metadata, "offers": offers}
+    allowed_tiers = PRODUCTS[product_id]["tiers"]
+    return {"id": product_id, "label": PRODUCTS[product_id]["label"], "description": PRODUCTS[product_id]["description"], "allowedTiers": sorted(allowed_tiers) if allowed_tiers else None, "metadata": metadata, "offers": offers}
 
 def main() -> int:
     args = parse_args()

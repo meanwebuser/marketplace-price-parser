@@ -1,10 +1,15 @@
 {
-  "generatedAt": "2026-08-26T13:52:49.155691+00:00",
+  "generatedAt": "2026-08-26T13:58:18.000177+00:00",
   "products": [
     {
       "id": "minimax",
       "label": "MiniMax Token Plan",
       "description": "Официальные уровни Token Plan: Plus, Max и Ultra.",
+      "allowedTiers": [
+        "Max",
+        "Plus",
+        "Ultra"
+      ],
       "metadata": {
         "scanDate": "2026-08-26",
         "sourcePath": "snapshots/data/2026-08-26-minimax-max.csv",
@@ -1015,6 +1020,7 @@
       "id": "chatgpt",
       "label": "ChatGPT",
       "description": "Последний сохранённый скан предложений ChatGPT.",
+      "allowedTiers": null,
       "metadata": {
         "scanDate": "2026-08-16",
         "sourcePath": "snapshots/data/2026-08-16-chatgpt-pro.csv",
@@ -2487,6 +2493,9 @@
       "id": "zai",
       "label": "Z.ai GLM Coding",
       "description": "Последний сохранённый снимок Max-подписок Z.ai GLM Coding.",
+      "allowedTiers": [
+        "Max"
+      ],
       "metadata": {
         "scanDate": "2026-08-06",
         "scanStartedAt": "2026-08-06T04:10:00Z",

@@ -11,7 +11,7 @@ function resetOptions(id, initial) { els[id].innerHTML = `<option value="">${ini
 function addOptions(id, values) { [...values].sort().forEach(value => els[id].append(new Option(label(value), value))); }
 function resetFilters() {
   els.search.value = ''; ['tier','duration','delivery','marketplace'].forEach(id => resetOptions(id, id === 'duration' ? 'Любой' : id === 'delivery' ? 'Любая' : 'Все'));
-  addOptions('tier', new Set(offers.map(o => o.tier))); addOptions('duration', new Set(offers.map(o => o.duration))); addOptions('delivery', new Set(offers.map(o => o.delivery))); addOptions('marketplace', new Set(offers.map(o => o.marketplace)));
+  addOptions('tier', new Set(active.allowedTiers || offers.map(o => o.tier))); addOptions('duration', new Set(offers.map(o => o.duration))); addOptions('delivery', new Set(offers.map(o => o.delivery))); addOptions('marketplace', new Set(offers.map(o => o.marketplace)));
   els.sort.value = 'price-asc'; els['hide-glitched'].checked = true;
 }
 function chooseProduct(id) {
