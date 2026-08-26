@@ -40,7 +40,7 @@ function render() {
 }
 async function init() {
   try {
-    const data = await fetch('data/latest.json').then(r => { if (!r.ok) throw new Error(); return r.json(); });
+    const data = await fetch('data/latest.json?v=3').then(r => { if (!r.ok) throw new Error(); return r.json(); });
     products = data.products; els.product.innerHTML = ''; products.forEach(item => els.product.append(new Option(item.label, item.id))); chooseProduct(products[0]?.id);
   } catch { els.result.textContent = 'Не удалось загрузить каталог снимков.'; }
 }
