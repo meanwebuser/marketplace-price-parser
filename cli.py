@@ -27,6 +27,7 @@ from scanner.discover import discover_all
 from scanner.collect import collect
 from analyzer.output import offers_from_raw, dedupe, cheapest_per_tier, write_csv, write_markdown
 from analyzer.validate import validate_rankings
+from scanner.final_verify import verify_winners
 
 
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
@@ -44,6 +45,8 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--csv", default="/tmp/table.csv")
     p.add_argument("--md", default="/tmp/table.md")
     p.add_argument("--skip-discover", action="store_true")
+    p.add_argument("--skip-final-verify", action="store_true",
+                   help="unsafe/offline mode: do not independently reopen and verify ranked winners")
     p.add_argument("--analyzer", default="auto", choices=["auto", "regex", "llm"],
                    help="pass-2 engine: llm = batched evidence packs, regex = offline heuristics, "
                         "auto = llm when LLM_API_KEY is set, else regex")
@@ -133,6 +136,16 @@ def _print_table(cheapest: dict, args: argparse.Namespace, *, multi: bool) -> No
             print(f"\n(filtered: {len(filtered)}/{len(cheapest)} matches --duration/--tier/--delivery)")
 
 
+def _selected_winners(cheapest: dict, args: argparse.Namespace) -> list[dict]:
+    """Apply the same user filters used by the printed result."""
+    return [
+        offer for key, offer in cheapest.items()
+        if (not args.duration or key[-2] == args.duration)
+        and (not args.tier or _tier_matches(key[-3], args.tier))
+        and (not args.delivery or key[-1] == args.delivery)
+    ]
+
+
 def _maybe_llm(offers: list, args: argparse.Namespace) -> None:
     if args.analyzer == "llm" or (args.analyzer == "auto" and os.environ.get("LLM_API_KEY")):
         return  # LLM already produced the offers; a second pass adds nothing
@@ -206,6 +219,18 @@ def main(argv: list[str] | None = None) -> int:
             joined = "\n  - ".join(validation_issues)
             raise RuntimeError(f"zero-knowledge validation failed:\n  - {joined}")
         print(f"[{fam.name}] zero-knowledge validation: OK ({len(fam_offers)} offers)")
+        if args.skip_final_verify:
+            print(f"[{fam.name}] WARNING: final browser verification skipped", file=sys.stderr)
+            final_report = []
+        else:
+            targets = _selected_winners(cheapest, args)
+            final_report = verify_winners(targets, fam_offers)
+            print(f"[{fam.name}] final browser verification: OK ({len(final_report)} winners)")
+        raw["finalVerification"] = {
+            "skipped": bool(args.skip_final_verify),
+            "results": final_report,
+        }
+        fam_raw_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
         for k, v in cheapest.items():
             if len(families) == 1:
                 all_cheapest[k] = v

@@ -70,6 +70,11 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
                 "url": listing.get("url"),
                 "title": listing.get("title", ""),
                 "option_text": text.replace("\n", " | ")[:200],
+                "raw_option_text": text,
+                "control_kind": opt.get("kind"),
+                "control_dom_index": opt.get("domIndex"),
+                "control_input_id": opt.get("inputId"),
+                "control_value": opt.get("value"),
                 "tier": tier,
                 "duration": duration,
                 "delivery": delivery,
@@ -82,6 +87,8 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
                 "price_changed": price_changed,
                 "price_stable": opt.get("priceStable"),
                 "price_verified": bool(price_verified),
+                "final_verified": False,
+                "final_observed_price": None,
             }
 
 
