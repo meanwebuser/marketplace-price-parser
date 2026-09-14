@@ -363,7 +363,11 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
     out.descText = await grabDescText(page);
     const { controls, skipped } = await collectVariantControls(page);
     out.skippedControls = skipped;
-    for (const ctrl of controls) {
+    // Defer the initially selected control.  Some reactive buy blocks do not
+    // render any price until another variant is selected; returning to the
+    // default afterwards produces an auditable snapshot for both variants.
+    const orderedControls = controls.slice().sort((a, b) => Number(a.selected) - Number(b.selected));
+    for (const ctrl of orderedControls) {
       if (ctrl.available === false) {
         out.options.push(Object.assign({}, ctrl, { clicked: false }));
         continue;
@@ -389,7 +393,8 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
         priceChanged: settled.changed,
         priceStable: settled.stable,
         selectedAfter,
-        priceVerified: settled.stable && (settled.changed || Boolean(ctrl.selected) || selectedAfter),
+        priceVerified: settled.prices.length > 0 && settled.stable &&
+          (settled.changed || Boolean(ctrl.selected) || selectedAfter),
         priceSettleMs: settled.elapsedMs,
       }));
     }

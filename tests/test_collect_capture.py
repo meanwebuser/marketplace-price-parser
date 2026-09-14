@@ -57,3 +57,8 @@ const result = new Function(sandbox.PAGE_FN_OUT + `
 if (result !== true) throw new Error('visible selected state was not recognized');
 """
     subprocess.run(["node", "-e", script, str(click_path)], check=True)
+
+
+def test_collector_defers_default_variant_and_requires_a_price_snapshot():
+    assert "Number(a.selected) - Number(b.selected)" in CLICK
+    assert "settled.prices.length > 0" in CLICK
