@@ -34,9 +34,12 @@ PRO_PRICE_FLOORS = {"Pro": 3000, "Pro 5X": 3000, "Pro 20X": 5000}
 
 
 def _reject_stale_base_prices(offer: dict) -> bool:
-    """ChatGPT Pro grey prices start well above ~8K ₽ (X5) / ~16K ₽ (X20).
-    A far lower 'Pro' price means the buy block didn't refresh after the
-    variant click and still shows the listing's base variant."""
+    """Reject only implausible numeric noise with a deliberately loose floor.
+
+    This is not an expected market price and cannot select a winner.  Current
+    captures prove correctness through availability and price-transition
+    evidence; the floor remains only as a broad historical-data sanity guard.
+    """
     if offer.get("duration") != "1m" or not str(offer.get("tier", "")).startswith("Pro"):
         return True
     floor = PRO_PRICE_FLOORS.get(offer["tier"], 3000)

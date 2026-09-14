@@ -26,6 +26,7 @@ from families import FAMILY_REGISTRY
 from scanner.discover import discover_all
 from scanner.collect import collect
 from analyzer.output import offers_from_raw, dedupe, cheapest_per_tier, write_csv, write_markdown
+from analyzer.validate import validate_rankings
 
 
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
@@ -200,6 +201,11 @@ def main(argv: list[str] | None = None) -> int:
                      if meta["analyzer"] == "llm" else ""))
         all_offers.extend(fam_offers)
         cheapest = cheapest_per_tier(fam_offers, fam)
+        validation_issues = validate_rankings(raw, fam_offers, cheapest, fam)
+        if validation_issues:
+            joined = "\n  - ".join(validation_issues)
+            raise RuntimeError(f"zero-knowledge validation failed:\n  - {joined}")
+        print(f"[{fam.name}] zero-knowledge validation: OK ({len(fam_offers)} offers)")
         for k, v in cheapest.items():
             if len(families) == 1:
                 all_cheapest[k] = v

@@ -68,6 +68,7 @@ process.on('unhandledRejection', (e) => process.stderr.write(`UNHANDLED: ${e?.st
 // ---- Output file management (incremental writes) ------------------------
 
 fs.writeFileSync(OUT_PATH, JSON.stringify({
+  schemaVersion: 2,
   startedAt: new Date().toISOString(),
   note: 'Pass 1 raw. zai_analyze.py interprets.',
   config: {
