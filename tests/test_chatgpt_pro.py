@@ -266,6 +266,30 @@ def test_classify_delivery_cherez_dannye():
     ) == "own_account"
 
 
+def test_delivery_uses_description_only_as_unambiguous_fallback():
+    assert classify_delivery(
+        "Chat GPT Pro x20",
+        "ChatGPT Pro 20X | Personal | Auto",
+        "After purchase we issue a ready account with full mailbox access.",
+    ) == "new_account"
+
+
+def test_delivery_keeps_mixed_description_unknown():
+    assert classify_delivery(
+        "Chat GPT Pro x20",
+        "ChatGPT Pro 20X",
+        "Choose either a ready account or renewal on your account.",
+    ) == "unknown"
+
+
+def test_explicit_variant_delivery_beats_mixed_description():
+    assert classify_delivery(
+        "Pro X20 | activation on your account",
+        "ChatGPT Pro 20X",
+        "Choose either a ready account or renewal on your account.",
+    ) == "own_account"
+
+
 def test_offers_from_raw_keeps_numbered_ggsel_chip():
     """Regression for GGSEL 4658858: numbered chip with duration only in
     the title and token-based delivery must yield a ranked offer."""

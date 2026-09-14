@@ -149,7 +149,7 @@ _DELIV_PATTERNS = [
     ("own_account",   re.compile(r"ваш\w*\s*(?:e-?mail|почт\w*)", re.I)),
     # Ready-account handovers on the SELLER's / random mailbox.
     ("new_account",   re.compile(r"готов\w*\s*аккаунт|\bнов(?:ый|ая|ое|ые)?\s*аккаунт|созда\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email|pre.?made\s*account|ready\s*account|предложен\w*\s*на\s*перв\w*\s*месяц|first\s*month\s*offer|аккаунт\s*предостав\w*|предостав\w*\s*аккаунт", re.I)),
-    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|со\s*входом|с\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|обновлен\w*|обновля\w*|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\s*subscription", re.I)),
+    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|со\s*входом|с\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|обновлен\w*|обновля\w*|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\w*\s+(?:subscription|on\s+your\s+account)|activat\w*\s+on\s+your\s+account", re.I)),
     ("own_account",   re.compile(r"без\s*входа|без\s*логина|по\s*токену|через\s*токен|через\s*данн\w*|активация\s*по\s*токену", re.I)),  # own-no-login (token / credentials renewal)
 ]
 
@@ -175,12 +175,12 @@ _TITLE_DELIV_OWN_HINTS = [
 ]
 
 
-def classify_delivery(text: str, title: str = "") -> str:
-    """Map (option text, listing title) to delivery type. Order matters:
+def classify_delivery(text: str, title: str = "", description: str = "") -> str:
+    """Map variant evidence to delivery type. Order matters:
     shared-account wins, then own-account, then new-account. The chip
     text is authoritative; title hints only kick in when chip text is
-    silent (e.g. "Max | 1 месяц") so we don't misclassify an explicit
-    "Требуется Вход" listing from its title alone."""
+    silent. Description is a final fallback and is accepted only when it
+    points to exactly one delivery class; mixed listings remain unknown."""
     text = text or ""
     for delivery, pat in _DELIV_PATTERNS:
         if pat.search(text):
@@ -191,6 +191,13 @@ def classify_delivery(text: str, title: str = "") -> str:
     for delivery, pat in _TITLE_DELIV_HINTS:
         if pat.search(title or ""):
             return delivery
+    description_matches = {
+        delivery
+        for delivery, pat in _DELIV_PATTERNS
+        if pat.search(description or "")
+    }
+    if len(description_matches) == 1:
+        return description_matches.pop()
     return "unknown"
 
 
