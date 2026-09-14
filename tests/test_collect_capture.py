@@ -74,3 +74,9 @@ def test_collector_retries_integrity_failures_and_ignores_sidebar_price_noise():
 def test_collector_keeps_a_stable_locator_when_control_text_mutates():
     assert "domIndex" in CLICK
     assert "findElementByIndex(ctrl.kind, ctrl.domIndex)" in CLICK
+
+
+def test_collector_uses_native_click_and_rejects_unchanged_new_selection():
+    assert "await target.click({ timeout: CLICK_TIMEOUT_MS })" in CLICK
+    assert "settled.changed || Boolean(ctrl.selected)" in CLICK
+    assert "settled.changed || Boolean(ctrl.selected) || selectedAfter" not in CLICK

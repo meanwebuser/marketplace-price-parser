@@ -357,6 +357,31 @@ async function waitForSettledPrices(page, beforePrices, selectedBefore) {
   return { prices: latest, changed, stable: stableSamples >= 2, elapsedMs: Date.now() - started };
 }
 async function clickControl(page, ctrl) {
+  const selectors = {
+    button: 'button',
+    label: 'label',
+    radio: 'input[type="radio"]',
+    'role-radio': '[role="radio"]',
+    'select-option': 'select option',
+  };
+  const selector = selectors[ctrl.kind];
+  if (selector && Number.isInteger(ctrl.domIndex) && ctrl.domIndex >= 0) {
+    const target = page.locator(selector).nth(ctrl.domIndex);
+    if (await target.count()) {
+      if (ctrl.kind === 'select-option') {
+        await target.evaluate((option) => {
+          option.selected = true;
+          option.parentElement.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      } else {
+        // Playwright performs the browser's native pointer action and waits
+        // for actionability.  Synthetic MouseEvent chains can toggle styling
+        // without triggering the marketplace's dependent price request.
+        await target.click({ timeout: CLICK_TIMEOUT_MS });
+      }
+      return true;
+    }
+  }
   return await page.evaluate(new Function(PAGE_FN + `
     return clickControl(${JSON.stringify(ctrl)});
   `));
@@ -420,8 +445,12 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
         priceChanged: settled.changed,
         priceStable: settled.stable,
         selectedAfter,
+        // A newly selected control with an unchanged price is ambiguous: the
+        // variant may genuinely cost the same, or its price request may have
+        // failed.  Only a transition, or a control already selected before
+        // the click, independently ties the snapshot to this option.
         priceVerified: settled.prices.length > 0 && settled.stable &&
-          (settled.changed || Boolean(ctrl.selected) || selectedAfter),
+          (settled.changed || Boolean(ctrl.selected)),
         priceSettleMs: settled.elapsedMs,
       }));
     }
