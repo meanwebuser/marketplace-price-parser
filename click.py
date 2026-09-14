@@ -58,6 +58,7 @@ const WORKERS = Number(args.workers || 6);
 const OUT_PATH = args.out || '/tmp/zai_raw.json';
 const PAGE_TIMEOUT_MS = Number(args['page-timeout'] || 35000);
 const CLICK_TIMEOUT_MS = Number(args['click-timeout'] || 8000);
+const PRICE_SETTLE_TIMEOUT_MS = Number(args['price-settle-timeout'] || 5000);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -69,7 +70,12 @@ process.on('unhandledRejection', (e) => process.stderr.write(`UNHANDLED: ${e?.st
 fs.writeFileSync(OUT_PATH, JSON.stringify({
   startedAt: new Date().toISOString(),
   note: 'Pass 1 raw. zai_analyze.py interprets.',
-  config: { workers: WORKERS, pageTimeoutMs: PAGE_TIMEOUT_MS, clickTimeoutMs: CLICK_TIMEOUT_MS },
+  config: {
+    workers: WORKERS,
+    pageTimeoutMs: PAGE_TIMEOUT_MS,
+    clickTimeoutMs: CLICK_TIMEOUT_MS,
+    priceSettleTimeoutMs: PRICE_SETTLE_TIMEOUT_MS,
+  },
   listings: [],
 }, null, 2));
 
@@ -191,6 +197,11 @@ const collectVariantControls = () => {
       ariaDisabled: Boolean(el && el.getAttribute && el.getAttribute('aria-disabled') === 'true'),
       available: !(disabled || unavailableText),
       unavailableReason: disabled ? 'disabled control' : (unavailableText ? 'unavailable text' : ''),
+      selected: Boolean(
+        (el && el.checked) || (el && el.selected) ||
+        (input && input.checked) || (input && input.selected) ||
+        (el && el.getAttribute && el.getAttribute('aria-checked') === 'true')
+      ),
     };
   };
   const record = (kind, text, meta, el) => {
@@ -265,6 +276,31 @@ async function snapshotPrices(page) {
     return await page.evaluate(new Function(PAGE_FN + '\nreturn snapshotPrices();'));
   } catch (e) { return []; }
 }
+
+const priceFingerprint = (prices) => JSON.stringify(
+  (prices || []).map((p) => [p.text || '', p.cls || '', p.id || '']),
+);
+
+async function waitForSettledPrices(page, beforePrices, selectedBefore) {
+  const started = Date.now();
+  const before = priceFingerprint(beforePrices);
+  let previous = '';
+  let stableSamples = 0;
+  let latest = beforePrices;
+  let changed = false;
+  while (Date.now() - started < PRICE_SETTLE_TIMEOUT_MS) {
+    await sleep(200);
+    latest = await snapshotPrices(page);
+    const current = priceFingerprint(latest);
+    changed = changed || current !== before;
+    stableSamples = current === previous ? stableSamples + 1 : 0;
+    previous = current;
+    if (stableSamples >= 2 && (changed || (selectedBefore && Date.now() - started >= 800))) {
+      return { prices: latest, changed, stable: true, elapsedMs: Date.now() - started };
+    }
+  }
+  return { prices: latest, changed, stable: false, elapsedMs: Date.now() - started };
+}
 async function clickControl(page, ctrl) {
   return await page.evaluate(new Function(PAGE_FN + `
     return clickControl(${JSON.stringify(ctrl)});
@@ -297,6 +333,7 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
         out.options.push(Object.assign({}, ctrl, { clicked: false }));
         continue;
       }
+      const beforePrices = await snapshotPrices(page);
       let clicked = false;
       try {
         clicked = await withTimeout(clickControl(page, ctrl), CLICK_TIMEOUT_MS, 'click');
@@ -308,9 +345,16 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
         out.options.push(Object.assign({}, ctrl, { clicked: false }));
         continue;
       }
-      await sleep(850);
-      const prices = await snapshotPrices(page);
-      out.options.push(Object.assign({}, ctrl, { clicked: true, prices }));
+      const settled = await waitForSettledPrices(page, beforePrices, Boolean(ctrl.selected));
+      out.options.push(Object.assign({}, ctrl, {
+        clicked: true,
+        beforePrices,
+        prices: settled.prices,
+        priceChanged: settled.changed,
+        priceStable: settled.stable,
+        priceVerified: settled.stable && (settled.changed || Boolean(ctrl.selected)),
+        priceSettleMs: settled.elapsedMs,
+      }));
     }
     out.controlCount = controls.length;
     out.controlsClicked = out.options.filter((o) => o.clicked).length;

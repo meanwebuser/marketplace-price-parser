@@ -19,12 +19,14 @@ from analyzer.price import (
     select_real_price,
     is_glitched,
     apply_delta_correction,
+    option_price_delta,
 )
 
 
 def offers_from_raw(raw: dict) -> Iterable[dict]:
     """Walk all listings × options × prices; yield one row per (offer)."""
     for listing in raw.get("listings", []):
+        initial_price, initial_strong = select_real_price(listing.get("initialPrices", []))
         for opt in listing.get("options", []):
             if not opt.get("clicked"):
                 continue
@@ -44,7 +46,23 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
             price, strong = select_real_price(opt.get("prices", []))
             if price is None:
                 continue
-            price = apply_delta_correction(text, price)
+            price_changed = opt.get("priceChanged")
+            delta = option_price_delta(text)
+            price = apply_delta_correction(
+                text,
+                price,
+                price_changed=price_changed,
+                initial_price=initial_price,
+            )
+            price_verified = opt.get("priceVerified")
+            if price_verified is None:
+                # Historical captures predate price-state verification.  Keep
+                # them readable, while new captures must state it explicitly.
+                price_verified = strong
+            elif not price_verified and delta is not None and initial_price is not None and initial_strong:
+                # A marketplace base price plus an option surcharge is an
+                # independent, self-consistent proof even if the DOM stayed put.
+                price_verified = True
             glitch, reason = is_glitched(price, duration, tier)
             yield {
                 "marketplace": listing.get("marketplace"),
@@ -61,6 +79,9 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
                 "glitch_reason": reason,
                 "available": available,
                 "availability_reason": availability_reason,
+                "price_changed": price_changed,
+                "price_stable": opt.get("priceStable"),
+                "price_verified": bool(price_verified),
             }
 
 

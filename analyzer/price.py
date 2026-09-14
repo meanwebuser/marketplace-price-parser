@@ -201,11 +201,23 @@ def classify_delivery(text: str, title: str = "") -> str:
 _DELTA_RE = re.compile(r"\+\s*(\d[\d\s\xa0]*)\s*(?:₽|руб)", re.I)
 
 
-def apply_delta_correction(option_text: str, price: float) -> float:
+def option_price_delta(option_text: str) -> float | None:
     m = _DELTA_RE.search(option_text or "")
     if not m:
-        return price
-    delta = float(m.group(1).replace(" ", "").replace("\xa0", ""))
+        return None
+    return float(m.group(1).replace(" ", "").replace("\xa0", ""))
+
+
+def apply_delta_correction(
+    option_text: str,
+    price: float,
+    *,
+    price_changed: bool | None = None,
+    initial_price: float | None = None,
+) -> float:
+    delta = option_price_delta(option_text)
+    if price_changed is False and initial_price is not None and delta:
+        return initial_price + delta
     if not delta or price >= delta:
         return price
     return price + delta

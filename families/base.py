@@ -44,6 +44,8 @@ class FamilyConfig:
             return False
         if offer.get("available") is False:
             return False
+        if offer.get("price_verified") is False:
+            return False
         if offer.get("glitched"):
             return False
         if self.eligibility_extra and not self.eligibility_extra(offer):

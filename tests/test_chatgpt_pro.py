@@ -187,6 +187,34 @@ def test_delta_correction_ignores_plain_options():
     assert apply_delta_correction("Pro X5 — 1 Месяц", 8850) == 8850
 
 
+def test_delta_correction_uses_initial_base_when_dom_did_not_change():
+    # Synthetic values: this asserts an invariant, not a known product price.
+    assert apply_delta_correction(
+        "Any tier | +700 ₽",
+        900,
+        price_changed=False,
+        initial_price=300,
+    ) == 1000
+
+
+def test_unchanged_price_without_delta_is_not_rankable():
+    from analyzer.output import offers_from_raw
+    raw = {"listings": [{
+        "marketplace": "example", "pid": "opaque", "url": "x",
+        "title": "ChatGPT Pro 20X 1 month on your account",
+        "initialPrices": [{"cls": "id_product_price", "text": "9000 ₽"}],
+        "options": [{
+            "clicked": True, "available": True,
+            "text": "Pro X20 1 month on your account",
+            "priceChanged": False, "priceStable": False, "priceVerified": False,
+            "prices": [{"cls": "id_product_price", "text": "9000 ₽"}],
+        }],
+    }]}
+    row = list(offers_from_raw(raw))[0]
+    assert row["price_verified"] is False
+    assert not _build("renew").matches_offer(row)
+
+
 # ---- title-level own-account hint when the chip is silent ----
 
 def test_title_na_vash_akkaunt_hint_beats_generic_new_hints():
