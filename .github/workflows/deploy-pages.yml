@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'docs/**'
+      - 'scripts/build_pages_data.py'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 

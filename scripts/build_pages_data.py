@@ -41,14 +41,21 @@ def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
             continue
         if allowed_tiers and tier not in allowed_tiers:
             continue
+        # Old snapshots predate these columns and remain readable.  New scans
+        # explicitly state both invariants; unsafe rows must never be published.
+        if row.get("available") not in (None, "") and not as_bool(row.get("available")):
+            continue
+        if row.get("price_verified") not in (None, "") and not as_bool(row.get("price_verified")):
+            continue
         try:
             price = float(row["price_rub"])
         except (KeyError, TypeError, ValueError):
             continue
-        offers.append({"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", "")})
+        offers.append({"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", ""), "available": True, "priceVerified": True, "finalVerified": as_bool(row.get("final_verified"))})
     raw_path = csv_path.with_suffix(".raw.json")
     raw = json.loads(raw_path.read_text(encoding="utf-8")) if raw_path.exists() else {}
-    return offers, {"scanDate": csv_path.name[:10], "sourcePath": str(csv_path).replace("docs/", ""), "scanStartedAt": raw.get("startedAt"), "scanCompletedAt": raw.get("lastUpdate"), "listings": len(raw.get("listings", [])) or None, "sourceRows": len(rows), "detailLevel": "full"}
+    final_results = raw.get("finalVerification", {}).get("results", [])
+    return offers, {"scanDate": csv_path.name[:10], "sourcePath": str(csv_path).replace("docs/", ""), "scanStartedAt": raw.get("startedAt"), "scanCompletedAt": raw.get("finishedAt") or raw.get("lastUpdate"), "listings": len(raw.get("listings", [])) or None, "sourceRows": len(rows), "publishedRows": len(offers), "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")), "detailLevel": "full"}
 
 def load_product(root: Path, product_id: str) -> dict | None:
     csv_path = latest_csv(root, product_id)

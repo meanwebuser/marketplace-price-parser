@@ -36,11 +36,11 @@ function filtered() {
 function render() {
   const rows = filtered(); els.result.textContent = `Показано ${rows.length} из ${offers.length} вариантов`;
   els['offer-count'].textContent = rows.length; els['minimum-price'].textContent = rows.length ? `${rub.format(rows[0].priceRub)} ₽` : '—'; els['marketplace-count'].textContent = new Set(rows.map(o => o.marketplace)).size;
-  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(o.tier)}</span></td><td>${esc(label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span></td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
+  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(o.tier)}</span></td><td>${esc(label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span></td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
 }
 async function init() {
   try {
-    const data = await fetch('data/latest.json?v=3').then(r => { if (!r.ok) throw new Error(); return r.json(); });
+    const data = await fetch('data/latest.json?v=4').then(r => { if (!r.ok) throw new Error(); return r.json(); });
     products = data.products; els.product.innerHTML = ''; products.forEach(item => els.product.append(new Option(item.label, item.id))); chooseProduct(products[0]?.id);
   } catch { els.result.textContent = 'Не удалось загрузить каталог снимков.'; }
 }
