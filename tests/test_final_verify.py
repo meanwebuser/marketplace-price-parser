@@ -63,3 +63,11 @@ def test_final_verifier_rejects_price_mismatch_without_known_price_fixture(monke
         final_verify.verify_winners([winner], [winner])
 
     assert winner["final_verified"] is False
+
+
+def test_python_contract_rejects_forged_success_report(monkeypatch):
+    winner = _offer(price=7319)
+    _fake_run(monkeypatch, observed=8241, returncode=0, verified=True)
+
+    with pytest.raises(RuntimeError, match="violates invariants"):
+        final_verify.verify_winners([winner], [winner])

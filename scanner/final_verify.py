@@ -65,7 +65,35 @@ def verify_winners(winners: Iterable[dict], all_offers: list[dict]) -> list[dict
         )
         report = json.loads(output_path.read_text(encoding="utf-8")) if output_path.exists() else {}
         results = report.get("results", [])
-        failures = [item for item in results if not item.get("verified")]
+        expected = {
+            (
+                item.get("marketplace"), str(item.get("pid")),
+                item.get("raw_option_text") or item.get("option_text"),
+                item.get("tier"), item.get("duration"), item.get("delivery"),
+            ): item
+            for item in requested
+        }
+        seen: set[tuple] = set()
+        failures = []
+        for item in results:
+            key = (
+                item.get("marketplace"), str(item.get("pid")), item.get("optionText"),
+                item.get("tier"), item.get("duration"), item.get("delivery"),
+            )
+            wanted = expected.get(key)
+            invariant_ok = bool(
+                wanted is not None
+                and key not in seen
+                and item.get("verified")
+                and item.get("selected")
+                and item.get("stable")
+                and item.get("observedPrice") == wanted.get("price_rub")
+            )
+            seen.add(key)
+            if not invariant_ok:
+                failed = dict(item)
+                failed["error"] = failed.get("error") or "verification report violates invariants"
+                failures.append(failed)
         if proc.returncode or len(results) != len(requested) or failures:
             details = "; ".join(
                 f"{item.get('url')}: {item.get('error') or 'verification failed'}"
