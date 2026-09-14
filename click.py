@@ -59,6 +59,7 @@ const OUT_PATH = args.out || '/tmp/zai_raw.json';
 const PAGE_TIMEOUT_MS = Number(args['page-timeout'] || 35000);
 const CLICK_TIMEOUT_MS = Number(args['click-timeout'] || 8000);
 const PRICE_SETTLE_TIMEOUT_MS = Number(args['price-settle-timeout'] || 5000);
+const CAPTURE_RETRIES = Number(args['capture-retries'] || 2);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -76,6 +77,7 @@ fs.writeFileSync(OUT_PATH, JSON.stringify({
     pageTimeoutMs: PAGE_TIMEOUT_MS,
     clickTimeoutMs: CLICK_TIMEOUT_MS,
     priceSettleTimeoutMs: PRICE_SETTLE_TIMEOUT_MS,
+    captureRetries: CAPTURE_RETRIES,
   },
   listings: [],
 }, null, 2));
@@ -303,9 +305,15 @@ async function snapshotPrices(page) {
   } catch (e) { return []; }
 }
 
-const priceFingerprint = (prices) => JSON.stringify(
-  (prices || []).map((p) => [p.text || '', p.cls || '', p.id || '']),
-);
+const priceFingerprint = (prices) => {
+  const all = prices || [];
+  const primary = all.filter((p) => {
+    const cls = (p.cls || '').toLowerCase();
+    return cls.includes('id_product_price') || (cls.includes('buyblock') && cls.includes('amount'));
+  });
+  const basis = primary.length > 0 ? primary : all;
+  return JSON.stringify(basis.map((p) => [p.text || '', p.cls || '', p.id || '']));
+};
 
 async function waitForSettledPrices(page, beforePrices, selectedBefore) {
   const started = Date.now();
@@ -415,7 +423,25 @@ async function runWorker(workerId, queue, context, onDone) {
     const t0 = Date.now();
     process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)}...\n`);
     try {
-      const result = await collectListing(context, job.marketplace, job.pid, job.urlBuilder);
+      let result;
+      const retryReasons = [];
+      let captureAttempts = 0;
+      for (let attempt = 0; attempt <= CAPTURE_RETRIES; attempt++) {
+        captureAttempts = attempt + 1;
+        result = await collectListing(context, job.marketplace, job.pid, job.urlBuilder);
+        const reasons = [];
+        if (result.error) reasons.push('listing error');
+        for (const option of result.options || []) {
+          if (option.available !== false && option.clicked !== true) reasons.push('available control not clicked');
+          if (option.clicked && (!option.prices || option.prices.length === 0)) reasons.push('missing price snapshot');
+          if (option.priceChanged && !option.priceStable) reasons.push('unstable changed price');
+        }
+        if (reasons.length === 0 || attempt === CAPTURE_RETRIES) break;
+        retryReasons.push(...reasons);
+        process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)} — retry ${attempt + 1}/${CAPTURE_RETRIES}: ${[...new Set(reasons)].join(', ')}\n`);
+      }
+      result.captureAttempts = captureAttempts;
+      result.captureRetryReasons = [...new Set(retryReasons)];
       onDone(result);
       process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)} — ${result.controlsClicked || 0}/${result.controlCount || 0} clicked in ${Date.now() - t0}ms\n`);
     } catch (e) {

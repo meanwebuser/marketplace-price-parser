@@ -62,3 +62,10 @@ if (result !== true) throw new Error('visible selected state was not recognized'
 def test_collector_defers_default_variant_and_requires_a_price_snapshot():
     assert "Number(a.selected) - Number(b.selected)" in CLICK
     assert "settled.prices.length > 0" in CLICK
+
+
+def test_collector_retries_integrity_failures_and_ignores_sidebar_price_noise():
+    assert "CAPTURE_RETRIES" in CLICK
+    assert "missing price snapshot" in CLICK
+    assert "unstable changed price" in CLICK
+    assert "primary.length > 0 ? primary : all" in CLICK

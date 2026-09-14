@@ -82,8 +82,9 @@ def test_schema_v2_rejects_impossible_capture_states():
 
     issues = validate_rankings(raw, [], {}, _family())
 
-    assert len(issues) == 4
+    assert len(issues) == 5
     assert any("unavailable control" in issue for issue in issues)
     assert any("no post-click price" in issue for issue in issues)
     assert any("never became stable" in issue for issue in issues)
     assert any("without a click" in issue for issue in issues)
+    assert any("available control unclicked" in issue for issue in issues)

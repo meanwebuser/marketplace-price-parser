@@ -75,6 +75,8 @@ def validate_rankings(
                     or option.get("ariaDisabled")
                 ):
                     issues.append(f"{where} clicked an unavailable control")
+                if option.get("available") is not False and not option.get("clicked"):
+                    issues.append(f"{where} left an available control unclicked")
                 if option.get("clicked") and not option.get("prices"):
                     issues.append(f"{where} has no post-click price snapshot")
                 if option.get("priceChanged") and not option.get("priceStable"):
