@@ -144,8 +144,8 @@ const isSelectedElement = (el, text) => {
     (input && input.getAttribute && input.getAttribute(name) === 'true')
   );
   const className = (el.className || '').toString() + ' ' + ((input && input.className) || '').toString();
-  const selectedClass = /(?:^|[\s_-])(?:active|selected|checked|chosen)(?:$|[\s_-])/i.test(className);
-  const selectedText = /(?:^|\s)(?:выбран(?:о|а)?|selected)(?:\s|$)/i.test(text || '');
+  const selectedClass = /(?:^|[\\s_-])(?:active|selected|checked|chosen)(?:$|[\\s_-])/i.test(className);
+  const selectedText = /(?:^|\\s)(?:выбран(?:о|а)?|selected)(?:\\s|$)/i.test(text || '');
   return Boolean(
     el.checked || el.selected || (input && (input.checked || input.selected)) ||
     ariaSelected || selectedClass || selectedText
