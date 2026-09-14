@@ -69,3 +69,8 @@ def test_collector_retries_integrity_failures_and_ignores_sidebar_price_noise():
     assert "missing price snapshot" in CLICK
     assert "unstable changed price" in CLICK
     assert "primary.length > 0 ? primary : all" in CLICK
+
+
+def test_collector_keeps_a_stable_locator_when_control_text_mutates():
+    assert "domIndex" in CLICK
+    assert "findElementByIndex(ctrl.kind, ctrl.domIndex)" in CLICK

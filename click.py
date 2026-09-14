@@ -113,6 +113,18 @@ const findElement = (tag, text, exact) => {
   return null;
 };
 
+const findElementByIndex = (tag, index) => {
+  if (!Number.isInteger(index) || index < 0) return null;
+  let pool;
+  if (tag === 'button') pool = document.querySelectorAll('button');
+  else if (tag === 'label') pool = document.querySelectorAll('label');
+  else if (tag === 'radio') pool = document.querySelectorAll('input[type="radio"]');
+  else if (tag === 'role-radio') pool = document.querySelectorAll('[role="radio"]');
+  else if (tag === 'select-option') pool = document.querySelectorAll('select option');
+  else return null;
+  return pool[index] || null;
+};
+
 const fireClick = (el) => {
   if (!el) return;
   el.scrollIntoView({ block: 'center' });
@@ -233,7 +245,13 @@ const collectVariantControls = () => {
       return;
     }
     seen.add(k);
-    controls.push({ kind, text: k, ...(meta || {}), ...availabilityMeta(el, k) });
+    let domIndex = -1;
+    if (kind === 'button') domIndex = Array.from(document.querySelectorAll('button')).indexOf(el);
+    else if (kind === 'label') domIndex = Array.from(document.querySelectorAll('label')).indexOf(el);
+    else if (kind === 'radio') domIndex = Array.from(document.querySelectorAll('input[type="radio"]')).indexOf(el);
+    else if (kind === 'role-radio') domIndex = Array.from(document.querySelectorAll('[role="radio"]')).indexOf(el);
+    else if (kind === 'select-option') domIndex = Array.from(document.querySelectorAll('select option')).indexOf(el);
+    controls.push({ kind, text: k, domIndex, ...(meta || {}), ...availabilityMeta(el, k) });
   };
   document.querySelectorAll('button').forEach(b => record('button', b.innerText || '', null, b));
   document.querySelectorAll('label').forEach(l => record('label', l.innerText || '', null, l));
@@ -257,6 +275,7 @@ const collectVariantControls = () => {
 
 const resolveControl = (ctrl) => {
   let el = findElement(ctrl.kind, ctrl.text, true);
+  if (!el) el = findElementByIndex(ctrl.kind, ctrl.domIndex);
   if (!el) {
     const prefix = (ctrl.text || '').split('\\n')[0].slice(0, 25);
     if (prefix.length > 5) el = findElement(ctrl.kind, prefix, false);
