@@ -290,6 +290,14 @@ def test_explicit_variant_delivery_beats_mixed_description():
     ) == "own_account"
 
 
+def test_delivery_tolerates_accidental_repeated_letters_generically():
+    # The normalizer has no seller IDs or product prices; it only repairs a
+    # common text mutation before applying semantic delivery rules.
+    for extra in range(1, 5):
+        typo = "Общий а" + ("к" * (2 + extra)) + "аунт"
+        assert classify_delivery(typo) == "shared_account"
+
+
 def test_offers_from_raw_keeps_numbered_ggsel_chip():
     """Regression for GGSEL 4658858: numbered chip with duration only in
     the title and token-based delivery must yield a ranked offer."""

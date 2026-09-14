@@ -174,6 +174,13 @@ _TITLE_DELIV_OWN_HINTS = [
     ("own_account",   re.compile(r"\bобновлен\w*|продлен\w*|upgrade|renew|extend|сохран\w*\s*истори|сохран\w*\s*рабоч|обновлен\w*\s*подписк|продлен\w*\s*подписк", re.I)),
 ]
 
+_LONG_LETTER_RUN_RE = re.compile(r"([^\W\d_])\1{2,}", re.IGNORECASE | re.UNICODE)
+
+
+def _normalise_delivery_text(value: str) -> str:
+    """Collapse accidental 3+ letter runs without a marketplace word list."""
+    return _LONG_LETTER_RUN_RE.sub(r"\1\1", value or "")
+
 
 def classify_delivery(text: str, title: str = "", description: str = "") -> str:
     """Map variant evidence to delivery type. Order matters:
@@ -181,20 +188,22 @@ def classify_delivery(text: str, title: str = "", description: str = "") -> str:
     text is authoritative; title hints only kick in when chip text is
     silent. Description is a final fallback and is accepted only when it
     points to exactly one delivery class; mixed listings remain unknown."""
-    text = text or ""
+    text = _normalise_delivery_text(text)
+    title = _normalise_delivery_text(title)
+    description = _normalise_delivery_text(description)
     for delivery, pat in _DELIV_PATTERNS:
         if pat.search(text):
             return delivery
     for delivery, pat in _TITLE_DELIV_OWN_HINTS:
-        if pat.search(title or ""):
+        if pat.search(title):
             return delivery
     for delivery, pat in _TITLE_DELIV_HINTS:
-        if pat.search(title or ""):
+        if pat.search(title):
             return delivery
     description_matches = {
         delivery
         for delivery, pat in _DELIV_PATTERNS
-        if pat.search(description or "")
+        if pat.search(description)
     }
     if len(description_matches) == 1:
         return description_matches.pop()
