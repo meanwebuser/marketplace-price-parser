@@ -55,6 +55,10 @@ const result = new Function(sandbox.PAGE_FN_OUT + `
   return isSelectedElement(fake, 'Opaque option\\nВыбран');
 `)();
 if (result !== true) throw new Error('visible selected state was not recognized');
+const unavailable = new Function(sandbox.PAGE_FN_OUT + `
+  return isUnavailableText('Вариант нет в наличии');
+`)();
+if (unavailable !== true) throw new Error('unavailable text was not recognized');
 """
     subprocess.run(["node", "-e", script, str(click_path)], check=True)
 
@@ -80,3 +84,7 @@ def test_collector_uses_native_click_and_rejects_unchanged_new_selection():
     assert "await target.click({ timeout: CLICK_TIMEOUT_MS })" in CLICK
     assert "settled.changed || Boolean(ctrl.selected)" in CLICK
     assert "settled.changed || Boolean(ctrl.selected) || selectedAfter" not in CLICK
+
+
+def test_collector_ignores_noninteractive_labels():
+    assert "if (associated || explicitlyInteractive)" in CLICK

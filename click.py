@@ -166,6 +166,9 @@ const isSelectedElement = (el, text) => {
   );
 };
 
+const isUnavailableText = (text) =>
+  /нет\\s+в\\s+наличии|нет\\s+в\\s+продаже|недоступ|законч|распродан|out\\s+of\\s+stock|sold\\s+out|unavailable|not\\s+available/i.test(text || '');
+
 const snapshotPrices = () => {
   const els = Array.from(document.querySelectorAll('*')).filter(el => {
     if (el.children.length !== 0) return false;
@@ -225,7 +228,7 @@ const collectVariantControls = () => {
       (el && el.getAttribute && el.getAttribute('aria-disabled') === 'true') ||
       (input && input.getAttribute && input.getAttribute('aria-disabled') === 'true')
     );
-    const unavailableText = /нет\s+в\s+наличии|нет\s+в\s+продаже|недоступ|законч|распродан|out\s+of\s+stock|sold\s+out|unavailable|not\s+available/i.test(text || '');
+    const unavailableText = isUnavailableText(text);
     return {
       disabled,
       ariaDisabled: Boolean(el && el.getAttribute && el.getAttribute('aria-disabled') === 'true'),
@@ -254,7 +257,13 @@ const collectVariantControls = () => {
     controls.push({ kind, text: k, domIndex, ...(meta || {}), ...availabilityMeta(el, k) });
   };
   document.querySelectorAll('button').forEach(b => record('button', b.innerText || '', null, b));
-  document.querySelectorAll('label').forEach(l => record('label', l.innerText || '', null, l));
+  document.querySelectorAll('label').forEach(l => {
+    const nested = l.querySelector('input[type="radio"], input[type="checkbox"]');
+    const labelled = l.htmlFor && document.getElementById(l.htmlFor);
+    const associated = nested || (labelled && /^(?:radio|checkbox)$/i.test(labelled.type || ''));
+    const explicitlyInteractive = l.getAttribute('role') || l.tabIndex >= 0;
+    if (associated || explicitlyInteractive) record('label', l.innerText || '', null, l);
+  });
   document.querySelectorAll('input[type="radio"]').forEach(i => {
     const lab = i.closest('label');
     let text = '';
