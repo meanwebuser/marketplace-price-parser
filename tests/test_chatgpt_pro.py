@@ -15,6 +15,7 @@ from analyzer.price import (
     classify_duration,
     classify_duration_from_title,
     classify_delivery,
+    classify_availability,
     apply_delta_correction,
 )
 from families.chatgpt import CONFIG, _build
@@ -145,6 +146,28 @@ def test_chatgpt_rejects_implausibly_cheap_pro():
              "glitched": False, "price_rub": 599}
     assert not fam.matches_offer(offer)
     offer["price_rub"] = 9288
+    assert fam.matches_offer(offer)
+
+
+def test_unavailable_variant_is_rejected_without_product_knowledge():
+    available, reason = classify_availability("Any tier | нет в наличии")
+    assert not available
+    assert reason
+
+    fam = _build("renew")
+    offer = {"tier": "Pro 20X", "duration": "1m", "delivery": "own_account",
+             "available": False, "glitched": False, "price_rub": 9000}
+    assert not fam.matches_offer(offer)
+
+
+def test_disabled_variant_is_unavailable_without_text_hint():
+    assert classify_availability("Any tier", disabled=True)[0] is False
+
+
+def test_available_variant_remains_eligible():
+    fam = _build("renew")
+    offer = {"tier": "Pro 20X", "duration": "1m", "delivery": "own_account",
+             "available": True, "glitched": False, "price_rub": 20000}
     assert fam.matches_offer(offer)
 
 

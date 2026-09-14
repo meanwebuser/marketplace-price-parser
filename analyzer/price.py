@@ -17,6 +17,38 @@ from pathlib import Path
 
 PRICE_RE = re.compile(r"(\d[\d\s\xa0]*)")
 
+# Availability is a property of the selected variant, not of the listing as a
+# whole.  Marketplaces use several languages and UI spellings, so keep this
+# deliberately product-agnostic.
+_UNAVAILABLE_RE = re.compile(
+    r"\b(?:нет\s+в\s+наличии|нет\s+в\s+продаже|недоступ(?:ен|на|но|ны)?|"
+    r"законч(?:ил(?:ся|ась|ось|ись)|ен[аоы]?)|распродан[аоы]?|"
+    r"out\s+of\s+stock|sold\s+out|unavailable|not\s+available)\b",
+    re.IGNORECASE,
+)
+
+
+def classify_availability(
+    text: str,
+    *,
+    disabled: bool = False,
+    aria_disabled: bool = False,
+    explicit_available: bool | None = None,
+) -> tuple[bool, str]:
+    """Return variant availability using only generic UI evidence.
+
+    The caller may supply DOM state captured by the browser.  Text remains a
+    fallback so older raw snapshots are re-analysed safely.
+    """
+    if explicit_available is False:
+        return False, "collector marked variant unavailable"
+    if disabled or aria_disabled:
+        return False, "variant control is disabled"
+    match = _UNAVAILABLE_RE.search(text or "")
+    if match:
+        return False, f"variant text says {match.group(0)!r}"
+    return True, ""
+
 
 def parse_price(text: str) -> float | None:
     if not text:

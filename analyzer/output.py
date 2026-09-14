@@ -15,6 +15,7 @@ from analyzer.price import (
     classify_duration,
     classify_duration_from_title,
     classify_delivery,
+    classify_availability,
     select_real_price,
     is_glitched,
     apply_delta_correction,
@@ -34,6 +35,12 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
             delivery = classify_delivery(text, title)
             if not tier or not duration:
                 continue
+            available, availability_reason = classify_availability(
+                text,
+                disabled=bool(opt.get("disabled")),
+                aria_disabled=bool(opt.get("ariaDisabled")),
+                explicit_available=opt.get("available"),
+            )
             price, strong = select_real_price(opt.get("prices", []))
             if price is None:
                 continue
@@ -52,6 +59,8 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
                 "strong_signal": strong,
                 "glitched": glitch,
                 "glitch_reason": reason,
+                "available": available,
+                "availability_reason": availability_reason,
             }
 
 

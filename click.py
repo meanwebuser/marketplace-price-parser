@@ -176,7 +176,24 @@ const collectVariantControls = () => {
   // looks like a variant control is still recorded into "skipped" so a
   // manual audit can see variants the filter silently rejected.
   const KEY = /Max|Pro|Lite|Plus|Плюс|GO|Токен|Месяц|Год|month|year|Первая|Продление|Subscription|Случайный|Требуется|месяц|год/i;
-  const record = (kind, text, meta) => {
+  const availabilityMeta = (el, text) => {
+    const input = el && (el.matches && el.matches('input, option')
+      ? el
+      : el.querySelector && el.querySelector('input[type="radio"], input[type="checkbox"], option'));
+    const disabled = Boolean(
+      (el && el.disabled) || (input && input.disabled) ||
+      (el && el.getAttribute && el.getAttribute('aria-disabled') === 'true') ||
+      (input && input.getAttribute && input.getAttribute('aria-disabled') === 'true')
+    );
+    const unavailableText = /нет\s+в\s+наличии|нет\s+в\s+продаже|недоступ|законч|распродан|out\s+of\s+stock|sold\s+out|unavailable|not\s+available/i.test(text || '');
+    return {
+      disabled,
+      ariaDisabled: Boolean(el && el.getAttribute && el.getAttribute('aria-disabled') === 'true'),
+      available: !(disabled || unavailableText),
+      unavailableReason: disabled ? 'disabled control' : (unavailableText ? 'unavailable text' : ''),
+    };
+  };
+  const record = (kind, text, meta, el) => {
     const k = (text || '').trim();
     if (!k || k.length > 250 || seen.has(k)) return;
     if (!KEY.test(k)) {
@@ -187,10 +204,10 @@ const collectVariantControls = () => {
       return;
     }
     seen.add(k);
-    controls.push({ kind, text: k, ...(meta || {}) });
+    controls.push({ kind, text: k, ...(meta || {}), ...availabilityMeta(el, k) });
   };
-  document.querySelectorAll('button').forEach(b => record('button', b.innerText || ''));
-  document.querySelectorAll('label').forEach(l => record('label', l.innerText || ''));
+  document.querySelectorAll('button').forEach(b => record('button', b.innerText || '', null, b));
+  document.querySelectorAll('label').forEach(l => record('label', l.innerText || '', null, l));
   document.querySelectorAll('input[type="radio"]').forEach(i => {
     const lab = i.closest('label');
     let text = '';
@@ -200,11 +217,11 @@ const collectVariantControls = () => {
       if (parent) text = (parent.innerText || '').trim().slice(0, 200);
     }
     if (!text) text = i.value || i.name || ('radio:' + i.id);
-    record('radio', text, { inputId: i.id, inputName: i.name });
+    record('radio', text, { inputId: i.id, inputName: i.name }, i);
   });
-  document.querySelectorAll('[role="radio"]').forEach(el => record('role-radio', (el.innerText || '').trim()));
+  document.querySelectorAll('[role="radio"]').forEach(el => record('role-radio', (el.innerText || '').trim(), null, el));
   document.querySelectorAll('select').forEach(s => {
-    Array.from(s.options).forEach(o => record('select-option', (o.textContent || '').trim(), { value: o.value }));
+    Array.from(s.options).forEach(o => record('select-option', (o.textContent || '').trim(), { value: o.value }, o));
   });
   return { controls, skipped };
 };
@@ -276,6 +293,10 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
     const { controls, skipped } = await collectVariantControls(page);
     out.skippedControls = skipped;
     for (const ctrl of controls) {
+      if (ctrl.available === false) {
+        out.options.push(Object.assign({}, ctrl, { clicked: false }));
+        continue;
+      }
       let clicked = false;
       try {
         clicked = await withTimeout(clickControl(page, ctrl), CLICK_TIMEOUT_MS, 'click');
