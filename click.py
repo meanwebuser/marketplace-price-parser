@@ -133,6 +133,25 @@ const fireClick = (el) => {
   }
 };
 
+const isSelectedElement = (el, text) => {
+  if (!el) return false;
+  const input = el.matches && el.matches('input, option')
+    ? el
+    : el.querySelector && el.querySelector('input[type="radio"], input[type="checkbox"], option');
+  const attrs = ['aria-checked', 'aria-selected', 'aria-pressed'];
+  const ariaSelected = attrs.some((name) =>
+    (el.getAttribute && el.getAttribute(name) === 'true') ||
+    (input && input.getAttribute && input.getAttribute(name) === 'true')
+  );
+  const className = (el.className || '').toString() + ' ' + ((input && input.className) || '').toString();
+  const selectedClass = /(?:^|[\s_-])(?:active|selected|checked|chosen)(?:$|[\s_-])/i.test(className);
+  const selectedText = /(?:^|\s)(?:выбран(?:о|а)?|selected)(?:\s|$)/i.test(text || '');
+  return Boolean(
+    el.checked || el.selected || (input && (input.checked || input.selected)) ||
+    ariaSelected || selectedClass || selectedText
+  );
+};
+
 const snapshotPrices = () => {
   const els = Array.from(document.querySelectorAll('*')).filter(el => {
     if (el.children.length !== 0) return false;
@@ -198,11 +217,7 @@ const collectVariantControls = () => {
       ariaDisabled: Boolean(el && el.getAttribute && el.getAttribute('aria-disabled') === 'true'),
       available: !(disabled || unavailableText),
       unavailableReason: disabled ? 'disabled control' : (unavailableText ? 'unavailable text' : ''),
-      selected: Boolean(
-        (el && el.checked) || (el && el.selected) ||
-        (input && input.checked) || (input && input.selected) ||
-        (el && el.getAttribute && el.getAttribute('aria-checked') === 'true')
-      ),
+      selected: isSelectedElement(el, text),
     };
   };
   const record = (kind, text, meta, el) => {
@@ -238,7 +253,7 @@ const collectVariantControls = () => {
   return { controls, skipped };
 };
 
-const clickControl = (ctrl) => {
+const resolveControl = (ctrl) => {
   let el = findElement(ctrl.kind, ctrl.text, true);
   if (!el) {
     const prefix = (ctrl.text || '').split('\\n')[0].slice(0, 25);
@@ -248,9 +263,19 @@ const clickControl = (ctrl) => {
     const i = document.getElementById(ctrl.inputId);
     if (i) el = i.closest('label') || i;
   }
+  return el;
+};
+
+const clickControl = (ctrl) => {
+  const el = resolveControl(ctrl);
   if (!el) return false;
   fireClick(el);
   return true;
+};
+
+const controlIsSelected = (ctrl) => {
+  const el = resolveControl(ctrl);
+  return isSelectedElement(el, (el && (el.innerText || el.textContent)) || ctrl.text || '');
 };
 `;
 
@@ -300,12 +325,21 @@ async function waitForSettledPrices(page, beforePrices, selectedBefore) {
       return { prices: latest, changed, stable: true, elapsedMs: Date.now() - started };
     }
   }
-  return { prices: latest, changed, stable: false, elapsedMs: Date.now() - started };
+  // An unchanged snapshot can still be stable.  It becomes verified only if
+  // the control is independently observed as selected after the click.
+  return { prices: latest, changed, stable: stableSamples >= 2, elapsedMs: Date.now() - started };
 }
 async function clickControl(page, ctrl) {
   return await page.evaluate(new Function(PAGE_FN + `
     return clickControl(${JSON.stringify(ctrl)});
   `));
+}
+async function controlIsSelected(page, ctrl) {
+  try {
+    return await page.evaluate(new Function(PAGE_FN + `
+      return controlIsSelected(${JSON.stringify(ctrl)});
+    `));
+  } catch (e) { return false; }
 }
 
 async function withTimeout(p, ms, label) {
@@ -347,13 +381,15 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
         continue;
       }
       const settled = await waitForSettledPrices(page, beforePrices, Boolean(ctrl.selected));
+      const selectedAfter = await controlIsSelected(page, ctrl);
       out.options.push(Object.assign({}, ctrl, {
         clicked: true,
         beforePrices,
         prices: settled.prices,
         priceChanged: settled.changed,
         priceStable: settled.stable,
-        priceVerified: settled.stable && (settled.changed || Boolean(ctrl.selected)),
+        selectedAfter,
+        priceVerified: settled.stable && (settled.changed || Boolean(ctrl.selected) || selectedAfter),
         priceSettleMs: settled.elapsedMs,
       }));
     }
