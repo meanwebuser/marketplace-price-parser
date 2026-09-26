@@ -458,12 +458,12 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
         priceChanged: settled.changed,
         priceStable: settled.stable,
         selectedAfter,
-        // A newly selected control with an unchanged price is ambiguous: the
-        // variant may genuinely cost the same, or its price request may have
-        // failed.  Only a transition, or a control already selected before
-        // the click, independently ties the snapshot to this option.
+        // A price transition alone can come from an unrelated carousel or
+        // recommendation block. For a newly selected option require both the
+        // transition and the DOM-selected state; the initial default is
+        // already tied to its first rendered price.
         priceVerified: settled.prices.length > 0 && settled.stable &&
-          (settled.changed || Boolean(ctrl.selected)),
+          (Boolean(ctrl.selected) || (settled.changed && selectedAfter)),
         priceSettleMs: settled.elapsedMs,
       }));
     }

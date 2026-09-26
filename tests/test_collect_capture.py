@@ -80,10 +80,9 @@ def test_collector_keeps_a_stable_locator_when_control_text_mutates():
     assert "findElementByIndex(ctrl.kind, ctrl.domIndex)" in CLICK
 
 
-def test_collector_uses_native_click_and_rejects_unchanged_new_selection():
+def test_collector_requires_selected_state_for_a_new_variant_price():
     assert "await target.click({ timeout: CLICK_TIMEOUT_MS })" in CLICK
-    assert "settled.changed || Boolean(ctrl.selected)" in CLICK
-    assert "settled.changed || Boolean(ctrl.selected) || selectedAfter" not in CLICK
+    assert "Boolean(ctrl.selected) || (settled.changed && selectedAfter)" in CLICK
 
 
 def test_collector_supports_real_chrome_cdp_without_a_stale_user_agent():
