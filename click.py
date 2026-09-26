@@ -60,6 +60,10 @@ const PAGE_TIMEOUT_MS = Number(args['page-timeout'] || 35000);
 const CLICK_TIMEOUT_MS = Number(args['click-timeout'] || 8000);
 const PRICE_SETTLE_TIMEOUT_MS = Number(args['price-settle-timeout'] || 5000);
 const CAPTURE_RETRIES = Number(args['capture-retries'] || 2);
+// Optional connection to an already-open, user-authenticated Chrome started
+// with --remote-debugging-port. Useful when a marketplace disables reactive
+// product controls in an isolated automation profile.
+const CDP_URL = String(args['cdp-url'] || process.env.MARKETPLACE_CDP_URL || '').trim();
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -509,11 +513,18 @@ async function runWorker(workerId, queue, context, onDone) {
 }
 
 (async () => {
-  const browser = await chromium.launch({
-    headless: true,
-    executablePath: CHROME_PATH,
-    args: ['--no-sandbox', '--disable-blink-features=AutomationControlled'],
-  });
+  const remoteBrowser = Boolean(CDP_URL);
+  const browser = remoteBrowser
+    ? await chromium.connectOverCDP(CDP_URL)
+    : await chromium.launch({
+      headless: true,
+      executablePath: CHROME_PATH,
+      args: ['--no-sandbox', '--disable-blink-features=AutomationControlled'],
+    });
+  const remoteContexts = remoteBrowser ? browser.contexts() : [];
+  if (remoteBrowser && remoteContexts.length === 0) {
+    throw new Error('CDP browser has no usable context');
+  }
   const queue = [
     ...[...new Set(PLATI_PIDS)].map((pid) => ({
       marketplace: 'plati', pid,
@@ -524,12 +535,12 @@ async function runWorker(workerId, queue, context, onDone) {
       urlBuilder: (p) => `https://ggsel.net/catalog/product/${p}`,
     })),
   ];
+  // A real browser context owns live user tabs, so keep CDP collection
+  // sequential. Isolated collection remains parallel.
+  const workerCount = remoteBrowser ? 1 : WORKERS;
   const workers = [];
-  for (let i = 0; i < WORKERS; i++) {
-    const ctx = await browser.newContext({
-      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
-      locale: 'ru-RU',
-    });
+  for (let i = 0; i < workerCount; i++) {
+    const ctx = remoteBrowser ? remoteContexts[0] : await browser.newContext({ locale: 'ru-RU' });
     workers.push(runWorker(i, queue, ctx, appendListing));
   }
   await Promise.all(workers);
@@ -537,7 +548,7 @@ async function runWorker(workerId, queue, context, onDone) {
   final.finishedAt = new Date().toISOString();
   fs.writeFileSync(OUT_PATH, JSON.stringify(final, null, 2));
   process.stderr.write(`DONE: ${final.listings.length} listings → ${OUT_PATH}\n`);
-  await browser.close();
+  if (!remoteBrowser) await browser.close();
   process.exit(0);
 })().catch((e) => {
   process.stderr.write(`FATAL: ${e.stack || e}\n`);

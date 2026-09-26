@@ -105,7 +105,10 @@ def dedupe(offers: list[dict]) -> list[dict]:
 
 def cheapest_per_tier(offers: list[dict], family: FamilyConfig) -> dict[tuple[str, str, str], dict]:
     """Return {(tier, duration, delivery): cheapest_offer}."""
-    eligible = [o for o in offers if family.matches_offer(o)]
+    eligible = [
+        o for o in offers
+        if family.matches_offer(o) and o.get("price_verified", True)
+    ]
     out: dict[tuple[str, str, str], dict] = {}
     for o in eligible:
         k = (o["tier"], o["duration"], o["delivery"])

@@ -86,5 +86,11 @@ def test_collector_uses_native_click_and_rejects_unchanged_new_selection():
     assert "settled.changed || Boolean(ctrl.selected) || selectedAfter" not in CLICK
 
 
+def test_collector_supports_real_chrome_cdp_without_a_stale_user_agent():
+    assert "connectOverCDP(CDP_URL)" in CLICK
+    assert "MARKETPLACE_CDP_URL" in CLICK
+    assert "Chrome/120" not in CLICK
+
+
 def test_collector_ignores_noninteractive_labels():
     assert "if (associated || explicitlyInteractive)" in CLICK
