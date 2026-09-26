@@ -60,6 +60,11 @@ const PAGE_TIMEOUT_MS = Number(args['page-timeout'] || 35000);
 const CLICK_TIMEOUT_MS = Number(args['click-timeout'] || 8000);
 const PRICE_SETTLE_TIMEOUT_MS = Number(args['price-settle-timeout'] || 5000);
 const CAPTURE_RETRIES = Number(args['capture-retries'] || 2);
+// GGSEL's MUI product form applies variant changes in a regular browser but
+// suppresses them in headless Chrome. Keep Plati-only runs headless, while a
+// run containing GGSEL uses a visible guest browser by default. --headless
+// remains available for diagnostics and CI.
+const HEADLESS = args.headless === true || args.headless === 'true' || GGSEL_IDS.length === 0;
 // Optional connection to an already-open, user-authenticated Chrome started
 // with --remote-debugging-port. Useful when a marketplace disables reactive
 // product controls in an isolated automation profile.
@@ -222,7 +227,7 @@ const collectVariantControls = () => {
   // Keyword gate decides WHICH controls we click; everything else that
   // looks like a variant control is still recorded into "skipped" so a
   // manual audit can see variants the filter silently rejected.
-  const KEY = /Max|Pro|Lite|Plus|Плюс|GO|Токен|Месяц|Год|month|year|Первая|Продление|Subscription|Случайный|Требуется|месяц|год/i;
+  const KEY = /Max|Pro|Lite|Plus|Плюс|GO|Токен|Месяц|Год|month|year|Первая|Продление|Subscription|Случайный|Требуется|месяц|год|нов(?:ый|ая)\s+(?:аккаунт|учетн)|предоставлю|свой\s+аккаунт|account/i;
   const availabilityMeta = (el, text) => {
     const input = el && (el.matches && el.matches('input, option')
       ? el
@@ -378,8 +383,17 @@ async function clickControl(page, ctrl) {
     'select-option': 'select option',
   };
   const selector = selectors[ctrl.kind];
-  if (selector && Number.isInteger(ctrl.domIndex) && ctrl.domIndex >= 0) {
-    const target = page.locator(selector).nth(ctrl.domIndex);
+  let target = null;
+  // Product forms re-render after a selection. A stable, exact option name is
+  // safer than an index among unrelated navigation buttons.
+  if (ctrl.kind === 'button' && ctrl.text) {
+    const byText = page.getByRole('button', { name: ctrl.text, exact: true });
+    if (await byText.count() === 1) target = byText;
+  }
+  if (!target && selector && Number.isInteger(ctrl.domIndex) && ctrl.domIndex >= 0) {
+    target = page.locator(selector).nth(ctrl.domIndex);
+  }
+  if (target) {
     if (await target.count()) {
       if (ctrl.kind === 'select-option') {
         await target.evaluate((option) => {
@@ -517,7 +531,7 @@ async function runWorker(workerId, queue, context, onDone) {
   const browser = remoteBrowser
     ? await chromium.connectOverCDP(CDP_URL)
     : await chromium.launch({
-      headless: true,
+      headless: HEADLESS,
       executablePath: CHROME_PATH,
       args: ['--no-sandbox', '--disable-blink-features=AutomationControlled'],
     });

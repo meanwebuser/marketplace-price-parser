@@ -80,6 +80,13 @@ def test_collector_keeps_a_stable_locator_when_control_text_mutates():
     assert "findElementByIndex(ctrl.kind, ctrl.domIndex)" in CLICK
 
 
+def test_ggsel_guest_mode_uses_a_visible_browser_and_captures_new_account():
+    assert "GGSEL_IDS.length === 0" in CLICK
+    assert "предоставлю" in CLICK
+    assert "нов(?:ый|ая)" in CLICK
+    assert "getByRole('button', { name: ctrl.text, exact: true })" in CLICK
+
+
 def test_collector_requires_selected_state_for_a_new_variant_price():
     assert "await target.click({ timeout: CLICK_TIMEOUT_MS })" in CLICK
     assert "Boolean(ctrl.selected) || (settled.changed && selectedAfter)" in CLICK
