@@ -1,25 +1,20 @@
 # Snapshots
 
-Each dated file is a real marketplace scan or curated gift-list snapshot.
-Scanner snapshots come from `cli.py --family <name>` against live marketplace
-data. Gift-list snapshots combine the final-verified offers with a small number
-of explicitly labelled manual marketplace checks. Files are committed so
-reviewers can audit dates, prices, offer links, and delivery conditions.
+Each dated file is a real scan result, captured after running
+`cli.py --family <name>` against live Plati + GGSEL data. CSV and raw JSON
+are committed so reviewers can audit historical prices and verify the
+analyzer output matches what was actually for sale.
 
-Naming: `YYYY-MM-DD-<family>.md` and matching CSV/raw evidence in `data/`.
-Families include `minimax`, `chatgpt`, `kimi`, `zai`, and the combined `birthday`
-wishlist. The wishlist is grouped by service and gift tier, not by price rank.
+Naming: `YYYY-MM-DD-<family>.md` for a summary, with matching CSV and raw JSON
+in `data/` when available. Supported catalogue families include MiniMax,
+ChatGPT, Z.ai GLM, Kimi, and Claude.
 
-A scanner snapshot includes, where available:
+A snapshot includes:
 - run timestamp and raw-data SHA-256 (truncated) for reproducibility;
 - the canonical command line used;
-- verification summary at the time of the run;
+- browser price-verification summary at the time of the run;
 - cheapest-per-(tier, duration, delivery) table with full URLs;
 - links to listings a human can verify in a browser.
-
-The birthday wishlist adds a per-person estimate for an entered number of
-contributors. It uses equal shares before payment fees; it does not place an
-order or collect contributions.
 
 If a snapshot is wrong, do not edit it — add a new dated file that
 supersedes it and link to the corrected one. Snapshots are immutable
