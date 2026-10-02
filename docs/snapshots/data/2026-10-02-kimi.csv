@@ -1,0 +1,78 @@
+marketplace,pid,url,title,option_text,raw_option_text,control_kind,control_dom_index,control_input_id,control_value,tier,duration,delivery,price_rub,strong_signal,glitched,glitch_reason,available,availability_reason,price_changed,price_stable,price_verified,final_verified,final_observed_price
+plati,5783440,https://plati.market/itm/5783440,Купить KIMI AI ПОДПИСКА - 7 дней/1 МЕСЯЦ | БАЛАНС - БЕЗ ВХОДА,Plus 1 месяц,Plus 1 месяц,label,3,,,Plus,1m,own_account,2068.0,True,False,,True,,True,True,False,False,
+plati,5783440,https://plati.market/itm/5783440,Купить KIMI AI ПОДПИСКА - 7 дней/1 МЕСЯЦ | БАЛАНС - БЕЗ ВХОДА,Pro 1 месяц,Pro 1 месяц,label,4,,,Pro,1m,own_account,5092.0,True,False,,True,,True,True,False,False,
+plati,5783440,https://plati.market/itm/5783440,Купить KIMI AI ПОДПИСКА - 7 дней/1 МЕСЯЦ | БАЛАНС - БЕЗ ВХОДА,Max 1 месяц (Max),Max 1 месяц (Max),label,6,,,Max,1m,own_account,10332.0,True,False,,True,,True,True,False,False,
+plati,5783440,https://plati.market/itm/5783440,Купить KIMI AI ПОДПИСКА - 7 дней/1 МЕСЯЦ | БАЛАНС - БЕЗ ВХОДА,он же PRO / Allegretto 12 месяцев,он же PRO / Allegretto 12 месяцев,label,14,,,Pro,12m,own_account,39585.0,True,False,,True,,True,True,False,False,
+plati,5783440,https://plati.market/itm/5783440,Купить KIMI AI ПОДПИСКА - 7 дней/1 МЕСЯЦ | БАЛАНС - БЕЗ ВХОДА,MAX 12 месяцев,MAX 12 месяцев,label,15,,,Max,12m,own_account,105629.0,True,False,,True,,True,True,False,False,
+plati,5995050,https://plati.market/itm/5995050,Купить Подписка Kimi AI | БЕЗ ВХОДА | Официальная оплата | 1/12 месяцев | Plus Pro Max Ultra,Kimi AI Plus 1 месяц,Kimi AI Plus 1 месяц,label,2,,,Plus,1m,own_account,2149.0,True,False,,True,,True,True,False,False,
+plati,5995050,https://plati.market/itm/5995050,Купить Подписка Kimi AI | БЕЗ ВХОДА | Официальная оплата | 1/12 месяцев | Plus Pro Max Ultra,Kimi AI Plus 1 год,Kimi AI Plus 1 год,label,3,,,Plus,12m,own_account,20499.0,True,False,,True,,True,True,False,False,
+plati,5995050,https://plati.market/itm/5995050,Купить Подписка Kimi AI | БЕЗ ВХОДА | Официальная оплата | 1/12 месяцев | Plus Pro Max Ultra,Kimi AI Pro 1 месяц,Kimi AI Pro 1 месяц,label,4,,,Pro,1m,own_account,4229.0,True,False,,True,,True,True,False,False,
+plati,5995050,https://plati.market/itm/5995050,Купить Подписка Kimi AI | БЕЗ ВХОДА | Официальная оплата | 1/12 месяцев | Plus Pro Max Ultra,Kimi AI Pro 1 год,Kimi AI Pro 1 год,label,5,,,Pro,12m,own_account,39579.0,True,False,,True,,True,True,False,False,
+plati,5995050,https://plati.market/itm/5995050,Купить Подписка Kimi AI | БЕЗ ВХОДА | Официальная оплата | 1/12 месяцев | Plus Pro Max Ultra,Kimi AI Max 1 месяц,Kimi AI Max 1 месяц,label,6,,,Max,1m,own_account,10590.0,True,False,,True,,True,True,False,False,
+plati,5995050,https://plati.market/itm/5995050,Купить Подписка Kimi AI | БЕЗ ВХОДА | Официальная оплата | 1/12 месяцев | Plus Pro Max Ultra,Kimi AI Max 1 год,Kimi AI Max 1 год,label,7,,,Max,12m,own_account,121340.0,True,False,,True,,True,True,False,False,
+plati,5957722,https://plati.market/itm/5957722,Купить KIMI AI | Kimi.ai | Подписка PLUS/PRO/MAX/ULTRA (1 месяц) — дешево и быстро,PRO 39$ | +2 498 ₽,"PRO 39$
++2 498 ₽",label,3,,,Pro,1m,own_account,4696.0,True,False,,True,,True,True,True,False,
+plati,5957722,https://plati.market/itm/5957722,Купить KIMI AI | Kimi.ai | Подписка PLUS/PRO/MAX/ULTRA (1 месяц) — дешево и быстро,MAX 99$ | +9 191 ₽,"MAX 99$
++9 191 ₽",label,4,,,Max,1m,own_account,11388.0,True,False,,True,,True,True,True,False,
+plati,5957722,https://plati.market/itm/5957722,Купить KIMI AI | Kimi.ai | Подписка PLUS/PRO/MAX/ULTRA (1 месяц) — дешево и быстро,PLUS 19$ | Выбран,"PLUS 19$
+Выбран",label,2,,,Plus,1m,own_account,2198.0,True,False,,True,,True,True,True,False,
+plati,5845133,https://plati.market/itm/5845133,Купить KIMI AI — Доступ на 1–12 месяцев | Все тарифы | Официальная подписка | Полная гаранти,KIMI 1 год / Plus | +20 817 ₽,"KIMI 1 год / Plus
++20 817 ₽",label,5,,,Plus,12m,unknown,22894.0,True,False,,True,,True,True,True,False,
+plati,5845133,https://plati.market/itm/5845133,Купить KIMI AI — Доступ на 1–12 месяцев | Все тарифы | Официальная подписка | Полная гаранти,KIMI 1 месяц / Макс. | +10 503 ₽,"KIMI 1 месяц / Макс.
++10 503 ₽",label,6,,,Max,1m,unknown,12580.0,True,False,,True,,True,True,True,False,
+plati,5845133,https://plati.market/itm/5845133,Купить KIMI AI — Доступ на 1–12 месяцев | Все тарифы | Официальная подписка | Полная гаранти,KIMI 1 месяц / Plus | Выбран,"KIMI 1 месяц / Plus
+Выбран",label,2,,,Plus,1m,unknown,2077.0,True,False,,True,,True,True,True,False,
+plati,5217182,https://plati.market/itm/5217182,Купить KIMI Ai - 1-12 месяцев/ Все тарифные планы / Официальная подписка / Полная гарантия,KIMI 1 год / Moderato ( Плюс ) | +18 314 ₽,"KIMI 1 год / Moderato ( Плюс )
++18 314 ₽",label,3,,,Plus,12m,own_account,20412.0,True,False,,True,,True,True,True,False,
+plati,5217182,https://plati.market/itm/5217182,Купить KIMI Ai - 1-12 месяцев/ Все тарифные планы / Официальная подписка / Полная гарантия,KIMI 1 месяц / Allegro ( Макс ) | +9 241 ₽,"KIMI 1 месяц / Allegro ( Макс )
++9 241 ₽",label,5,,,Max,1m,own_account,11339.0,True,False,,True,,True,True,True,False,
+plati,5217182,https://plati.market/itm/5217182,Купить KIMI Ai - 1-12 месяцев/ Все тарифные планы / Официальная подписка / Полная гарантия,KIMI 1 месяц / Moderato ( Плюс ) | Выбран,"KIMI 1 месяц / Moderato ( Плюс )
+Выбран",label,2,,,Plus,1m,own_account,2098.0,True,False,,True,,True,True,True,True,2098
+plati,6163809,https://plati.market/itm/6163809,Купить KIMI AI PLUS/PRO/MAX/ULTRA - 1/12 МЕСЯЦЕВ КИМИ АИ ПЛЮС КИМИ ПРО КИМИ МАКС КИМИ УЛЬТРА,Kimi AI Plus — 12 месяцев | +18 650 ₽,"Kimi AI Plus — 12 месяцев
++18 650 ₽",label,3,,,Plus,12m,own_account,20849.0,True,False,,True,,True,True,True,False,
+plati,6163809,https://plati.market/itm/6163809,Купить KIMI AI PLUS/PRO/MAX/ULTRA - 1/12 МЕСЯЦЕВ КИМИ АИ ПЛЮС КИМИ ПРО КИМИ МАКС КИМИ УЛЬТРА,Kimi AI Pro — 1 месяц | +2 300 ₽,"Kimi AI Pro — 1 месяц
++2 300 ₽",label,4,,,Pro,1m,own_account,4499.0,True,False,,True,,True,True,True,False,
+plati,6163809,https://plati.market/itm/6163809,Купить KIMI AI PLUS/PRO/MAX/ULTRA - 1/12 МЕСЯЦЕВ КИМИ АИ ПЛЮС КИМИ ПРО КИМИ МАКС КИМИ УЛЬТРА,Kimi AI Pro — 12 месяцев | +40 950 ₽,"Kimi AI Pro — 12 месяцев
++40 950 ₽",label,5,,,Pro,12m,own_account,43149.0,True,False,,True,,True,True,True,False,
+plati,6163809,https://plati.market/itm/6163809,Купить KIMI AI PLUS/PRO/MAX/ULTRA - 1/12 МЕСЯЦЕВ КИМИ АИ ПЛЮС КИМИ ПРО КИМИ МАКС КИМИ УЛЬТРА,Kimi AI Max — 1 месяц | +9 250 ₽,"Kimi AI Max — 1 месяц
++9 250 ₽",label,6,,,Max,1m,own_account,11449.0,True,False,,True,,True,True,True,False,
+plati,6163809,https://plati.market/itm/6163809,Купить KIMI AI PLUS/PRO/MAX/ULTRA - 1/12 МЕСЯЦЕВ КИМИ АИ ПЛЮС КИМИ ПРО КИМИ МАКС КИМИ УЛЬТРА,Kimi AI Max — 12 месяцев | +107 750 ₽,"Kimi AI Max — 12 месяцев
++107 750 ₽",label,7,,,Max,12m,own_account,109949.0,True,False,,True,,True,True,True,False,
+plati,6163809,https://plati.market/itm/6163809,Купить KIMI AI PLUS/PRO/MAX/ULTRA - 1/12 МЕСЯЦЕВ КИМИ АИ ПЛЮС КИМИ ПРО КИМИ МАКС КИМИ УЛЬТРА,Kimi AI Plus — 1 месяц | Выбран,"Kimi AI Plus — 1 месяц
+Выбран",label,2,,,Plus,1m,own_account,2199.0,True,False,,True,,True,True,True,False,
+plati,5532747,https://plati.market/itm/5532747,Купить ✅ KIMI AI ПОДПИСКА - 1 МЕСЯЦ - БЕЗ ВХОДА ✅,Pro - 1 месяц | +3 000 ₽,"Pro - 1 месяц
++3 000 ₽",label,3,,,Pro,1m,unknown,5499.0,True,False,,True,,True,True,True,False,
+plati,5532747,https://plati.market/itm/5532747,Купить ✅ KIMI AI ПОДПИСКА - 1 МЕСЯЦ - БЕЗ ВХОДА ✅,Max - 1 месяц | +11 000 ₽,"Max - 1 месяц
++11 000 ₽",label,4,,,Max,1m,unknown,13499.0,True,False,,True,,True,True,True,False,
+plati,5532747,https://plati.market/itm/5532747,Купить ✅ KIMI AI ПОДПИСКА - 1 МЕСЯЦ - БЕЗ ВХОДА ✅,Plus - 1 месяц | Выбран,"Plus - 1 месяц
+Выбран",label,2,,,Plus,1m,unknown,2499.0,True,False,,True,,True,True,True,False,
+plati,6153376,https://plati.market/itm/6153376,Купить KIMI AI | Kimi.ai | Подписка PLUS/PRO/MAX/ULTRA (1 месяц),Pro 1 месяц | +3 836 ₽,"Pro 1 месяц
++3 836 ₽",label,3,,,Pro,1m,own_account,7192.0,True,False,,True,,True,True,True,False,
+plati,6153376,https://plati.market/itm/6153376,Купить KIMI AI | Kimi.ai | Подписка PLUS/PRO/MAX/ULTRA (1 месяц),Max 1 месяц | +13 425 ₽,"Max 1 месяц
++13 425 ₽",label,4,,,Max,1m,own_account,16781.0,True,False,,True,,True,True,True,False,
+plati,6153376,https://plati.market/itm/6153376,Купить KIMI AI | Kimi.ai | Подписка PLUS/PRO/MAX/ULTRA (1 месяц),Plus 1 месяц | Выбран,"Plus 1 месяц
+Выбран",label,2,,,Plus,1m,own_account,3357.0,True,False,,True,,True,True,True,False,
+plati,6131636,https://plati.market/itm/6131636,Купить Kimi AI Plus/Pro/Max/Ultra 1-12M | ПОЛНАЯ ГАРАНТИЯ,Kimi AI Plus - 1 Год | +25 574 ₽,"Kimi AI Plus - 1 Год
++25 574 ₽",label,3,,,Plus,12m,unknown,28337.0,True,False,,True,,True,True,True,False,
+plati,6131636,https://plati.market/itm/6131636,Купить Kimi AI Plus/Pro/Max/Ultra 1-12M | ПОЛНАЯ ГАРАНТИЯ,Kimi AI Pro - 1 Месяц | +2 304 ₽,"Kimi AI Pro - 1 Месяц
++2 304 ₽",label,4,,,Pro,1m,unknown,5068.0,True,False,,True,,True,True,True,False,
+plati,6131636,https://plati.market/itm/6131636,Купить Kimi AI Plus/Pro/Max/Ultra 1-12M | ПОЛНАЯ ГАРАНТИЯ,Kimi AI Pro - 1 Год | +50 801 ₽,"Kimi AI Pro - 1 Год
++50 801 ₽",label,5,,,Pro,12m,unknown,53565.0,True,False,,True,,True,True,True,False,
+plati,6131636,https://plati.market/itm/6131636,Купить Kimi AI Plus/Pro/Max/Ultra 1-12M | ПОЛНАЯ ГАРАНТИЯ,Kimi AI Max - 1 Месяц | +12 326 ₽,"Kimi AI Max - 1 Месяц
++12 326 ₽",label,6,,,Max,1m,unknown,15090.0,True,False,,True,,True,True,True,False,
+plati,6131636,https://plati.market/itm/6131636,Купить Kimi AI Plus/Pro/Max/Ultra 1-12M | ПОЛНАЯ ГАРАНТИЯ,Kimi AI Max - 1 Год | +141 229 ₽,"Kimi AI Max - 1 Год
++141 229 ₽",label,7,,,Max,12m,unknown,143992.0,True,False,,True,,True,True,True,False,
+plati,6131636,https://plati.market/itm/6131636,Купить Kimi AI Plus/Pro/Max/Ultra 1-12M | ПОЛНАЯ ГАРАНТИЯ,Kimi AI Plus - 1 Месяц | Выбран,"Kimi AI Plus - 1 Месяц
+Выбран",label,2,,,Plus,1m,unknown,2764.0,True,False,,True,,True,True,True,False,
+ggsel,102523548,https://ggsel.net/catalog/product/102523548,"Купить Kimi AI Plus 1-12М: K3, Research, Coding | FAST, ПОЛНАЯ",Kimi AI Plus - 1 Год,Kimi AI Plus - 1 Год,button,10,,,Plus,12m,unknown,25299.0,True,False,,True,,True,True,True,False,
+ggsel,102523548,https://ggsel.net/catalog/product/102523548,"Купить Kimi AI Plus 1-12М: K3, Research, Coding | FAST, ПОЛНАЯ",Kimi AI Plus - 1 Месяц,Kimi AI Plus - 1 Месяц,button,9,,,Plus,1m,unknown,2499.0,True,False,,True,,True,True,True,False,
+ggsel,103189142,https://ggsel.net/catalog/product/103189142,"Купить Kimi AI Pro 1–12M | K3, Research, Coding | FAST, ПОЛНАЯ",Kimi AI Pro - 1 Год,Kimi AI Pro - 1 Год,button,9,,,Pro,12m,own_account,50599.0,True,False,,True,,True,True,True,False,
+ggsel,103189142,https://ggsel.net/catalog/product/103189142,"Купить Kimi AI Pro 1–12M | K3, Research, Coding | FAST, ПОЛНАЯ",Kimi AI Pro - 1 Месяц,Kimi AI Pro - 1 Месяц,button,8,,,Pro,1m,own_account,4799.0,True,False,,True,,True,True,True,False,
+ggsel,103132934,https://ggsel.net/catalog/product/103132934,Купить KIMI K3 Pro 1M | Готовая подписка | | Полная г.арантия,Pro - 1 месяц,Pro - 1 месяц,button,8,,,Pro,1m,unknown,4685.0,True,False,,True,,False,True,True,False,
+ggsel,103189145,https://ggsel.net/catalog/product/103189145,"Купить Kimi AI Max 1–12М: K3, Research, Coding | FAST, ПОЛНАЯ",Kimi AI Max - 1 Год,Kimi AI Max - 1 Год,button,10,,,Max,12m,own_account,118099.0,True,False,,True,,True,True,True,False,
+ggsel,103189145,https://ggsel.net/catalog/product/103189145,"Купить Kimi AI Max 1–12М: K3, Research, Coding | FAST, ПОЛНАЯ",Kimi AI Max - 1 Месяц,Kimi AI Max - 1 Месяц,button,9,,,Max,1m,own_account,13499.0,True,False,,True,,True,True,True,False,
+ggsel,103132933,https://ggsel.net/catalog/product/103132933,Купить KIMI K3 Max 1M | Готовая подписка | | Полная г.арантия,Max - 1 месяц,Max - 1 месяц,button,8,,,Max,1m,unknown,11893.0,True,False,,True,,False,True,True,False,
+ggsel,103132937,https://ggsel.net/catalog/product/103132937,Купить KIMI K3 Pro 1-12M | Обновление/продление | Г.арантия,Pro - 1 год,Pro - 1 год,button,9,,,Pro,12m,own_account,44688.0,True,False,,True,,True,True,True,False,
+ggsel,103132937,https://ggsel.net/catalog/product/103132937,Купить KIMI K3 Pro 1-12M | Обновление/продление | Г.арантия,Pro - 1 месяц,Pro - 1 месяц,button,8,,,Pro,1m,own_account,4685.0,True,False,,True,,True,True,True,False,
+ggsel,103132936,https://ggsel.net/catalog/product/103132936,Купить KIMI K3 Max 1-12M | Обновление/продление | Г.арантия,Max - 1 год,Max - 1 год,button,9,,,Max,12m,own_account,73746.0,True,False,,True,,True,True,True,False,
+ggsel,103132936,https://ggsel.net/catalog/product/103132936,Купить KIMI K3 Max 1-12M | Обновление/продление | Г.арантия,Max - 1 месяц,Max - 1 месяц,button,8,,,Max,1m,own_account,11893.0,True,False,,True,,True,True,True,False,

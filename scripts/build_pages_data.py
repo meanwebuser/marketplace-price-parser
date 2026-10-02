@@ -11,11 +11,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 PRODUCTS = {
+    "birthday": {"label": "Вишлист на день рождения", "description": "Варианты AI-подписок, на которые можно скинуться вместе. Цены — снимок на 2 октября 2026.", "tiers": None, "detailLevel": "birthday"},
     "minimax": {"label": "MiniMax Token Plan", "description": "Официальные уровни Token Plan: Plus, Max и Ultra.", "tiers": {"Plus", "Max", "Ultra"}},
     "chatgpt": {"label": "ChatGPT", "description": "Последний сохранённый скан предложений ChatGPT.", "tiers": None},
-    "zai": {"label": "Z.ai GLM Coding", "description": "Последний сохранённый снимок Max-подписок Z.ai GLM Coding.", "tiers": {"Max"}},
+    "kimi": {"label": "Kimi K3", "description": "Предложения Kimi с доступом к K3; условия продавца указаны у каждого варианта.", "tiers": None},
+    "zai": {"label": "Z.ai GLM Coding", "description": "Снимок планов Lite, Pro и Max на GGSEL и Plati.", "tiers": None},
 }
-DATE_PREFIX = re.compile(r"^(\d{4}-\d{2}-\d{2})-(minimax|chatgpt|zai)")
+DATE_PREFIX = re.compile(r"^(\d{4}-\d{2}-\d{2})-(birthday|minimax|chatgpt|kimi|zai)")
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -45,17 +47,22 @@ def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
         # explicitly state both invariants; unsafe rows must never be published.
         if row.get("available") not in (None, "") and not as_bool(row.get("available")):
             continue
-        if row.get("price_verified") not in (None, "") and not as_bool(row.get("price_verified")):
-            continue
+        price_verified = row.get("price_verified")
+        if price_verified not in (None, "") and not as_bool(price_verified):
+            # Keep explicitly requested wishlist references that are useful to
+            # compare, while visibly marking the option as not independently
+            # verified. Scanner products still suppress these rows.
+            if product_id != "birthday" or not as_bool(row.get("show_unverified")):
+                continue
         try:
             price = float(row["price_rub"])
         except (KeyError, TypeError, ValueError):
             continue
-        offers.append({"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", ""), "available": True, "priceVerified": True, "finalVerified": as_bool(row.get("final_verified"))})
+        offers.append({"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", ""), "available": True, "priceVerified": as_bool(price_verified) if price_verified not in (None, "") else True, "finalVerified": as_bool(row.get("final_verified")), "giftNote": row.get("gift_note", ""), "verificationNote": row.get("verification_note", "")})
     raw_path = csv_path.with_suffix(".raw.json")
     raw = json.loads(raw_path.read_text(encoding="utf-8")) if raw_path.exists() else {}
     final_results = raw.get("finalVerification", {}).get("results", [])
-    return offers, {"scanDate": csv_path.name[:10], "sourcePath": str(csv_path).replace("docs/", ""), "scanStartedAt": raw.get("startedAt"), "scanCompletedAt": raw.get("finishedAt") or raw.get("lastUpdate"), "listings": len(raw.get("listings", [])) or None, "sourceRows": len(rows), "publishedRows": len(offers), "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")), "detailLevel": "full"}
+    return offers, {"scanDate": csv_path.name[:10], "sourcePath": str(csv_path).replace("docs/", ""), "scanStartedAt": raw.get("startedAt"), "scanCompletedAt": raw.get("finishedAt") or raw.get("lastUpdate"), "listings": len(raw.get("listings", [])) or None, "sourceRows": len(rows), "publishedRows": len(offers), "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")), "detailLevel": PRODUCTS[product_id].get("detailLevel", "full")}
 
 def load_product(root: Path, product_id: str) -> dict | None:
     csv_path = latest_csv(root, product_id)

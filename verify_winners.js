@@ -84,7 +84,10 @@ async function locateExact(page, offer) {
 
 async function selectedState(locator) {
   return locator.evaluate((el) => {
-    const input = el.matches("input,option") ? el : el.querySelector('input[type="radio"],input[type="checkbox"],option');
+    const associated = el.matches("label") && el.htmlFor
+      ? document.getElementById(el.htmlFor)
+      : null;
+    const input = el.matches("input,option") ? el : el.querySelector('input[type="radio"],input[type="checkbox"],option') || associated;
     const nodes = [el, input].filter(Boolean);
     const aria = nodes.some((node) => ["aria-checked", "aria-selected", "aria-pressed"].some((name) => node.getAttribute(name) === "true"));
     const classes = nodes.flatMap((node) => String(node.className || "").split(/\s+/));
