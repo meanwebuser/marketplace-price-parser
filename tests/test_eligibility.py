@@ -188,8 +188,19 @@ def test_chatgpt_any_accepts_both():
 
 def test_minimax_rejects_3m():
     minimax = FAMILY_REGISTRY["minimax"]
-    assert minimax.matches_offer(_offer("Max", "1m", "own_account"))
-    assert not minimax.matches_offer(_offer("Max", "3m", "own_account"))
+    valid = {**_offer("Max", "1m", "own_account"), "title": "MiniMax Token Plan Max"}
+    assert minimax.matches_offer(valid)
+    assert not minimax.matches_offer({**valid, "duration": "3m"})
+
+
+def test_minimax_rejects_an_unrelated_product_whose_tier_is_max():
+    minimax = FAMILY_REGISTRY["minimax"]
+    unrelated = {
+        **_offer("Max", "1m", "own_account"),
+        "title": "Runway AI Standard/Pro/MAX subscription",
+        "option_text": "MAX - 1 month",
+    }
+    assert not minimax.matches_offer(unrelated)
 
 
 def test_eligibility_extra_callback():

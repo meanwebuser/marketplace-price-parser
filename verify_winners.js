@@ -64,6 +64,23 @@ async function locateExact(page, offer) {
   const preferred = selectors[offer.controlKind];
   const candidates = preferred ? [preferred] : Object.values(selectors);
   const wanted = controlKey(offer.optionText);
+  // The collector records an index within the same control kind after it
+  // enumerates the live page. Prefer that location when its text still matches:
+  // a product page can contain duplicate labels in recommendation cards, and
+  // clicking the first text match may select a different, non-purchase control.
+  if (preferred && Number.isInteger(Number(offer.controlDomIndex)) && Number(offer.controlDomIndex) >= 0) {
+    const indexed = page.locator(preferred).nth(Number(offer.controlDomIndex));
+    if (await indexed.count()) {
+      const text = await indexed.evaluate((el) => {
+        if (el.matches('input[type="radio"]')) {
+          const label = el.closest("label") || (el.id && document.querySelector(`label[for="${CSS.escape(el.id)}"]`));
+          return (label && (label.innerText || label.textContent)) || el.value || el.name || "";
+        }
+        return el.innerText || el.textContent || "";
+      });
+      if (controlKey(text) === wanted) return { locator: indexed, selector: preferred, index: Number(offer.controlDomIndex) };
+    }
+  }
   for (const selector of candidates) {
     const locator = page.locator(selector);
     const count = await locator.count();

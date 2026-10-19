@@ -122,14 +122,19 @@ def _extract_ggsel_products(html: str, family: FamilyConfig) -> list[dict]:
         ctx = html[m.end():m.end()+800]
         title_match = re.search(r'title="([^"]{8,180})"', ctx)
         title = title_match.group(1) if title_match else ""
-        if title and not _candidate_matches_family(title, family):
+        # GGSEL category cards sometimes omit the title attribute.  Do not
+        # treat an unknown card as a family match: use its product slug as a
+        # conservative fallback, otherwise unrelated cards such as
+        # "Runway ... MAX" leak into the MiniMax result set.
+        candidate_text = title or slug.replace("-", " ")
+        if not _candidate_matches_family(candidate_text, family):
             seen.add(pid)
             continue
         seen.add(pid)
         out.append({
             "source": "ggsel",
             "native_id": pid,
-            "label": title,
+            "label": candidate_text,
             "url": f"{DEFAULT_GGSEL_BASE_URL}{href}",
             "catalog_price_rub": None,
             "seller": None,
