@@ -109,6 +109,8 @@ def classify_tier(text: str) -> str:
         return "Plus"
     if re.search(r"\bLite\b|\bлайт\b", text, re.IGNORECASE):
         return "Lite"
+    if re.search(r"\bUltra\b|\bультра\b", text, re.IGNORECASE):
+        return "Ultra"
     return ""
 
 

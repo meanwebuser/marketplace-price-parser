@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shlex
 import sys
 from pathlib import Path
 
@@ -33,7 +34,7 @@ from scanner.final_verify import verify_winners
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Marketplace price scanner (Plati + GGSEL).")
     p.add_argument("--family", required=True,
-                   help="Family: minimax, zai, chatgpt, claude (comma-separated for multi)")
+                   help="Family: minimax, zai, chatgpt, claude, kimi (comma-separated for multi)")
     p.add_argument("--purpose", default=None,
                    help="ChatGPT only: renew | new-account | any")
     p.add_argument("--duration", default=None, choices=["1m", "3m", "12m", "6m"])
@@ -41,6 +42,7 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--delivery", default=None)
     p.add_argument("--max", type=int, default=80)
     p.add_argument("--workers", type=int, default=6)
+    p.add_argument("--headless", action="store_true", help="force browser collection to stay hidden on both marketplaces")
     p.add_argument("--raw", default="/tmp/raw.json")
     p.add_argument("--csv", default="/tmp/table.csv")
     p.add_argument("--md", default="/tmp/table.md")
@@ -95,8 +97,14 @@ def _run_one(family, args, raw_path: Path) -> dict:
         print(f"[{family.name}] WARNING: no candidates found", file=sys.stderr)
         return {"listings": []}
     print(f"[{family.name}] collecting via {args.workers} workers...")
-    raw = collect(discovery["candidates"], raw_path, workers=args.workers,
+    raw = collect(discovery["candidates"], raw_path, workers=args.workers, headless=args.headless,
                   ggsel_ids=family.ggsel_ids or None)
+    raw["discovery"] = {
+        "platiFound": discovery["plati_found"],
+        "ggselFound": discovery["ggsel_found"],
+        "transports": discovery["transports"],
+        "errors": discovery["errors"],
+    }
     print(f"[{family.name}]   collected {len(raw.get('listings', []))} listings → {raw_path}")
     return raw
 
@@ -104,6 +112,45 @@ def _run_one(family, args, raw_path: Path) -> dict:
 def _tier_matches(tier: str, wanted: str) -> bool:
     """Exact match, or variant prefix: --tier Pro covers "Pro 5X"/"Pro 20X"."""
     return tier == wanted or tier.startswith(wanted + " ")
+
+
+def _merge_scan_context(raw: dict, collection_context: dict, analysis_context: dict,
+                        *, preserve_collection: bool) -> dict:
+    """Keep collection provenance immutable across analysis-only reruns."""
+    previous = raw.get("scanContext", {})
+    if preserve_collection and previous:
+        context = dict(previous)
+    else:
+        context = dict(collection_context)
+        if preserve_collection:
+            context["collectionCommand"] = None
+            context["headless"] = None
+            context["collectionContextSource"] = "unknown: legacy raw has no saved collection context"
+    context["analysis"] = dict(analysis_context)
+    return context
+
+
+def _apply_verification_results(offers: list[dict], results: list[dict]) -> None:
+    """Restore stored winner flags when reanalyzing an existing raw snapshot."""
+    by_identity = {
+        (
+            item.get("marketplace"), str(item.get("pid")),
+            item.get("raw_option_text") or item.get("option_text"),
+            item.get("tier"), item.get("duration"), item.get("delivery"),
+        ): item
+        for item in offers
+    }
+    for result in results:
+        if not result.get("verified"):
+            continue
+        identity = (
+            result.get("marketplace"), str(result.get("pid")), result.get("optionText"),
+            result.get("tier"), result.get("duration"), result.get("delivery"),
+        )
+        offer = by_identity.get(identity)
+        if offer is not None:
+            offer["final_verified"] = True
+            offer["final_observed_price"] = result.get("observedPrice")
 
 
 def _print_table(cheapest: dict, args: argparse.Namespace, *, multi: bool) -> None:
@@ -174,7 +221,10 @@ def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
     """Run pass 2 with the selected analyzer. Returns (offers, meta)."""
     use_llm = args.analyzer == "llm" or (args.analyzer == "auto" and os.environ.get("LLM_API_KEY"))
     if not use_llm:
-        return list(dedupe(offers_from_raw(raw))), {"analyzer": "regex"}
+        offers, meta = list(dedupe(offers_from_raw(raw))), {"analyzer": "regex"}
+        if family.eligibility_extra:
+            offers = [offer for offer in offers if family.eligibility_extra(offer)]
+        return offers, meta
     from analyzer.llm_extract import extract_offers
     base_url = args.llm_base_url or os.environ.get("LLM_BASE_URL", "https://llm.bezrabotnyi.com/v1")
     model = args.llm_model or os.environ.get("LLM_MODEL", "gemma4")
@@ -186,7 +236,12 @@ def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
     meta["analyzer"] = "llm-dry" if args.llm_dry_run else "llm"
     if args.llm_dry_run:
         # prompts are on disk; produce artifacts from the regex fallback
-        return list(dedupe(offers_from_raw(raw))), meta
+        offers = list(dedupe(offers_from_raw(raw)))
+        if family.eligibility_extra:
+            offers = [offer for offer in offers if family.eligibility_extra(offer)]
+        return offers, meta
+    if family.eligibility_extra:
+        offers = [offer for offer in offers if family.eligibility_extra(offer)]
     return offers, meta
 
 
@@ -219,17 +274,61 @@ def main(argv: list[str] | None = None) -> int:
             joined = "\n  - ".join(validation_issues)
             raise RuntimeError(f"zero-knowledge validation failed:\n  - {joined}")
         print(f"[{fam.name}] zero-knowledge validation: OK ({len(fam_offers)} offers)")
+        prior_verification = raw.get("finalVerification")
+        prior_results = prior_verification.get("results", []) if prior_verification else []
         if args.skip_final_verify:
             print(f"[{fam.name}] WARNING: final browser verification skipped", file=sys.stderr)
-            final_report = []
+            final_report = prior_results
+            _apply_verification_results(fam_offers, prior_results)
         else:
             targets = _selected_winners(cheapest, args)
             final_report = verify_winners(targets, fam_offers)
             print(f"[{fam.name}] final browser verification: OK ({len(final_report)} winners)")
-        raw["finalVerification"] = {
-            "skipped": bool(args.skip_final_verify),
-            "results": final_report,
+        if not args.skip_final_verify or not prior_verification:
+            raw["finalVerification"] = {
+                "skipped": bool(args.skip_final_verify),
+                "results": final_report,
+            }
+        collection_workers = int(raw.get("config", {}).get("workers", args.workers))
+        plati_ids = [str(item.get("pid")) for item in raw.get("listings", []) if item.get("marketplace") == "plati"]
+        ggsel_ids = [str(item.get("pid")) for item in raw.get("listings", []) if item.get("marketplace") == "ggsel"]
+        collection_command = ["node", "click.py", "--workers", str(collection_workers), "--out", str(raw_path)]
+        if args.headless:
+            collection_command.append("--headless")
+        if plati_ids:
+            collection_command.extend(["--plati-pids", ",".join(plati_ids)])
+        if ggsel_ids:
+            collection_command.extend(["--ggsel-ids", ",".join(ggsel_ids)])
+        listing_counts = {
+            marketplace: sum(1 for listing in raw.get("listings", []) if listing.get("marketplace") == marketplace)
+            for marketplace in ("plati", "ggsel")
         }
+        discovery = raw.get("discovery", {})
+        discovered_counts = {
+            "plati": discovery.get("platiFound", listing_counts["plati"]),
+            "ggsel": discovery.get("ggselFound", listing_counts["ggsel"]),
+        }
+        collection_context = {
+            "collectionCommand": "PYTHONPATH=. " + shlex.join(collection_command),
+            "headless": bool(args.headless or not ggsel_ids),
+            "collectionContextSource": "effective collector mode",
+            "workers": collection_workers,
+            "maxResults": args.max,
+            "discoveryCounts": discovered_counts,
+            "discoveryCountsSource": "saved discovery result" if discovery else "reconstructed from collected raw listings",
+            "listingCounts": listing_counts,
+        }
+        analysis_context = {
+            "command": "PYTHONPATH=. " + shlex.join([sys.executable, *sys.argv]),
+            "workers": args.workers,
+            "analyzer": meta["analyzer"],
+            "discoveryReused": bool(args.skip_discover),
+            "finalVerificationReused": bool(args.skip_final_verify and prior_verification),
+        }
+        raw["scanContext"] = _merge_scan_context(
+            raw, collection_context, analysis_context,
+            preserve_collection=bool(args.skip_discover),
+        )
         fam_raw_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
         for k, v in cheapest.items():
             if len(families) == 1:

@@ -1,6 +1,17 @@
 """Z.ai GLM Coding Max — current focus product."""
 
+import re
+
 from families.base import FamilyConfig
+
+
+def _is_zai_offer(offer: dict) -> bool:
+    product_text = " ".join(
+        str(offer.get(field) or "")
+        for field in ("title", "option_text", "raw_option_text")
+    )
+    return bool(re.search(r"\b(?:z[.\s-]*ai|glm|zhipu)\b", product_text, re.IGNORECASE))
+
 
 CONFIG = FamilyConfig(
     name="zai",
@@ -43,5 +54,6 @@ CONFIG = FamilyConfig(
         "102528064",
         "102611308",
     ],
+    eligibility_extra=_is_zai_offer,
     description="Z.ai GLM Coding Max, 1/3/12 months, own account or random email",
 )

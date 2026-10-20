@@ -41,6 +41,18 @@ def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
         title, tier = row.get("title", ""), row.get("tier", "unknown")
         if product_id == "minimax" and "minimax" not in title.lower():
             continue
+        if product_id == "minimax" and re.search(
+            r"\bapi\b|api[_-]|api\s*key|credit|кредит|top[\s_-]*up|пополн|баланс",
+            " ".join((title, row.get("option_text", ""), row.get("raw_option_text", ""))),
+            re.IGNORECASE,
+        ):
+            continue
+        if product_id == "zai" and not re.search(
+            r"\b(?:z[.\s-]*ai|glm|zhipu)\b",
+            " ".join((title, row.get("option_text", ""), row.get("raw_option_text", ""))),
+            re.IGNORECASE,
+        ):
+            continue
         if allowed_tiers and tier not in allowed_tiers:
             continue
         # Old snapshots predate these columns and remain readable.  New scans

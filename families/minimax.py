@@ -6,12 +6,18 @@ from families.base import FamilyConfig
 
 
 def _is_minimax_offer(offer: dict) -> bool:
-    """Keep a generic MAX chip from another service out of MiniMax results."""
+    """Keep only MiniMax subscriptions, excluding API and balance products."""
     product_text = " ".join(
         str(offer.get(field) or "")
         for field in ("title", "option_text", "raw_option_text")
     )
-    return bool(re.search(r"mini\s*max", product_text, re.IGNORECASE))
+    is_minimax = bool(re.search(r"mini\s*max", product_text, re.IGNORECASE))
+    is_non_subscription = bool(re.search(
+        r"\bapi\b|api[_-]|api\s*key|credit|кредит|top[\s_-]*up|пополн|баланс",
+        product_text,
+        re.IGNORECASE,
+    ))
+    return is_minimax and not is_non_subscription
 
 CONFIG = FamilyConfig(
     name="minimax",

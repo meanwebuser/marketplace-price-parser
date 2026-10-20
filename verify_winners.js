@@ -118,9 +118,12 @@ async function verifyOne(browser, offer) {
   const result = { ...offer, observedPrice: null, selected: false, stable: false, verified: false, verifiedAt: new Date().toISOString(), error: null };
   const context = await browser.newContext({
     locale: "ru-RU",
-    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+    userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${browser.version()} Safari/537.36`,
   });
   const page = await context.newPage();
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "webdriver", { get: () => undefined });
+  });
   page.setDefaultTimeout(12000);
   try {
     await page.goto(offer.url, { waitUntil: "domcontentloaded", timeout: 35000 });
@@ -175,7 +178,20 @@ async function verifyOne(browser, offer) {
   });
   const results = [];
   try {
-    for (const offer of input.offers || []) results.push(await verifyOne(browser, offer));
+    for (const offer of input.offers || []) {
+      const first = await verifyOne(browser, offer);
+      if (first.verified) {
+        first.attempts = 1;
+        results.push(first);
+        continue;
+      }
+      // Fresh contexts can recover from a transient marketplace navigation or
+      // variant-control hiccup without weakening the price/selection checks.
+      const retry = await verifyOne(browser, offer);
+      retry.attempts = 2;
+      retry.firstAttemptError = first.error;
+      results.push(retry);
+    }
   } finally {
     await browser.close();
   }

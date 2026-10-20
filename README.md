@@ -2,7 +2,9 @@
 
 Семейство-ориентированный парсер для двух маркетплейсов — [GGSEL](https://ggsel.net/) и [Plati](https://plati.market/). Канонический путь — `cli.py --family <name>`: добавить новый продукт (Cursor, Claude, Grok, Kimi) теперь стоит 30 строк конфига, а не копию всего сканера.
 
-Поддерживаемые семейства: `minimax` (Token Plan Max), `zai` (GLM Coding Max), `chatgpt` (Plus / Pro / Pro X5 / Pro X20), `claude` (Pro / Max — placeholder).
+Поддерживаемые семейства: `minimax` (Token Plan Max), `zai` (GLM Coding Max), `chatgpt` (Plus / Pro / Pro X5 / Pro X20), `claude` (Pro / Max), `kimi` (Kimi AI / Kimi K3 Plus / Pro / Max / Ultra).
+
+Kimi uses the parser's `1m`, `3m`, `6m`, and `12m` durations and includes all four delivery types for the public catalogue, including shared and unknown delivery. API, top-up, balance, and credit listings are excluded during discovery and eligibility filtering. GGSEL category discovery merges curated listing IDs from the 2026-10-02 snapshot without importing historical prices. Availability and verified-price checks still apply.
 
 ## Что умеет
 
@@ -35,6 +37,12 @@ npm ci --prefix ggsel_plati
 ```bash
 # Свежий скан: discovery → collect → analyze
 PYTHONPATH=. .venv/bin/python cli.py --family zai --workers 6
+
+# Kimi AI / Kimi K3: fresh subscription catalogue, no visible browser windows
+PYTHONPATH=. .venv/bin/python cli.py --family kimi --workers 2 --headless
+
+# Headless collection for either marketplace
+PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --workers 2 --headless
 
 # Повторный анализ по уже собранным данным
 PYTHONPATH=. .venv/bin/python cli.py --family zai --skip-discover --raw /tmp/zai_raw.json
@@ -86,7 +94,8 @@ low_price/
 │   ├── minimax.py                  # MiniMax Token Plan Max
 │   ├── zai.py                      # Z.ai GLM Coding Max
 │   ├── chatgpt.py                  # ChatGPT Plus / Pro (purpose presets)
-│   └── claude.py                   # Claude Pro / Max (placeholder)
+│   ├── claude.py                   # Claude Pro / Max
+│   └── kimi.py                     # Kimi AI / Kimi K3 subscriptions
 │
 ├── marketplaces/                   # Per-marketplace adapters
 │
@@ -125,7 +134,7 @@ CONFIG = FamilyConfig(
 )
 ```
 
-`from families import FAMILY_REGISTRY` уже подхватит его автоматически.
+Add the module's `CONFIG` to `families/__init__.py`; the canonical CLI then resolves it through `FAMILY_REGISTRY`.
 
 ### Crawlee backends
 

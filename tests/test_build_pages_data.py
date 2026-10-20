@@ -34,3 +34,31 @@ def test_historical_snapshot_without_safety_columns_remains_readable(tmp_path):
     offers, _ = normalize_csv(csv_path, "chatgpt")
 
     assert [offer["pid"] for offer in offers] == ["legacy"]
+
+
+def test_minimax_product_excludes_api_listings(tmp_path):
+    csv_path = tmp_path / "2026-01-02-minimax.csv"
+    csv_path.write_text(
+        "pid,title,option_text,tier,duration,delivery,price_rub\n"
+        "subscription,MiniMax Token Plan,Max 1 month,Max,1m,own_account,5303\n"
+        "api,MiniMax API Platform,Max 1 month,Max,1m,own_account,1000\n",
+        encoding="utf-8",
+    )
+
+    offers, _ = normalize_csv(csv_path, "minimax")
+
+    assert [offer["pid"] for offer in offers] == ["subscription"]
+
+
+def test_zai_product_excludes_unrelated_ai_listings(tmp_path):
+    csv_path = tmp_path / "2026-01-02-zai.csv"
+    csv_path.write_text(
+        "pid,title,option_text,tier,duration,delivery,price_rub\n"
+        "glm,Z.ai GLM Coding,Max 1 month,Max,1m,own_account,16590\n"
+        "recraft,Recraft.AI PRO,Pro 1 month,Pro,1m,own_account,99\n",
+        encoding="utf-8",
+    )
+
+    offers, _ = normalize_csv(csv_path, "zai")
+
+    assert [offer["pid"] for offer in offers] == ["glm"]

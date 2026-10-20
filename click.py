@@ -552,9 +552,18 @@ async function runWorker(workerId, queue, context, onDone) {
   // A real browser context owns live user tabs, so keep CDP collection
   // sequential. Isolated collection remains parallel.
   const workerCount = remoteBrowser ? 1 : WORKERS;
+  const chromeVersion = browser.version();
   const workers = [];
   for (let i = 0; i < workerCount; i++) {
-    const ctx = remoteBrowser ? remoteContexts[0] : await browser.newContext({ locale: 'ru-RU' });
+    const ctx = remoteBrowser ? remoteContexts[0] : await browser.newContext({
+      locale: 'ru-RU',
+      userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${chromeVersion} Safari/537.36`,
+    });
+    if (!remoteBrowser) {
+      await ctx.addInitScript(() => {
+        Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+      });
+    }
     workers.push(runWorker(i, queue, ctx, appendListing));
   }
   await Promise.all(workers);

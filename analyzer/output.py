@@ -4,6 +4,7 @@ collector JSON, apply family eligibility, and emit CSV + Markdown."""
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -141,6 +142,25 @@ def write_markdown(
         f.write(title + "\n\n")
         if source_path:
             f.write(f"Source: `{source_path.name}`\n\n")
+            if source_path.exists():
+                raw_bytes = source_path.read_bytes()
+                raw = json.loads(raw_bytes)
+                f.write(f"Raw SHA-256: `{hashlib.sha256(raw_bytes).hexdigest()}`\n\n")
+                context = raw.get("scanContext", {})
+                if context:
+                    headless = context.get("headless")
+                    mode = "headless" if headless is True else "visible browser" if headless is False else "unknown"
+                    counts = context.get("listingCounts", {})
+                    f.write(
+                        f"Collection: {mode}, {context.get('workers', 'unknown')} workers; "
+                        f"Plati {counts.get('plati', 0)}, GGSEL {counts.get('ggsel', 0)} listings.\n\n"
+                    )
+                    if context.get("collectionCommand"):
+                        f.write(f"Collection command: `{context['collectionCommand']}`\n\n")
+                verification = raw.get("finalVerification", {})
+                verified = sum(1 for item in verification.get("results", []) if item.get("verified"))
+                status = "skipped" if verification.get("skipped") else f"{verified} winner(s) verified"
+                f.write(f"Final browser verification: {status}.\n\n")
         f.write(f"Rows: {len(offers)} ({sum(1 for o in offers if o['glitched'])} glitched, suppressed from ranking)\n\n")
         for dur in ("1m", "3m", "12m", "6m"):
             f.write(f"\n## Duration: {dur}\n\n")

@@ -144,7 +144,15 @@ def _offer(tier, duration, delivery, glitched=False):
 
 def test_zai_accepts_max_1m_own_account():
     zai = FAMILY_REGISTRY["zai"]
-    assert zai.matches_offer(_offer("Max", "1m", "own_account"))
+    assert zai.matches_offer({**_offer("Max", "1m", "own_account"), "title": "Z.ai GLM Coding Max"})
+
+
+def test_zai_rejects_unrelated_ai_products_with_pro_tier():
+    zai = FAMILY_REGISTRY["zai"]
+    valid = {**_offer("Max", "1m", "own_account"), "title": "Z.ai GLM Coding Max"}
+    unrelated = {**valid, "title": "Recraft.AI PRO subscription"}
+    assert zai.matches_offer(valid)
+    assert not zai.matches_offer(unrelated)
 
 
 def test_zai_rejects_lite():
@@ -201,6 +209,34 @@ def test_minimax_rejects_an_unrelated_product_whose_tier_is_max():
         "option_text": "MAX - 1 month",
     }
     assert not minimax.matches_offer(unrelated)
+
+
+def test_minimax_rejects_api_and_credit_purchases():
+    minimax = FAMILY_REGISTRY["minimax"]
+    valid = {**_offer("Max", "1m", "own_account"), "title": "MiniMax Token Plan Max"}
+    api = {**valid, "title": "MiniMax API Platform Max subscription"}
+    credits = {**valid, "option_text": "Max 1 month, credits top-up"}
+    assert minimax.matches_offer(valid)
+    assert not minimax.matches_offer(api)
+    assert not minimax.matches_offer(credits)
+
+
+def test_analyzer_does_not_export_minimax_api_options():
+    from cli import _analyze, _parse_args
+
+    raw = {"listings": [
+        {"marketplace": "plati", "pid": "sub", "title": "MiniMax Token Plan Max", "options": [
+            {"text": "Max 1 month", "clicked": True, "prices": [{"cls": "id_product_price", "text": "5303 ₽"}], "priceVerified": True},
+        ]},
+        {"marketplace": "plati", "pid": "api", "title": "MiniMax API Platform Max", "options": [
+            {"text": "Max 1 month", "clicked": True, "prices": [{"cls": "id_product_price", "text": "1000 ₽"}], "priceVerified": True},
+        ]},
+    ]}
+    args = _parse_args(["--family", "minimax", "--analyzer", "regex"])
+
+    offers, _ = _analyze(raw, FAMILY_REGISTRY["minimax"], args)
+
+    assert [offer["pid"] for offer in offers] == ["sub"]
 
 
 def test_eligibility_extra_callback():

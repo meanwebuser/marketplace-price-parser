@@ -50,6 +50,13 @@ def _candidate_matches_family(text: str, family: FamilyConfig) -> bool:
     n = normalise(text)
     if not n:
         return False
+    if family.name == "kimi":
+        from families.kimi import is_subscription
+        if not is_subscription(n):
+            return False
+        has_plan = re.search(r"\b(?:plus|pro|max|ultra|плюс|про|макс|ультра)\b|subscription|подпис|тариф|plan", n)
+        has_term = re.search(r"\b(?:1|3|6|12)\s*[mм]\b|month|мес|год|year|\b(?:30|90|180|365)\s*(?:дн|days)", n)
+        return bool(has_plan and has_term)
     if re.search(r"audio|agent|credit|кредит|top\s*-?up|попол\w*|api\s*key", n):
         return False
     terms = [normalise(t) for t in family.search_terms] + [family.name]
@@ -144,7 +151,7 @@ def _extract_ggsel_products(html: str, family: FamilyConfig) -> list[dict]:
 
 
 async def _ggsel_crawl_async(family: FamilyConfig, max_results: int) -> list[dict]:
-    """Single PlaywrightCrawler run: category + search fallback. Other
+    """Single PlaywrightCrawler category run. Other
     crawlers (HttpCrawler with ImpitHttpClient) return 401 because GGSEL
     is behind Cloudflare bot detection — only a real browser gets through."""
     from crawlee.crawlers import PlaywrightCrawler
@@ -152,8 +159,8 @@ async def _ggsel_crawl_async(family: FamilyConfig, max_results: int) -> list[dic
     if family.ggssel_category:
         start_urls.append(GGSEL_CATEGORY_URL.format(category=family.ggssel_category))
     # GGSEL /search returns 404 (they removed the public search endpoint).
-    # Category page is the canonical discovery surface; fall back to
-    # known URLs in family.ggsel_ids if it returns nothing.
+    # Curated family.ggsel_ids are merged by discover_ggsel, even when
+    # the category is empty or unavailable.
     if not start_urls:
         return []
     products: list[dict] = []
@@ -179,12 +186,28 @@ async def _ggsel_crawl_async(family: FamilyConfig, max_results: int) -> list[dic
 
 
 def discover_ggsel(family: FamilyConfig, max_results: int = 80) -> tuple[list[dict], str]:
-    """Run Playwright-based GGSEL discovery. Returns (products, transport)."""
+    """Merge category results with curated IDs, keeping live card metadata."""
     try:
         products = asyncio.run(_ggsel_crawl_async(family, max_results))
-        return products, "playwright"
+        transport = "playwright"
     except Exception as e:
-        return [], f"playwright-error: {e}"
+        products = []
+        transport = f"playwright-error: {e}"
+    merged = {str(p["native_id"]): p for p in products}
+    for curated in family.ggsel_ids:
+        # Existing configs contain both numeric IDs and slug-ID paths.
+        path = str(curated).strip()
+        match = re.search(r"(?:^|-)(\d+)$", path)
+        if not match:
+            continue
+        pid = match.group(1)
+        if pid not in merged:
+            merged[pid] = {
+                "source": "ggsel", "native_id": pid, "label": "",
+                "url": f"{DEFAULT_GGSEL_BASE_URL}/catalog/product/{path}",
+                "catalog_price_rub": None, "seller": None, "sales": None,
+            }
+    return list(merged.values())[:max_results], transport
 
 
 def discover_all(family: FamilyConfig, max_results: int = 80) -> dict:

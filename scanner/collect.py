@@ -18,6 +18,7 @@ def collect(
     out_path: Path | None = None,
     *,
     workers: int = 6,
+    headless: bool = False,
     plati_pids: Sequence[int | str] | None = None,
     ggsel_ids: Sequence[str] | None = None,
 ) -> dict:
@@ -49,6 +50,8 @@ def collect(
             ggsel_unique.append(g)
 
     cmd = ["node", str(CLICK_JS), "--workers", str(workers), "--out", str(out_path)]
+    if headless:
+        cmd.append("--headless")
     if plati_unique:
         cmd.extend(["--plati-pids", ",".join(plati_unique)])
     if ggsel_unique:
@@ -69,11 +72,12 @@ if __name__ == "__main__":
     p.add_argument("--family", required=True, choices=list(FAMILY_REGISTRY))
     p.add_argument("--max", type=int, default=80)
     p.add_argument("--workers", type=int, default=6)
+    p.add_argument("--headless", action="store_true", help="force all marketplace browsers to stay hidden")
     p.add_argument("--out", default="/tmp/raw.json")
     args = p.parse_args()
 
     family = FAMILY_REGISTRY[args.family]
     discovery = discover_all(family, args.max)
     print(f"discovery: plati={discovery['plati_found']}, ggsel={discovery['ggsel_found']}")
-    result = collect(discovery["candidates"], Path(args.out), workers=args.workers)
+    result = collect(discovery["candidates"], Path(args.out), workers=args.workers, headless=args.headless)
     print(f"collected: {len(result['listings'])} listings → {args.out}")
