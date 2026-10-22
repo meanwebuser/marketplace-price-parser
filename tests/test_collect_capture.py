@@ -89,7 +89,7 @@ def test_ggsel_guest_mode_uses_a_visible_browser_and_captures_new_account():
 
 def test_collector_requires_selected_state_for_a_new_variant_price():
     assert "await target.click({ timeout: CLICK_TIMEOUT_MS })" in CLICK
-    assert "Boolean(ctrl.selected) || (settled.changed && selectedAfter)" in CLICK
+    assert "settled.stable && selectedAfter" in CLICK
 
 
 def test_collector_supports_real_chrome_cdp_without_a_stale_user_agent():
@@ -100,3 +100,17 @@ def test_collector_supports_real_chrome_cdp_without_a_stale_user_agent():
 
 def test_collector_ignores_noninteractive_labels():
     assert "if (associated || explicitlyInteractive)" in CLICK
+
+
+def test_initially_selected_control_must_still_be_selected_after_click():
+    # Evaluate the actual collector predicate; no browser/network needed.
+    import re
+    predicate = re.search(r"priceVerified: (.*?),\n        priceSettleMs", CLICK, re.S).group(1)
+    script = "const verify=(ctrl,settled,selectedAfter)=>(" + predicate + ");" + """
+const settled={prices:[{}],stable:true,changed:false};
+if (verify({selected:true},settled,false)) throw new Error('stale default price was verified');
+if (!verify({selected:true},settled,true)) throw new Error('selected default price rejected');
+if (!verify({selected:false},{...settled,changed:true},true)) throw new Error('new selected price rejected');
+if (verify({selected:false},{...settled,changed:true},false)) throw new Error('unselected price verified');
+"""
+    subprocess.run(["node", "-e", script], check=True)

@@ -472,12 +472,11 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
         priceChanged: settled.changed,
         priceStable: settled.stable,
         selectedAfter,
-        // A price transition alone can come from an unrelated carousel or
-        // recommendation block. For a newly selected option require both the
-        // transition and the DOM-selected state; the initial default is
-        // already tied to its first rendered price.
-        priceVerified: settled.prices.length > 0 && settled.stable &&
-          (Boolean(ctrl.selected) || (settled.changed && selectedAfter)),
+        // The initial default is clicked last. Its page-load selection is
+        // historical: require the live selected state for every option so a
+        // failed return click cannot inherit the previous variant's price.
+        priceVerified: settled.prices.length > 0 && settled.stable && selectedAfter &&
+          (Boolean(ctrl.selected) || settled.changed),
         priceSettleMs: settled.elapsedMs,
       }));
     }
