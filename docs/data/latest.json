@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T23:14:09.305027+00:00",
+  "generatedAt": "2026-10-22T23:16:08.213087+00:00",
   "products": [
     {
       "id": "minimax",
@@ -4987,7 +4987,7 @@
         "scanCompletedAt": "2026-10-22T22:01:01.358Z",
         "listings": 32,
         "sourceRows": 108,
-        "publishedRows": 89,
+        "publishedRows": 90,
         "finalVerifiedWinners": 22,
         "detailLevel": "full"
       },
@@ -5399,6 +5399,23 @@
           "available": true,
           "priceVerified": true,
           "finalVerified": false
+        },
+        {
+          "marketplace": "plati",
+          "pid": "6293110",
+          "url": "https://plati.market/itm/6293110",
+          "title": "Купить 💎 KIMI AI | KIMI.AI | PLUS/PRO/MAX/ULTRA | 1М | ДЁШЕВО И БЫСТРО 🚀",
+          "optionText": "PRO — 1 МЕСЯЦ +2 665 ₽",
+          "tier": "Pro",
+          "duration": "1m",
+          "delivery": "unknown",
+          "priceRub": 4837.0,
+          "strongSignal": true,
+          "glitched": false,
+          "glitchReason": "",
+          "available": true,
+          "priceVerified": true,
+          "finalVerified": true
         },
         {
           "marketplace": "plati",

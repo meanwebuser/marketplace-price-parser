@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import re
 import sys
 from datetime import datetime, timezone
@@ -72,12 +73,19 @@ def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
         # explicitly state both invariants; unsafe rows must never be published.
         if row.get("available") not in (None, "") and not as_bool(row.get("available")):
             continue
-        if row.get("price_verified") not in (None, "") and not as_bool(row.get("price_verified")):
-            continue
         try:
             price = float(row["price_rub"])
         except (KeyError, TypeError, ValueError):
             continue
+        if row.get("price_verified") not in (None, "") and not as_bool(row.get("price_verified")):
+            # An independent final browser check can supersede failed
+            # collection, but only for the exact price being published.
+            try:
+                final_price = float(row.get("final_observed_price", ""))
+            except (TypeError, ValueError):
+                continue
+            if not as_bool(row.get("final_verified")) or not math.isfinite(final_price) or final_price != price:
+                continue
         offers.append({"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", ""), "available": True, "priceVerified": True, "finalVerified": as_bool(row.get("final_verified"))})
     raw_path = csv_path.with_suffix(".raw.json")
     raw = json.loads(raw_path.read_text(encoding="utf-8")) if raw_path.exists() else {}

@@ -84,3 +84,28 @@ def test_kimi_product_excludes_glm_option_from_mixed_brand_listing(tmp_path):
     ]
     assert metadata["sourceRows"] == 3
     assert metadata["publishedRows"] == 2
+
+
+def test_final_price_verification_can_rescue_failed_collection_only_on_exact_match(tmp_path):
+    csv_path = tmp_path / "2026-10-23-kimi.csv"
+    fields = ["pid", "title", "tier", "duration", "delivery", "price_rub",
+              "available", "price_verified", "final_verified", "final_observed_price"]
+    cases = [
+        ("exact", "True", "4837"),
+        ("mismatch", "True", "4838"),
+        ("missing", "True", ""),
+        ("invalid", "True", "unknown"),
+        ("unsuccessful", "False", "4837"),
+    ]
+    with csv_path.open("w", newline="") as target:
+        writer = csv.DictWriter(target, fieldnames=fields)
+        writer.writeheader()
+        for pid, verified, observed in cases:
+            writer.writerow(dict(pid=pid, title="Kimi Pro", tier="Pro", duration="1m",
+                                 delivery="unknown", price_rub="4837.0", available="True",
+                                 price_verified="False", final_verified=verified,
+                                 final_observed_price=observed))
+    offers, _ = normalize_csv(csv_path, "kimi")
+    assert [offer["pid"] for offer in offers] == ["exact"]
+    assert offers[0]["priceVerified"] is True
+    assert offers[0]["finalVerified"] is True
