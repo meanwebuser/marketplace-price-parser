@@ -1,0 +1,31 @@
+marketplace,pid,url,title,option_text,raw_option_text,control_kind,control_dom_index,control_input_id,control_value,tier,duration,delivery,price_rub,strong_signal,glitched,glitch_reason,available,availability_reason,price_changed,price_stable,price_verified,final_verified,final_observed_price
+plati,4696379,https://plati.market/itm/4696379,Купить MINIMAX AI M3 Token Plan subscription 1month,max | +3 083 ₽,"max
++3 083 ₽",label,3,,,Max,1m,own_account,5193.0,True,False,,True,,True,True,True,False,
+plati,4696379,https://plati.market/itm/4696379,Купить MINIMAX AI M3 Token Plan subscription 1month,plus | Выбран,"plus
+Выбран",label,2,,,Plus,1m,own_account,2110.0,True,False,,True,,True,True,True,False,
+plati,5979972,https://plati.market/itm/5979972,Купить Премиум-доступ к MINIMAX AI | Plus / Max / Ultra | 1 месяц | Безопасный доступ | Полн,Макс (1 месяц) | +2 823 ₽,"Макс (1 месяц)
++2 823 ₽",label,5,,,Max,1m,own_account,5175.0,True,False,,True,,True,True,True,False,
+plati,5979972,https://plati.market/itm/5979972,Купить Премиум-доступ к MINIMAX AI | Plus / Max / Ultra | 1 месяц | Безопасный доступ | Полн,Ultra (1 месяц) | +12 231 ₽,"Ultra (1 месяц)
++12 231 ₽",label,6,,,Ultra,1m,own_account,14584.0,True,False,,True,,True,True,True,False,
+plati,5979972,https://plati.market/itm/5979972,Купить Премиум-доступ к MINIMAX AI | Plus / Max / Ultra | 1 месяц | Безопасный доступ | Полн,Плюс (1 год) | +18 817 ₽,"Плюс (1 год)
++18 817 ₽",label,7,,,Plus,12m,own_account,21169.0,True,False,,True,,True,True,True,False,
+plati,5979972,https://plati.market/itm/5979972,Купить Премиум-доступ к MINIMAX AI | Plus / Max / Ultra | 1 месяц | Безопасный доступ | Полн,Макс (1 год) | +51 747 ₽,"Макс (1 год)
++51 747 ₽",label,8,,,Max,12m,own_account,54099.0,True,False,,True,,True,True,True,False,
+plati,5979972,https://plati.market/itm/5979972,Купить Премиум-доступ к MINIMAX AI | Plus / Max / Ultra | 1 месяц | Безопасный доступ | Полн,Ultra (1 год) | +122 310 ₽,"Ultra (1 год)
++122 310 ₽",label,9,,,Ultra,12m,own_account,124662.0,True,False,,True,,True,True,True,False,
+plati,5979972,https://plati.market/itm/5979972,Купить Премиум-доступ к MINIMAX AI | Plus / Max / Ultra | 1 месяц | Безопасный доступ | Полн,Plus (1 месяц) | Выбран,"Plus (1 месяц)
+Выбран",label,4,,,Plus,1m,own_account,2353.0,True,False,,True,,True,True,True,False,
+plati,5971796,https://plati.market/itm/5971796,Купить Премиум-подписка MiniMax AI | Тарифы Plus / Max / Ultra | 1 месяц | Мгновенная достав,Макс (1 месяц) | +2 823 ₽,"Макс (1 месяц)
++2 823 ₽",label,5,,,Max,1m,unknown,5175.0,True,False,,True,,True,True,True,False,
+plati,5971796,https://plati.market/itm/5971796,Купить Премиум-подписка MiniMax AI | Тарифы Plus / Max / Ultra | 1 месяц | Мгновенная достав,Ultra (1 месяц) | +12 231 ₽,"Ultra (1 месяц)
++12 231 ₽",label,6,,,Ultra,1m,unknown,14584.0,True,False,,True,,True,True,True,False,
+plati,5971796,https://plati.market/itm/5971796,Купить Премиум-подписка MiniMax AI | Тарифы Plus / Max / Ultra | 1 месяц | Мгновенная достав,Плюс (1 год) | +18 817 ₽,"Плюс (1 год)
++18 817 ₽",label,7,,,Plus,12m,unknown,21169.0,True,False,,True,,True,True,True,False,
+plati,5971796,https://plati.market/itm/5971796,Купить Премиум-подписка MiniMax AI | Тарифы Plus / Max / Ultra | 1 месяц | Мгновенная достав,Макс (1 год) | +51 747 ₽,"Макс (1 год)
++51 747 ₽",label,8,,,Max,12m,unknown,54099.0,True,False,,True,,True,True,True,False,
+plati,5971796,https://plati.market/itm/5971796,Купить Премиум-подписка MiniMax AI | Тарифы Plus / Max / Ultra | 1 месяц | Мгновенная достав,Ultra (1 год) | +122 310 ₽,"Ultra (1 год)
++122 310 ₽",label,9,,,Ultra,12m,unknown,124662.0,True,False,,True,,True,True,True,False,
+plati,5971796,https://plati.market/itm/5971796,Купить Премиум-подписка MiniMax AI | Тарифы Plus / Max / Ultra | 1 месяц | Мгновенная достав,Plus (3 месяца) | +5 646 ₽,"Plus (3 месяца)
++5 646 ₽",label,10,,,Plus,3m,unknown,7998.0,True,False,,True,,True,True,True,False,
+plati,5971796,https://plati.market/itm/5971796,Купить Премиум-подписка MiniMax AI | Тарифы Plus / Max / Ultra | 1 месяц | Мгновенная достав,Plus (1 месяц) | Выбран,"Plus (1 месяц)
+Выбран",label,4,,,Plus,1m,unknown,2353.0,True,False,,True,,True,True,True,False,

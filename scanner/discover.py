@@ -69,7 +69,12 @@ def _candidate_matches_family(text: str, family: FamilyConfig) -> bool:
 
 # ---- Plati discovery (no auth, GET API) ---------------------------------
 
-def discover_plati(family: FamilyConfig, max_results: int = 80) -> tuple[list[dict], str]:
+def discover_plati(
+    family: FamilyConfig,
+    max_results: int = 80,
+    *,
+    query_errors: list[str] | None = None,
+) -> tuple[list[dict], str]:
     api_url = os.getenv("PLATI_API_URL", DEFAULT_PLATI_API_URL)
     base_url = os.getenv("PLATI_BASE_URL", DEFAULT_PLATI_BASE_URL).rstrip("/")
     seen: set[str] = set()
@@ -93,7 +98,10 @@ def discover_plati(family: FamilyConfig, max_results: int = 80) -> tuple[list[di
                 payload = json.loads(resp.read().decode("utf-8"))
             transport = "urllib"
         except Exception as e:
-            print(f"  plati search '{query}': {e}", file=sys.stderr)
+            failure = f"plati search '{query}': {e}"
+            print(f"  {failure}", file=sys.stderr)
+            if query_errors is not None:
+                query_errors.append(failure)
             continue
         for item in (payload.get("content", {}) or {}).get("items", []) or []:
             label = name_from_locales(item)
@@ -150,7 +158,12 @@ def _extract_ggsel_products(html: str, family: FamilyConfig) -> list[dict]:
     return out
 
 
-async def _ggsel_crawl_async(family: FamilyConfig, max_results: int) -> list[dict]:
+async def _ggsel_crawl_async(
+    family: FamilyConfig,
+    max_results: int,
+    *,
+    request_failures: list[str] | None = None,
+) -> list[dict]:
     """Single PlaywrightCrawler category run. Other
     crawlers (HttpCrawler with ImpitHttpClient) return 401 because GGSEL
     is behind Cloudflare bot detection — only a real browser gets through."""
@@ -173,6 +186,15 @@ async def _ggsel_crawl_async(family: FamilyConfig, max_results: int) -> list[dic
             "args": ["--no-sandbox"],
         },
     )
+
+    failures = request_failures if request_failures is not None else []
+
+    @crawler.failed_request_handler
+    async def handle_failed_request(ctx, error):
+        failures.append(
+            f"GGSEL request failed after retries: {ctx.request.url}: {error}"
+        )
+
     @crawler.router.default_handler
     async def handle(ctx):
         try:
@@ -185,14 +207,24 @@ async def _ggsel_crawl_async(family: FamilyConfig, max_results: int) -> list[dic
     return products[:max_results]
 
 
-def discover_ggsel(family: FamilyConfig, max_results: int = 80) -> tuple[list[dict], str]:
+def discover_ggsel(
+    family: FamilyConfig,
+    max_results: int = 80,
+    *,
+    request_failures: list[str] | None = None,
+) -> tuple[list[dict], str]:
     """Merge category results with curated IDs, keeping live card metadata."""
+    failures: list[str] = []
     try:
-        products = asyncio.run(_ggsel_crawl_async(family, max_results))
-        transport = "playwright"
+        products = asyncio.run(
+            _ggsel_crawl_async(family, max_results, request_failures=failures)
+        )
+        transport = "playwright-partial" if failures else "playwright"
     except Exception as e:
         products = []
         transport = f"playwright-error: {e}"
+    if request_failures is not None:
+        request_failures.extend(failures)
     merged = {str(p["native_id"]): p for p in products}
     for curated in family.ggsel_ids:
         # Existing configs contain both numeric IDs and slug-ID paths.
@@ -211,15 +243,28 @@ def discover_ggsel(family: FamilyConfig, max_results: int = 80) -> tuple[list[di
 
 
 def discover_all(family: FamilyConfig, max_results: int = 80) -> dict:
-    plati, plati_t = discover_plati(family, max_results)
-    ggsel, ggsel_t = discover_ggsel(family, max_results)
+    plati_query_errors: list[str] = []
+    plati, plati_t = discover_plati(family, max_results, query_errors=plati_query_errors)
+    ggsel_request_failures: list[str] = []
+    ggsel, ggsel_t = discover_ggsel(
+        family, max_results, request_failures=ggsel_request_failures
+    )
+    errors = list(plati_query_errors)
+    errors.extend(ggsel_request_failures)
+    if ggsel_t.startswith("playwright-error"):
+        errors.append(ggsel_t)
     return {
         "family": family.name,
         "candidates": plati + ggsel,
         "plati_found": len(plati),
         "ggsel_found": len(ggsel),
-        "transports": {"plati": plati_t, "ggsel": ggsel_t},
-        "errors": ([ggsel_t] if ggsel_t.startswith("playwright-error") else []),
+        "transports": {
+            "plati": plati_t,
+            "platiQueryFailures": plati_query_errors,
+            "ggsel": ggsel_t,
+            "ggselRequestFailures": ggsel_request_failures,
+        },
+        "errors": errors,
     }
 
 

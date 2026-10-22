@@ -45,7 +45,7 @@ PYTHONPATH=. .venv/bin/python cli.py --family kimi --workers 2 --headless
 PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --workers 2 --headless
 
 # Повторный анализ по уже собранным данным
-PYTHONPATH=. .venv/bin/python cli.py --family zai --skip-discover --raw /tmp/zai_raw.json
+PYTHONPATH=. .venv/bin/python cli.py --family zai --skip-discover --raw .tmp/zai_raw.json
 
 # С фильтром только Max / 1 месяц / свой аккаунт
 PYTHONPATH=. .venv/bin/python cli.py --family zai --tier Max --duration 1m --delivery own_account
@@ -57,15 +57,20 @@ PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --purpose renew
 # (нужен LLM_API_KEY; OpenAI-совместимый эндпоинт, по умолчанию gemma4)
 PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --purpose renew --analyzer llm
 
-# Проверить размер контекста LLM без реальных вызовов (дампы в /tmp/llm_prompts)
+# Проверить размер контекста LLM без реальных вызовов (дампы в .tmp/llm-efficiency/llm_prompts)
 PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --analyzer llm --llm-dry-run \
   --skip-discover --raw docs/audits/data/2026-08-16-audit-raw.json
 ```
 
+## Бюджет локального сравнения (Mac, 2026-10-22)
+
+База замера: 32 GiB RAM, 10 CPU, 66% свободной памяти; swap уже занят на 1.58 GiB из 3 GiB; свободно 288.8 GiB диска. Для свежего сравнения ставим пределы: не более 2 headless browser workers и 2 CPU-ядер, один нагрузочный запуск за раз, не более 40 дочерних процессов проекта, до 4 GiB обычного и 6 GiB предельного RAM, прирост swap не более 1 GiB, временные данные до 1 GiB и минимум 100 GiB свободного диска. LLM batch concurrency — 1. GPU не используется. Во время сбора контролировать память, swap и процессный пик; остановить запуск при превышении лимита или если свободный диск опустится ниже резерва.
+
 Артефакты:
-- `/tmp/zai_raw.json` — сырой сбор (pass 1)
-- `/tmp/table.csv` — все офферы с классификацией (pass 2)
-- `/tmp/table.md` — канонический отчёт с самой дешёвой ценой по (tier × duration × delivery)
+- `.tmp/raw.json` — сырой сбор (pass 1; при нескольких family отдельный файл на каждую)
+- `.tmp/table.csv` — все офферы с классификацией (pass 2)
+- `.tmp/table.md` — канонический отчёт с самой дешёвой ценой по (tier × duration × delivery)
+- `.tmp/llm-efficiency/llm_prompts/` — сохранённые prompt batches для `--llm-dry-run`
 
 ### Backward-compat wrappers
 
@@ -155,7 +160,7 @@ Playwright, такой лот остаётся в сыром снимке, но 
 
 ```bash
 node click.py --cdp-url http://127.0.0.1:9222 --workers 1 \
-  --ggsel-ids 102608819 --out /tmp/minimax-raw.json
+  --ggsel-ids 102608819 --out .tmp/minimax-raw.json
 ```
 
 Chrome должен быть предварительно запущен владельцем с включённым remote

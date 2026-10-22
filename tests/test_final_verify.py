@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -71,3 +72,33 @@ def test_python_contract_rejects_forged_success_report(monkeypatch):
 
     with pytest.raises(RuntimeError, match="violates invariants"):
         final_verify.verify_winners([winner], [winner])
+
+
+def test_final_verifier_uses_task_local_temp_directory(monkeypatch, tmp_path):
+    winner = _offer()
+    task_temp = tmp_path / "nested" / "final_verify"
+    monkeypatch.setattr(final_verify, "FINAL_VERIFY_TMP_DIR", task_temp)
+    observed_input_parents = []
+
+    def run(command, **kwargs):
+        input_path = Path(command[command.index("--input") + 1])
+        output_path = Path(command[command.index("--out") + 1])
+        observed_input_parents.append(input_path.parent.parent)
+        requested = json.loads(input_path.read_text(encoding="utf-8"))["offers"][0]
+        result = {
+            **requested,
+            "observedPrice": 1234,
+            "selected": True,
+            "stable": True,
+            "verified": True,
+            "error": None,
+        }
+        output_path.write_text(json.dumps({"results": [result]}), encoding="utf-8")
+        return SimpleNamespace(returncode=0, stderr="", stdout="")
+
+    monkeypatch.setattr(final_verify.subprocess, "run", run)
+    final_verify.verify_winners([winner], [winner])
+
+    assert observed_input_parents == [task_temp]
+    assert task_temp.is_dir()
+    assert list(task_temp.iterdir()) == []

@@ -35,7 +35,12 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
             title = listing.get("title", "")
             tier = classify_tier(text)
             duration = classify_duration(text) or classify_duration_from_title(title)
-            delivery = classify_delivery(text, title, listing.get("descText", ""))
+            delivery = classify_delivery(
+                text,
+                title,
+                listing.get("descText", ""),
+                page_text=listing.get("pageText", ""),
+            )
             if not tier or not duration:
                 continue
             available, availability_reason = classify_availability(

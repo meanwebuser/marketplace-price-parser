@@ -1,0 +1,229 @@
+{
+  "version": 1,
+  "description": "15 raw-backed cases from the manually checked ChatGPT spot audit. Partial and non-representative; not a census of all listings. Five narrative-only rows are retained under audit_note_only and excluded from scores. See docs/audits/2026-08-16-manual-audit.md §8 for corrections and limits.",
+  "fields_scored": [
+    "tier",
+    "duration",
+    "delivery",
+    "price_rub"
+  ],
+  "identity": [
+    "marketplace",
+    "pid",
+    "price_rub"
+  ],
+  "rows": [
+    {
+      "marketplace": "ggsel",
+      "pid": "101524581",
+      "price_rub": 599,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-002",
+      "evidence": "GO 1m, по токену; 599₽"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "101524581",
+      "price_rub": 699,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-002",
+      "evidence": "GO 1m, по ID; 699₽"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102292918",
+      "price_rub": 699,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-003",
+      "evidence": "Подписка/продление ChatGPT GO на 1 месяц, по токену; 699₽"
+    },
+    {
+      "marketplace": "plati",
+      "pid": "4756087",
+      "price_rub": 690,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-020",
+      "evidence": "С входом ChatGPT Plus 1 месяц; 690₽; audit marks correct"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102361494",
+      "price_rub": 2299,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-021",
+      "evidence": "Plus subscription/renewal for 1 month; 2299₽; audit marks correct"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "101440349",
+      "price_rub": 2899,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-022/M-032",
+      "evidence": "1 месяц Plus; 2899₽; audit marks correct"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102700280",
+      "price_rub": 2500,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-023",
+      "evidence": "Ключ продления вашего аккаунта; 2500₽; audit marks correct"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102635272",
+      "price_rub": 22789,
+      "tier": "Pro 20X",
+      "duration": "1m",
+      "delivery": "new_account",
+      "source_case": "M-028",
+      "evidence": "Pro 20x - 1 месяц; 22789₽; account creation/email in seller details"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102635272",
+      "price_rub": 12688,
+      "tier": "Pro 5X",
+      "duration": "1m",
+      "delivery": "new_account",
+      "source_case": "M-029",
+      "evidence": "Pro 5x - 1 месяц; 12688₽; M-028 identifies seller account creation/email"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102305527",
+      "price_rub": 1650,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "new_account",
+      "source_case": "M-030",
+      "evidence": "Ready-to-use subscription 1 month; 1650₽; ready account breadcrumb"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102224873",
+      "price_rub": 2899,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-031",
+      "evidence": "Plus 1 month [по входу]; 2899₽"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102226640",
+      "price_rub": 8399,
+      "tier": "Pro 5X",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-033",
+      "evidence": "PRO X5, 1 месяц, НА ВАШ; 8399₽"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "4658858",
+      "price_rub": 7999,
+      "tier": "Pro 5X",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "audit §8 corrected PID mapping",
+      "evidence": "Продлить подписку [AUTO] PRO X5 через token; selected buy block 7999₽"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "4658858",
+      "price_rub": 16698,
+      "tier": "Pro 20X",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "audit §8 corrected PID mapping",
+      "evidence": "Продлить подписку [AUTO] PRO X20 через token; selected buy block 16698₽"
+    },
+    {
+      "marketplace": "plati",
+      "pid": "5990295",
+      "price_rub": 13237,
+      "tier": "Pro",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-034/M-050",
+      "evidence": "GPT PRO 1 month, with login, auto; 13237₽"
+    }
+  ],
+  "audit_note_only": [
+    {
+      "marketplace": "plati",
+      "pid": "5794897",
+      "price_rub": 499,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-001",
+      "evidence": "ChatGPT GO, 1 месяц, на ваш аккаунт; 499₽",
+      "scored": false,
+      "limitation": "No matching marketplace/PID in the committed raw capture; narrative-only audit evidence."
+    },
+    {
+      "marketplace": "plati",
+      "pid": "5097685",
+      "price_rub": 649,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-004",
+      "evidence": "С входом ChatGPT GO 1 месяц; 649₽",
+      "scored": false,
+      "limitation": "No matching marketplace/PID in the committed raw capture; narrative-only audit evidence."
+    },
+    {
+      "marketplace": "plati",
+      "pid": "4658858",
+      "price_rub": 649,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-010",
+      "evidence": "С входом ChatGPT GO 1 месяц; 649₽",
+      "scored": false,
+      "limitation": "No matching marketplace/PID in the committed raw capture; narrative-only audit evidence."
+    },
+    {
+      "marketplace": "plati",
+      "pid": "5618101",
+      "price_rub": 11999,
+      "tier": "Pro",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-051",
+      "evidence": "GPT PRO 1 month on your account; 11999₽; audit marks correct",
+      "scored": false,
+      "limitation": "No matching marketplace/PID in the committed raw capture; narrative-only audit evidence."
+    },
+    {
+      "marketplace": "plati",
+      "pid": "5693137",
+      "price_rub": 13237,
+      "tier": "Pro",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "M-052",
+      "evidence": "GPT PRO 1 month auto; 13237₽; audit marks correct",
+      "scored": false,
+      "limitation": "No matching marketplace/PID in the committed raw capture; narrative-only audit evidence."
+    }
+  ]
+}

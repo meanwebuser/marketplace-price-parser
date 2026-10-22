@@ -6,6 +6,7 @@ from families.base import FamilyConfig
 
 
 _BRAND = re.compile(r"\b(?:kimi|кими)\b", re.I)
+_OTHER_MODEL = re.compile(r"\b(?:glm|z[.\s-]*ai|zhipu)\b|глм", re.I)
 _NON_SUBSCRIPTION = re.compile(
     r"\bapi\b|\bapi[_-]|\bапи\b|api\s*key|credit|кредит|"
     r"top[\s_-]*up|пополн|баланс",
@@ -19,10 +20,18 @@ def is_subscription(text: str) -> bool:
 
 
 def _eligible(offer: dict) -> bool:
-    return is_subscription(" ".join(
-        str(offer.get(key) or "")
-        for key in ("title", "option_text", "raw_option_text")
-    ))
+    title = str(offer.get("title") or "")
+    option = " ".join(
+        str(offer.get(key) or "") for key in ("option_text", "raw_option_text")
+    )
+    # A mixed-brand listing can sell several products under one title. Trust
+    # the selected option first: reject GLM/Z.ai controls, and reject generic
+    # controls in mixed titles because their product cannot be identified.
+    if _OTHER_MODEL.search(option):
+        return False
+    if _OTHER_MODEL.search(title) and not _BRAND.search(option):
+        return False
+    return is_subscription(" ".join((title, option)))
 
 
 CONFIG = FamilyConfig(

@@ -7,8 +7,15 @@ import argparse
 import csv
 import json
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from families.kimi import CONFIG as KIMI_CONFIG
 
 PRODUCTS = {
     "minimax": {"label": "MiniMax Token Plan", "description": "Официальные уровни Token Plan: Plus, Max и Ultra.", "tiers": {"Plus", "Max", "Ultra"}},
@@ -52,6 +59,12 @@ def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
             " ".join((title, row.get("option_text", ""), row.get("raw_option_text", ""))),
             re.IGNORECASE,
         ):
+            continue
+        if product_id == "kimi" and KIMI_CONFIG.eligibility_extra and not KIMI_CONFIG.eligibility_extra({
+            "title": title,
+            "option_text": row.get("option_text", ""),
+            "raw_option_text": row.get("raw_option_text", ""),
+        }):
             continue
         if allowed_tiers and tier not in allowed_tiers:
             continue

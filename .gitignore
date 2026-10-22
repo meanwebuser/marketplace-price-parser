@@ -10,3 +10,4 @@ storage/
 zai_test_runner.js
 .agents/
 output/pdf/birthday-ai-wishlist.pdf
+.tmp/

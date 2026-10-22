@@ -57,6 +57,28 @@ def test_kimi_eligibility_rechecks_non_subscription_options(extra):
     })
 
 
+def test_kimi_eligibility_uses_option_brand_on_mixed_brand_titles():
+    eligibility = kimi().eligibility_extra
+    mixed_title = "Подписка GLM Lite / Kimi Plus на 1 месяц"
+
+    assert eligibility({
+        "title": mixed_title,
+        "option_text": "Kimi Coding Plus — 1 месяц",
+    })
+    assert not eligibility({
+        "title": mixed_title,
+        "option_text": "GLM Coding Lite — 1 месяц",
+    })
+    assert not eligibility({
+        "title": mixed_title,
+        "option_text": "Lite — 1 месяц",
+    })
+    assert eligibility({
+        "title": "Kimi Plus subscription 1 month",
+        "option_text": "Plus — 1 month",
+    })
+
+
 @pytest.mark.parametrize("field,value", [
     ("available", False), ("price_verified", False), ("glitched", True),
     ("tier", "Lite"), ("duration", "7d"),

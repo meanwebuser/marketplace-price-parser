@@ -11,7 +11,7 @@ Examples:
     python cli.py --family zai --tier Max --duration 1m
     python cli.py --family chatgpt --purpose renew
     python cli.py --family zai --llm                 # Gemma4 sanity check
-    python cli.py --family zai --skip-discover --raw /tmp/zai_raw.json
+    python cli.py --family zai --skip-discover --raw .tmp/zai_raw.json
 """
 
 from __future__ import annotations
@@ -28,7 +28,10 @@ from scanner.discover import discover_all
 from scanner.collect import collect
 from analyzer.output import offers_from_raw, dedupe, cheapest_per_tier, write_csv, write_markdown
 from analyzer.validate import validate_rankings
-from scanner.final_verify import verify_winners
+from scanner.final_verify import FinalVerificationError, verify_winners
+
+ROOT = Path(__file__).resolve().parent
+LLM_PROMPTS_DIR = ROOT / ".tmp" / "llm-efficiency" / "llm_prompts"
 
 
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
@@ -43,15 +46,16 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--max", type=int, default=80)
     p.add_argument("--workers", type=int, default=6)
     p.add_argument("--headless", action="store_true", help="force browser collection to stay hidden on both marketplaces")
-    p.add_argument("--raw", default="/tmp/raw.json")
-    p.add_argument("--csv", default="/tmp/table.csv")
-    p.add_argument("--md", default="/tmp/table.md")
+    p.add_argument("--raw", default=str(ROOT / ".tmp" / "raw.json"))
+    p.add_argument("--csv", default=str(ROOT / ".tmp" / "table.csv"))
+    p.add_argument("--md", default=str(ROOT / ".tmp" / "table.md"))
     p.add_argument("--skip-discover", action="store_true")
     p.add_argument("--skip-final-verify", action="store_true",
                    help="unsafe/offline mode: do not independently reopen and verify ranked winners")
-    p.add_argument("--analyzer", default="auto", choices=["auto", "regex", "llm"],
-                   help="pass-2 engine: llm = batched evidence packs, regex = offline heuristics, "
-                        "auto = llm when LLM_API_KEY is set, else regex")
+    p.add_argument("--analyzer", default="auto", choices=["auto", "regex", "llm", "selective"],
+                   help="pass-2 engine: llm = all-listing evidence packs; selective = ChatGPT-only uncertainty gate; "
+                        "regex = offline heuristics; auto = selective for ChatGPT or llm for other families "
+                        "when LLM_API_KEY is set, else regex")
     p.add_argument("--llm-batch-chars", type=int, default=6000,
                    help="evidence-pack chars per LLM batch; local models stop "
                         "following the strict JSON schema above ~3 listings")
@@ -84,6 +88,17 @@ def _resolve_families(args: argparse.Namespace) -> list:
     return families
 
 
+def _family_raw_path(raw_path: Path, family_count: int, family_name: str) -> Path:
+    if family_count == 1:
+        return raw_path
+    return ROOT / ".tmp" / f"{family_name}_raw.json"
+
+
+def _ensure_parent_dirs(*paths: Path) -> None:
+    for path in paths:
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+
 def _run_one(family, args, raw_path: Path) -> dict:
     """Discover + collect for one family. Returns raw dict."""
     if args.skip_discover and raw_path.exists():
@@ -93,18 +108,21 @@ def _run_one(family, args, raw_path: Path) -> dict:
     print(f"[{family.name}] discovering...")
     discovery = discover_all(family, args.max)
     print(f"[{family.name}]   plati: {discovery['plati_found']}, ggsel: {discovery['ggsel_found']}")
-    if discovery["plati_found"] + discovery["ggsel_found"] == 0:
-        print(f"[{family.name}] WARNING: no candidates found", file=sys.stderr)
-        return {"listings": []}
-    print(f"[{family.name}] collecting via {args.workers} workers...")
-    raw = collect(discovery["candidates"], raw_path, workers=args.workers, headless=args.headless,
-                  ggsel_ids=family.ggsel_ids or None)
-    raw["discovery"] = {
+    discovery_metadata = {
         "platiFound": discovery["plati_found"],
         "ggselFound": discovery["ggsel_found"],
         "transports": discovery["transports"],
         "errors": discovery["errors"],
     }
+    if discovery["plati_found"] + discovery["ggsel_found"] == 0:
+        print(f"[{family.name}] WARNING: no candidates found", file=sys.stderr)
+        return {"listings": [], "discovery": discovery_metadata}
+    print(f"[{family.name}] collecting via {args.workers} workers...")
+    # discover_all already merges curated GGSEL IDs into canonical candidates.
+    # Passing slugs separately would collect the same listing twice because
+    # collect deduplicates the slug and numeric native ID as different strings.
+    raw = collect(discovery["candidates"], raw_path, workers=args.workers, headless=args.headless)
+    raw["discovery"] = discovery_metadata
     print(f"[{family.name}]   collected {len(raw.get('listings', []))} listings → {raw_path}")
     return raw
 
@@ -151,6 +169,25 @@ def _apply_verification_results(offers: list[dict], results: list[dict]) -> None
         if offer is not None:
             offer["final_verified"] = True
             offer["final_observed_price"] = result.get("observedPrice")
+
+
+def _verify_winners_and_persist_failure(
+    raw: dict, targets: list[dict], offers: list[dict], raw_path: Path,
+) -> list[dict]:
+    try:
+        return verify_winners(targets, offers)
+    except FinalVerificationError as error:
+        failure_record = {
+            "skipped": False,
+            "failed": True,
+            "error": str(error),
+            "results": error.results,
+        }
+        if error.verifier_error:
+            failure_record["verifierError"] = error.verifier_error
+        raw["finalVerification"] = failure_record
+        raw_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
+        raise
 
 
 def _print_table(cheapest: dict, args: argparse.Namespace, *, multi: bool) -> None:
@@ -219,8 +256,64 @@ def _maybe_llm(offers: list, args: argparse.Namespace) -> None:
 
 def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
     """Run pass 2 with the selected analyzer. Returns (offers, meta)."""
-    use_llm = args.analyzer == "llm" or (args.analyzer == "auto" and os.environ.get("LLM_API_KEY"))
-    if not use_llm:
+    analyzer = args.analyzer
+    if analyzer == "auto":
+        if not os.environ.get("LLM_API_KEY"):
+            analyzer = "regex"
+        elif family.name == "chatgpt":
+            analyzer = "selective"
+        else:
+            analyzer = "llm"
+
+    if analyzer == "selective":
+        if family.name != "chatgpt":
+            raise ValueError("--analyzer selective currently supports only the ChatGPT family")
+        from analyzer.selective import merge_selective_offers, select_uncertain_listings
+
+        deterministic = list(dedupe(offers_from_raw(raw)))
+        if family.eligibility_extra:
+            deterministic = [offer for offer in deterministic if family.eligibility_extra(offer)]
+        selected, reason_map = select_uncertain_listings(raw, deterministic)
+        reason_counts: dict[str, int] = {}
+        for reasons in reason_map.values():
+            for reason in reasons:
+                reason_counts[reason] = reason_counts.get(reason, 0) + 1
+
+        meta = {
+            "analyzer": "selective",
+            "totalListings": len(raw.get("listings", [])),
+            "routedListings": len(selected),
+            "routeReasons": reason_counts,
+            "called": 0,
+            "batches": 0,
+            "failed": 0,
+        }
+        if not selected or (not os.environ.get("LLM_API_KEY") and not args.llm_dry_run):
+            if selected and not os.environ.get("LLM_API_KEY"):
+                meta["llmSkipped"] = "LLM_API_KEY is not set"
+            return deterministic, meta
+
+        from analyzer.llm_extract import extract_offers
+        base_url = args.llm_base_url or os.environ.get("LLM_BASE_URL", "https://llm.bezrabotnyi.com/v1")
+        model = args.llm_model or os.environ.get("LLM_MODEL", "gemma4")
+        llm_offers, llm_meta = extract_offers(
+            {**raw, "listings": selected},
+            api_key=os.environ.get("LLM_API_KEY", ""),
+            base_url=base_url,
+            model=model,
+            batch_chars=args.llm_batch_chars,
+            min_price_by_tier=family.price_floors or None,
+            dry_run=args.llm_dry_run,
+            dry_dir=str(LLM_PROMPTS_DIR),
+        )
+        meta.update(llm_meta)
+        meta["analyzer"] = "selective-dry" if args.llm_dry_run else "selective"
+        offers = merge_selective_offers(deterministic, llm_offers, selected)
+        if family.eligibility_extra:
+            offers = [offer for offer in offers if family.eligibility_extra(offer)]
+        return offers, meta
+
+    if analyzer != "llm":
         offers, meta = list(dedupe(offers_from_raw(raw))), {"analyzer": "regex"}
         if family.eligibility_extra:
             offers = [offer for offer in offers if family.eligibility_extra(offer)]
@@ -231,7 +324,7 @@ def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
     offers, meta = extract_offers(
         raw, api_key=os.environ.get("LLM_API_KEY", ""), base_url=base_url, model=model,
         batch_chars=args.llm_batch_chars, min_price_by_tier=family.price_floors or None,
-        dry_run=args.llm_dry_run, dry_dir="/tmp/llm_prompts",
+        dry_run=args.llm_dry_run, dry_dir=str(LLM_PROMPTS_DIR),
     )
     meta["analyzer"] = "llm-dry" if args.llm_dry_run else "llm"
     if args.llm_dry_run:
@@ -245,26 +338,42 @@ def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
     return offers, meta
 
 
+def _print_dry_run_summary(family_name: str, meta: dict) -> None:
+    routed = (
+        f", {meta.get('routedListings', 0)}/{meta.get('totalListings', 0)} listings routed"
+        if meta.get("analyzer") == "selective-dry" else ""
+    )
+    sizes = meta.get("batch_bytes") or []
+    print(f"[{family_name}] analyzer={meta['analyzer']}: {meta['batches']} batches{routed}, "
+          f"total {sum(sizes)/1024:.0f} KB, max batch {max(sizes)/1024:.1f} KB "
+          f"(~{max(sizes)*0.4:.0f} tokens) → {LLM_PROMPTS_DIR}")
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     families = _resolve_families(args)
     raw_path = Path(args.raw)
     csv_path = Path(args.csv)
     md_path = Path(args.md)
+    _ensure_parent_dirs(raw_path, csv_path, md_path)
 
     all_offers: list = []
     all_cheapest: dict = {}
+    primary_raw_path: Path | None = None
     for fam in families:
-        fam_raw_path = raw_path if len(families) == 1 else Path(f"/tmp/{fam.name}_raw.json")
+        fam_raw_path = _family_raw_path(raw_path, len(families), fam.name)
+        _ensure_parent_dirs(fam_raw_path)
+        if primary_raw_path is None:
+            primary_raw_path = fam_raw_path
         raw = _run_one(fam, args, fam_raw_path)
         fam_offers, meta = _analyze(raw, fam, args)
-        if meta["analyzer"] == "llm-dry":
-            sizes = meta.get("batch_bytes") or []
-            print(f"[{fam.name}] analyzer=llm-dry: {meta['batches']} batches, "
-                  f"total {sum(sizes)/1024:.0f} KB, max batch {max(sizes)/1024:.1f} KB "
-                  f"(~{max(sizes)*0.4:.0f} tokens) → /tmp/llm_prompts")
+        if meta["analyzer"] in ("llm-dry", "selective-dry"):
+            _print_dry_run_summary(fam.name, meta)
         else:
             print(f"[{fam.name}] analyzer={meta['analyzer']}"
+                  + (f", {meta.get('routedListings', 0)}/{meta.get('totalListings', 0)} listings routed, "
+                     f"{meta.get('batches', 0)} batches, {meta.get('called', 0)} calls, "
+                     f"{meta.get('failed', 0)} failed" if meta["analyzer"].startswith("selective") else "")
                   + (f", batches={meta.get('batches')}, called={meta.get('called')}, failed={meta.get('failed')}"
                      if meta["analyzer"] == "llm" else ""))
         all_offers.extend(fam_offers)
@@ -282,7 +391,9 @@ def main(argv: list[str] | None = None) -> int:
             _apply_verification_results(fam_offers, prior_results)
         else:
             targets = _selected_winners(cheapest, args)
-            final_report = verify_winners(targets, fam_offers)
+            final_report = _verify_winners_and_persist_failure(
+                raw, targets, fam_offers, fam_raw_path
+            )
             print(f"[{fam.name}] final browser verification: OK ({len(final_report)} winners)")
         if not args.skip_final_verify or not prior_verification:
             raw["finalVerification"] = {
@@ -292,7 +403,7 @@ def main(argv: list[str] | None = None) -> int:
         collection_workers = int(raw.get("config", {}).get("workers", args.workers))
         plati_ids = [str(item.get("pid")) for item in raw.get("listings", []) if item.get("marketplace") == "plati"]
         ggsel_ids = [str(item.get("pid")) for item in raw.get("listings", []) if item.get("marketplace") == "ggsel"]
-        collection_command = ["node", "click.py", "--workers", str(collection_workers), "--out", str(raw_path)]
+        collection_command = ["node", "click.py", "--workers", str(collection_workers), "--out", str(fam_raw_path)]
         if args.headless:
             collection_command.append("--headless")
         if plati_ids:
@@ -338,7 +449,7 @@ def main(argv: list[str] | None = None) -> int:
 
     primary = families[0]
     write_csv(all_offers, csv_path)
-    write_markdown(all_offers, all_cheapest, primary, md_path, source_path=raw_path)
+    write_markdown(all_offers, all_cheapest, primary, md_path, source_path=primary_raw_path or raw_path)
 
     _print_table(all_cheapest, args, multi=len(families) > 1)
     _maybe_llm(all_offers, args)

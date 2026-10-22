@@ -62,3 +62,25 @@ def test_zai_product_excludes_unrelated_ai_listings(tmp_path):
     offers, _ = normalize_csv(csv_path, "zai")
 
     assert [offer["pid"] for offer in offers] == ["glm"]
+
+
+def test_kimi_product_excludes_glm_option_from_mixed_brand_listing(tmp_path):
+    csv_path = tmp_path / "2026-10-23-kimi.csv"
+    csv_path.write_text(
+        "pid,title,option_text,tier,duration,delivery,price_rub\n"
+        '6252740,"Подписка GLM Lite / Kimi Plus на 1 месяц",'
+        '"Kimi Coding Plus — 1 месяц",Plus,1m,own_account,2037\n'
+        '6252740,"Подписка GLM Lite / Kimi Plus на 1 месяц",'
+        '"GLM Coding Lite — 1 месяц",Lite,1m,own_account,1709\n'
+        'kimi-only,"Kimi Plus subscription 1 month",'
+        '"Plus — 1 month",Plus,1m,own_account,2100\n',
+        encoding="utf-8",
+    )
+
+    offers, metadata = normalize_csv(csv_path, "kimi")
+
+    assert [offer["optionText"] for offer in offers] == [
+        "Kimi Coding Plus — 1 месяц", "Plus — 1 month",
+    ]
+    assert metadata["sourceRows"] == 3
+    assert metadata["publishedRows"] == 2

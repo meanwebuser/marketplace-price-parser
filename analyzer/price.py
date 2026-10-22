@@ -148,7 +148,7 @@ _DELIV_PATTERNS = [
     # Whose mailbox wins over everything below: an account registered on
     # the BUYER's email is own even when the seller creates it
     # ("Создание аккаунта на вашу почту" => own).
-    ("own_account",   re.compile(r"ваш\w*\s*(?:e-?mail|почт\w*)", re.I)),
+    ("own_account",   re.compile(r"на\s*ваш\w*\s*(?:e-?mail|почт\w*)", re.I)),
     # Ready-account handovers on the SELLER's / random mailbox.
     ("new_account",   re.compile(r"готов\w*\s*аккаунт|\bнов(?:ый|ая|ое|ые)?\s*аккаунт|созда\w*\s*аккаунт|персональн\w+\s*аккаунт|случайн\w*\s*(?:почт|email)|выда\w*\s*аккаунт|полный\s*доступ\s*к\s*почте|random\s*email|pre.?made\s*account|ready\s*account|предложен\w*\s*на\s*перв\w*\s*месяц|first\s*month\s*offer|аккаунт\s*предостав\w*|предостав\w*\s*аккаунт", re.I)),
     ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|со\s*входом|с\s*входом|на\s*вашем\s*аккаунте|продлен\w*|продлевается|обновлен\w*|обновля\w*|апгрейд|требуется\s*вход|first\s*registration|ваш\s*акк|upgrade\s*on\s*your\s*personal\s*account|personal\s*account|renew\w*\s+(?:subscription|on\s+your\s+account)|activat\w*\s+on\s+your\s+account", re.I)),
@@ -172,8 +172,15 @@ _TITLE_DELIV_HINTS = [
 # "на ваш аккаунт" in the title is a specific statement and must outrank
 # generic marketing markers like "мгновенная активация".
 _TITLE_DELIV_OWN_HINTS = [
-    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|ваш\w*\s*(?:e-?mail|почт\w*)|через\s*токен", re.I)),
+    ("own_account",   re.compile(r"на\s*ваш\w*(?:\s+\w+){0,2}\s*аккаунт|ваш\s*аккаунт|на\s*аккаунт\s*покупател|на\s*ваш\w*\s*(?:e-?mail|почт\w*)|через\s*токен", re.I)),
     ("own_account",   re.compile(r"\bобновлен\w*|продлен\w*|upgrade|renew|extend|сохран\w*\s*истори|сохран\w*\s*рабоч|обновлен\w*\s*подписк|продлен\w*\s*подписк", re.I)),
+]
+
+# Page text is noisy and can contain form labels such as "Ваш email" that
+# describe an input field, not who owns the account. Use only an explicit
+# ready-account phrase as a final new-account fallback.
+_PAGE_DELIV_HINTS = [
+    ("new_account", re.compile(r"готов\w*\s*аккаунт|ready\s*account", re.I)),
 ]
 
 _LONG_LETTER_RUN_RE = re.compile(r"([^\W\d_])\1{2,}", re.IGNORECASE | re.UNICODE)
@@ -184,7 +191,13 @@ def _normalise_delivery_text(value: str) -> str:
     return _LONG_LETTER_RUN_RE.sub(r"\1\1", value or "")
 
 
-def classify_delivery(text: str, title: str = "", description: str = "") -> str:
+def classify_delivery(
+    text: str,
+    title: str = "",
+    description: str = "",
+    *,
+    page_text: str = "",
+) -> str:
     """Map variant evidence to delivery type. Order matters:
     shared-account wins, then own-account, then new-account. The chip
     text is authoritative; title hints only kick in when chip text is
@@ -193,6 +206,7 @@ def classify_delivery(text: str, title: str = "", description: str = "") -> str:
     text = _normalise_delivery_text(text)
     title = _normalise_delivery_text(title)
     description = _normalise_delivery_text(description)
+    page_text = _normalise_delivery_text(page_text)
     for delivery, pat in _DELIV_PATTERNS:
         if pat.search(text):
             return delivery
@@ -209,6 +223,13 @@ def classify_delivery(text: str, title: str = "", description: str = "") -> str:
     }
     if len(description_matches) == 1:
         return description_matches.pop()
+    page_matches = {
+        delivery
+        for delivery, pat in _PAGE_DELIV_HINTS
+        if pat.search(page_text)
+    }
+    if len(page_matches) == 1:
+        return page_matches.pop()
     return "unknown"
 
 

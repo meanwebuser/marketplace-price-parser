@@ -15,6 +15,16 @@ from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 VERIFY_JS = ROOT / "verify_winners.js"
+FINAL_VERIFY_TMP_DIR = ROOT / ".tmp" / "llm-efficiency" / "final_verify"
+
+
+class FinalVerificationError(RuntimeError):
+    """Verification failure that retains the structured browser report."""
+
+    def __init__(self, message: str, results: list[dict], verifier_error: str | None = None):
+        super().__init__(message)
+        self.results = results
+        self.verifier_error = verifier_error
 
 
 def _identity(offer: dict) -> tuple:
@@ -55,14 +65,19 @@ def verify_winners(winners: Iterable[dict], all_offers: list[dict]) -> list[dict
             for item in requested
         ]
     }
-    with tempfile.TemporaryDirectory(prefix="price-final-verify-") as directory:
+    FINAL_VERIFY_TMP_DIR.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="price-final-verify-", dir=FINAL_VERIFY_TMP_DIR) as directory:
         input_path = Path(directory) / "input.json"
         output_path = Path(directory) / "output.json"
         input_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-        proc = subprocess.run(
-            ["node", str(VERIFY_JS), "--input", str(input_path), "--out", str(output_path)],
-            cwd=ROOT, capture_output=True, text=True, check=False,
-        )
+        try:
+            proc = subprocess.run(
+                ["node", str(VERIFY_JS), "--input", str(input_path), "--out", str(output_path)],
+                cwd=ROOT, capture_output=True, text=True, check=False,
+            )
+        except OSError as error:
+            message = f"final browser verification failed: verifier launch failed: {error}"
+            raise FinalVerificationError(message, [], verifier_error=str(error)) from error
         report = json.loads(output_path.read_text(encoding="utf-8")) if output_path.exists() else {}
         results = report.get("results", [])
         expected = {
@@ -98,8 +113,11 @@ def verify_winners(winners: Iterable[dict], all_offers: list[dict]) -> list[dict
             details = "; ".join(
                 f"{item.get('url')}: {item.get('error') or 'verification failed'}"
                 for item in failures
-            ) or (proc.stderr.strip() or "verifier returned an incomplete report")
-            raise RuntimeError(f"final browser verification failed: {details}")
+            ) or (report.get("error") or proc.stderr.strip() or "verifier returned an incomplete report")
+            raise FinalVerificationError(
+                f"final browser verification failed: {details}", results,
+                verifier_error=report.get("error"),
+            )
 
     by_identity = {_identity(item): item for item in requested}
     for result in results:
