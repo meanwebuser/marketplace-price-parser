@@ -65,7 +65,7 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
             # the return click failed and left another variant's price visible.
             if opt.get("selectedAfter") is False:
                 price_verified = False
-            if price_verified is None:
+            elif price_verified is None:
                 # Historical captures predate price-state verification.  Keep
                 # them readable, while new captures must state it explicitly.
                 price_verified = strong

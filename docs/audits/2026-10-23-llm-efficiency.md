@@ -66,8 +66,8 @@ row despite the suspicious-price checkbox. Filters were correct. Raw listing
 12 months. The collector had incorrectly accepted the original selected flag.
 
 Every DOM price now requires the live selected state. Offline analysis also
-rejects explicit deselection in older captures, retaining independent base-plus-
-surcharge proofs. Raw evidence is unchanged. Re-evaluation marked three CSV rows
+rejects explicit deselection in older captures. Base-plus-surcharge inference
+remains allowed only when selection did not explicitly fail. Raw evidence is unchanged. Re-evaluation marked three CSV rows
 unverified: Kimi 6131590 (291,944 RUB), Kimi 6131636 (28,389 RUB), and ChatGPT
 6043279 (1,876 RUB). They are excluded from the site instead of guessing prices;
 published offer counts are Kimi 92 and ChatGPT 89. Other products are unchanged.
@@ -75,3 +75,12 @@ published offer counts are Kimi 92 and ChatGPT 89. Other products are unchanged.
 Two focused regressions failed before the fix; the affected suite passed
 140 tests after it. The existing ranking test fixture was also corrected to
 include its required MiniMax product title.
+
+
+A follow-up regression caught surcharge fallback overriding explicit failed
+selection. The failure branch is now exclusive, preserving existing inference for
+true/missing selection evidence. Kimi listing 6293110 has three additional rows
+marked unverified (Plus 2,172 RUB, Pro 4,837 RUB, Max 14,707 RUB), reducing the
+published Kimi count to 89. No clicked option in the five latest raw captures
+lacks `selectedAfter`, so historical missing-field compatibility was retained.
+The new regression failed before the fix; 228 affected tests pass afterward.

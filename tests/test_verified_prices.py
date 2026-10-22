@@ -31,3 +31,25 @@ def test_default_variant_cannot_reuse_another_variants_stale_price():
     }]}
     offer, = offers_from_raw(raw)
     assert offer["price_verified"] is False
+
+
+def test_surcharge_cannot_override_explicit_failed_selection():
+    from analyzer.output import offers_from_raw
+
+    option = {
+        "text": "Kimi Plus - 1 месяц на ваш аккаунт +500 ₽",
+        "clicked": True, "priceChanged": False, "priceStable": True,
+        "priceVerified": False,
+        "prices": [{"text": "2 000 ₽", "cls": "id_product_price"}],
+    }
+    listing = {
+        "marketplace": "plati", "pid": "delta", "title": "Kimi",
+        "initialPrices": [{"text": "2 000 ₽", "cls": "id_product_price"}],
+    }
+    # True or absent selection evidence still permits the existing arithmetic
+    # inference. An explicit failure must remain unverified.
+    for selection in ({}, {"selectedAfter": True}, {"selectedAfter": False}):
+        raw = {"listings": [{**listing, "options": [{**option, **selection}]}]}
+        offer, = offers_from_raw(raw)
+        assert offer["price_rub"] == 2500
+        assert offer["price_verified"] is (selection.get("selectedAfter") is not False)
