@@ -77,6 +77,12 @@ function recommendationTier(product, offer) {
   }
   return offer.tier;
 }
+function recommendationName(product, offer) {
+  const tier = recommendationTier(product, offer);
+  if (product.id === 'zai') return `Z.ai GLM ${tier}`;
+  if (product.id === 'minimax') return `MiniMax M Plan ${tier}`;
+  return tier;
+}
 function recommendation(product, selection, mode) {
   const matching = eligibleOffers(product).filter(o => (!selection.tier || recommendationTier(product, o) === selection.tier)
     && (!selection.duration || o.duration === selection.duration));
@@ -132,11 +138,12 @@ function renderRecommendation(product) {
     : '';
   return `<article class="recommendation-card">
     <span class="service">${esc(product.label)}</span>
-    <h3>${esc(recommendationTier(product, offer))} · ${esc(label(offer.duration))}</h3>
+    <h3>${esc(recommendationName(product, offer))} · ${esc(label(offer.duration))}</h3>
     ${controls}
     ${score}
     <span class="recommended-price">Полная цена: ${rub.format(offer.priceRub)} ₽</span>
     <span class="recommended-detail">${esc(offer.optionText || offer.title)}</span>
+    ${offer.sellerNote ? `<span class="recommended-detail">Заметка продавца (не проверена): ${esc(offer.sellerNote)}</span>` : ''}
     <span class="recommended-meta">${esc(details)}${offer.finalVerified ? ' · проверено в браузере' : ''}</span>
     <a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Смотреть предложение</a>
   </article>`;
@@ -173,7 +180,7 @@ function filtered() {
 function render() {
   const rows = filtered(); els.result.textContent = `Показано ${rows.length} из ${offers.length} вариантов`;
   els['offer-count'].textContent = rows.length; els['minimum-price'].textContent = rows.length ? `${rub.format(rows[0].priceRub)} ₽` : '—'; els['marketplace-count'].textContent = new Set(rows.map(o => o.marketplace)).size;
-  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(o.tier)}</span></td><td>${esc(label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span></td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
+  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(o.tier)}</span></td><td>${esc(label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span>${o.sellerNote ? `<span class="sub">Заметка продавца (не проверена): ${esc(o.sellerNote)}</span>` : ''}</td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
 }
 async function init() {
   try {

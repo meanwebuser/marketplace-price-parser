@@ -10,6 +10,12 @@ def _is_zai_offer(offer: dict) -> bool:
         str(offer.get(field) or "")
         for field in ("title", "option_text", "raw_option_text")
     )
+    selected_text = " ".join(str(offer.get(field) or "") for field in ("option_text", "raw_option_text")).strip()
+    # Mixed seller pages can offer both subscriptions and balance top-ups.
+    # The selected variant, when present, determines which product is exported.
+    eligibility_text = selected_text or str(offer.get("title") or "")
+    if re.search(r"api\s*key|top\s*-?up|пополн\w*|\b(?:balance|credit|credits|кредит\w*|баланс\w*)\b", eligibility_text, re.IGNORECASE):
+        return False
     return bool(re.search(r"\b(?:z[.\s-]*ai|glm|zhipu)\b", product_text, re.IGNORECASE))
 
 

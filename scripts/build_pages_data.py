@@ -18,6 +18,7 @@ if str(ROOT) not in sys.path:
 
 from families.kimi import CONFIG as KIMI_CONFIG
 from families.minimax import CONFIG as MINIMAX_CONFIG
+from families.zai import CONFIG as ZAI_CONFIG
 
 PRODUCTS = {
     "minimax": {"label": "MiniMax M Plan / Token Plan", "description": "M Plan: GO, Explore и Build. Сохранены прежние варианты Token Plan: Plus, Max и Ultra.", "tiers": {"GO", "Explore", "Build", "Plus", "Max", "Ultra"}},
@@ -41,7 +42,16 @@ def latest_csv(root: Path, product_id: str) -> Path | None:
     files = [p for p in root.glob(f"*-{product_id}*.csv") if DATE_PREFIX.match(p.name)]
     return max(files, default=None, key=lambda p: p.name)
 
-def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
+def docs_source_path(source: Path, *, docs_root: Path | None = None) -> str:
+    """Return a portable provenance path and reject traversal/symlink escapes."""
+    root = (docs_root if docs_root is not None else ROOT / "docs").resolve()
+    try:
+        return source.resolve().relative_to(root).as_posix()
+    except ValueError as error:
+        raise ValueError(f"Snapshot source is outside docs root: {source}") from error
+
+def normalize_csv(csv_path: Path, product_id: str, *, docs_root: Path | None = None) -> tuple[list[dict], dict]:
+    source_path = docs_source_path(csv_path, docs_root=docs_root)
     with csv_path.open(encoding="utf-8-sig", newline="") as source:
         rows = list(csv.DictReader(source))
     offers = []
@@ -50,11 +60,7 @@ def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
         title, tier = row.get("title", ""), row.get("tier", "unknown")
         if product_id == "minimax" and MINIMAX_CONFIG.eligibility_extra and not MINIMAX_CONFIG.eligibility_extra(row):
             continue
-        if product_id == "zai" and not re.search(
-            r"\b(?:z[.\s-]*ai|glm|zhipu)\b",
-            " ".join((title, row.get("option_text", ""), row.get("raw_option_text", ""))),
-            re.IGNORECASE,
-        ):
+        if product_id == "zai" and ZAI_CONFIG.eligibility_extra and not ZAI_CONFIG.eligibility_extra(row):
             continue
         if product_id == "kimi" and KIMI_CONFIG.eligibility_extra and not KIMI_CONFIG.eligibility_extra({
             "title": title,
@@ -81,11 +87,14 @@ def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
                 continue
             if not as_bool(row.get("final_verified")) or not math.isfinite(final_price) or final_price != price:
                 continue
-        offers.append({"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", ""), "available": True, "priceVerified": True, "finalVerified": as_bool(row.get("final_verified"))})
+        item = {"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", ""), "available": True, "priceVerified": True, "finalVerified": as_bool(row.get("final_verified"))}
+        if seller_note := str(row.get("seller_note") or "").strip():
+            item.update(sellerNote=seller_note, sellerNoteVerified=False)
+        offers.append(item)
     raw_path = csv_path.with_suffix(".raw.json")
     raw = json.loads(raw_path.read_text(encoding="utf-8")) if raw_path.exists() else {}
     final_results = raw.get("finalVerification", {}).get("results", [])
-    return offers, {"scanDate": csv_path.name[:10], "sourcePath": str(csv_path).replace("docs/", ""), "scanStartedAt": raw.get("startedAt"), "scanCompletedAt": raw.get("finishedAt") or raw.get("lastUpdate"), "listings": len(raw.get("listings", [])) or None, "sourceRows": len(rows), "publishedRows": len(offers), "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")), "detailLevel": "full"}
+    return offers, {"scanDate": csv_path.name[:10], "sourcePath": source_path, "scanStartedAt": raw.get("startedAt"), "scanCompletedAt": raw.get("finishedAt") or raw.get("lastUpdate"), "listings": len(raw.get("listings", [])) or None, "sourceRows": len(rows), "publishedRows": len(offers), "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")), "detailLevel": "full"}
 
 def load_product(root: Path, product_id: str) -> dict | None:
     csv_path = latest_csv(root, product_id)
@@ -97,7 +106,7 @@ def load_product(root: Path, product_id: str) -> dict | None:
             return None
         data = json.loads(summary.read_text(encoding="utf-8"))
         offers, metadata = data["offers"], data["metadata"]
-        metadata["sourcePath"] = str(summary).replace("docs/", "")
+        metadata["sourcePath"] = docs_source_path(summary)
     else:
         return None
     allowed_tiers = PRODUCTS[product_id]["tiers"]

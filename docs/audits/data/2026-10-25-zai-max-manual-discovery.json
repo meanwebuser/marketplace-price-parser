@@ -30,10 +30,11 @@
     },
     "supplementListings": 15,
     "totalListings": 68,
-    "maxCsvRows": 82,
-    "publishedMaxRows": 82,
-    "eligibleMaxRows": 81,
-    "llmCalls": 0
+    "maxCsvRows": 83,
+    "publishedMaxRows": 83,
+    "eligibleMaxRows": 82,
+    "llmCalls": 0,
+    "manualStaticRows": 1
   },
   "automaticDiscovery": {
     "createdAt": "2026-10-25T11:44:55.240715+00:00",
@@ -1925,28 +1926,6 @@
       ]
     },
     {
-      "pid": "102331610",
-      "title": "Купить Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)",
-      "reason": "No explicit Max variant control captured",
-      "initialPrices": [
-        {
-          "text": "37 000 ₽",
-          "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount",
-          "id": ""
-        },
-        {
-          "text": "2 289 ₽",
-          "cls": "ProductPrice-module-scss-module__nLqhda__price",
-          "id": ""
-        },
-        {
-          "text": "2 249 ₽",
-          "cls": "ProductPrice-module-scss-module__nLqhda__price",
-          "id": ""
-        }
-      ]
-    },
-    {
       "pid": "103162444",
       "title": "Купить Z.ai GLM Lite / Pro / Max на 1–12 месяцев — подписка",
       "reason": "No explicit Max variant control captured",
@@ -2140,9 +2119,11 @@
     "observedPriceRub": 37000,
     "evidence": "category card and independently opened rendered detail body both show 37 000 RUB; detail says only one account available",
     "delivery": "unknown",
-    "catalogueEligible": false,
-    "reason": "No selectable Max control; account delivery/renewal terms are not clear. Preserved as manual candidate, not inserted into recommendations.",
-    "detailText": "Рубли (RUB)\n·\nРусский\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nZ.ai\nПокупка на ваш аккаунт\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\n4.8\n7 продаж\n1 отзыв\nВ избранное\n\nПолучите полный доступ к тарифному плану Z.ai MAX (3 месяцев) — созданному для высокопроизводительного использования ИИ, более быстрой реакции и приоритетного доступа к вычислительным ресурсам.\n\n💎 Что вы получаете:\n✔️ Тарифный план Z.ai MAX (полный доступ на 3 месяцев)\n✔️ Приоритетная скорость + более высокие лимиты использования\n✔️ Доступ к новейшим функциям GLM\n✔️ Стабильная производительность для ресурсоемких задач\n🔥 Специальная скидка\n💥 Скидка 40% от первоначальной цены\n⚠️ Ограниченное количество\nДоступен только 1 аккаунт\n\nОтзывы1\n11 сентября 2026\nОтлично\n37 000 ₽\nDerdoGames\n4.8\n(1,5k)\n9,1k продаж\nКупить\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 194 334\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 488 289\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n124 820\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n568 890\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\n\n\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка\n"
+    "catalogueEligible": true,
+    "reason": "Static Z.ai GLM Max 3m price and term are supported by rendered detail evidence. Seller stock/account marketing is an unverified note and does not establish shared delivery; delivery remains unknown.",
+    "detailText": "Рубли (RUB)\n·\nРусский\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nZ.ai\nПокупка на ваш аккаунт\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\n4.8\n7 продаж\n1 отзыв\nВ избранное\n\nПолучите полный доступ к тарифному плану Z.ai MAX (3 месяцев) — созданному для высокопроизводительного использования ИИ, более быстрой реакции и приоритетного доступа к вычислительным ресурсам.\n\n💎 Что вы получаете:\n✔️ Тарифный план Z.ai MAX (полный доступ на 3 месяцев)\n✔️ Приоритетная скорость + более высокие лимиты использования\n✔️ Доступ к новейшим функциям GLM\n✔️ Стабильная производительность для ресурсоемких задач\n🔥 Специальная скидка\n💥 Скидка 40% от первоначальной цены\n⚠️ Ограниченное количество\nДоступен только 1 аккаунт\n\nОтзывы1\n11 сентября 2026\nОтлично\n37 000 ₽\nDerdoGames\n4.8\n(1,5k)\n9,1k продаж\nКупить\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 194 334\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 488 289\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n124 820\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n568 890\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\n\n\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка\n",
+    "sellerNote": "Доступен только 1 аккаунт",
+    "sellerNoteVerified": false
   },
   "platiBrowserEvidence": {
     "server44Home": "✓ 403 - Forbidden: Access is denied.\n  https://plati.market/\nServer Error\n403 - Forbidden: Access is denied.\nYou do not have permission to view this directory or page using the credentials that you supplied.\n",
@@ -2153,7 +2134,7 @@
     "Plati public discovery API was fresh, but 24 detail pages produced no eligible Max price and independent headless UI checks returned 403 on both allowed hosts.",
     "GGSEL category initially exposed 40 category products plus recommendations. Show more only appended six unrelated recommendations.",
     "GLM Max search exposed 14 relevant products; Z.ai Max search exposed 25; GLM Макс exposed no relevant products. Search transitions were asynchronous.",
-    "Manual candidate list is a bounded visible-page sample, not proof of an exhaustive marketplace inventory. Three supplemental cards had no captured explicit Max control; flat 3m candidate price is recorded separately and not ranked."
+    "Manual candidate list is a bounded visible-page sample, not proof of an exhaustive marketplace inventory. Two supplemental cards had no captured explicit Max control. Static Z.ai GLM Max 3m 37000 RUB is included from manual price/term evidence with delivery unknown and an unverified seller note."
   ],
   "preservationChecks": {
     "otherProductsUnchanged": true,
@@ -2162,6 +2143,7 @@
   },
   "minima": {
     "1m": {
+      "productLabel": "Z.ai GLM Max",
       "pid": "102169054",
       "marketplace": "ggsel",
       "url": "https://ggsel.net/catalog/product/102169054",
@@ -2172,16 +2154,18 @@
       "final_verified": false
     },
     "3m": {
-      "pid": "102234852",
+      "productLabel": "Z.ai GLM Max",
+      "pid": "102331610",
       "marketplace": "ggsel",
-      "url": "https://ggsel.net/catalog/product/102234852",
-      "option_text": "Max 3 месяц",
+      "url": "https://ggsel.net/catalog/product/102331610",
+      "option_text": "Z.ai GLM Max — 3 месяца (статичный вариант)",
       "duration": "3m",
-      "delivery": "own_account",
-      "price_rub": 41470.0,
-      "final_verified": false
+      "delivery": "unknown",
+      "price_rub": 37000.0,
+      "final_verified": true
     },
     "12m": {
+      "productLabel": "Z.ai GLM Max",
       "pid": "102236410",
       "marketplace": "ggsel",
       "url": "https://ggsel.net/catalog/product/102236410",
@@ -2198,5 +2182,11 @@
     "estimateMinutes": 25,
     "activeMinutes": "not measured",
     "reasonOverEstimate": "Sequential CDP collection took 12 minutes; manual searches found 15 extra candidates requiring targeted Max capture and independent annual price settling check."
+  },
+  "normalizationCorrection": {
+    "at": "2026-10-25T13:29:33.023257+00:00",
+    "reason": "Seller phrase about one available account is not evidence of shared use and does not by itself disqualify a verified subscription.",
+    "productLabel": "Z.ai GLM Max",
+    "restoredPid": "102331610"
   }
 }

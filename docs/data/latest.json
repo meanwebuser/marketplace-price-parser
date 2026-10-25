@@ -2195,18 +2195,19 @@
             "scanStartedAt": "2026-10-25T11:46:16.905Z",
             "scanCompletedAt": "2026-10-25T12:13:48.429Z",
             "listings": 68,
-            "sourceRows": 82,
-            "publishedRows": 82,
-            "finalVerifiedWinners": 1,
+            "sourceRows": 83,
+            "publishedRows": 83,
+            "finalVerifiedWinners": 2,
             "detailLevel": "full",
             "partialProductRefresh": true,
-            "rawSha256": "d19846e525e1fb6a7a930a8c58fcb6402a0e87f4bd65ade44bcd5429aa2a451b",
+            "rawSha256": "abe53ca705e4185c79daae9ba2c6e941e49c56c6d82a3bd00c3172661d1ac89b",
             "freshVerifiedMarketplaces": [
               "ggsel"
             ],
             "platiBrowserStatus": "403 on server-44 homepage/direct page and server-88 homepage",
             "manualAdditionalListings": 15,
-            "manualAnnualVerified": true
+            "manualAnnualVerified": true,
+            "manualStaticRows": 1
           }
         },
         "freshnessNote": "Max refreshed from live 2026-10-25 collection; other tiers retain the 2026-10-23 snapshot. Plati live detail pages were blocked by 403."
@@ -5764,6 +5765,25 @@
           "available": true,
           "priceVerified": true,
           "finalVerified": false
+        },
+        {
+          "marketplace": "ggsel",
+          "pid": "102331610",
+          "url": "https://ggsel.net/catalog/product/102331610",
+          "title": "Купить Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)",
+          "optionText": "Z.ai GLM Max — 3 месяца (статичный вариант)",
+          "tier": "Max",
+          "duration": "3m",
+          "delivery": "unknown",
+          "priceRub": 37000.0,
+          "strongSignal": true,
+          "glitched": false,
+          "glitchReason": "",
+          "available": true,
+          "priceVerified": true,
+          "finalVerified": true,
+          "sellerNote": "Доступен только 1 аккаунт",
+          "sellerNoteVerified": false
         }
       ]
     },

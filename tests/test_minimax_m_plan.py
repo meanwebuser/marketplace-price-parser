@@ -109,6 +109,6 @@ def test_site_export_keeps_new_tiers_from_mixed_api_platform_listing(tmp_path):
             writer.writerow(dict(pid=pid, title="MiniMax API Platform-M Plan | GO/EXPLORE/BUILD | Credits | 1 Month", option_text=f"{tier} Subscription Renewal", tier=tier, duration="1m", delivery="own_account", price_rub="5000"))
         writer.writerow(dict(pid="topup", title="MiniMax M Plan", option_text="Top-Up 5000 Credits", tier="GO", duration="1m", delivery="own_account", price_rub="100"))
 
-    offers, _ = normalize_csv(path, "minimax")
+    offers, _ = normalize_csv(path, "minimax", docs_root=tmp_path)
 
     assert [o["pid"] for o in offers] == ["go", "explore", "build"]

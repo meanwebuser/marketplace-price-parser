@@ -17325,7 +17325,7 @@
   "finalVerification": {
     "skipped": false,
     "partial": true,
-    "scope": "Independent manual UI verification of cheapest annual Max only; other rows keep collector verification status",
+    "scope": "Independent manual UI verification of annual minimum and static Z.ai GLM Max 3m price/term. Seller stock/account note is unverified.",
     "results": [
       {
         "marketplace": "ggsel",
@@ -17340,6 +17340,19 @@
         "verified": true,
         "capturedAt": "2026-10-25T12:13:48.429Z",
         "method": "AgentBrowser explicit toggle click, selected aria-pressed=true, settled buy-block amount"
+      },
+      {
+        "marketplace": "ggsel",
+        "pid": "102331610",
+        "url": "https://ggsel.net/catalog/product/102331610",
+        "tier": "Max",
+        "duration": "3m",
+        "delivery": "unknown",
+        "optionText": "Z.ai GLM Max — 3 месяца (статичный вариант)",
+        "expectedPrice": 37000,
+        "observedPrice": 37000,
+        "verified": true,
+        "method": "Saved category and rendered detail evidence; no variant selector; buy-block amount 37000, title and description explicitly Max 3 months"
       }
     ]
   },
@@ -17353,9 +17366,11 @@
       "observedPriceRub": 37000,
       "evidence": "category card and independently opened rendered detail body both show 37 000 RUB; detail says only one account available",
       "delivery": "unknown",
-      "catalogueEligible": false,
-      "reason": "No selectable Max control; account delivery/renewal terms are not clear. Preserved as manual candidate, not inserted into recommendations.",
-      "detailText": "Рубли (RUB)\n·\nРусский\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nZ.ai\nПокупка на ваш аккаунт\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\n4.8\n7 продаж\n1 отзыв\nВ избранное\n\nПолучите полный доступ к тарифному плану Z.ai MAX (3 месяцев) — созданному для высокопроизводительного использования ИИ, более быстрой реакции и приоритетного доступа к вычислительным ресурсам.\n\n💎 Что вы получаете:\n✔️ Тарифный план Z.ai MAX (полный доступ на 3 месяцев)\n✔️ Приоритетная скорость + более высокие лимиты использования\n✔️ Доступ к новейшим функциям GLM\n✔️ Стабильная производительность для ресурсоемких задач\n🔥 Специальная скидка\n💥 Скидка 40% от первоначальной цены\n⚠️ Ограниченное количество\nДоступен только 1 аккаунт\n\nОтзывы1\n11 сентября 2026\nОтлично\n37 000 ₽\nDerdoGames\n4.8\n(1,5k)\n9,1k продаж\nКупить\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 194 334\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 488 289\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n124 820\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n568 890\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\n\n\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка\n"
+      "catalogueEligible": true,
+      "reason": "Static Z.ai GLM Max 3m price and term are supported by rendered detail evidence. Seller stock/account marketing is an unverified note and does not establish shared delivery; delivery remains unknown.",
+      "detailText": "Рубли (RUB)\n·\nРусский\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nZ.ai\nПокупка на ваш аккаунт\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\n4.8\n7 продаж\n1 отзыв\nВ избранное\n\nПолучите полный доступ к тарифному плану Z.ai MAX (3 месяцев) — созданному для высокопроизводительного использования ИИ, более быстрой реакции и приоритетного доступа к вычислительным ресурсам.\n\n💎 Что вы получаете:\n✔️ Тарифный план Z.ai MAX (полный доступ на 3 месяцев)\n✔️ Приоритетная скорость + более высокие лимиты использования\n✔️ Доступ к новейшим функциям GLM\n✔️ Стабильная производительность для ресурсоемких задач\n🔥 Специальная скидка\n💥 Скидка 40% от первоначальной цены\n⚠️ Ограниченное количество\nДоступен только 1 аккаунт\n\nОтзывы1\n11 сентября 2026\nОтлично\n37 000 ₽\nDerdoGames\n4.8\n(1,5k)\n9,1k продаж\nКупить\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 194 334\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 488 289\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n124 820\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n568 890\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\n\n\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка\n",
+      "sellerNote": "Доступен только 1 аккаунт",
+      "sellerNoteVerified": false
     }
   ]
 }

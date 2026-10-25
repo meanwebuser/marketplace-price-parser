@@ -160,6 +160,25 @@ function selectTier(handler, productId, value) {
   handler({ target: { dataset: { product: productId, selection: 'tier' }, value } });
 }
 
+test('Z.ai GLM Max static offer stays eligible with an unverified seller note and explicit family', async () => {
+  const current = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/latest.json'), 'utf8'));
+  const zai = current.products.find(item => item.id === 'zai');
+  const item = zai.offers.find(item => item.pid === '102331610');
+  assert.ok(item, 'saved static Z.ai GLM Max row is present');
+  assert.equal(item.delivery, 'unknown');
+  assert.equal(item.sellerNoteVerified, false);
+  const { getElement } = await renderFixture([
+    product('zai', [item], 'Z.ai GLM Coding'),
+    product('minimax', [offer('Max', '1m', 5000)], 'MiniMax')
+  ]);
+  const html = getElement('recommendations-list').innerHTML;
+  assert.match(html, /<h3>Z\.ai GLM Max · 3 месяца<\/h3>/);
+  assert.match(html, /<h3>MiniMax M Plan Max · 1 месяц<\/h3>/);
+  assert.match(html, /Полная цена: 37(?:\s|&nbsp;|\u00a0)000 ₽/);
+  assert.match(html, /Заметка продавца \(не проверена\): Доступен только 1 аккаунт/);
+  assert.doesNotMatch(html, /<h3>Max ·/);
+});
+
 test('default price recommendation includes every eligible tier and term and chooses the lowest total price', async () => {
   const item = product('chatgpt', [
     offer('Plus', '12m', 500),

@@ -33,7 +33,7 @@ def test_fabricated_llm_duration_cannot_reach_normalized_catalogue_or_ranking(tm
         accepted = [] if offer is None else [offer]
         path = tmp_path / "2026-10-25-zai.csv"
         write_csv(accepted, path)
-        normalized, _ = normalize_csv(path, "zai")
+        normalized, _ = normalize_csv(path, "zai", docs_root=tmp_path)
         assert normalized == []
         assert cheapest_per_tier(accepted, ZAI) == {}
         assert offer is None

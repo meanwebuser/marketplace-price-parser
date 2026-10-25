@@ -1,7 +1,62 @@
 import csv
 import json
+from pathlib import Path
+import pytest
 
 from scripts.build_pages_data import normalize_csv
+
+
+def test_absolute_snapshot_source_path_is_relative_to_repository_docs_root():
+    csv_path = (Path(__file__).resolve().parents[1] / "docs/snapshots/targeted/2026-10-25-zai-max.csv").resolve()
+
+    _, metadata = normalize_csv(csv_path, "zai")
+
+    assert metadata["sourcePath"] == "snapshots/targeted/2026-10-25-zai-max.csv"
+
+
+def test_snapshot_source_path_cannot_escape_repository_docs_root(tmp_path):
+    outside = tmp_path / "2026-10-25-zai.csv"
+    outside.write_text("pid,title,tier,duration,price_rub\noutside,Z.ai GLM Max,Max,3m,37000\n")
+
+    with pytest.raises(ValueError, match="outside docs root"):
+        normalize_csv(outside, "zai")
+
+
+def test_saved_static_zai_glm_max_offer_keeps_account_marketing_as_unverified_note():
+    csv_path = Path(__file__).resolve().parents[1] / "docs/snapshots/targeted/2026-10-25-zai-max.csv"
+
+    offers, _ = normalize_csv(csv_path, "zai")
+
+    item = next(offer for offer in offers if offer["pid"] == "102331610")
+    assert (item["tier"], item["duration"], item["priceRub"]) == ("Max", "3m", 37000)
+    assert item["delivery"] == "unknown"
+    assert item["priceVerified"] is True
+    assert item["sellerNote"] == "Доступен только 1 аккаунт"
+    assert item["sellerNoteVerified"] is False
+
+
+def test_zai_seller_account_note_does_not_bypass_product_and_price_gates(tmp_path):
+    csv_path = tmp_path / "2026-10-25-zai.csv"
+    fields = ["pid", "title", "option_text", "tier", "duration", "delivery", "price_rub", "available", "price_verified", "seller_note"]
+    base = dict.fromkeys(fields, "") | {"title": "Z.ai GLM Max 3 месяца", "option_text": "Z.ai GLM Max 3 месяца", "tier": "Max", "duration": "3m", "delivery": "unknown", "price_rub": "37000", "available": "True", "price_verified": "True", "seller_note": "Доступен только 1 аккаунт"}
+    rows = [
+        base | {"pid": "subscription"},
+        base | {"pid": "mixed-subscription", "title": "Z.ai подписка + пополнение баланса/кредиты"},
+        base | {"pid": "api", "option_text": "Z.ai GLM API key 3 месяца"},
+        base | {"pid": "topup", "option_text": "Пополнение баланса Z.ai GLM"},
+        base | {"pid": "unavailable", "available": "False"},
+        base | {"pid": "unverified", "price_verified": "False"},
+    ]
+    with csv_path.open("w", newline="", encoding="utf-8") as target:
+        writer = csv.DictWriter(target, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    offers, _ = normalize_csv(csv_path, "zai", docs_root=tmp_path)
+
+    assert [offer["pid"] for offer in offers] == ["subscription", "mixed-subscription"]
+    assert offers[0]["delivery"] == "unknown"
+    assert offers[0]["sellerNoteVerified"] is False
 
 
 def test_new_snapshot_excludes_unavailable_and_unverified_rows(tmp_path):
@@ -18,7 +73,7 @@ def test_new_snapshot_excludes_unavailable_and_unverified_rows(tmp_path):
         writer.writerows(rows)
     csv_path.with_suffix(".raw.json").write_text(json.dumps({"finalVerification": {"results": [{"verified": True}]}}), encoding="utf-8")
 
-    offers, metadata = normalize_csv(csv_path, "chatgpt")
+    offers, metadata = normalize_csv(csv_path, "chatgpt", docs_root=tmp_path)
 
     assert [offer["pid"] for offer in offers] == ["ok"]
     assert offers[0]["finalVerified"] is True
@@ -31,7 +86,7 @@ def test_historical_snapshot_without_safety_columns_remains_readable(tmp_path):
     csv_path = tmp_path / "2025-01-02-chatgpt.csv"
     csv_path.write_text("pid,tier,duration,delivery,price_rub\nlegacy,Plus,1m,own_account,999\n", encoding="utf-8")
 
-    offers, _ = normalize_csv(csv_path, "chatgpt")
+    offers, _ = normalize_csv(csv_path, "chatgpt", docs_root=tmp_path)
 
     assert [offer["pid"] for offer in offers] == ["legacy"]
 
@@ -45,7 +100,7 @@ def test_minimax_product_excludes_api_listings(tmp_path):
         encoding="utf-8",
     )
 
-    offers, _ = normalize_csv(csv_path, "minimax")
+    offers, _ = normalize_csv(csv_path, "minimax", docs_root=tmp_path)
 
     assert [offer["pid"] for offer in offers] == ["subscription"]
 
@@ -59,7 +114,7 @@ def test_zai_product_excludes_unrelated_ai_listings(tmp_path):
         encoding="utf-8",
     )
 
-    offers, _ = normalize_csv(csv_path, "zai")
+    offers, _ = normalize_csv(csv_path, "zai", docs_root=tmp_path)
 
     assert [offer["pid"] for offer in offers] == ["glm"]
 
@@ -77,7 +132,7 @@ def test_kimi_product_excludes_glm_option_from_mixed_brand_listing(tmp_path):
         encoding="utf-8",
     )
 
-    offers, metadata = normalize_csv(csv_path, "kimi")
+    offers, metadata = normalize_csv(csv_path, "kimi", docs_root=tmp_path)
 
     assert [offer["optionText"] for offer in offers] == [
         "Kimi Coding Plus — 1 месяц", "Plus — 1 month",
@@ -105,7 +160,7 @@ def test_final_price_verification_can_rescue_failed_collection_only_on_exact_mat
                                  delivery="unknown", price_rub="4837.0", available="True",
                                  price_verified="False", final_verified=verified,
                                  final_observed_price=observed))
-    offers, _ = normalize_csv(csv_path, "kimi")
+    offers, _ = normalize_csv(csv_path, "kimi", docs_root=tmp_path)
     assert [offer["pid"] for offer in offers] == ["exact"]
     assert offers[0]["priceVerified"] is True
     assert offers[0]["finalVerified"] is True
