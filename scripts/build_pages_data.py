@@ -17,9 +17,10 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from families.kimi import CONFIG as KIMI_CONFIG
+from families.minimax import CONFIG as MINIMAX_CONFIG
 
 PRODUCTS = {
-    "minimax": {"label": "MiniMax Token Plan", "description": "Официальные уровни Token Plan: Plus, Max и Ultra.", "tiers": {"Plus", "Max", "Ultra"}},
+    "minimax": {"label": "MiniMax M Plan / Token Plan", "description": "M Plan: GO, Explore и Build. Сохранены прежние варианты Token Plan: Plus, Max и Ultra.", "tiers": {"GO", "Explore", "Build", "Plus", "Max", "Ultra"}},
     "chatgpt": {"label": "ChatGPT", "description": "Последний сохранённый скан предложений ChatGPT.", "tiers": None},
     "zai": {"label": "Z.ai GLM Coding", "description": "Сохранённые варианты GLM Coding с GGSEL и Plati.", "tiers": None},
     "kimi": {"label": "Kimi", "description": "Сохранённые предложения Kimi на GGSEL и Plati.", "tiers": None},
@@ -47,13 +48,7 @@ def normalize_csv(csv_path: Path, product_id: str) -> tuple[list[dict], dict]:
     allowed_tiers = PRODUCTS[product_id]["tiers"]
     for row in rows:
         title, tier = row.get("title", ""), row.get("tier", "unknown")
-        if product_id == "minimax" and "minimax" not in title.lower():
-            continue
-        if product_id == "minimax" and re.search(
-            r"\bapi\b|api[_-]|api\s*key|credit|кредит|top[\s_-]*up|пополн|баланс",
-            " ".join((title, row.get("option_text", ""), row.get("raw_option_text", ""))),
-            re.IGNORECASE,
-        ):
+        if product_id == "minimax" and MINIMAX_CONFIG.eligibility_extra and not MINIMAX_CONFIG.eligibility_extra(row):
             continue
         if product_id == "zai" and not re.search(
             r"\b(?:z[.\s-]*ai|glm|zhipu)\b",

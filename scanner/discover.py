@@ -19,6 +19,7 @@ import json
 import os
 import re
 import sys
+from html.parser import HTMLParser
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -50,6 +51,9 @@ def _candidate_matches_family(text: str, family: FamilyConfig) -> bool:
     n = normalise(text)
     if not n:
         return False
+    if family.name == "minimax":
+        from families.minimax import is_subscription_candidate
+        return is_subscription_candidate(n)
     if family.name == "kimi":
         from families.kimi import is_subscription
         if not is_subscription(n):
@@ -126,24 +130,102 @@ def discover_plati(
 
 # ---- GGSEL discovery via Crawlee PlaywrightCrawler --------------------
 
+_GGSEL_PRODUCT_PATH_RE = re.compile(r"((?:/[a-z]{2})?/catalog/product/(?:([a-z0-9-]+)-)?(\d+))")
+_VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
+
+
+class _GGSELAnchorParser(HTMLParser):
+    """Keep link evidence and its nearest GGSEL card separate from neighbors."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.anchors: list[dict] = []
+        self.current: dict | None = None
+        self.stack: list[tuple[str, dict | None]] = []
+
+    def _current_card(self):
+        return next((card for _, card in reversed(self.stack) if card is not None), None)
+
+    @staticmethod
+    def _is_card(attrs):
+        if attrs.get("data-testid") == "card":
+            return True
+        # Match the product container, never a productList/leader-list wrapper.
+        return any(
+            (name.startswith("ProductCard-") and name.endswith("__card"))
+            or (name.startswith("LeaderCard-") and name.endswith("__wrapper"))
+            for name in (attrs.get("class") or "").split()
+        )
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        card = {"titles": [], "text": [], "alts": [], "product_ids": set()} if self._is_card(attrs) else None
+        if tag not in _VOID_TAGS:
+            self.stack.append((tag, card))
+        card = self._current_card()
+        if tag == "a":
+            href = attrs.get("href") or ""
+            self.current = {"href": href, "titles": [], "text": [], "alts": [], "card": card}
+            product = _GGSEL_PRODUCT_PATH_RE.fullmatch(href)
+            if card is not None and product:
+                card["product_ids"].add(product.group(3))
+        for target in (self.current, card):
+            if target is None:
+                continue
+            if attrs.get("title"):
+                target["titles"].append(attrs["title"])
+            if tag == "img" and attrs.get("alt"):
+                target["alts"].append(attrs["alt"])
+
+    def handle_data(self, data):
+        if self.current is not None:
+            self.current["text"].append(data)
+        card = self._current_card()
+        if card is not None:
+            card["text"].append(data)
+
+    def handle_endtag(self, tag):
+        if tag == "a" and self.current is not None:
+            self.anchors.append(self.current)
+            self.current = None
+        for index in range(len(self.stack) - 1, -1, -1):
+            if self.stack[index][0] == tag:
+                del self.stack[index:]
+                break
+        if self.current is not None and not any(name == "a" for name, _ in self.stack):
+            self.current = None
+
+
 def _extract_ggsel_products(html: str, family: FamilyConfig) -> list[dict]:
     """Extract unique product URLs from GGSEL page HTML, filter by family."""
     seen: set[str] = set()
     out: list[dict] = []
-    for m in re.finditer(r'href="(/catalog/product/([a-z0-9-]+)-(\d+))"', html):
+    parser = _GGSELAnchorParser()
+    parser.feed(html)
+    for anchor in parser.anchors:
+        m = _GGSEL_PRODUCT_PATH_RE.fullmatch(anchor["href"])
+        if not m:
+            continue
         href, slug, pid = m.group(1), m.group(2), m.group(3)
         if pid in seen:
             continue
-        ctx = html[m.end():m.end()+800]
-        title_match = re.search(r'title="([^"]{8,180})"', ctx)
-        title = title_match.group(1) if title_match else ""
-        # GGSEL category cards sometimes omit the title attribute.  Do not
-        # treat an unknown card as a family match: use its product slug as a
-        # conservative fallback, otherwise unrelated cards such as
-        # "Runway ... MAX" leak into the MiniMax result set.
-        candidate_text = title or slug.replace("-", " ")
-        if not _candidate_matches_family(candidate_text, family):
-            seen.add(pid)
+        parts = [re.sub(r"\s+", " ", " ".join(anchor[key])).strip() for key in ("titles", "text", "alts")]
+        candidates = parts + [" ".join(part for part in parts if part), (slug or "").replace("-", " ")]
+        card = anchor.get("card")
+        if card is not None and card["product_ids"] == {pid}:
+            card_parts = [re.sub(r"\s+", " ", " ".join(card[key])).strip() for key in ("titles", "alts", "text")]
+            card_text = " ".join(part for part in card_parts if part)
+            if card_text:
+                # Named card metadata is authoritative over an old slug. This
+                # also prevents an API/top-up card borrowing subscription
+                # identity from its URL or a nearby card.
+                if not _candidate_matches_family(card_text, family):
+                    continue
+                candidates = card_parts + [card_text]
+        candidate_text = next((text for text in candidates if _candidate_matches_family(text, family)), "")
+        if not candidate_text:
+            # A card can have separate empty image and named text anchors
+            # with the same href. Deduplicate only after finding a match.
             continue
         seen.add(pid)
         out.append({

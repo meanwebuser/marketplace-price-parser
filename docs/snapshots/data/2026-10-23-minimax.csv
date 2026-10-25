@@ -1,4 +1,30 @@
 marketplace,pid,url,title,option_text,raw_option_text,control_kind,control_dom_index,control_input_id,control_value,tier,duration,delivery,price_rub,strong_signal,glitched,glitch_reason,available,availability_reason,price_changed,price_stable,price_verified,final_verified,final_observed_price
+plati,6240891,https://plati.market/itm/6240891,Купить MINIMAX AI (план STARTER/MAX) на 1 месяц | Приватная,Go | Выбран,"Go
+Выбран",label,2,,,GO,1m,unknown,926.0,True,False,,True,,False,True,True,False,
+plati,5957731,https://plati.market/itm/5957731,Купить Подписка на платформу MINIMAX AI (планы GO / EXPLORE / BUILD) на 1 месяц | Гарантия и,EXPLORE — 55 $ / 1 месяц | +1 655 ₽,"EXPLORE — 55 $ / 1 месяц
++1 655 ₽",label,3,,,Explore,1m,unknown,2921.0,True,False,,True,,True,True,True,False,
+plati,6242291,https://plati.market/itm/6242291,Купить MiniMax API Platform Plus Max 1 месяц подписка,Продление вашего аккаунта (Plus) | Подписка на ваш аккаунт | +711 ₽,"Продление вашего аккаунта (Plus) | Подписка на ваш аккаунт
++711 ₽",label,3,,,Plus,1m,own_account,2131.0,True,False,,True,,True,True,True,False,
+plati,6242291,https://plati.market/itm/6242291,Купить MiniMax API Platform Plus Max 1 месяц подписка,"Новый аккаунт (Plus) | Использовать учетную запись, созданную продавцом | Выбран","Новый аккаунт (Plus) | Использовать учетную запись, созданную продавцом
+Выбран",label,2,,,Plus,1m,new_account,1421.0,True,False,,True,,True,True,True,False,
+plati,5217657,https://plati.market/itm/5217657,Купить Платформа MINIMAX API Go/Explore Подписка на 1 месяц,Go (Обновите свой аккаунт) | +746 ₽,"Go (Обновите свой аккаунт)
++746 ₽",label,3,,,GO,1m,own_account,2225.0,True,False,,True,,True,True,True,False,
+plati,5217657,https://plati.market/itm/5217657,Купить Платформа MINIMAX API Go/Explore Подписка на 1 месяц,"Go(Используйте новую учетную запись, созданную продавцом) | Выбран","Go(Используйте новую учетную запись, созданную продавцом)
+Выбран",label,2,,,GO,1m,own_account,1479.0,True,False,,True,,True,True,True,False,
+plati,5084692,https://plati.market/itm/5084692,Купить Платформа MINIMAX API Go/Explore Подписка на 1 месяц,Go (Обновите свой аккаунт) | +746 ₽,"Go (Обновите свой аккаунт)
++746 ₽",label,3,,,GO,1m,unknown,2228.0,True,False,,True,,True,True,True,False,
+plati,5084692,https://plati.market/itm/5084692,Купить Платформа MINIMAX API Go/Explore Подписка на 1 месяц,"Go(Используйте новую учетную запись, созданную продавцом) | Выбран","Go(Используйте новую учетную запись, созданную продавцом)
+Выбран",label,2,,,GO,1m,unknown,1482.0,True,False,,True,,True,True,True,False,
+plati,5932494,https://plati.market/itm/5932494,Купить MINIMAX AI | PLATFORM MINIMAX API | PLUS/MAX/ULTRA | 1 MONTH WARRANTY,Max 1 Month | +2 823 ₽,"Max 1 Month
++2 823 ₽",label,3,,,Max,1m,new_account,4422.0,True,False,,True,,True,True,True,False,
+plati,5932494,https://plati.market/itm/5932494,Купить MINIMAX AI | PLATFORM MINIMAX API | PLUS/MAX/ULTRA | 1 MONTH WARRANTY,Plus 1 Month | Выбран,"Plus 1 Month
+Выбран",label,2,,,Plus,1m,new_account,1976.0,True,False,,True,,True,True,True,False,
+plati,5957784,https://plati.market/itm/5957784,Купить MINIMAX AI PLATFORM Plan GO/EXPLORE/BUILD Subscription 1 Month| CHEAP,EXPLORE 55$ | 1 месяц | +1 950 ₽,"EXPLORE 55$ | 1 месяц
++1 950 ₽",label,3,,,Explore,1m,unknown,3607.0,True,False,,True,,True,True,True,False,
+plati,5957784,https://plati.market/itm/5957784,Купить MINIMAX AI PLATFORM Plan GO/EXPLORE/BUILD Subscription 1 Month| CHEAP,BUILD 132$ | 1 месяц | +5 849 ₽,"BUILD 132$ | 1 месяц
++5 849 ₽",label,4,,,Build,1m,unknown,7506.0,True,False,,True,,True,True,True,False,
+plati,5957784,https://plati.market/itm/5957784,Купить MINIMAX AI PLATFORM Plan GO/EXPLORE/BUILD Subscription 1 Month| CHEAP,GO 22$ | 1 месяц | Выбран,"GO 22$ | 1 месяц
+Выбран",label,2,,,GO,1m,unknown,1853.0,True,False,,True,,True,True,True,False,
 plati,4696379,https://plati.market/itm/4696379,Купить MINIMAX AI M3 Token Plan subscription 1month,max | +3 083 ₽,"max
 +3 083 ₽",label,3,,,Max,1m,own_account,5193.0,True,False,,True,,True,True,True,False,
 plati,4696379,https://plati.market/itm/4696379,Купить MINIMAX AI M3 Token Plan subscription 1month,plus | Выбран,"plus
@@ -29,3 +55,11 @@ plati,5971796,https://plati.market/itm/5971796,Купить Премиум-по�
 +5 646 ₽",label,10,,,Plus,3m,unknown,7998.0,True,False,,True,,True,True,True,False,
 plati,5971796,https://plati.market/itm/5971796,Купить Премиум-подписка MiniMax AI | Тарифы Plus / Max / Ultra | 1 месяц | Мгновенная достав,Plus (1 месяц) | Выбран,"Plus (1 месяц)
 Выбран",label,4,,,Plus,1m,unknown,2353.0,True,False,,True,,True,True,True,False,
+ggsel,102369748,https://ggsel.net/catalog/product/102369748,Купить MINIMAX AI | PLATFORM MINIMAX API | PLUS/MAX/ULTRA | 1 MONTH WARRANTY,Explore 1 Month,Explore 1 Month,button,9,,,Explore,1m,unknown,4800.0,True,False,,True,,True,True,True,False,
+ggsel,102369748,https://ggsel.net/catalog/product/102369748,Купить MINIMAX AI | PLATFORM MINIMAX API | PLUS/MAX/ULTRA | 1 MONTH WARRANTY,GO 1 Month,GO 1 Month,button,10,,,GO,1m,unknown,1800.0,True,False,,True,,True,True,True,False,
+ggsel,102358305,https://ggsel.net/catalog/product/102358305,Купить MiniMax Go/Explore/Build 1-12M | Обновление/продление | Г.арантия,Explore - 1 месяц,Explore - 1 месяц,button,10,,,Explore,1m,own_account,7027.0,True,False,,True,,True,True,True,False,
+ggsel,102358305,https://ggsel.net/catalog/product/102358305,Купить MiniMax Go/Explore/Build 1-12M | Обновление/продление | Г.арантия,Build - 1 месяц,Build - 1 месяц,button,11,,,Build,1m,own_account,16864.0,True,False,,True,,True,True,True,False,
+ggsel,102358305,https://ggsel.net/catalog/product/102358305,Купить MiniMax Go/Explore/Build 1-12M | Обновление/продление | Г.арантия,Go - 1 год,Go - 1 год,button,12,,,GO,12m,own_account,28106.0,True,False,,True,,True,True,True,False,
+ggsel,102358305,https://ggsel.net/catalog/product/102358305,Купить MiniMax Go/Explore/Build 1-12M | Обновление/продление | Г.арантия,Explore - 1 год,Explore - 1 год,button,13,,,Explore,12m,own_account,70266.0,True,False,,True,,True,True,True,False,
+ggsel,102358305,https://ggsel.net/catalog/product/102358305,Купить MiniMax Go/Explore/Build 1-12M | Обновление/продление | Г.арантия,Build - 1 год,Build - 1 год,button,14,,,Build,12m,own_account,168637.0,True,False,,True,,True,True,True,False,
+ggsel,102358305,https://ggsel.net/catalog/product/102358305,Купить MiniMax Go/Explore/Build 1-12M | Обновление/продление | Г.арантия,Go - 1 месяц,Go - 1 месяц,button,9,,,GO,1m,own_account,2811.0,True,False,,True,,True,True,True,False,

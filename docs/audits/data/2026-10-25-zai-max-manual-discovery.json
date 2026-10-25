@@ -1,0 +1,2202 @@
+{
+  "date": "2026-10-25",
+  "scope": "Z.ai GLM Max; public Plati and GGSEL",
+  "browser": {
+    "host": "server-44",
+    "session": "z25a",
+    "namespace": "lp25",
+    "headless": true,
+    "secondHostCheck": "roomhacker-server-88 Plati homepage only",
+    "sessionsClosed": true,
+    "sshCdpTunnelClosed": true,
+    "localMacBrowserUsed": false
+  },
+  "categoryEvidenceArchive": {
+    "path": "docs/audits/data/2026-10-25-zai-max-ggsel-category.html.gz",
+    "pathBasis": "repository-root",
+    "compression": "gzip",
+    "archiveSha256": "bab9c189f8860d17bd6b9697129a6668fd785752d27b03e052c4b71fd377a4f7",
+    "uncompressedSha256": "986b212000ba0a32e5b2a79dc5afb5adc3bce4a48e82962b1f189a53e6e0f59b",
+    "uncompressedBytes": 733466,
+    "note": "The original category HTML is preserved byte-for-byte after gzip decompression; only its storage format changed."
+  },
+  "freshCapture": {
+    "startedAt": "2026-10-25T11:46:16.905Z",
+    "completedAt": "2026-10-25T12:13:48.429Z",
+    "baselineListings": 53,
+    "baselineMarketplaceCounts": {
+      "plati": 24,
+      "ggsel": 29
+    },
+    "supplementListings": 15,
+    "totalListings": 68,
+    "maxCsvRows": 82,
+    "publishedMaxRows": 82,
+    "eligibleMaxRows": 81,
+    "llmCalls": 0
+  },
+  "automaticDiscovery": {
+    "createdAt": "2026-10-25T11:44:55.240715+00:00",
+    "family": "zai",
+    "candidates": [
+      {
+        "source": "plati",
+        "native_id": "5949231",
+        "label": "Z.AI GLM-5.3 API $5 | Пробный доступ | 1M контекст | Код и агенты | lizh.ai",
+        "url": "https://plati.market/itm/z-ai-glm-5-3-api-5-trial-access-1m-context-code-and-agents-lizh-ai/5949231",
+        "catalog_price_rub": 469.78016745,
+        "seller": "Lychee AI",
+        "sales": 0
+      },
+      {
+        "source": "plati",
+        "native_id": "6100129",
+        "label": "Z.AI GLM CODING — 12 МЕСЯЦЕВ [LITE / PRO / MAX] — 100% ГАРАНТИЯ | ЛУЧШЕЕ ПРЕДЛОЖЕНИЕ",
+        "url": "https://plati.market/itm/z-ai-glm-coding-12-months-lite-pro-max-100-warranty-best-offer/6100129",
+        "catalog_price_rub": 1578.55,
+        "seller": "twixutech.com",
+        "sales": 137
+      },
+      {
+        "source": "plati",
+        "native_id": "6084072",
+        "label": "Z.Ai GLM Coding - 1-12 месяц / Все тарифные планы / Официальная подписка / Мгновенный",
+        "url": "https://plati.market/itm/z-ai-glm-coding-1-12-month-all-plans-official-subscriptions-instant/6084072",
+        "catalog_price_rub": 1578.55,
+        "seller": "Satoru Gojo",
+        "sales": 26
+      },
+      {
+        "source": "plati",
+        "native_id": "5971847",
+        "label": "Z.AI | Подписка GLM Coding Lite/Pro/Max от 1 до 12 месяцев",
+        "url": "https://plati.market/itm/z-ai-glm-coding-lite-pro-max-subscription-1-12m/5971847",
+        "catalog_price_rub": 1599.0,
+        "seller": "Nova jut",
+        "sales": 713
+      },
+      {
+        "source": "plati",
+        "native_id": "5840436",
+        "label": "Z AI | Z.ai | Подписка GLM Coding Lite/Pro на 1/3/12 месяцев",
+        "url": "https://plati.market/itm/z-ai-z-ai-glm-coding-lite-pro-1-3-12-month-subscription/5840436",
+        "catalog_price_rub": 1675.10954655,
+        "seller": "DerdoArt",
+        "sales": 275
+      },
+      {
+        "source": "plati",
+        "native_id": "6192385",
+        "label": "Z AI | Z.ai | Подписка GLM Coding LITE/PRO/MAX (1 месяц) | Дёшево",
+        "url": "https://plati.market/itm/z-ai-z-ai-glm-coding-lite-pro-max-subscription-1-month-cheap/6192385",
+        "catalog_price_rub": 1739.86,
+        "seller": "AIGateGlobal",
+        "sales": 0
+      },
+      {
+        "source": "plati",
+        "native_id": "6250935",
+        "label": "24/7 | Подписка Z.ai GLM Coding Lite на 1, 3 или 12 месяцев на ваш аккаунт",
+        "url": "https://plati.market/itm/24-7-z-ai-glm-coding-lite-subscription-1-3-or-12-months-for-your-account/6250935",
+        "catalog_price_rub": 1764.53969538,
+        "seller": "dedekabr",
+        "sales": 1
+      },
+      {
+        "source": "plati",
+        "native_id": "6002805",
+        "label": "1-12 МЕСЯЦЕВ ПОДПИСКИ Z.AI  / НА ВАШ АККАУНТ",
+        "url": "https://plati.market/itm/1-12-month-z-ai-subscription-to-your-account/6002805",
+        "catalog_price_rub": 1959.88030592,
+        "seller": "AURA GAME MARKET",
+        "sales": 1
+      },
+      {
+        "source": "plati",
+        "native_id": "6080490",
+        "label": "Z.Ai GLM Coding — от 1 до 12 месяцев / Все тарифные планы / Официальная подписка / Мг",
+        "url": "https://plati.market/itm/z-ai-glm-coding-1-12-month-all-plans-official-subscriptions-instant/6080490",
+        "catalog_price_rub": 2062.16992962,
+        "seller": "Tixella",
+        "sales": 0
+      },
+      {
+        "source": "plati",
+        "native_id": "5918664",
+        "label": "Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST",
+        "url": "https://plati.market/itm/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast/5918664",
+        "catalog_price_rub": 2067.04980608,
+        "seller": "AI_Market",
+        "sales": 12
+      },
+      {
+        "source": "plati",
+        "native_id": "5997168",
+        "label": "Подписка Z AI Z.Ai | Официальная оплата | 1/3/12 месяцев",
+        "url": "https://plati.market/itm/z-ai-z-ai-subscription-official-payment-1-3-12-month/5997168",
+        "catalog_price_rub": 2090.0,
+        "seller": "ImSubscribed",
+        "sales": 0
+      },
+      {
+        "source": "plati",
+        "native_id": "5943599",
+        "label": "Подписка Z.AI (1 месяц) 💎 Гарантия 100% | Официальная активация",
+        "url": "https://plati.market/itm/subscription-z-ai-1-month-100-guaranteed-official-activation/5943599",
+        "catalog_price_rub": 2100.0,
+        "seller": "Dillan4ik",
+        "sales": 9
+      },
+      {
+        "source": "plati",
+        "native_id": "5526305",
+        "label": "[Онлайн-доставка 24/7] — Z AI | Z.ai | Подписка GLM Coding Lite/Pro (1 месяц)",
+        "url": "https://plati.market/itm/24-7-online-delivery-z-ai-z-ai-glm-coding-lite-pro-subscription-1-month/5526305",
+        "catalog_price_rub": 2131.11913728,
+        "seller": "Pro Digital Goods",
+        "sales": 99
+      },
+      {
+        "source": "plati",
+        "native_id": "5989660",
+        "label": "Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Гарантия/Быстрая доставк",
+        "url": "https://plati.market/itm/z-ai-1-3-12m-upgrade-subscription-glm-coding-lite-pro-max-warranty-fast/5989660",
+        "catalog_price_rub": 2140.33086794,
+        "seller": "OnePayNow",
+        "sales": 2
+      },
+      {
+        "source": "plati",
+        "native_id": "5957769",
+        "label": "Z AI | Z.ai | Подписка GLM Coding LITE/PRO/MAX на 1 месяц | Недорого",
+        "url": "https://plati.market/itm/z-ai-z-ai-glm-coding-lite-pro-max-subscription-1-month-cheap/5957769",
+        "catalog_price_rub": 2157.98063488,
+        "seller": "LoneWolfHi",
+        "sales": 22
+      },
+      {
+        "source": "plati",
+        "native_id": "5922420",
+        "label": "Z.AI GLM CODING | LITE/PRO/MAX | НА 1/3/12 МЕСЯЦЕВ | НА ВАШ АККАУНТ",
+        "url": "https://plati.market/itm/z-ai-lite-pro-max-for-1-3-12-months-on-your-account/5922420",
+        "catalog_price_rub": 2199.0,
+        "seller": "starfast",
+        "sales": 4
+      },
+      {
+        "source": "plati",
+        "native_id": "5619379",
+        "label": "Апгрейд Z.AI Lite/Pro/Max: GLM 5.2, 1–12 месяца | БЫСТРО, ПОЛНАЯ ГАРАНТИЯ",
+        "url": "https://plati.market/itm/upgrade-z-ai-lite-pro-max-glm-5-2-1-12m-fast-full-warranty/5619379",
+        "catalog_price_rub": 2335.6,
+        "seller": "1Subs",
+        "sales": 360
+      },
+      {
+        "source": "plati",
+        "native_id": "6134455",
+        "label": "Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная гарантия",
+        "url": "https://plati.market/itm/z-ai-glm-coding-lite-pro-max-1-12-months-full-warranty/6134455",
+        "catalog_price_rub": 2350.0,
+        "seller": "SUBSDEAL",
+        "sales": 0
+      },
+      {
+        "source": "plati",
+        "native_id": "5523111",
+        "label": "🖱️Z Ai / Z.ai | Lite, Pro, Max | 1, 3, 12 месяцев | Ваш аккаунт",
+        "url": "https://plati.market/itm/z-ai-z-ai-lite-pro-max-1-3-12-months-ur-acc/5523111",
+        "catalog_price_rub": 2449.0,
+        "seller": "FoxyPayGlobal",
+        "sales": 15
+      },
+      {
+        "source": "plati",
+        "native_id": "6111932",
+        "label": "Z.AI GLM Coding Plan Subscription 1-12M | ПОЛНАЯ ГАРАНТИЯ",
+        "url": "https://plati.market/itm/z-ai-glm-coding-plan-subscription-1-12m-full-warranty/6111932",
+        "catalog_price_rub": 2565.019152,
+        "seller": "AccLab",
+        "sales": 0
+      },
+      {
+        "source": "plati",
+        "native_id": "6309855",
+        "label": "🚀 Z.AI — ПОДПИСКА LITE / PRO / MAX | GLM-5.2 | 1–12 МЕСЯЦЕВ | БЫСТРАЯ АКТИВАЦИЯ | ПО",
+        "url": "https://plati.market/itm/z-ai-subscription-lite-pro-max-glm-5-2-1-12-months-fast-activation-f/6309855",
+        "catalog_price_rub": 2667.74607348,
+        "seller": "Hizirvan93",
+        "sales": 0
+      },
+      {
+        "source": "plati",
+        "native_id": "6063446",
+        "label": "Z.AI Lite/Pro/Max: GLM, 1-12M | ПРОДЛЕНИЕ, ПОЛНАЯ ГАРАНТИЯ",
+        "url": "https://plati.market/itm/z-ai-lite-pro-max-glm-1-12m-fast-full-warranty/6063446",
+        "catalog_price_rub": 2746.51966017,
+        "seller": "xCgTech",
+        "sales": 1
+      },
+      {
+        "source": "plati",
+        "native_id": "6015959",
+        "label": "Подписка MAX на 1 год к сервису z.ai",
+        "url": "https://plati.market/itm/a-one-year-max-subscription-to-the-z-ai-service/6015959",
+        "catalog_price_rub": 23767.04701476,
+        "seller": "lassardio83",
+        "sales": 0
+      },
+      {
+        "source": "plati",
+        "native_id": "6185721",
+        "label": "Z AI | Z.ai | Подписка GLM Coding Pro на 12 месяцев  | Мгновенная выдача",
+        "url": "https://plati.market/itm/z-ai-z-ai-glm-coding-pro-subscription-for-12-months-instant-delivery/6185721",
+        "catalog_price_rub": 39000.0,
+        "seller": "MRmarket",
+        "sales": 0
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102457859",
+        "label": "podpiska z ai glm coding plan 1 12m fast delivery full warranty",
+        "url": "https://ggsel.net/catalog/product/podpiska-z-ai-glm-coding-plan-1-12m-fast-delivery-full-warranty-102457859",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102236410",
+        "label": "z ai glm coding lite pro max 1 3 12m stabilno",
+        "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102458121",
+        "label": "z ai glm coding plan lite pro max 1 12m fast activation full warranty",
+        "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-plan-lite-pro-max-1-12m-fast-activation-full-warranty-102458121",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102358846",
+        "label": "z ai z ai glm coding lite pro max 1 month super fast zai",
+        "url": "https://ggsel.net/catalog/product/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102358846",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102618255",
+        "label": "obnovlenie z ai 1 3 12m podpiska glm coding lite pro max g arantiia",
+        "url": "https://ggsel.net/catalog/product/obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102618255",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102662846",
+        "label": "z ai z ai glm coding lite pro max 1 month super fast zai",
+        "url": "https://ggsel.net/catalog/product/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102662846",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102303683",
+        "label": "obnovlenie z ai 1 3 12m podpiska glm coding lite pro max g arantiia",
+        "url": "https://ggsel.net/catalog/product/obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102303683",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102109731",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102109731",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102610634",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102610634",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102438864",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102438864",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102010339",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102010339",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102495696",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102495696",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102483517",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102483517",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102644827",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102644827",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "5327293",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/5327293",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102185754",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102185754",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102234852",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102234852",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102584986",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102584986",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102113607",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102113607",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "5413116",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/5413116",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102169054",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102169054",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102651023",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102651023",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102583131",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102583131",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102296362",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102296362",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102495673",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102495673",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102104408",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102104408",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102528209",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102528209",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102528064",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102528064",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      },
+      {
+        "source": "ggsel",
+        "native_id": "102611308",
+        "label": "",
+        "url": "https://ggsel.net/catalog/product/102611308",
+        "catalog_price_rub": null,
+        "seller": null,
+        "sales": null
+      }
+    ],
+    "platiFound": 24,
+    "ggselFound": 29,
+    "ggselCategoryMatched": 7,
+    "transports": {
+      "plati": "urllib",
+      "platiQueryFailures": [],
+      "ggsel": "remote-agent-browser-DOM+curated",
+      "ggselHost": "server-44"
+    },
+    "errors": []
+  },
+  "manualPages": [
+    {
+      "capturedAt": "2026-10-25T11:59:22.895Z",
+      "cards": [
+        {
+          "name": "Z.ai GLM Coding Plan: Lite / Pro / Max 1 - 12M | Fast Activation, Full Warranty",
+          "pid": "102458121",
+          "text": "Покупка на ваш аккаунт Z.ai GLM Coding Plan: Lite / Pro / Max 1 - 12M | Fast Activation, Full Warranty 5 (4) 16 продаж 2 099 ₽ ​ Цена",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-plan-lite-pro-max-1-12m-fast-activation-full-warranty-102458121",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "102610634",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant 131 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-3-coding-instant-activation-private-full-warrant-102610634",
+          "visible": true
+        },
+        {
+          "name": "Апгрейд Z.AI Lite/Pro/Max: GLM 5.2, 1–12 месяца | F.A.S.T, FULL WARRANTY",
+          "pid": "102109731",
+          "text": "Покупка на ваш аккаунт 2 299 ₽ Апгрейд Z.AI Lite/Pro/Max: GLM 5.2, 1–12 месяца | F.A.S.T, FULL WARRANTY 390 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/apgreid-z-ai-lite-pro-max-glm-5-2-1-12-mesiaca-f-a-s-t-full-warranty-102109731",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.AI GLM Coding Plan 1-12M | Fast Delivery, Full Warranty",
+          "pid": "102457859",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Подписка Z.AI GLM Coding Plan 1-12M | Fast Delivery, Full Warranty 98 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-glm-coding-plan-1-12m-fast-delivery-full-warranty-102457859",
+          "visible": true
+        },
+        {
+          "name": "Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M |  | Стабильно",
+          "pid": "102236410",
+          "text": "Покупка на ваш аккаунт 1 785 ₽ Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно 168 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite . Pro . Max | GLM-5.2 | 1-3-12 месяцев| Официальная Подписка | ПОЛНАЯ",
+          "pid": "102438864",
+          "text": "Покупка на ваш аккаунт 2 099 ₽ Z.ai GLM Lite . Pro . Max | GLM-5.2 | 1-3-12 месяцев| Официальная Подписка | ПОЛНАЯ 11 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-1-3-12-mesiacev-oficialnaia-podpiska-polnaia-102438864",
+          "visible": true
+        },
+        {
+          "name": "Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 |  активация | Полная гаранти",
+          "pid": "102296362",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 | активация | Полная гаранти 23 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-tarify-dlia-programmirovaniia-glm-5-2-aktivaciia-polnaia-garanti-102296362",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI Подписка на 1 месяц — Lite / Pro / Max для программирования - ZAI (zai)",
+          "pid": "5413116",
+          "text": "Покупка на ваш аккаунт 1 950 ₽ Z AI | Z.AI Подписка на 1 месяц — Lite / Pro / Max для программирования - ZAI (zai) 136 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-podpiska-na-1-mesiac-lite-pro-max-dlia-programmirovaniia-zai-zai-5413116",
+          "visible": true
+        },
+        {
+          "name": "Z.ai | Подписка GLM Coding Lite/Pro/Max 1-3-12 месяцев",
+          "pid": "102010339",
+          "text": "Покупка на ваш аккаунт 1 800 ₽ Z.ai | Подписка GLM Coding Lite/Pro/Max 1-3-12 месяцев 395 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-podpiska-glm-coding-lite-pro-max-1-3-12-mesiacev-102010339",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI",
+          "pid": "102358846",
+          "text": "Покупка на ваш аккаунт 2 000 ₽ Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI 152 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102358846",
+          "visible": true
+        },
+        {
+          "name": "Тарифный план Z.ai GLM: Lite/Pro/Max |  активация, полная",
+          "pid": "102668478",
+          "text": "Покупка на ваш аккаунт 1 980 ₽ Тарифный план Z.ai GLM: Lite/Pro/Max | активация, полная 13 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/tarifnyi-plan-z-ai-glm-lite-pro-max-aktivaciia-polnaia-102668478",
+          "visible": true
+        },
+        {
+          "name": "План Z.ai GLM для написания кода — Lite | Pro | Max",
+          "pid": "102761450",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ План Z.ai GLM для написания кода — Lite | Pro | Max 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/plan-z-ai-glm-dlia-napisaniia-koda-lite-pro-max-102761450",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ",
+          "pid": "102854421",
+          "text": "Покупка на ваш аккаунт 2 069 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-licnaia-podpiska-polnaia-102854421",
+          "visible": true
+        },
+        {
+          "name": "Пополнение баланса Z.ai",
+          "pid": "102826842",
+          "text": "Пополнение 1 USD = 120₽ Пополнение баланса Z.ai 21 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/popolnenie-balansa-z-ai-102826842",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453017",
+          "text": "Покупка на ваш аккаунт 2 295 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453017",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.ai | Подписка GLM 5.3 Coding Lite/Pro на 1/3/12 месяцев",
+          "pid": "102234852",
+          "text": "Покупка на ваш аккаунт 1 690 ₽ Z AI | Z.ai | Подписка GLM 5.3 Coding Lite/Pro на 1/3/12 месяцев 757 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-podpiska-glm-5-3-coding-lite-pro-na-1-3-12-mesiacev-102234852",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.ai на Ваш аккаунт",
+          "pid": "102651023",
+          "text": "Покупка на ваш аккаунт 1 795 ₽ Подписка Z.ai на Ваш аккаунт 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-na-vas-akkaunt-102651023",
+          "visible": true
+        },
+        {
+          "name": "Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца",
+          "pid": "102109639",
+          "text": "Покупка на ваш аккаунт 1 868 ₽ Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца 370 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-ili-3-mesiaca-102109639",
+          "visible": true
+        },
+        {
+          "name": "Апгрейд Z.AI Lite GLM, 1–12 месяца | F.A.S.T, FULL WARRANTY",
+          "pid": "102901244",
+          "text": "Покупка на ваш аккаунт 1 870 ₽ Апгрейд Z.AI Lite GLM, 1–12 месяца | F.A.S.T, FULL WARRANTY 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/apgreid-z-ai-lite-glm-1-12-mesiaca-f-a-s-t-full-warranty-102901244",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.ai | Подписка GLM Coding Lite/Pro/Max 1-12 месяцев",
+          "pid": "102113607",
+          "text": "Покупка на ваш аккаунт 1 980 ₽ Z AI | Z.ai | Подписка GLM Coding Lite/Pro/Max 1-12 месяцев 43 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-podpiska-glm-coding-lite-pro-max-1-12-mesiacev-102113607",
+          "visible": true
+        },
+        {
+          "name": "Z.AI GLM 5 Coding 1-12M | FAST, FULL WARRANTY",
+          "pid": "102483517",
+          "text": "Покупка на ваш аккаунт 2 050 ₽ Z.AI GLM 5 Coding 1-12M | FAST, FULL WARRANTY 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-5-coding-1-12m-fast-full-warranty-102483517",
+          "visible": true
+        },
+        {
+          "name": "Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/",
+          "pid": "102618255",
+          "text": "Покупка на ваш аккаунт 2 132 ₽ Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/ 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102618255",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца",
+          "pid": "103120617",
+          "text": "Покупка на ваш аккаунт 2 177 ₽ Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца 2 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-glm-lite-pro-max-1-12-mesiaca-103120617",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Lite, Pro, Max | 1-3-12 мес | Подписка",
+          "pid": "103487920",
+          "text": "Покупка на ваш аккаунт 2 189 ₽ Z.ai GLM Coding Lite, Pro, Max | 1-3-12 мес | Подписка 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12-mes-podpiska-103487920",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI ПОКУПКА ПОДПИСКИ 1/3/12m + ПОПОЛНИТЬ БАЛАНСА/КРЕДИТЫ",
+          "pid": "102169054",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z AI | Z.AI ПОКУПКА ПОДПИСКИ 1/3/12m + ПОПОЛНИТЬ БАЛАНСА/КРЕДИТЫ 25 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-pokupka-podpiski-1-3-12m-popolnit-balansa-kredity-102169054",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ",
+          "pid": "102495696",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ 9 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-personalnaia-podpiska-polnaia-102495696",
+          "visible": true
+        },
+        {
+          "name": "Z.ai — подписка на ИИ-сервис на ваш аккаунт.",
+          "pid": "103450913",
+          "text": "Покупка на ваш аккаунт 2 200 ₽ Z.ai — подписка на ИИ-сервис на ваш аккаунт. 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-podpiska-na-ii-servis-na-vas-akkaunt-103450913",
+          "visible": true
+        },
+        {
+          "name": "Z.AI | LITE/PRO/MAX| НА 1/3/12 МЕСЯЦЕВ | НА ВАШ АККАУНТ",
+          "pid": "103526697",
+          "text": "Покупка на ваш аккаунт 2 249 ₽ Z.AI | LITE/PRO/MAX| НА 1/3/12 МЕСЯЦЕВ | НА ВАШ АККАУНТ 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-lite-pro-max-na-1-3-12-mesiacev-na-vas-akkaunt-103526697",
+          "visible": true
+        },
+        {
+          "name": "Z.Ai - 1 месяц / Все тарифные планы / Официальная подписка / Полная",
+          "pid": "102821255",
+          "text": "Покупка на ваш аккаунт 2 256 ₽ Z.Ai - 1 месяц / Все тарифные планы / Официальная подписка / Полная 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-1-mesiac-vse-tarifnye-plany-oficialnaia-podpiska-polnaia-102821255",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453166",
+          "text": "Покупка на ваш аккаунт 2 290 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453166",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная",
+          "pid": "103159650",
+          "text": "Покупка на ваш аккаунт 2 350 ₽ Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-12-mesiacev-polnaia-103159650",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z AI Z.Ai | Официальная оплата | 1/3/12 месяцев",
+          "pid": "102583131",
+          "text": "Покупка на ваш аккаунт 2 360 ₽ Подписка Z AI Z.Ai | Официальная оплата | 1/3/12 месяцев 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-z-ai-oficialnaia-oplata-1-3-12-mesiacev-102583131",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI",
+          "pid": "102662846",
+          "text": "Покупка на ваш аккаунт 2 389 ₽ Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI 2 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102662846",
+          "visible": true
+        },
+        {
+          "name": "Z Ai / Z.ai | Lite, Pro, Max | 1, 3, 12 месяца | Ваш аккаунт",
+          "pid": "102104408",
+          "text": "Покупка на ваш аккаунт 2 449 ₽ Z Ai / Z.ai | Lite, Pro, Max | 1, 3, 12 месяца | Ваш аккаунт 8 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-lite-pro-max-1-3-12-mesiaca-vas-akkaunt-102104408",
+          "visible": true
+        },
+        {
+          "name": "Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/",
+          "pid": "102303683",
+          "text": "Покупка на ваш аккаунт 2 488 ₽ Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/ 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102303683",
+          "visible": true
+        },
+        {
+          "name": "Z.AI на 1/3/12 месяцев | Обновление подписки | GLM Coding Lite/Pro/Max | Полная  | Быст",
+          "pid": "103669007",
+          "text": "Покупка на ваш аккаунт 2 488 ₽ Z.AI на 1/3/12 месяцев | Обновление подписки | GLM Coding Lite/Pro/Max | Полная | Быст 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-na-1-3-12-mesiacev-obnovlenie-podpiski-glm-coding-lite-pro-max-polnaia-byst-103669007",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)",
+          "pid": "102331610",
+          "text": "Покупка на ваш аккаунт 37 000 ₽ Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение) 7 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-max-na-3-mesiaca-z-ai-premium-podpiska-ogranicennoe-predlozenie-102331610",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI ПОКУПКА ПОПОЛНИТЬ БАЛАНСА/КРЕДИТЫ",
+          "pid": "102223543",
+          "text": "Пополнение 1 USD = 414₽ Z AI | Z.AI ПОКУПКА ПОПОЛНИТЬ БАЛАНСА/КРЕДИТЫ 29 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-pokupka-popolnit-balansa-kredity-102223543",
+          "visible": true
+        },
+        {
+          "name": "API GLM / ChatGPT / Claude Пополнение (от 1 млрд токенов) + генерация изображений Дашборд",
+          "pid": "102619388",
+          "text": "Пополнение 1 USD = 6.99₽ API GLM / ChatGPT / Claude Пополнение (от 1 млрд токенов) + генерация изображений Дашборд 28 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/api-glm-chatgpt-claude-popolnenie-ot-1-mlrd-tokenov-generaciia-izobrazenii-dasbord-102619388",
+          "visible": true
+        },
+        {
+          "name": "API GLM / Claude / ChatGPT и др. $200/$400. Токены до 267кк/530кк. / 1 мес Дашборд",
+          "pid": "102619589",
+          "text": "Пополнение 1 USD = 1250₽ API GLM / Claude / ChatGPT и др. $200/$400. Токены до 267кк/530кк. / 1 мес Дашборд 3 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/api-glm-claude-chatgpt-i-dr-200-400-tokeny-do-267kk-530kk-1-mes-dasbord-102619589",
+          "visible": true
+        },
+        {
+          "name": "STEAM РФ-СНГ RUB-KZT-UAH 24/7",
+          "pid": "4040511",
+          "text": "Пополнение 1 Steam RUB = 1.07₽ STEAM РФ-СНГ RUB-KZT-UAH 24/7 6 194 206 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/steam-rf-sng-rub-kzt-uah-247-4040511",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+          "pid": "4841114",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 1 488 233 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-4841114",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7",
+          "pid": "102145601",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7 124 804 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-24-7-102145601",
+          "visible": true
+        },
+        {
+          "name": "АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ",
+          "pid": "4718810",
+          "text": "Пополнение 1 Steam RUB = 1.1₽ АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 568 858 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtomaticeskoe-popolnenie-steam-rub-uah-kzt-sng-4718810",
+          "visible": true
+        },
+        {
+          "name": "24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ",
+          "pid": "102124065",
+          "text": "Покупка подписки 2 289 ₽ 24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-claude-ai-fable-5-5-pro-podpiska-ai-1-mesiac-klod-ai-102124065",
+          "visible": true
+        },
+        {
+          "name": "24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ",
+          "pid": "4378425",
+          "text": "Покупка подписки 2 249 ₽ 24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-chatgpt-6-astra-5-6-plus-podpiska-cerez-token-1m-catgpt-4378425",
+          "visible": true
+        }
+      ],
+      "headings": [
+        "Все для Z.ai"
+      ],
+      "showMore": [
+        {
+          "disabled": false,
+          "text": "Показать ещё"
+        }
+      ],
+      "title": "🌐 Купить Z.ai дешево от 360.00₽ с быстрой доставкой – ggsel",
+      "url": "https://ggsel.net/catalog/zai"
+    },
+    {
+      "capturedAt": "2026-10-25T12:00:13.829Z",
+      "cards": [
+        {
+          "name": "Z.ai GLM Coding Plan: Lite / Pro / Max 1 - 12M | Fast Activation, Full Warranty",
+          "pid": "102458121",
+          "text": "Покупка на ваш аккаунт Z.ai GLM Coding Plan: Lite / Pro / Max 1 - 12M | Fast Activation, Full Warranty 5 (4) 16 продаж 2 099 ₽ ​ Цена",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-plan-lite-pro-max-1-12m-fast-activation-full-warranty-102458121",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "102610634",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant 131 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-3-coding-instant-activation-private-full-warrant-102610634",
+          "visible": true
+        },
+        {
+          "name": "Апгрейд Z.AI Lite/Pro/Max: GLM 5.2, 1–12 месяца | F.A.S.T, FULL WARRANTY",
+          "pid": "102109731",
+          "text": "Покупка на ваш аккаунт 2 299 ₽ Апгрейд Z.AI Lite/Pro/Max: GLM 5.2, 1–12 месяца | F.A.S.T, FULL WARRANTY 390 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/apgreid-z-ai-lite-pro-max-glm-5-2-1-12-mesiaca-f-a-s-t-full-warranty-102109731",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.AI GLM Coding Plan 1-12M | Fast Delivery, Full Warranty",
+          "pid": "102457859",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Подписка Z.AI GLM Coding Plan 1-12M | Fast Delivery, Full Warranty 98 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-glm-coding-plan-1-12m-fast-delivery-full-warranty-102457859",
+          "visible": true
+        },
+        {
+          "name": "Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M |  | Стабильно",
+          "pid": "102236410",
+          "text": "Покупка на ваш аккаунт 1 785 ₽ Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно 168 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite . Pro . Max | GLM-5.2 | 1-3-12 месяцев| Официальная Подписка | ПОЛНАЯ",
+          "pid": "102438864",
+          "text": "Покупка на ваш аккаунт 2 099 ₽ Z.ai GLM Lite . Pro . Max | GLM-5.2 | 1-3-12 месяцев| Официальная Подписка | ПОЛНАЯ 11 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-1-3-12-mesiacev-oficialnaia-podpiska-polnaia-102438864",
+          "visible": true
+        },
+        {
+          "name": "Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 |  активация | Полная гаранти",
+          "pid": "102296362",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 | активация | Полная гаранти 23 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-tarify-dlia-programmirovaniia-glm-5-2-aktivaciia-polnaia-garanti-102296362",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI Подписка на 1 месяц — Lite / Pro / Max для программирования - ZAI (zai)",
+          "pid": "5413116",
+          "text": "Покупка на ваш аккаунт 1 950 ₽ Z AI | Z.AI Подписка на 1 месяц — Lite / Pro / Max для программирования - ZAI (zai) 136 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-podpiska-na-1-mesiac-lite-pro-max-dlia-programmirovaniia-zai-zai-5413116",
+          "visible": true
+        },
+        {
+          "name": "Z.ai | Подписка GLM Coding Lite/Pro/Max 1-3-12 месяцев",
+          "pid": "102010339",
+          "text": "Покупка на ваш аккаунт 1 800 ₽ Z.ai | Подписка GLM Coding Lite/Pro/Max 1-3-12 месяцев 395 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-podpiska-glm-coding-lite-pro-max-1-3-12-mesiacev-102010339",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI",
+          "pid": "102358846",
+          "text": "Покупка на ваш аккаунт 2 000 ₽ Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI 152 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102358846",
+          "visible": true
+        },
+        {
+          "name": "Тарифный план Z.ai GLM: Lite/Pro/Max |  активация, полная",
+          "pid": "102668478",
+          "text": "Покупка на ваш аккаунт 1 980 ₽ Тарифный план Z.ai GLM: Lite/Pro/Max | активация, полная 13 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/tarifnyi-plan-z-ai-glm-lite-pro-max-aktivaciia-polnaia-102668478",
+          "visible": true
+        },
+        {
+          "name": "План Z.ai GLM для написания кода — Lite | Pro | Max",
+          "pid": "102761450",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ План Z.ai GLM для написания кода — Lite | Pro | Max 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/plan-z-ai-glm-dlia-napisaniia-koda-lite-pro-max-102761450",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ",
+          "pid": "102854421",
+          "text": "Покупка на ваш аккаунт 2 069 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-licnaia-podpiska-polnaia-102854421",
+          "visible": true
+        },
+        {
+          "name": "Пополнение баланса Z.ai",
+          "pid": "102826842",
+          "text": "Пополнение 1 USD = 120₽ Пополнение баланса Z.ai 21 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/popolnenie-balansa-z-ai-102826842",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453017",
+          "text": "Покупка на ваш аккаунт 2 295 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453017",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.ai | Подписка GLM 5.3 Coding Lite/Pro на 1/3/12 месяцев",
+          "pid": "102234852",
+          "text": "Покупка на ваш аккаунт 1 690 ₽ Z AI | Z.ai | Подписка GLM 5.3 Coding Lite/Pro на 1/3/12 месяцев 757 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-podpiska-glm-5-3-coding-lite-pro-na-1-3-12-mesiacev-102234852",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.ai на Ваш аккаунт",
+          "pid": "102651023",
+          "text": "Покупка на ваш аккаунт 1 795 ₽ Подписка Z.ai на Ваш аккаунт 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-na-vas-akkaunt-102651023",
+          "visible": true
+        },
+        {
+          "name": "Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца",
+          "pid": "102109639",
+          "text": "Покупка на ваш аккаунт 1 868 ₽ Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца 370 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-ili-3-mesiaca-102109639",
+          "visible": true
+        },
+        {
+          "name": "Апгрейд Z.AI Lite GLM, 1–12 месяца | F.A.S.T, FULL WARRANTY",
+          "pid": "102901244",
+          "text": "Покупка на ваш аккаунт 1 870 ₽ Апгрейд Z.AI Lite GLM, 1–12 месяца | F.A.S.T, FULL WARRANTY 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/apgreid-z-ai-lite-glm-1-12-mesiaca-f-a-s-t-full-warranty-102901244",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.ai | Подписка GLM Coding Lite/Pro/Max 1-12 месяцев",
+          "pid": "102113607",
+          "text": "Покупка на ваш аккаунт 1 980 ₽ Z AI | Z.ai | Подписка GLM Coding Lite/Pro/Max 1-12 месяцев 43 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-podpiska-glm-coding-lite-pro-max-1-12-mesiacev-102113607",
+          "visible": true
+        },
+        {
+          "name": "Z.AI GLM 5 Coding 1-12M | FAST, FULL WARRANTY",
+          "pid": "102483517",
+          "text": "Покупка на ваш аккаунт 2 050 ₽ Z.AI GLM 5 Coding 1-12M | FAST, FULL WARRANTY 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-5-coding-1-12m-fast-full-warranty-102483517",
+          "visible": true
+        },
+        {
+          "name": "Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/",
+          "pid": "102618255",
+          "text": "Покупка на ваш аккаунт 2 132 ₽ Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/ 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102618255",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца",
+          "pid": "103120617",
+          "text": "Покупка на ваш аккаунт 2 177 ₽ Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца 2 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-glm-lite-pro-max-1-12-mesiaca-103120617",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Lite, Pro, Max | 1-3-12 мес | Подписка",
+          "pid": "103487920",
+          "text": "Покупка на ваш аккаунт 2 189 ₽ Z.ai GLM Coding Lite, Pro, Max | 1-3-12 мес | Подписка 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12-mes-podpiska-103487920",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI ПОКУПКА ПОДПИСКИ 1/3/12m + ПОПОЛНИТЬ БАЛАНСА/КРЕДИТЫ",
+          "pid": "102169054",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z AI | Z.AI ПОКУПКА ПОДПИСКИ 1/3/12m + ПОПОЛНИТЬ БАЛАНСА/КРЕДИТЫ 25 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-pokupka-podpiski-1-3-12m-popolnit-balansa-kredity-102169054",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ",
+          "pid": "102495696",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ 9 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-personalnaia-podpiska-polnaia-102495696",
+          "visible": true
+        },
+        {
+          "name": "Z.ai — подписка на ИИ-сервис на ваш аккаунт.",
+          "pid": "103450913",
+          "text": "Покупка на ваш аккаунт 2 200 ₽ Z.ai — подписка на ИИ-сервис на ваш аккаунт. 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-podpiska-na-ii-servis-na-vas-akkaunt-103450913",
+          "visible": true
+        },
+        {
+          "name": "Z.AI | LITE/PRO/MAX| НА 1/3/12 МЕСЯЦЕВ | НА ВАШ АККАУНТ",
+          "pid": "103526697",
+          "text": "Покупка на ваш аккаунт 2 249 ₽ Z.AI | LITE/PRO/MAX| НА 1/3/12 МЕСЯЦЕВ | НА ВАШ АККАУНТ 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-lite-pro-max-na-1-3-12-mesiacev-na-vas-akkaunt-103526697",
+          "visible": true
+        },
+        {
+          "name": "Z.Ai - 1 месяц / Все тарифные планы / Официальная подписка / Полная",
+          "pid": "102821255",
+          "text": "Покупка на ваш аккаунт 2 256 ₽ Z.Ai - 1 месяц / Все тарифные планы / Официальная подписка / Полная 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-1-mesiac-vse-tarifnye-plany-oficialnaia-podpiska-polnaia-102821255",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453166",
+          "text": "Покупка на ваш аккаунт 2 290 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453166",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная",
+          "pid": "103159650",
+          "text": "Покупка на ваш аккаунт 2 350 ₽ Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-12-mesiacev-polnaia-103159650",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z AI Z.Ai | Официальная оплата | 1/3/12 месяцев",
+          "pid": "102583131",
+          "text": "Покупка на ваш аккаунт 2 360 ₽ Подписка Z AI Z.Ai | Официальная оплата | 1/3/12 месяцев 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-z-ai-oficialnaia-oplata-1-3-12-mesiacev-102583131",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI",
+          "pid": "102662846",
+          "text": "Покупка на ваш аккаунт 2 389 ₽ Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI 2 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102662846",
+          "visible": true
+        },
+        {
+          "name": "Z Ai / Z.ai | Lite, Pro, Max | 1, 3, 12 месяца | Ваш аккаунт",
+          "pid": "102104408",
+          "text": "Покупка на ваш аккаунт 2 449 ₽ Z Ai / Z.ai | Lite, Pro, Max | 1, 3, 12 месяца | Ваш аккаунт 8 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-lite-pro-max-1-3-12-mesiaca-vas-akkaunt-102104408",
+          "visible": true
+        },
+        {
+          "name": "Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/",
+          "pid": "102303683",
+          "text": "Покупка на ваш аккаунт 2 488 ₽ Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/ 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102303683",
+          "visible": true
+        },
+        {
+          "name": "Z.AI на 1/3/12 месяцев | Обновление подписки | GLM Coding Lite/Pro/Max | Полная  | Быст",
+          "pid": "103669007",
+          "text": "Покупка на ваш аккаунт 2 488 ₽ Z.AI на 1/3/12 месяцев | Обновление подписки | GLM Coding Lite/Pro/Max | Полная | Быст 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-na-1-3-12-mesiacev-obnovlenie-podpiski-glm-coding-lite-pro-max-polnaia-byst-103669007",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)",
+          "pid": "102331610",
+          "text": "Покупка на ваш аккаунт 37 000 ₽ Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение) 7 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-max-na-3-mesiaca-z-ai-premium-podpiska-ogranicennoe-predlozenie-102331610",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI ПОКУПКА ПОПОЛНИТЬ БАЛАНСА/КРЕДИТЫ",
+          "pid": "102223543",
+          "text": "Пополнение 1 USD = 414₽ Z AI | Z.AI ПОКУПКА ПОПОЛНИТЬ БАЛАНСА/КРЕДИТЫ 29 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-pokupka-popolnit-balansa-kredity-102223543",
+          "visible": true
+        },
+        {
+          "name": "API GLM / ChatGPT / Claude Пополнение (от 1 млрд токенов) + генерация изображений Дашборд",
+          "pid": "102619388",
+          "text": "Пополнение 1 USD = 6.99₽ API GLM / ChatGPT / Claude Пополнение (от 1 млрд токенов) + генерация изображений Дашборд 28 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/api-glm-chatgpt-claude-popolnenie-ot-1-mlrd-tokenov-generaciia-izobrazenii-dasbord-102619388",
+          "visible": true
+        },
+        {
+          "name": "API GLM / Claude / ChatGPT и др. $200/$400. Токены до 267кк/530кк. / 1 мес Дашборд",
+          "pid": "102619589",
+          "text": "Пополнение 1 USD = 1250₽ API GLM / Claude / ChatGPT и др. $200/$400. Токены до 267кк/530кк. / 1 мес Дашборд 3 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/api-glm-claude-chatgpt-i-dr-200-400-tokeny-do-267kk-530kk-1-mes-dasbord-102619589",
+          "visible": true
+        },
+        {
+          "name": "STEAM РФ-СНГ RUB-KZT-UAH 24/7",
+          "pid": "4040511",
+          "text": "Пополнение 1 Steam RUB = 1.07₽ STEAM РФ-СНГ RUB-KZT-UAH 24/7 6 194 206 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/steam-rf-sng-rub-kzt-uah-247-4040511",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+          "pid": "4841114",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 1 488 233 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-4841114",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7",
+          "pid": "102145601",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7 124 804 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-24-7-102145601",
+          "visible": true
+        },
+        {
+          "name": "АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ",
+          "pid": "4718810",
+          "text": "Пополнение 1 Steam RUB = 1.1₽ АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 568 858 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtomaticeskoe-popolnenie-steam-rub-uah-kzt-sng-4718810",
+          "visible": true
+        },
+        {
+          "name": "24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ",
+          "pid": "102124065",
+          "text": "Покупка подписки 2 289 ₽ 24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-claude-ai-fable-5-5-pro-podpiska-ai-1-mesiac-klod-ai-102124065",
+          "visible": true
+        },
+        {
+          "name": "24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ",
+          "pid": "4378425",
+          "text": "Покупка подписки 2 249 ₽ 24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-chatgpt-6-astra-5-6-plus-podpiska-cerez-token-1m-catgpt-4378425",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 24/7",
+          "pid": "102122574",
+          "text": "Пополнение 1 Steam RUB = 1.1₽ АВТОПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 24/7 76 144 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-rub-uah-kzt-sng-24-7-102122574",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 24/7",
+          "pid": "102122595",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 24/7 54 702 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-24-7-102122595",
+          "visible": true
+        },
+        {
+          "name": "Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК",
+          "pid": "5211966",
+          "text": "Карта оплаты 458 ₽ Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-5211966",
+          "visible": true
+        },
+        {
+          "name": "Roblox Gift Card 50 - 20000 Robux Все регионы",
+          "pid": "4265397",
+          "text": "Подарочная карта 118 ₽ Roblox Gift Card 50 - 20000 Robux Все регионы 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/roblox-gift-card-50-20000-robux-vse-regiony-4265397",
+          "visible": true
+        },
+        {
+          "name": "24/7 | ChatGPT 6 PLUS | 1 Месяц | ПОДПИСКА ЧЕРЕЗ ТОКЕН | АВТО | ЧатГПТ",
+          "pid": "3650076",
+          "text": "Покупка подписки 2 222 ₽ 24/7 | ChatGPT 6 PLUS | 1 Месяц | ПОДПИСКА ЧЕРЕЗ ТОКЕН | АВТО | ЧатГПТ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-chatgpt-6-plus-1-mesiac-podpiska-cerez-token-avto-catgpt-3650076",
+          "visible": true
+        },
+        {
+          "name": "Подарочная карта Apple iTunes/AppStore [Россия] от 500 до 10000 руб (АВТОВЫДАЧА)",
+          "pid": "5402518",
+          "text": "Карта оплаты 839 ₽ Подарочная карта Apple iTunes/AppStore [Россия] от 500 до 10000 руб (АВТОВЫДАЧА) 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-appstore-rossiia-ot-500-do-10000-rub-avtovydaca-5402518",
+          "visible": true
+        }
+      ],
+      "headings": [
+        "Все для Z.ai"
+      ],
+      "showMore": [],
+      "title": "🌐 Купить Z.ai дешево от 360.00₽ с быстрой доставкой – ggsel",
+      "url": "https://ggsel.net/catalog/zai"
+    },
+    {
+      "capturedAt": "2026-10-25T12:01:14.417Z",
+      "cards": [
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "102610634",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant 131 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-3-coding-instant-activation-private-full-warrant-102610634",
+          "visible": true
+        },
+        {
+          "name": "Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M |  | Стабильно",
+          "pid": "102236410",
+          "text": "Покупка на ваш аккаунт 1 785 ₽ Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно 168 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite . Pro . Max | GLM-5.2 | 1-3-12 месяцев| Официальная Подписка | ПОЛНАЯ",
+          "pid": "102438864",
+          "text": "Покупка на ваш аккаунт 2 099 ₽ Z.ai GLM Lite . Pro . Max | GLM-5.2 | 1-3-12 месяцев| Официальная Подписка | ПОЛНАЯ 11 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-1-3-12-mesiacev-oficialnaia-podpiska-polnaia-102438864",
+          "visible": true
+        },
+        {
+          "name": "Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 |  активация | Полная гаранти",
+          "pid": "102296362",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 | активация | Полная гаранти 23 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-tarify-dlia-programmirovaniia-glm-5-2-aktivaciia-polnaia-garanti-102296362",
+          "visible": true
+        },
+        {
+          "name": "Тарифный план Z.ai GLM: Lite/Pro/Max |  активация, полная",
+          "pid": "102668478",
+          "text": "Покупка на ваш аккаунт 1 980 ₽ Тарифный план Z.ai GLM: Lite/Pro/Max | активация, полная 13 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/tarifnyi-plan-z-ai-glm-lite-pro-max-aktivaciia-polnaia-102668478",
+          "visible": true
+        },
+        {
+          "name": "План Z.ai GLM для написания кода — Lite | Pro | Max",
+          "pid": "102761450",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ План Z.ai GLM для написания кода — Lite | Pro | Max 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/plan-z-ai-glm-dlia-napisaniia-koda-lite-pro-max-102761450",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ",
+          "pid": "102854421",
+          "text": "Покупка на ваш аккаунт 2 069 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-licnaia-podpiska-polnaia-102854421",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453017",
+          "text": "Покупка на ваш аккаунт 2 295 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453017",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ",
+          "pid": "102495696",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ 9 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-personalnaia-podpiska-polnaia-102495696",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453166",
+          "text": "Покупка на ваш аккаунт 2 290 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453166",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца",
+          "pid": "103120617",
+          "text": "Покупка на ваш аккаунт 2 177 ₽ Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца 2 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-glm-lite-pro-max-1-12-mesiaca-103120617",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max на 1–12 месяцев — подписка",
+          "pid": "103162444",
+          "text": "Покупка на ваш аккаунт 1 889 ₽ Z.ai GLM Lite / Pro / Max на 1–12 месяцев — подписка 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-na-1-12-mesiacev-podpiska-103162444",
+          "visible": true
+        },
+        {
+          "name": "Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца",
+          "pid": "102109639",
+          "text": "Покупка на ваш аккаунт 1 868 ₽ Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца 370 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-ili-3-mesiaca-102109639",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная",
+          "pid": "103159650",
+          "text": "Покупка на ваш аккаунт 2 350 ₽ Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-12-mesiacev-polnaia-103159650",
+          "visible": true
+        },
+        {
+          "name": "STEAM РФ-СНГ RUB-KZT-UAH 24/7",
+          "pid": "4040511",
+          "text": "Пополнение 1 Steam RUB = 1.07₽ STEAM РФ-СНГ RUB-KZT-UAH 24/7 6 194 206 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/steam-rf-sng-rub-kzt-uah-247-4040511",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+          "pid": "4841114",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 1 488 233 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-4841114",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7",
+          "pid": "102145601",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7 124 804 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-24-7-102145601",
+          "visible": true
+        },
+        {
+          "name": "АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ",
+          "pid": "4718810",
+          "text": "Пополнение 1 Steam RUB = 1.1₽ АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 568 858 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtomaticeskoe-popolnenie-steam-rub-uah-kzt-sng-4718810",
+          "visible": true
+        },
+        {
+          "name": "24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ",
+          "pid": "102124065",
+          "text": "Покупка подписки 2 289 ₽ 24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-claude-ai-fable-5-5-pro-podpiska-ai-1-mesiac-klod-ai-102124065",
+          "visible": true
+        },
+        {
+          "name": "24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ",
+          "pid": "4378425",
+          "text": "Покупка подписки 2 249 ₽ 24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-chatgpt-6-astra-5-6-plus-podpiska-cerez-token-1m-catgpt-4378425",
+          "visible": true
+        }
+      ],
+      "headings": [
+        "«GLM Max»"
+      ],
+      "showMore": [
+        {
+          "disabled": false,
+          "text": "Показать ещё"
+        }
+      ],
+      "title": "ggsel Поиск (14)",
+      "url": "https://ggsel.net/search/GLM%20Max"
+    },
+    {
+      "capturedAt": "2026-10-25T12:02:14.938Z",
+      "cards": [
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "102610634",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant 131 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-3-coding-instant-activation-private-full-warrant-102610634",
+          "visible": true
+        },
+        {
+          "name": "Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M |  | Стабильно",
+          "pid": "102236410",
+          "text": "Покупка на ваш аккаунт 1 785 ₽ Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно 168 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite . Pro . Max | GLM-5.2 | 1-3-12 месяцев| Официальная Подписка | ПОЛНАЯ",
+          "pid": "102438864",
+          "text": "Покупка на ваш аккаунт 2 099 ₽ Z.ai GLM Lite . Pro . Max | GLM-5.2 | 1-3-12 месяцев| Официальная Подписка | ПОЛНАЯ 11 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-1-3-12-mesiacev-oficialnaia-podpiska-polnaia-102438864",
+          "visible": true
+        },
+        {
+          "name": "Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 |  активация | Полная гаранти",
+          "pid": "102296362",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 | активация | Полная гаранти 23 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-tarify-dlia-programmirovaniia-glm-5-2-aktivaciia-polnaia-garanti-102296362",
+          "visible": true
+        },
+        {
+          "name": "Тарифный план Z.ai GLM: Lite/Pro/Max |  активация, полная",
+          "pid": "102668478",
+          "text": "Покупка на ваш аккаунт 1 980 ₽ Тарифный план Z.ai GLM: Lite/Pro/Max | активация, полная 13 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/tarifnyi-plan-z-ai-glm-lite-pro-max-aktivaciia-polnaia-102668478",
+          "visible": true
+        },
+        {
+          "name": "План Z.ai GLM для написания кода — Lite | Pro | Max",
+          "pid": "102761450",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ План Z.ai GLM для написания кода — Lite | Pro | Max 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/plan-z-ai-glm-dlia-napisaniia-koda-lite-pro-max-102761450",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ",
+          "pid": "102854421",
+          "text": "Покупка на ваш аккаунт 2 069 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-licnaia-podpiska-polnaia-102854421",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453017",
+          "text": "Покупка на ваш аккаунт 2 295 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453017",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ",
+          "pid": "102495696",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ 9 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-personalnaia-podpiska-polnaia-102495696",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453166",
+          "text": "Покупка на ваш аккаунт 2 290 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453166",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца",
+          "pid": "103120617",
+          "text": "Покупка на ваш аккаунт 2 177 ₽ Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца 2 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-glm-lite-pro-max-1-12-mesiaca-103120617",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max на 1–12 месяцев — подписка",
+          "pid": "103162444",
+          "text": "Покупка на ваш аккаунт 1 889 ₽ Z.ai GLM Lite / Pro / Max на 1–12 месяцев — подписка 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-na-1-12-mesiacev-podpiska-103162444",
+          "visible": true
+        },
+        {
+          "name": "Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца",
+          "pid": "102109639",
+          "text": "Покупка на ваш аккаунт 1 868 ₽ Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца 370 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-ili-3-mesiaca-102109639",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная",
+          "pid": "103159650",
+          "text": "Покупка на ваш аккаунт 2 350 ₽ Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-12-mesiacev-polnaia-103159650",
+          "visible": true
+        },
+        {
+          "name": "STEAM РФ-СНГ RUB-KZT-UAH 24/7",
+          "pid": "4040511",
+          "text": "Пополнение 1 Steam RUB = 1.07₽ STEAM РФ-СНГ RUB-KZT-UAH 24/7 6 194 206 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/steam-rf-sng-rub-kzt-uah-247-4040511",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+          "pid": "4841114",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 1 488 233 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-4841114",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7",
+          "pid": "102145601",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7 124 804 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-24-7-102145601",
+          "visible": true
+        },
+        {
+          "name": "АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ",
+          "pid": "4718810",
+          "text": "Пополнение 1 Steam RUB = 1.1₽ АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 568 858 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtomaticeskoe-popolnenie-steam-rub-uah-kzt-sng-4718810",
+          "visible": true
+        },
+        {
+          "name": "24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ",
+          "pid": "102124065",
+          "text": "Покупка подписки 2 289 ₽ 24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-claude-ai-fable-5-5-pro-podpiska-ai-1-mesiac-klod-ai-102124065",
+          "visible": true
+        },
+        {
+          "name": "24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ",
+          "pid": "4378425",
+          "text": "Покупка подписки 2 249 ₽ 24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-chatgpt-6-astra-5-6-plus-podpiska-cerez-token-1m-catgpt-4378425",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 24/7",
+          "pid": "102122574",
+          "text": "Пополнение 1 Steam RUB = 1.1₽ АВТОПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 24/7 76 144 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-rub-uah-kzt-sng-24-7-102122574",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 24/7",
+          "pid": "102122595",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 24/7 54 702 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-24-7-102122595",
+          "visible": true
+        },
+        {
+          "name": "Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК",
+          "pid": "5211966",
+          "text": "Карта оплаты 458 ₽ Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-5211966",
+          "visible": true
+        },
+        {
+          "name": "Roblox Gift Card 50 - 20000 Robux Все регионы",
+          "pid": "4265397",
+          "text": "Подарочная карта 118 ₽ Roblox Gift Card 50 - 20000 Robux Все регионы 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/roblox-gift-card-50-20000-robux-vse-regiony-4265397",
+          "visible": true
+        },
+        {
+          "name": "24/7 | ChatGPT 6 PLUS | 1 Месяц | ПОДПИСКА ЧЕРЕЗ ТОКЕН | АВТО | ЧатГПТ",
+          "pid": "3650076",
+          "text": "Покупка подписки 2 222 ₽ 24/7 | ChatGPT 6 PLUS | 1 Месяц | ПОДПИСКА ЧЕРЕЗ ТОКЕН | АВТО | ЧатГПТ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-chatgpt-6-plus-1-mesiac-podpiska-cerez-token-avto-catgpt-3650076",
+          "visible": true
+        },
+        {
+          "name": "Подарочная карта Apple iTunes/AppStore [Россия] от 500 до 10000 руб (АВТОВЫДАЧА)",
+          "pid": "5402518",
+          "text": "Карта оплаты 839 ₽ Подарочная карта Apple iTunes/AppStore [Россия] от 500 до 10000 руб (АВТОВЫДАЧА) 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-appstore-rossiia-ot-500-do-10000-rub-avtovydaca-5402518",
+          "visible": true
+        }
+      ],
+      "headings": [
+        "«GLM Max»"
+      ],
+      "showMore": [],
+      "title": "ggsel Поиск (14)",
+      "url": "https://ggsel.net/search/GLM%20Max"
+    },
+    {
+      "capturedAt": "2026-10-25T12:02:40.511Z",
+      "cards": [
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "102610634",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.3 Coding | Instant Activation | Private | Full Warrant 131 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-3-coding-instant-activation-private-full-warrant-102610634",
+          "visible": true
+        },
+        {
+          "name": "Апгрейд Z.AI Lite/Pro/Max: GLM 5.2, 1–12 месяца | F.A.S.T, FULL WARRANTY",
+          "pid": "102109731",
+          "text": "Покупка на ваш аккаунт 2 299 ₽ Апгрейд Z.AI Lite/Pro/Max: GLM 5.2, 1–12 месяца | F.A.S.T, FULL WARRANTY 390 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/apgreid-z-ai-lite-pro-max-glm-5-2-1-12-mesiaca-f-a-s-t-full-warranty-102109731",
+          "visible": true
+        },
+        {
+          "name": "Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M |  | Стабильно",
+          "pid": "102236410",
+          "text": "Покупка на ваш аккаунт 1 785 ₽ Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно 168 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Plan: Lite / Pro / Max 1 - 12M | Fast Activation, Full Warranty",
+          "pid": "102458121",
+          "text": "Покупка на ваш аккаунт 2 099 ₽ Z.ai GLM Coding Plan: Lite / Pro / Max 1 - 12M | Fast Activation, Full Warranty 16 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-plan-lite-pro-max-1-12m-fast-activation-full-warranty-102458121",
+          "visible": true
+        },
+        {
+          "name": "Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 |  активация | Полная гаранти",
+          "pid": "102296362",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ Z.AI GLM Lite / Pro / Max | Тарифы для программирования GLM-5.2 | активация | Полная гаранти 23 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-tarify-dlia-programmirovaniia-glm-5-2-aktivaciia-polnaia-garanti-102296362",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI Подписка на 1 месяц — Lite / Pro / Max для программирования - ZAI (zai)",
+          "pid": "5413116",
+          "text": "Покупка на ваш аккаунт 1 950 ₽ Z AI | Z.AI Подписка на 1 месяц — Lite / Pro / Max для программирования - ZAI (zai) 136 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-podpiska-na-1-mesiac-lite-pro-max-dlia-programmirovaniia-zai-zai-5413116",
+          "visible": true
+        },
+        {
+          "name": "Z.ai | Подписка GLM Coding Lite/Pro/Max 1-3-12 месяцев",
+          "pid": "102010339",
+          "text": "Покупка на ваш аккаунт 1 800 ₽ Z.ai | Подписка GLM Coding Lite/Pro/Max 1-3-12 месяцев 395 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-podpiska-glm-coding-lite-pro-max-1-3-12-mesiacev-102010339",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI",
+          "pid": "102358846",
+          "text": "Покупка на ваш аккаунт 2 000 ₽ Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI 152 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102358846",
+          "visible": true
+        },
+        {
+          "name": "Тарифный план Z.ai GLM: Lite/Pro/Max |  активация, полная",
+          "pid": "102668478",
+          "text": "Покупка на ваш аккаунт 1 980 ₽ Тарифный план Z.ai GLM: Lite/Pro/Max | активация, полная 13 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/tarifnyi-plan-z-ai-glm-lite-pro-max-aktivaciia-polnaia-102668478",
+          "visible": true
+        },
+        {
+          "name": "План Z.ai GLM для написания кода — Lite | Pro | Max",
+          "pid": "102761450",
+          "text": "Покупка на ваш аккаунт 1 999 ₽ План Z.ai GLM для написания кода — Lite | Pro | Max 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/plan-z-ai-glm-dlia-napisaniia-koda-lite-pro-max-102761450",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ",
+          "pid": "102854421",
+          "text": "Покупка на ваш аккаунт 2 069 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | ЛИЧНАЯ ПОДПИСКА | ПОЛНАЯ 5 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-licnaia-podpiska-polnaia-102854421",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453017",
+          "text": "Покупка на ваш аккаунт 2 295 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453017",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)",
+          "pid": "102331610",
+          "text": "Покупка на ваш аккаунт 37 000 ₽ Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение) 7 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-max-na-3-mesiaca-z-ai-premium-podpiska-ogranicennoe-predlozenie-102331610",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI",
+          "pid": "102662846",
+          "text": "Покупка на ваш аккаунт 2 389 ₽ Z AI | Z.AI | GLM CODING Lite/Pro/Max | 1 MONTH | SUPER FAST | ZAI 2 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-glm-coding-lite-pro-max-1-month-super-fast-zai-102662846",
+          "visible": true
+        },
+        {
+          "name": "Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца",
+          "pid": "103120617",
+          "text": "Покупка на ваш аккаунт 2 177 ₽ Подписка Z.AI GLM Lite / Pro / Max, 1–12 месяца 2 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/podpiska-z-ai-glm-lite-pro-max-1-12-mesiaca-103120617",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max на 1–12 месяцев — подписка",
+          "pid": "103162444",
+          "text": "Покупка на ваш аккаунт 1 889 ₽ Z.ai GLM Lite / Pro / Max на 1–12 месяцев — подписка 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-na-1-12-mesiacev-podpiska-103162444",
+          "visible": true
+        },
+        {
+          "name": "Z.AI | LITE/PRO/MAX| НА 1/3/12 МЕСЯЦЕВ | НА ВАШ АККАУНТ",
+          "pid": "103526697",
+          "text": "Покупка на ваш аккаунт 2 249 ₽ Z.AI | LITE/PRO/MAX| НА 1/3/12 МЕСЯЦЕВ | НА ВАШ АККАУНТ 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-lite-pro-max-na-1-3-12-mesiacev-na-vas-akkaunt-103526697",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная",
+          "pid": "103159650",
+          "text": "Покупка на ваш аккаунт 2 350 ₽ Z.ai GLM Coding Lite Pro Max 1-12 месяцев Полная 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-12-mesiacev-polnaia-103159650",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Coding Lite, Pro, Max | 1-3-12 мес | Подписка",
+          "pid": "103487920",
+          "text": "Покупка на ваш аккаунт 2 189 ₽ Z.ai GLM Coding Lite, Pro, Max | 1-3-12 мес | Подписка 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12-mes-podpiska-103487920",
+          "visible": true
+        },
+        {
+          "name": "Z AI | Z.ai | Подписка GLM Coding Lite/Pro/Max 1-12 месяцев",
+          "pid": "102113607",
+          "text": "Покупка на ваш аккаунт 1 980 ₽ Z AI | Z.ai | Подписка GLM Coding Lite/Pro/Max 1-12 месяцев 43 продажи Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-podpiska-glm-coding-lite-pro-max-1-12-mesiacev-102113607",
+          "visible": true
+        },
+        {
+          "name": "Z Ai / Z.ai | Lite, Pro, Max | 1, 3, 12 месяца | Ваш аккаунт",
+          "pid": "102104408",
+          "text": "Покупка на ваш аккаунт 2 449 ₽ Z Ai / Z.ai | Lite, Pro, Max | 1, 3, 12 месяца | Ваш аккаунт 8 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-z-ai-lite-pro-max-1-3-12-mesiaca-vas-akkaunt-102104408",
+          "visible": true
+        },
+        {
+          "name": "Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/",
+          "pid": "102618255",
+          "text": "Покупка на ваш аккаунт 2 132 ₽ Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/ 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102618255",
+          "visible": true
+        },
+        {
+          "name": "Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/",
+          "pid": "102303683",
+          "text": "Покупка на ваш аккаунт 2 488 ₽ Обновление Z.AI 1/3/12M Подписка | GLM Coding Lite/Pro/Max | Г.арантия/ 1 продажа Купить",
+          "url": "https://ggsel.net/catalog/product/obnovlenie-z-ai-1-3-12m-podpiska-glm-coding-lite-pro-max-g-arantiia-102303683",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ",
+          "pid": "102495696",
+          "text": "Покупка на ваш аккаунт 2 199 ₽ Z.ai GLM Lite / Pro / Max | Coding Plan (GLM-5.2) | Персональная Подписка | ПОЛНАЯ 9 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-coding-plan-glm-5-2-personalnaia-podpiska-polnaia-102495696",
+          "visible": true
+        },
+        {
+          "name": "Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant",
+          "pid": "103453166",
+          "text": "Покупка на ваш аккаунт 2 290 ₽ Z.ai GLM Lite / Pro / Max | GLM-5.2 Coding | Instant Activation | Private | Full Warrant 0 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/z-ai-glm-lite-pro-max-glm-5-2-coding-instant-activation-private-full-warrant-103453166",
+          "visible": true
+        },
+        {
+          "name": "STEAM РФ-СНГ RUB-KZT-UAH 24/7",
+          "pid": "4040511",
+          "text": "Пополнение 1 Steam RUB = 1.07₽ STEAM РФ-СНГ RUB-KZT-UAH 24/7 6 194 206 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/steam-rf-sng-rub-kzt-uah-247-4040511",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+          "pid": "4841114",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 1 488 233 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-4841114",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7",
+          "pid": "102145601",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7 124 804 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-24-7-102145601",
+          "visible": true
+        },
+        {
+          "name": "АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ",
+          "pid": "4718810",
+          "text": "Пополнение 1 Steam RUB = 1.1₽ АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 568 858 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtomaticeskoe-popolnenie-steam-rub-uah-kzt-sng-4718810",
+          "visible": true
+        },
+        {
+          "name": "24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ",
+          "pid": "102124065",
+          "text": "Покупка подписки 2 289 ₽ 24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-claude-ai-fable-5-5-pro-podpiska-ai-1-mesiac-klod-ai-102124065",
+          "visible": true
+        },
+        {
+          "name": "24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ",
+          "pid": "4378425",
+          "text": "Покупка подписки 2 249 ₽ 24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-chatgpt-6-astra-5-6-plus-podpiska-cerez-token-1m-catgpt-4378425",
+          "visible": true
+        }
+      ],
+      "headings": [
+        "«Z.ai Max»"
+      ],
+      "showMore": [
+        {
+          "disabled": false,
+          "text": "Показать ещё"
+        }
+      ],
+      "title": "ggsel Поиск (25)",
+      "url": "https://ggsel.net/search/Z.ai%20Max"
+    },
+    {
+      "capturedAt": "2026-10-25T12:02:53.175Z",
+      "cards": [
+        {
+          "name": "STEAM РФ-СНГ RUB-KZT-UAH 24/7",
+          "pid": "4040511",
+          "text": "Пополнение 1 Steam RUB = 1.07₽ STEAM РФ-СНГ RUB-KZT-UAH 24/7 6 194 206 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/steam-rf-sng-rub-kzt-uah-247-4040511",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+          "pid": "4841114",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT) 1 488 233 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-4841114",
+          "visible": true
+        },
+        {
+          "name": "АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7",
+          "pid": "102145601",
+          "text": "Пополнение 1 Steam KZT = 0.2₽ АВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7 124 804 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtopopolnenie-steam-kazaxstan-tenge-kzt-24-7-102145601",
+          "visible": true
+        },
+        {
+          "name": "АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ",
+          "pid": "4718810",
+          "text": "Пополнение 1 Steam RUB = 1.1₽ АВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ 568 858 продаж Купить",
+          "url": "https://ggsel.net/catalog/product/avtomaticeskoe-popolnenie-steam-rub-uah-kzt-sng-4718810",
+          "visible": true
+        },
+        {
+          "name": "24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ",
+          "pid": "102124065",
+          "text": "Покупка подписки 2 289 ₽ 24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-claude-ai-fable-5-5-pro-podpiska-ai-1-mesiac-klod-ai-102124065",
+          "visible": true
+        },
+        {
+          "name": "24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ",
+          "pid": "4378425",
+          "text": "Покупка подписки 2 249 ₽ 24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ 1 000+ продаж Купить",
+          "url": "https://ggsel.net/catalog/product/24-7-chatgpt-6-astra-5-6-plus-podpiska-cerez-token-1m-catgpt-4378425",
+          "visible": true
+        }
+      ],
+      "headings": [
+        "«GLM Макс»"
+      ],
+      "showMore": [
+        {
+          "disabled": false,
+          "text": "Показать ещё"
+        }
+      ],
+      "title": "ggsel Поиск (0)",
+      "url": "https://ggsel.net/search/GLM%20%D0%9C%D0%B0%D0%BA%D1%81"
+    }
+  ],
+  "manualCandidateIds": [
+    "102668478",
+    "102761450",
+    "102854421",
+    "103453017",
+    "102109639",
+    "103120617",
+    "103487920",
+    "103450913",
+    "103526697",
+    "102821255",
+    "103453166",
+    "103159650",
+    "103669007",
+    "102331610",
+    "103162444"
+  ],
+  "supplementRows": 32,
+  "incompleteCandidates": [
+    {
+      "pid": "102109639",
+      "title": "Купить Z ai – GLM Coding Lite/Pro/Max, 1 или 3 Месяца",
+      "reason": "No explicit Max variant control captured",
+      "initialPrices": [
+        {
+          "text": "1 868 ₽",
+          "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount",
+          "id": ""
+        },
+        {
+          "text": "2 289 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        },
+        {
+          "text": "2 249 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "pid": "102331610",
+      "title": "Купить Подписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)",
+      "reason": "No explicit Max variant control captured",
+      "initialPrices": [
+        {
+          "text": "37 000 ₽",
+          "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount",
+          "id": ""
+        },
+        {
+          "text": "2 289 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        },
+        {
+          "text": "2 249 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "pid": "103162444",
+      "title": "Купить Z.ai GLM Lite / Pro / Max на 1–12 месяцев — подписка",
+      "reason": "No explicit Max variant control captured",
+      "initialPrices": [
+        {
+          "text": "1 889 ₽",
+          "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount",
+          "id": ""
+        },
+        {
+          "text": "2 289 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        },
+        {
+          "text": "2 249 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        }
+      ]
+    }
+  ],
+  "manualAnnualVerification": {
+    "beforeSettle": {
+      "bodyText": "Рубли (RUB)\n·\nРусский\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nZ.ai\nПокупка на ваш аккаунт\nZ.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно\nZ.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно\n4.9\n169 продаж\n57 отзывов\nВ избранное\nСпособ получения*\nСоздание нового аккаунта (мы зарегистрируем его на нашу почту)\nАктивация на вашем аккаунте (введите адрес электронной почты и пароль ниже)\nАдрес электронной почты аккаунта Z.ai\n\nПароль от аккаунта Z.ai (если не помните, можете пропустить)\n\nВыберите тарифный план подписки*\nLite | 1 месяц | Первая регистрация (Лучшая цена)\nPro | 1 месяц | Первая регистрация (Лучшая цена)\nMax | 1 месяц | Первая регистрация (Лучшая цена)\nLite | 3 месяц | Первая регистрация (Лучшая цена)\nPro | 3 месяц | Первая регистрация (Лучшая цена)\nMax | 3 месяц | Первая регистрация (Лучшая цена)\nLite | 12 месяц | Первая регистрация (Лучшая цена)\nPro | 12 месяц | Первая регистрация (Лучшая цена)\nMax | 12 месяц | Первая регистрация (Лучшая цена)\nLite | 1 месяц | Продлить подписку\nPro | 1 месяц | Продлить подписку\nMax | 1 месяц | Продлить подписку\nLite | 3 месяц | Продлить подписку\nPro | 3 месяц | Продлить подписку\nMax | 3 месяц | Продлить подписку\nLite | 12 месяц | Продлить подписку\nPro | 12 месяц | Продлить подписку\nMax | 12 месяц | Продлить подписку\nО товаре\n\nZ.ai | GLM Coding Lite / Pro / Max\n• Тип активации:\n1️⃣ Создание нового чистого аккаунта (email + пароль)\n2️⃣ Продление / активация напрямую на ваш личный аккаунт.\n• Срок: 1 месяц / 3 месяца / 1 год\n• Гарантия: Полная поддержка в течение всего оплаченного периода. Столкнулись с трудностями? Просто напишите нам — мы оперативно решим ситуацию в рамках правил.\n• Рабочее время: С 7:00 до 00:00 (по московскому времени, GMT+3). Заказы обрабатываются в штатном режиме, ночные заявки обрабатываются в приоритетном порядке в начале следующего рабочего дня.\n• Время обработки: от 15 до 60 минут в рабочее время (в зависимости от загруженности и специфики тарифа, но гарантированно в течение максимум 24 часов).\n━━━━━━━━━━━━━━━━━━━━━━\n🔵 Кодирование GLM Lite\n✔️ Включена базовая норма использования\n✔️ Обработка до ~120 запросов каждые 5 часов.\n✔️ Создан для облегченной итерации в небольшом репозитории.\n✔️ Постоянный доступ к новейшим флагманским моделям и функциям.\n✔️ Поддерживает более 20 инструментов кодирования, включая Claude Code.\n\n🟡 GLM-кодирование Pro\n✔️ Все в Lite, плюс 5-кратное использование Lite.\n✔️ Обработка до ~600 запросов каждые 5 часов.\n✔️ Создан для повседневной разработки в репозиториях среднего размера.\n✔️ Приоритетный доступ к новейшим флагманским моделям и функциям\n✔️ Включает тщательно подобранный набор инструментов MCP.\n✔️ Более высокая скорость генерации\n\n🔴 GLM Кодирование Маx\n✔️ Все в версии Pro, плюс 20-кратное использование Lite.\n✔️ Обработка до ~2400 запросов каждые 5 часов.\n✔️ Создан для опытных пользователей, работающих со средними и крупными репозиториями.\n✔️ Первоочередной доступ к новейшим флагманским моделям и функциям\n✔️ Выделенные ресурсы в часы пик\n━━━━━━━━━━━━━━━━━━━━━━\n⚙️ Как оформить заказ\n1️⃣ Выберите тариф, который подходит вам лучше всего.\n2️⃣ Совершите оплату.\n3️⃣ Перейдите в чат с продавцом для предоставления необходимых данных доступа.\n💡 Совет для быстрой обработки: сразу после оплаты отправьте короткое приветствие, например: «Я оплатил заказ, жду проверки!»\n4️⃣ Дождитесь завершения активации.\nЕсли был создан новый профиль — вы получите логин и пароль в сообщении.\nЕсли активация проводилась на ваш аккаунт — подготовьте данные для входа и оставайтесь на связи для подтверждения безопасности (если потребуется код).\n5️⃣ Проверьте статус подписки в своем профиле и, если всё отлично, мы будем благодарны за честный отзыв ★★★★★!\n────────────────────────────────\n💳 Порядок возврата средств\n✅ 100% возврат средств в случае ошибки с нашей стороны.\n✅ 80% возврат средств в других случаях на наше усмотрение.\n🚫 Возврат средств невозможен после успешной активации услуги.\n────────────────────────────────\n🔒 Важные правила\n❗ Мы не несем ответственности за блокировки или ограничения аккаунтов, вызванные нарушениями правил пользователем.\n❗ Сервис не связан с Z.ai и выступает исключительно в качестве платформы для обработки платежей и распределения подписок.\n\nРаскрыть\nОтзывы57\n22 октября 2026\nСделали быстро, спасибо\n21 октября 2026\nВсе чётко! Баланс пополнен) Не очень быстро НО, однозначно доволен)\n20 октября 2026\nПокупкой доволен. Ответили через 2 часа, через 2.5 часа всё было готово.\n17 октября 2026\nнормалды\n17 октября 2026\nбыли сложности при покупки с паролем от моего аккаунта. продавец был на связи, отвечал на вопросы. в итоге всё оплачено и всё получен, супер! спасибо!\n9 октября 2026\nВсё супер!\n7 октября 2026\nНе отвечают на вопросы. Продлевать через них подписку не рекомендую.\nОтвет от продавца\nGGsel был недоступен последние несколько дней, я не мог обработать ваш заказ, я уже вернул вам деньги.\n3 октября 2026\nДостаточно оперативно, всё работает, жалоб нет\n30 сентября 2026\nРаботает. Все вовремя, без проблем и вопросов.\n30 сентября 2026\nВсе прошло, быстро.\n28 сентября 2026\nОплата прошла за пол часа\n25 сентября 2026\nспасибо\n25 сентября 2026\nАккаунт с подпиской есть, но очень долго ждал (около суток)\nОтвет от продавца\nИзвини, я пропустил твое сообщение.\n23 сентября 2026\nВсё гуд\n21 сентября 2026\nВсе отлично! Аккаунт получил, и все работает.\n21 сентября 2026\nзаказ получил за 4 часа, учитывайте это\n20 сентября 2026\nВсё отлично и быстро.\n20 сентября 2026\nВсё отлично, подписка работает.\n19 сентября 2026\nЗаказ быстро обработали, подписка оплачена\n18 сентября 2026\nВсе прошло успешно!\nПоказать ещё\n1 785 ₽\nSown store\n4.9\n(3,2k)\n12,4k продаж\nКупить\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam ",
+      "capturedAt": "2026-10-25T12:13:26.771Z",
+      "maxControls": [
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 1 месяц | Первая регистрация (Лучшая цена)"
+        },
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 3 месяц | Первая регистрация (Лучшая цена)"
+        },
+        {
+          "ariaPressed": "true",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root Mui-selected MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 12 месяц | Первая регистрация (Лучшая цена)"
+        },
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 1 месяц | Продлить подписку"
+        },
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 3 месяц | Продлить подписку"
+        },
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-lastButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 12 месяц | Продлить подписку"
+        }
+      ],
+      "prices": [
+        {
+          "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount",
+          "id": "",
+          "text": "1 785 ₽"
+        },
+        {
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": "",
+          "text": "2 289 ₽"
+        },
+        {
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": "",
+          "text": "2 249 ₽"
+        }
+      ],
+      "title": "Купить Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно",
+      "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410"
+    },
+    "settled": {
+      "bodyText": "Рубли (RUB)\n·\nРусский\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nZ.ai\nПокупка на ваш аккаунт\nZ.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно\nZ.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно\n4.9\n169 продаж\n57 отзывов\nВ избранное\nСпособ получения*\nСоздание нового аккаунта (мы зарегистрируем его на нашу почту)\nАктивация на вашем аккаунте (введите адрес электронной почты и пароль ниже)\nАдрес электронной почты аккаунта Z.ai\n\nПароль от аккаунта Z.ai (если не помните, можете пропустить)\n\nВыберите тарифный план подписки*\nLite | 1 месяц | Первая регистрация (Лучшая цена)\nPro | 1 месяц | Первая регистрация (Лучшая цена)\nMax | 1 месяц | Первая регистрация (Лучшая цена)\nLite | 3 месяц | Первая регистрация (Лучшая цена)\nPro | 3 месяц | Первая регистрация (Лучшая цена)\nMax | 3 месяц | Первая регистрация (Лучшая цена)\nLite | 12 месяц | Первая регистрация (Лучшая цена)\nPro | 12 месяц | Первая регистрация (Лучшая цена)\nMax | 12 месяц | Первая регистрация (Лучшая цена)\nLite | 1 месяц | Продлить подписку\nPro | 1 месяц | Продлить подписку\nMax | 1 месяц | Продлить подписку\nLite | 3 месяц | Продлить подписку\nPro | 3 месяц | Продлить подписку\nMax | 3 месяц | Продлить подписку\nLite | 12 месяц | Продлить подписку\nPro | 12 месяц | Продлить подписку\nMax | 12 месяц | Продлить подписку\nО товаре\n\nZ.ai | GLM Coding Lite / Pro / Max\n• Тип активации:\n1️⃣ Создание нового чистого аккаунта (email + пароль)\n2️⃣ Продление / активация напрямую на ваш личный аккаунт.\n• Срок: 1 месяц / 3 месяца / 1 год\n• Гарантия: Полная поддержка в течение всего оплаченного периода. Столкнулись с трудностями? Просто напишите нам — мы оперативно решим ситуацию в рамках правил.\n• Рабочее время: С 7:00 до 00:00 (по московскому времени, GMT+3). Заказы обрабатываются в штатном режиме, ночные заявки обрабатываются в приоритетном порядке в начале следующего рабочего дня.\n• Время обработки: от 15 до 60 минут в рабочее время (в зависимости от загруженности и специфики тарифа, но гарантированно в течение максимум 24 часов).\n━━━━━━━━━━━━━━━━━━━━━━\n🔵 Кодирование GLM Lite\n✔️ Включена базовая норма использования\n✔️ Обработка до ~120 запросов каждые 5 часов.\n✔️ Создан для облегченной итерации в небольшом репозитории.\n✔️ Постоянный доступ к новейшим флагманским моделям и функциям.\n✔️ Поддерживает более 20 инструментов кодирования, включая Claude Code.\n\n🟡 GLM-кодирование Pro\n✔️ Все в Lite, плюс 5-кратное использование Lite.\n✔️ Обработка до ~600 запросов каждые 5 часов.\n✔️ Создан для повседневной разработки в репозиториях среднего размера.\n✔️ Приоритетный доступ к новейшим флагманским моделям и функциям\n✔️ Включает тщательно подобранный набор инструментов MCP.\n✔️ Более высокая скорость генерации\n\n🔴 GLM Кодирование Маx\n✔️ Все в версии Pro, плюс 20-кратное использование Lite.\n✔️ Обработка до ~2400 запросов каждые 5 часов.\n✔️ Создан для опытных пользователей, работающих со средними и крупными репозиториями.\n✔️ Первоочередной доступ к новейшим флагманским моделям и функциям\n✔️ Выделенные ресурсы в часы пик\n━━━━━━━━━━━━━━━━━━━━━━\n⚙️ Как оформить заказ\n1️⃣ Выберите тариф, который подходит вам лучше всего.\n2️⃣ Совершите оплату.\n3️⃣ Перейдите в чат с продавцом для предоставления необходимых данных доступа.\n💡 Совет для быстрой обработки: сразу после оплаты отправьте короткое приветствие, например: «Я оплатил заказ, жду проверки!»\n4️⃣ Дождитесь завершения активации.\nЕсли был создан новый профиль — вы получите логин и пароль в сообщении.\nЕсли активация проводилась на ваш аккаунт — подготовьте данные для входа и оставайтесь на связи для подтверждения безопасности (если потребуется код).\n5️⃣ Проверьте статус подписки в своем профиле и, если всё отлично, мы будем благодарны за честный отзыв ★★★★★!\n────────────────────────────────\n💳 Порядок возврата средств\n✅ 100% возврат средств в случае ошибки с нашей стороны.\n✅ 80% возврат средств в других случаях на наше усмотрение.\n🚫 Возврат средств невозможен после успешной активации услуги.\n────────────────────────────────\n🔒 Важные правила\n❗ Мы не несем ответственности за блокировки или ограничения аккаунтов, вызванные нарушениями правил пользователем.\n❗ Сервис не связан с Z.ai и выступает исключительно в качестве платформы для обработки платежей и распределения подписок.\n\nРаскрыть\nОтзывы57\n22 октября 2026\nСделали быстро, спасибо\n21 октября 2026\nВсе чётко! Баланс пополнен) Не очень быстро НО, однозначно доволен)\n20 октября 2026\nПокупкой доволен. Ответили через 2 часа, через 2.5 часа всё было готово.\n17 октября 2026\nнормалды\n17 октября 2026\nбыли сложности при покупки с паролем от моего аккаунта. продавец был на связи, отвечал на вопросы. в итоге всё оплачено и всё получен, супер! спасибо!\n9 октября 2026\nВсё супер!\n7 октября 2026\nНе отвечают на вопросы. Продлевать через них подписку не рекомендую.\nОтвет от продавца\nGGsel был недоступен последние несколько дней, я не мог обработать ваш заказ, я уже вернул вам деньги.\n3 октября 2026\nДостаточно оперативно, всё работает, жалоб нет\n30 сентября 2026\nРаботает. Все вовремя, без проблем и вопросов.\n30 сентября 2026\nВсе прошло, быстро.\n28 сентября 2026\nОплата прошла за пол часа\n25 сентября 2026\nспасибо\n25 сентября 2026\nАккаунт с подпиской есть, но очень долго ждал (около суток)\nОтвет от продавца\nИзвини, я пропустил твое сообщение.\n23 сентября 2026\nВсё гуд\n21 сентября 2026\nВсе отлично! Аккаунт получил, и все работает.\n21 сентября 2026\nзаказ получил за 4 часа, учитывайте это\n20 сентября 2026\nВсё отлично и быстро.\n20 сентября 2026\nВсё отлично, подписка работает.\n19 сентября 2026\nЗаказ быстро обработали, подписка оплачена\n18 сентября 2026\nВсе прошло успешно!\nПоказать ещё\n144 785 ₽\nSown store\n4.9\n(3,2k)\n12,4k продаж\nКупить\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Stea",
+      "capturedAt": "2026-10-25T12:13:48.429Z",
+      "maxControls": [
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 1 месяц | Первая регистрация (Лучшая цена)"
+        },
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 3 месяц | Первая регистрация (Лучшая цена)"
+        },
+        {
+          "ariaPressed": "true",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root Mui-selected MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 12 месяц | Первая регистрация (Лучшая цена)"
+        },
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 1 месяц | Продлить подписку"
+        },
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-middleButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 3 месяц | Продлить подписку"
+        },
+        {
+          "ariaPressed": "false",
+          "ariaSelected": null,
+          "cls": "MuiButtonBase-root MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButton-root MuiToggleButton-sizeMedium MuiToggleButton-standard MuiToggleButtonGroup-grouped MuiToggleButtonGroup-groupedHorizontal MuiToggleButtonGroup-lastButton mui-zbiosr",
+          "dataState": null,
+          "tag": "BUTTON",
+          "text": "Max | 12 месяц | Продлить подписку"
+        }
+      ],
+      "prices": [
+        {
+          "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount",
+          "id": "",
+          "text": "144 785 ₽"
+        },
+        {
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": "",
+          "text": "2 289 ₽"
+        },
+        {
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": "",
+          "text": "2 249 ₽"
+        }
+      ],
+      "title": "Купить Z.ai | GLM Coding Lite / Pro / Max | 1-3-12M | | Стабильно",
+      "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410"
+    },
+    "result": {
+      "marketplace": "ggsel",
+      "pid": "102236410",
+      "url": "https://ggsel.net/catalog/product/z-ai-glm-coding-lite-pro-max-1-3-12m-stabilno-102236410",
+      "tier": "Max",
+      "duration": "12m",
+      "delivery": "own_account",
+      "optionText": "Max | 12 месяц | Первая регистрация (Лучшая цена)",
+      "expectedPrice": 144785,
+      "observedPrice": 144785,
+      "verified": true,
+      "capturedAt": "2026-10-25T12:13:48.429Z",
+      "method": "AgentBrowser explicit toggle click, selected aria-pressed=true, settled buy-block amount"
+    }
+  },
+  "manualFlatCandidate": {
+    "pid": "102331610",
+    "marketplace": "ggsel",
+    "url": "https://ggsel.net/catalog/product/102331610",
+    "tier": "Max",
+    "duration": "3m",
+    "observedPriceRub": 37000,
+    "evidence": "category card and independently opened rendered detail body both show 37 000 RUB; detail says only one account available",
+    "delivery": "unknown",
+    "catalogueEligible": false,
+    "reason": "No selectable Max control; account delivery/renewal terms are not clear. Preserved as manual candidate, not inserted into recommendations.",
+    "detailText": "Рубли (RUB)\n·\nРусский\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nZ.ai\nПокупка на ваш аккаунт\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\nПодписка Z.ai MAX на 3 месяца –Z ai Премиум-подписка (ограниченное предложение)\n4.8\n7 продаж\n1 отзыв\nВ избранное\n\nПолучите полный доступ к тарифному плану Z.ai MAX (3 месяцев) — созданному для высокопроизводительного использования ИИ, более быстрой реакции и приоритетного доступа к вычислительным ресурсам.\n\n💎 Что вы получаете:\n✔️ Тарифный план Z.ai MAX (полный доступ на 3 месяцев)\n✔️ Приоритетная скорость + более высокие лимиты использования\n✔️ Доступ к новейшим функциям GLM\n✔️ Стабильная производительность для ресурсоемких задач\n🔥 Специальная скидка\n💥 Скидка 40% от первоначальной цены\n⚠️ Ограниченное количество\nДоступен только 1 аккаунт\n\nОтзывы1\n11 сентября 2026\nОтлично\n37 000 ₽\nDerdoGames\n4.8\n(1,5k)\n9,1k продаж\nКупить\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 194 334\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 488 289\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n124 820\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n568 890\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\n\n\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка\n"
+  },
+  "platiBrowserEvidence": {
+    "server44Home": "✓ 403 - Forbidden: Access is denied.\n  https://plati.market/\nServer Error\n403 - Forbidden: Access is denied.\nYou do not have permission to view this directory or page using the credentials that you supplied.\n",
+    "server44Direct": "✓ 403 - Forbidden: Access is denied.\n  https://plati.market/itm/6080490\nServer Error\n403 - Forbidden: Access is denied.\nYou do not have permission to view this directory or page using the credentials that you supplied.\n",
+    "server88Home": "roomhacker-server-88\n/usr/bin/agent-browser\n               total        used        free      shared  buff/cache   available\nПамять:     128589       43136        2206        1280       83246       82623\n 15:03:37 up 12 days, 12:44,  1 user,  load average: 9.62, 13.76, 14.54\n✓ 403 - Forbidden: Access is denied.\n  https://plati.market/\nServer Error\n403 - Forbidden: Access is denied.\nYou do not have permission to view this directory or page using the credentials that you supplied.\n✓ Browser closed\n"
+  },
+  "coverageLimits": [
+    "Plati public discovery API was fresh, but 24 detail pages produced no eligible Max price and independent headless UI checks returned 403 on both allowed hosts.",
+    "GGSEL category initially exposed 40 category products plus recommendations. Show more only appended six unrelated recommendations.",
+    "GLM Max search exposed 14 relevant products; Z.ai Max search exposed 25; GLM Макс exposed no relevant products. Search transitions were asynchronous.",
+    "Manual candidate list is a bounded visible-page sample, not proof of an exhaustive marketplace inventory. Three supplemental cards had no captured explicit Max control; flat 3m candidate price is recorded separately and not ranked."
+  ],
+  "preservationChecks": {
+    "otherProductsUnchanged": true,
+    "zaiNonMaxUnchanged": true,
+    "rootGeneratedAtUnchanged": true
+  },
+  "minima": {
+    "1m": {
+      "pid": "102169054",
+      "marketplace": "ggsel",
+      "url": "https://ggsel.net/catalog/product/102169054",
+      "option_text": "GLM Coding Max 1 месяц",
+      "duration": "1m",
+      "delivery": "unknown",
+      "price_rub": 16223.0,
+      "final_verified": false
+    },
+    "3m": {
+      "pid": "102234852",
+      "marketplace": "ggsel",
+      "url": "https://ggsel.net/catalog/product/102234852",
+      "option_text": "Max 3 месяц",
+      "duration": "3m",
+      "delivery": "own_account",
+      "price_rub": 41470.0,
+      "final_verified": false
+    },
+    "12m": {
+      "pid": "102236410",
+      "marketplace": "ggsel",
+      "url": "https://ggsel.net/catalog/product/102236410",
+      "option_text": "Max | 12 месяц | Первая регистрация (Лучшая цена)",
+      "duration": "12m",
+      "delivery": "own_account",
+      "price_rub": 144785.0,
+      "final_verified": true
+    }
+  },
+  "elapsed": {
+    "startedAtLocal": "14:42",
+    "endedAtUtc": "2026-10-25T12:17:42.645329+00:00",
+    "estimateMinutes": 25,
+    "activeMinutes": "not measured",
+    "reasonOverEstimate": "Sequential CDP collection took 12 minutes; manual searches found 15 extra candidates requiring targeted Max capture and independent annual price settling check."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": "docs/snapshots/data/2026-10-23-minimax.raw.json",
+  "note": "Minimal verbatim title/selected-option/buy-block evidence from the saved capture; prices are historical fixtures.",
+  "listings": [
+    {
+      "marketplace": "plati", "pid": "4696379", "url": "https://plati.market/itm/4696379",
+      "title": "Купить MINIMAX AI M3 Token Plan subscription 1month",
+      "options": [{"text": "max\n+3 083 ₽", "clicked": true, "selectedAfter": true, "priceChanged": true, "priceVerified": true, "prices": [{"text": "5 193 ₽", "cls": "id_product_price"}]}]
+    },
+    {
+      "marketplace": "ggsel", "pid": "102369748", "url": "https://ggsel.net/catalog/product/102369748",
+      "title": "Купить MINIMAX AI | PLATFORM MINIMAX API | PLUS/MAX/ULTRA | 1 MONTH WARRANTY",
+      "options": [
+        {"text": "Explore 1 Month", "clicked": true, "selectedAfter": true, "priceChanged": true, "priceVerified": true, "prices": [{"text": "4 800 ₽", "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount"}]},
+        {"text": "GO 1 Month", "clicked": true, "selectedAfter": true, "priceChanged": true, "priceVerified": true, "prices": [{"text": "1 800 ₽", "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount"}]}
+      ]
+    },
+    {
+      "marketplace": "ggsel", "pid": "102358305", "url": "https://ggsel.net/catalog/product/102358305",
+      "title": "Купить MiniMax Go/Explore/Build 1-12M | Обновление/продление | Г.арантия",
+      "options": [{"text": "Build - 1 год", "clicked": true, "selectedAfter": true, "priceChanged": true, "priceVerified": true, "prices": [{"text": "168 637 ₽", "cls": "ProductBuyBlock-module-scss-module__Tn6mfa__amount"}]}]
+    }
+  ]
+}

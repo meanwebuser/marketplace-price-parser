@@ -111,6 +111,11 @@ def classify_tier(text: str) -> str:
         return "Lite"
     if re.search(r"\bUltra\b|\bультра\b", text, re.IGNORECASE):
         return "Ultra"
+    for tier in ("GO", "Explore", "Build"):
+        if tier == "GO" and re.search(r"\bgo\s+to\b", text, re.IGNORECASE):
+            continue
+        if re.search(rf"\b{tier}\b", text, re.IGNORECASE):
+            return tier
     return ""
 
 

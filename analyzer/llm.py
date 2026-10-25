@@ -22,7 +22,7 @@ DEFAULT_LLM_MODEL = "gemma4"
 _LLM_PROMPT = """You are a price-detail validator. Given a marketplace
 listing page excerpt, return JSON with these fields:
   product_family: short identifier (e.g. "minimax-token-plan", "glm-coding")
-  tier: "Max" | "Pro+" | "Pro" | "Plus" | "Lite" | ""
+  tier: "Max" | "Pro+" | "Pro" | "Plus" | "Lite" | "Ultra" | "GO" | "Explore" | "Build" | ""
   duration: "1m" | "3m" | "12m" | ""
   delivery: "own_account" | "new_account" | "shared_account" | "unknown"
   price_rub: integer RUB price as you read it, or 0 if unsure
@@ -105,7 +105,7 @@ def _call_llm(item: dict, api_key: str, base_url: str, model: str, timeout: int)
     return _extract_json(content)
 
 
-_VALID_TIERS = {"Max", "Pro+", "Pro", "Plus", "Lite"}
+_VALID_TIERS = {"Max", "Pro+", "Pro", "Plus", "Lite", "Ultra", "GO", "Explore", "Build"}
 _VALID_DELIVERY = {"own_account", "new_account", "shared_account"}
 
 

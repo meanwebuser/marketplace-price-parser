@@ -11,12 +11,13 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import urllib.error
 import urllib.request
 from pathlib import Path
 
 from analyzer.evidence import build_pack, build_batches
-from analyzer.price import is_glitched
+from analyzer.price import classify_duration_from_title, classify_tier, is_glitched
 from analyzer.llm import _extract_json
 
 DEFAULT_LLM_BASE_URL = "https://llm.bezrabotnyi.com/v1"
@@ -31,7 +32,7 @@ _TIER_ALIASES = {
     "go": "GO", "plus": "Plus", "pro": "Pro", "pro+": "Pro+",
     "pro 5x": "Pro 5X", "pro x5": "Pro 5X", "pro5x": "Pro 5X",
     "pro 20x": "Pro 20X", "pro x20": "Pro 20X", "pro20x": "Pro 20X",
-    "max": "Max", "lite": "Lite",
+    "max": "Max", "lite": "Lite", "ultra": "Ultra", "explore": "Explore", "build": "Build",
 }
 _JUNK_TIERS = {"", "undefined", "null", "none", "other", "n/a", "-"}
 
@@ -51,7 +52,7 @@ def _pack_evidence_prices(pack: dict) -> set[float]:
         allowed.update(float(x) for x in o.get("p") or [])
     return allowed
 
-SYSTEM_PROMPT = """You classify marketplace listings for ChatGPT-family subscriptions. \
+SYSTEM_PROMPT = """You classify marketplace listings for AI subscriptions (ChatGPT, MiniMax, Claude, Kimi, Z.ai/GLM). \
 For every listing in the input JSON array return classified rows.
 
 Input listing fields: pid, mp, url, title, desc (seller description), page \
@@ -70,12 +71,13 @@ say so in evidence and use the most plausible price for THAT variant.
 - If there are no opts but init_strong/init carry a real price, the listing \
 is a flat single offer: emit ONE row with "opt": "FLAT" using that price.
 - tier: "GO" | "Plus" | "Pro 5X" | "Pro 20X" | "Pro" | "Pro+" | "Max" | \
-"Lite" | other exact product word. PRO X5/X20 variants are distinct tiers. \
+"Lite" | "Ultra" | "Explore" | "Build" | other exact product word. MiniMax M Plan GO/Explore/Build and legacy Token Plan Plus/Max/Ultra are distinct tiers. PRO X5/X20 variants are distinct tiers. \
 A chip listing several tiers at once (e.g. "PLUS | PRO | GO") is one row per \
 tier ONLY if separate prices exist; otherwise classify the cheapest named \
 tier and note ambiguity in evidence.
 - duration: "1m" | "3m" | "6m" | "12m" from the option text, else the title, \
-else the description. Never guess a duration absent everywhere.
+else an unambiguous flat-product description. Never guess a duration absent \
+from captured evidence or replace a selected variant's explicit term.
 - delivery: whose mailbox/account decides the class. "own_account" = the \
 subscription lives on the BUYER's own account or their mailbox («на ваш \
 аккаунт», «продление», «с/со входом», «через токен», «по токену», \
@@ -86,7 +88,7 @@ account lives on the seller's or a random mailbox and is handed over \
 аккаунта» without your email, «аккаунт предоставляем мы»). "shared_account" \
 = общий доступ. "unknown" when nothing indicates either side. Description \
 (desc) is authoritative when the chip is silent.
-- Unrelated products (not a ChatGPT subscription) or empty evidence → rows: [].
+- Unrelated products (not an AI subscription) or empty evidence → rows: [].
 - price_rub: integer RUB a buyer pays for THAT variant; 0 if genuinely unknown.
 
 Output STRICT JSON only, no prose: an array with one element per input \
@@ -157,6 +159,43 @@ def _parse_llm_content(content: str) -> list | None:
     return None
 
 
+def _source_duration(text: str) -> str:
+    """Read one explicit term; a multi-term selector is not a chosen term."""
+    if re.search(r"\b\d+\s*(?:[/–—-]\s*\d+)+\s*(?:m\b|months?\b|месяц\w*|мес\.?)", text, re.I):
+        return ""
+    text = re.sub(r"\b(12|6|3|1)\s*(?:m\b|м\b|мес\.?(?=\W|$))", r"\1 months", text, flags=re.I)
+    return classify_duration_from_title(text)
+
+
+def _duration_is_supported(pack: dict, row: dict, tier: str, duration: str, price: float) -> bool:
+    if duration not in VALID_DURATIONS:
+        return False
+    options = pack.get("opts") or []
+    clicked = [option for option in options if option.get("c")]
+    normalize = lambda text: re.sub(r"[\s|]+", " ", str(text or "")).strip().lower()
+    exact = [option for option in clicked if normalize(option.get("t")) == normalize(row.get("opt"))]
+    if exact:
+        terms = [_source_duration(option.get("t") or "") for option in exact]
+        if any(terms):
+            return duration in terms
+        # An ambiguous selector must not borrow the title's default term.
+        if any(re.search(r"\d+\s*(?:m\b|month|мес|год)|year", option.get("t") or "", re.I) for option in exact):
+            return False
+        return _source_duration(" ".join(str(pack.get(key) or "") for key in ("title", "desc"))) == duration
+    if options:
+        # A model may shorten the label; bind it to a captured tier, its own
+        # post-click price and explicit term rather than trusting that label.
+        return any(
+            classify_tier(option.get("t") or "") == tier
+            and _source_duration(option.get("t") or "") == duration
+            and (price == option["strong"] if option.get("strong") is not None else price in (option.get("p") or []))
+            for option in clicked
+        )
+    # Flat listings have no selectable variants. Their product details must
+    # state one term; missing or contradictory detail evidence stays unknown.
+    return _source_duration(" ".join(str(pack.get(key) or "") for key in ("title", "desc"))) == duration
+
+
 def _row_to_offer(pack: dict, row: dict, min_price_by_tier: dict | None) -> dict | None:
     try:
         price = float(row.get("price_rub") or 0)
@@ -168,6 +207,8 @@ def _row_to_offer(pack: dict, row: dict, min_price_by_tier: dict | None) -> dict
     if tier.lower() in _JUNK_TIERS:
         return None
     duration = str(row.get("duration") or "").strip()
+    if not _duration_is_supported(pack, row, tier, duration, price):
+        return None
     delivery = str(row.get("delivery") or "").strip() or "unknown"
     if delivery not in VALID_DELIVERIES:
         delivery = "unknown"

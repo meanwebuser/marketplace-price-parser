@@ -227,7 +227,7 @@ const collectVariantControls = () => {
   // Keyword gate decides WHICH controls we click; everything else that
   // looks like a variant control is still recorded into "skipped" so a
   // manual audit can see variants the filter silently rejected.
-  const KEY = /Max|Pro|Lite|Plus|Плюс|GO|Токен|Месяц|Год|month|year|Первая|Продление|Subscription|Случайный|Требуется|месяц|год|нов(?:ый|ая)\s+(?:аккаунт|учетн)|предоставлю|свой\s+аккаунт|account/i;
+  const KEY = /Max|Pro|Lite|Plus|Ultra|Explore|Build|Плюс|GO|Токен|Месяц|Год|month|year|Первая|Продление|Subscription|Случайный|Требуется|месяц|год|нов(?:ый|ая)\s+(?:аккаунт|учетн)|предоставлю|свой\s+аккаунт|account/i;
   const availabilityMeta = (el, text) => {
     const input = el && (el.matches && el.matches('input, option')
       ? el

@@ -1,0 +1,428 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-23T00:20:23Z",
+  "comparisonMethod": "limitPoints are seller-independent plan-level values derived only from first-party plan descriptions. They are the user's simplified cross-service comparison proxy, not a shared physical unit or a guarantee of equal real-world usage. Numeric plan points are normalized within each service to its lowest numerically supported current plan = 1; values are monthly-equivalent for subscription-term calculations. The originalOfficialUnit, originalOfficialQuantity, originalOfficialPeriod, sourceUrl, and rationale preserve the native evidence and its limits. Null means no stable numeric plan allowance can be assigned. Do not label limitPoints as tokens.",
+  "limitPointsPeriod": "per subscription month",
+  "families": {
+    "chatgpt": {
+      "sourceUrl": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers",
+      "plans": [
+        {
+          "planId": "chatgpt.plus",
+          "canonicalTierAliases": ["Plus"],
+          "originalOfficialUnit": "included usage baseline for ChatGPT Plus",
+          "originalOfficialQuantity": 1,
+          "originalOfficialPeriod": "monthly subscription; individual model allowances can differ",
+          "limitPoints": 1,
+          "rationale": "Normalization baseline for ChatGPT. The official plan page compares Pro allowances against Plus; this point is a family-local reference, not an absolute cross-provider quota."
+        },
+        {
+          "planId": "chatgpt.pro_100",
+          "canonicalTierAliases": ["Pro 100", "Pro $100", "Pro 5X", "Pro 5x"],
+          "originalOfficialUnit": "included usage allowance; current numeric multiplier not published",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly subscription; model-specific allowances vary",
+          "limitPoints": null,
+          "rationale": "The current official Help Center names Pro 100 but publishes no numeric allowance relative to Plus. The older 5x label is retained only as a historical alias, not as a current allowance value."
+        },
+        {
+          "planId": "chatgpt.pro_200",
+          "canonicalTierAliases": ["Pro 200", "Pro $200", "Pro 20X", "Pro 20x"],
+          "originalOfficialUnit": "included usage allowance relative to Plus",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly subscription; grandfathered prior allowance may apply only to eligible active accounts through 2026-10-29",
+          "limitPoints": null,
+          "rationale": "The official Help Center says eligible existing accounts temporarily retain the previous allowance through 2026-10-29, then move to a lower allowance; current non-grandfathered Pro $200 has no stable numeric multiplier published. Marketplace wording cannot establish the buyer's grandfathering eligibility, so do not assign the historical 20x as the current offer's points."
+        },
+        {
+          "planId": "chatgpt.pro_500",
+          "canonicalTierAliases": ["Pro 500", "Pro $500"],
+          "originalOfficialUnit": "included usage allowance; highest of the three current Pro plans",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly subscription",
+          "limitPoints": null,
+          "rationale": "The official page identifies Pro $500 as the highest included-usage tier and adds Ultrafast, but publishes no numeric allowance multiplier. Preserve the highest-tier ordering separately; do not invent a points value."
+        },
+        {
+          "planId": "chatgpt.unknown_tier",
+          "canonicalTierAliases": ["Max"],
+          "originalOfficialUnit": "unresolved marketplace tier label; no matching current official ChatGPT subscription tier",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": null,
+          "limitPoints": null,
+          "rationale": "The checked official subscription page lists Plus and Pro plans, not a ChatGPT Max plan. Keep this marketplace label unresolved rather than equating it to Pro $500."
+        }
+      ]
+    },
+    "claude": {
+      "sourceUrl": "https://support.claude.com/en/articles/11049741-what-is-the-max-plan",
+      "plans": [
+        {
+          "planId": "claude.pro",
+          "canonicalTierAliases": ["Pro"],
+          "originalOfficialUnit": "standard Claude Pro usage capacity",
+          "originalOfficialQuantity": 1,
+          "originalOfficialPeriod": "monthly subscription; rolling usage limits apply",
+          "limitPoints": 1,
+          "rationale": "Family-local baseline. Anthropic describes Max tiers as multiples of Pro capacity; the published baseline does not imply a fixed number of messages for all models and task sizes."
+        },
+        {
+          "planId": "claude.max_5x",
+          "canonicalTierAliases": ["Max 5X", "Max 5x", "Claude Max 5X", "Claude Max 5x"],
+          "originalOfficialUnit": "per-session usage allowance relative to Claude Pro",
+          "originalOfficialQuantity": 5,
+          "originalOfficialPeriod": "per session; session allowance resets every five hours and a weekly cross-model limit also applies",
+          "limitPoints": 5,
+          "rationale": "Anthropic explicitly publishes Max 5x as 5x Pro capacity. Marketplace option text must identify this variant; a generic listing title that merely mentions Max 5x is insufficient."
+        },
+        {
+          "planId": "claude.max_20x",
+          "canonicalTierAliases": ["Max 20X", "Max 20x", "Claude Max 20X", "Claude Max 20x"],
+          "originalOfficialUnit": "per-session usage allowance relative to Claude Pro",
+          "originalOfficialQuantity": 20,
+          "originalOfficialPeriod": "per session; session allowance resets every five hours and a weekly cross-model limit also applies",
+          "limitPoints": 20,
+          "rationale": "Anthropic explicitly publishes Max 20x as 20x Pro capacity. Marketplace option text must identify this variant; generic listing-title mentions do not establish the selected plan."
+        },
+        {
+          "planId": "claude.max_unspecified",
+          "canonicalTierAliases": ["Max"],
+          "originalOfficialUnit": "Max plan usage tier; multiplier unspecified",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly subscription",
+          "limitPoints": null,
+          "rationale": "Anthropic publishes separate Max 5x and Max 20x variants. A bare Max label without active option evidence does not identify which one applies."
+        }
+      ]
+    },
+    "kimi": {
+      "sourceUrl": "https://www.kimi.com/en/help/membership/membership-overview",
+      "marketRegion": "china",
+      "mappingRule": "The checked official membership overview explicitly describes current China plans. Assign these plan IDs only when selected option text explicitly identifies the China/CN Kimi membership product; seller titles, generic Kimi tier names, and currency alone are insufficient region evidence.",
+      "plans": [
+        {
+          "planId": "kimi.go",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Go"],
+          "originalOfficialUnit": "Agent credits; official plan table says more credits but publishes no numeric amount or comparison denominator",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly shared membership credit pool",
+          "limitPoints": null,
+          "rationale": "The official page gives no stable numeric quantity for Go, so it cannot safely serve as a numeric baseline. The table also does not identify the denominator for its higher-tier Agent-credit figures."
+        },
+        {
+          "planId": "kimi.plus",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Plus"],
+          "originalOfficialUnit": "Agent credits (published numeric multiple; comparison denominator unspecified)",
+          "originalOfficialQuantity": 2,
+          "originalOfficialPeriod": "monthly shared membership credit pool",
+          "limitPoints": 1,
+          "rationale": "The official comparison publishes a value of 2x Agent credits for Plus but does not identify the comparison denominator. Plus is the lowest numerically stated current tier and is explicitly chosen as normalized baseline 1; this does not claim the published figure is relative to Go and is not a count of fixed tasks."
+        },
+        {
+          "planId": "kimi.pro",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Pro"],
+          "originalOfficialUnit": "Agent credits (published numeric multiple; comparison denominator unspecified)",
+          "originalOfficialQuantity": 4,
+          "originalOfficialPeriod": "monthly shared membership credit pool",
+          "limitPoints": 2,
+          "rationale": "The official comparison publishes a value of 4x Agent credits for Pro but does not identify the comparison denominator. Normalizing the published numeric entry against Plus's published 2x entry gives 2 points; this does not claim either value is relative to Go."
+        },
+        {
+          "planId": "kimi.max",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Max"],
+          "originalOfficialUnit": "Agent credits (published numeric multiple; comparison denominator unspecified)",
+          "originalOfficialQuantity": 14,
+          "originalOfficialPeriod": "monthly shared membership credit pool",
+          "limitPoints": 7,
+          "rationale": "The official comparison publishes a value of 14x Agent credits for Max but does not identify the comparison denominator. Normalizing the published numeric entry against Plus's published 2x entry gives 7 points; this does not claim either value is relative to Go."
+        },
+        {
+          "planId": "kimi.ultra",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Ultra"],
+          "originalOfficialUnit": "Agent credits (published numeric multiple; comparison denominator unspecified)",
+          "originalOfficialQuantity": 28,
+          "originalOfficialPeriod": "monthly shared membership credit pool",
+          "limitPoints": 14,
+          "rationale": "The official comparison publishes a value of 28x Agent credits for Ultra but does not identify the comparison denominator. Normalizing the published numeric entry against Plus's published 2x entry gives 14 points; this does not claim either value is relative to Go."
+        },
+        {
+          "planId": "kimi.unknown_tier",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Pro+"],
+          "originalOfficialUnit": "unresolved marketplace tier label; not listed as a current or legacy official plan name",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": null,
+          "limitPoints": null,
+          "rationale": "The checked official membership sources list current Go, Plus, Pro, Max, Ultra and legacy Andante, Moderato, Allegretto, Allegro. They do not establish Pro+ as a plan or equate it to Pro."
+        },
+        {
+          "planId": "kimi.legacy_andante",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Andante"],
+          "originalOfficialUnit": "legacy shared membership credit pool; numeric allowance not published in the checked source",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly pool plus legacy weekly and rolling five-hour Kimi Code limits",
+          "limitPoints": null,
+          "rationale": "Andante is explicitly named as a legacy plan, but the checked official source does not state its quota quantity or map it one-to-one to a new plan. Do not merge it into a new-tier ID."
+        },
+        {
+          "planId": "kimi.legacy_moderato",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Moderato"],
+          "originalOfficialUnit": "legacy shared membership credit pool; numeric allowance not published in the checked source",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly pool plus legacy weekly and rolling five-hour Kimi Code limits",
+          "limitPoints": null,
+          "rationale": "Moderato is explicitly named as a legacy plan, but the checked official source does not state its quota quantity or map it one-to-one to a new plan. Do not merge it into a new-tier ID."
+        },
+        {
+          "planId": "kimi.legacy_allegretto",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Allegretto"],
+          "originalOfficialUnit": "legacy shared membership credit pool; numeric allowance not published in the checked source",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly pool plus legacy weekly and rolling five-hour Kimi Code limits",
+          "limitPoints": null,
+          "rationale": "Allegretto is explicitly named as a legacy plan, but the checked official source does not state its quota quantity or map it one-to-one to a new plan. Do not merge it into a new-tier ID."
+        },
+        {
+          "planId": "kimi.legacy_allegro",
+          "marketRegion": "china",
+          "marketplaceRegionEvidence": ["China", "CN", "中国", "Kimi China membership"],
+          "canonicalTierAliases": ["Allegro"],
+          "originalOfficialUnit": "legacy shared membership credit pool; numeric allowance not published in the checked source",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "monthly pool plus legacy weekly and rolling five-hour Kimi Code limits",
+          "limitPoints": null,
+          "rationale": "Allegro is explicitly named as a legacy plan, but the checked official source does not state its quota quantity or map it one-to-one to a new plan. Do not merge it into a new-tier ID."
+        }
+      ]
+    },
+    "zai_glm": {
+      "sourceUrl": "https://zcode.z.ai/pricing.html",
+      "plans": [
+        {
+          "planId": "zai_glm.lite",
+          "canonicalTierAliases": ["Lite", "GLM Lite", "Z.ai Lite"],
+          "originalOfficialUnit": "Coding Plan credits",
+          "originalOfficialQuantity": 10000,
+          "originalOfficialPeriod": "per week; plan billing may be monthly, quarterly, or yearly",
+          "limitPoints": 1,
+          "rationale": "ZCode pricing lists Lite at 10,000 credits per week. This is the family-local reference; the new Coding Plan also uses a five-hour quota window."
+        },
+        {
+          "planId": "zai_glm.pro",
+          "canonicalTierAliases": ["Pro", "GLM Pro", "Z.ai Pro"],
+          "originalOfficialUnit": "Coding Plan usage relative to Lite",
+          "originalOfficialQuantity": 6,
+          "originalOfficialPeriod": "per weekly quota cycle; plan billing may be monthly, quarterly, or yearly",
+          "limitPoints": 6,
+          "rationale": "The official ZCode pricing page states Pro provides 6x Lite usage. Absolute weekly credits are not published on that page; keep the official multiplier as the quantity."
+        },
+        {
+          "planId": "zai_glm.max",
+          "canonicalTierAliases": ["Max", "GLM Max", "Z.ai Max"],
+          "originalOfficialUnit": "Coding Plan usage relative to Lite",
+          "originalOfficialQuantity": 14,
+          "originalOfficialPeriod": "per weekly quota cycle; plan billing may be monthly, quarterly, or yearly",
+          "limitPoints": 14,
+          "rationale": "The official ZCode pricing page states Max provides 14x Lite usage. Absolute weekly credits are not published on that page; keep the official multiplier as the quantity."
+        }
+      ]
+    },
+    "minimax": {
+      "mappingRule": "Current M Plan selected tier names Go/Explore/Build map to the separately sourced current global (English) product generation at 1/3/7.5 relative points; they are never aliases for the historical Plus/Max/Ultra tiers. A selected option naming multiple current tiers stays ambiguous. Historical MiniMax Plus/Max/Ultra labels are region-ambiguous. In this catalogue, map a regional legacy plan only when the selected option text explicitly identifies the matching Global/International M Plan/Token Plan or China/CN Token Plan. Seller titles, currency, and generic legacy plan names are insufficient. Without selected-option region evidence, use only a shared normalized score when official regional ratios match (Plus=1 and Max=3); generic Ultra remains null because regional ratios diverge.",
+      "currentMPlanSource": {
+        "sourceUrl": "https://www.minimax.io/m-plan",
+        "checkedAt": "2026-10-25",
+        "marketRegion": "global (English)",
+        "excerpt": "Go: More usage. Explore: 3× Go usage. Build: 7.5× Go usage.",
+        "note": "Current first-party product comparison. These are relative subscription usage allowances, not fixed token/call quotas or guarantees of equal real-world usage across services."
+      },
+      "plans": [
+        {
+          "planId": "minimax.m_plan.go",
+          "planProduct": "M Plan, Go/Explore/Build generation, global (English) offering",
+          "marketRegion": "global",
+          "sourceUrl": "https://www.minimax.io/m-plan",
+          "checkedAt": "2026-10-25",
+          "canonicalTierAliases": ["Go", "MiniMax Go", "M Plan Go"],
+          "originalOfficialUnit": "M Plan subscription usage; lowest named paid plan",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": "subscription usage; monthly/yearly billing; official comparison does not state a reset window",
+          "limitPoints": 1,
+          "normalizationBasePlanId": "minimax.m_plan.go",
+          "rationale": "The official current M Plan page names Go, Explore and Build. Go is the baseline for the explicit Explore/Build multipliers, so this catalogue normalizes Go to 1; the source says More usage and does not publish a fixed quota for Go. Explicit selected Go identifies this current plan generation; preserve the historical Token Plan tiers separately."
+        },
+        {
+          "planId": "minimax.m_plan.explore",
+          "planProduct": "M Plan, Go/Explore/Build generation, global (English) offering",
+          "marketRegion": "global",
+          "sourceUrl": "https://www.minimax.io/m-plan",
+          "checkedAt": "2026-10-25",
+          "canonicalTierAliases": ["Explore", "MiniMax Explore", "M Plan Explore"],
+          "originalOfficialUnit": "M Plan subscription usage relative to Go",
+          "originalOfficialQuantity": 3,
+          "originalOfficialPeriod": "subscription usage; monthly/yearly billing; official comparison does not state a reset window",
+          "limitPoints": 3,
+          "normalizationBasePlanId": "minimax.m_plan.go",
+          "rationale": "The current first-party M Plan comparison explicitly gives Explore 3x Go usage. With Go normalized to 1, Explore has 3 points. The selected Explore tier is distinct from all historical Plus/Max/Ultra aliases; the relative factor is not a fixed number of tokens, calls or sessions."
+        },
+        {
+          "planId": "minimax.m_plan.build",
+          "planProduct": "M Plan, Go/Explore/Build generation, global (English) offering",
+          "marketRegion": "global",
+          "sourceUrl": "https://www.minimax.io/m-plan",
+          "checkedAt": "2026-10-25",
+          "canonicalTierAliases": ["Build", "MiniMax Build", "M Plan Build"],
+          "originalOfficialUnit": "M Plan subscription usage relative to Go",
+          "originalOfficialQuantity": 7.5,
+          "originalOfficialPeriod": "subscription usage; monthly/yearly billing; official comparison does not state a reset window",
+          "limitPoints": 7.5,
+          "normalizationBasePlanId": "minimax.m_plan.go",
+          "rationale": "The current first-party M Plan comparison explicitly gives Build 7.5x Go usage. With Go normalized to 1, Build has 7.5 points. The selected Build tier is distinct from all historical Plus/Max/Ultra aliases; the relative factor is not a fixed number of tokens, calls or sessions."
+        },
+        {
+          "planId": "minimax.global_m_plan.plus",
+          "planProduct": "M Plan / Token Plan, global (English) offering",
+          "marketRegion": "global",
+          "sourceUrl": "https://platform.minimax.io/m-plan",
+          "additionalSourceUrls": ["https://platform.minimax.io/subscribe/token-plan"],
+          "marketplaceRegionEvidence": ["global", "international", "global M Plan", "global Token Plan"],
+          "canonicalTierAliases": ["Plus", "MiniMax Plus"],
+          "originalOfficialUnit": "estimated M3 programming calls at about 50,000 tokens per call; official page also estimates monthly M3 token usage",
+          "originalOfficialQuantity": 34000,
+          "originalOfficialPeriod": "per month",
+          "limitPoints": 1,
+          "additionalOfficialMetric": {"unit": "estimated M3 tokens", "quantity": 1700000000, "period": "per month"},
+          "rationale": "The global English first-party page identifies the Plus plan with about 1.7B M3 usage per month and about 34,000 M3 calls at an assumed 50K tokens per call. Points are normalized to the global Plus estimate. This is approximate, not a guaranteed fixed call count."
+        },
+        {
+          "planId": "minimax.global_m_plan.max",
+          "planProduct": "M Plan / Token Plan, global (English) offering",
+          "marketRegion": "global",
+          "sourceUrl": "https://platform.minimax.io/m-plan",
+          "additionalSourceUrls": ["https://platform.minimax.io/subscribe/token-plan"],
+          "marketplaceRegionEvidence": ["global", "international", "global M Plan", "global Token Plan"],
+          "canonicalTierAliases": ["Max", "MiniMax Max"],
+          "originalOfficialUnit": "estimated M3 programming calls at about 50,000 tokens per call; official page also estimates monthly M3 token usage",
+          "originalOfficialQuantity": 102000,
+          "originalOfficialPeriod": "per month",
+          "limitPoints": 3,
+          "additionalOfficialMetric": {"unit": "estimated M3 tokens", "quantity": 5100000000, "period": "per month"},
+          "rationale": "The global English first-party page estimates about 5.1B M3 usage per month and about 102,000 M3 calls. Dividing by the global Plus estimate gives 3 points. Estimates are approximate."
+        },
+        {
+          "planId": "minimax.global_m_plan.ultra",
+          "planProduct": "M Plan / Token Plan, global (English) offering",
+          "marketRegion": "global",
+          "sourceUrl": "https://platform.minimax.io/m-plan",
+          "additionalSourceUrls": ["https://platform.minimax.io/subscribe/token-plan"],
+          "marketplaceRegionEvidence": ["global", "international", "global M Plan", "global Token Plan"],
+          "canonicalTierAliases": ["Ultra", "MiniMax Ultra"],
+          "originalOfficialUnit": "estimated M3 programming calls at about 50,000 tokens per call; official page also estimates monthly M3 token usage",
+          "originalOfficialQuantity": 250000,
+          "originalOfficialPeriod": "per month",
+          "limitPoints": 7.35,
+          "additionalOfficialMetric": {"unit": "estimated M3 tokens", "quantity": 12500000000, "period": "per month"},
+          "rationale": "The global English first-party page estimates about 12.5B M3 usage per month and about 250,000 M3 calls. Dividing by the global Plus estimate gives about 7.35 points. Estimates are approximate."
+        },
+        {
+          "planId": "minimax.cn_token_plan.plus",
+          "planProduct": "Token Plan, China (CN) offering",
+          "marketRegion": "cn",
+          "sourceUrl": "https://platform.minimax.cn/subscribe/token-plan",
+          "marketplaceRegionEvidence": ["China", "CN", "Chinese Token Plan", "Token Plan China"],
+          "canonicalTierAliases": ["Plus", "MiniMax Plus"],
+          "originalOfficialUnit": "estimated M3 programming calls at about 50,000 tokens per call; official page also estimates monthly M3 token usage",
+          "originalOfficialQuantity": 12000,
+          "originalOfficialPeriod": "per month",
+          "limitPoints": 1,
+          "additionalOfficialMetric": {"unit": "estimated M3 tokens", "quantity": 600000000, "qualifier": "about 0.6B+", "period": "per month"},
+          "rationale": "The China first-party Token Plan page estimates about 0.6B M3 usage per month and about 12,000 M3 calls at an assumed 50K tokens per call. Points are normalized to the China Plus estimate. This is a separate regional product from the global English offering."
+        },
+        {
+          "planId": "minimax.cn_token_plan.max",
+          "planProduct": "Token Plan, China (CN) offering",
+          "marketRegion": "cn",
+          "sourceUrl": "https://platform.minimax.cn/subscribe/token-plan",
+          "marketplaceRegionEvidence": ["China", "CN", "Chinese Token Plan", "Token Plan China"],
+          "canonicalTierAliases": ["Max", "MiniMax Max"],
+          "originalOfficialUnit": "estimated M3 programming calls at about 50,000 tokens per call; official page also estimates monthly M3 token usage",
+          "originalOfficialQuantity": 36000,
+          "originalOfficialPeriod": "per month",
+          "limitPoints": 3,
+          "additionalOfficialMetric": {"unit": "estimated M3 tokens", "quantity": 1800000000, "qualifier": "about 1.8B+", "period": "per month"},
+          "rationale": "The China first-party Token Plan page estimates about 1.8B M3 usage per month and about 36,000 M3 calls. Dividing by the China Plus estimate gives 3 points. Estimates are approximate."
+        },
+        {
+          "planId": "minimax.cn_token_plan.ultra",
+          "planProduct": "Token Plan, China (CN) offering",
+          "marketRegion": "cn",
+          "sourceUrl": "https://platform.minimax.cn/subscribe/token-plan",
+          "marketplaceRegionEvidence": ["China", "CN", "Chinese Token Plan", "Token Plan China"],
+          "canonicalTierAliases": ["Ultra", "MiniMax Ultra"],
+          "originalOfficialUnit": "estimated M3 programming calls at about 50,000 tokens per call; official page also estimates monthly M3 token usage",
+          "originalOfficialQuantity": 140000,
+          "originalOfficialPeriod": "per month",
+          "limitPoints": 11.67,
+          "additionalOfficialMetric": {"unit": "estimated M3 tokens", "quantity": 7100000000, "qualifier": "about 7.1B+", "period": "per month"},
+          "rationale": "The China first-party Token Plan page estimates about 7.1B M3 usage per month and about 140,000 M3 calls. Dividing by the China Plus estimate gives about 11.67 points. Estimates are approximate."
+        },
+        {
+          "planId": "minimax.ambiguous.plus",
+          "planProduct": "MiniMax subscription, region and product unspecified",
+          "marketRegion": null,
+          "sourceUrl": "https://platform.minimax.io/m-plan",
+          "additionalSourceUrls": ["https://platform.minimax.io/subscribe/token-plan", "https://platform.minimax.cn/subscribe/token-plan"],
+          "canonicalTierAliases": ["Plus", "MiniMax Plus"],
+          "originalOfficialUnit": "ambiguous across regional/product variants",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": null,
+          "limitPoints": 1,
+          "rationale": "The global and China first-party offerings publish different absolute monthly estimates but the Plus plan is the lowest known tier in both, so its within-product normalized point is 1 either way. Use this shared point without asserting a region; retain region-specific native metrics only when evidence identifies the plan product."
+        },
+        {
+          "planId": "minimax.ambiguous.max",
+          "planProduct": "MiniMax subscription, region and product unspecified",
+          "marketRegion": null,
+          "sourceUrl": "https://platform.minimax.io/m-plan",
+          "additionalSourceUrls": ["https://platform.minimax.io/subscribe/token-plan", "https://platform.minimax.cn/subscribe/token-plan"],
+          "canonicalTierAliases": ["Max", "MiniMax Max"],
+          "originalOfficialUnit": "ambiguous across regional/product variants",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": null,
+          "limitPoints": 3,
+          "rationale": "Global and China first-party offerings both publish Max at 3x their respective Plus baseline, although their absolute monthly estimates differ. A generic Max can use this shared within-product point without asserting a region; retain region-specific native metrics only when evidence identifies the plan product."
+        },
+        {
+          "planId": "minimax.ambiguous.ultra",
+          "planProduct": "MiniMax subscription, region and product unspecified",
+          "marketRegion": null,
+          "sourceUrl": "https://platform.minimax.io/m-plan",
+          "additionalSourceUrls": ["https://platform.minimax.io/subscribe/token-plan", "https://platform.minimax.cn/subscribe/token-plan"],
+          "canonicalTierAliases": ["Ultra", "MiniMax Ultra"],
+          "originalOfficialUnit": "ambiguous across regional/product variants",
+          "originalOfficialQuantity": null,
+          "originalOfficialPeriod": null,
+          "limitPoints": null,
+          "rationale": "The global and China first-party Ultra-to-Plus ratios differ (about 7.35 versus about 11.67). Without explicit product/region evidence in the selected marketplace option, the generic Ultra tier has no defensible shared point. Seller title text does not establish the selected regional product."
+        }
+      ]
+    }
+  }
+}

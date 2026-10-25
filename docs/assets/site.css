@@ -22,11 +22,20 @@ input,select { min-height: 2.6rem; } button { cursor: pointer; border-color: #a9
 .section-heading h2 { margin: 0; font-size: clamp(1.35rem, 3vw, 2rem); }
 .recommendation-note { max-width: 31rem; margin: 0 0 .15rem; color: #a9aaa6; font-size: .84rem; }
 .recommendation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); gap: .8rem; }
+.recommendation-modes { display: flex; flex-wrap: wrap; gap: .5rem; margin: .25rem 0 .45rem; }
+.recommendation-modes button { border-color: #444952; color: #c8c6c0; }
+.recommendation-modes button[aria-selected="true"] { border-color: #a9e76c; background: #26321f; color: #a9e76c; }
+.recommendation-mode-note { margin: 0 0 .8rem; color: #9a9d97; font-size: .78rem; line-height: 1.45; }
 .recommendation-card { display: flex; flex-direction: column; gap: .45rem; padding: 1rem; border: 1px solid #354039; border-radius: 14px; background: linear-gradient(145deg, #20271f, #191b20 72%); }
 .recommendation-card .service { color: #a9e76c; font-size: .72rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .recommendation-card h3 { margin: 0; font-size: 1.1rem; }
+.recommendation-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .5rem; }
+.recommendation-controls label { min-width: 0; }
+.recommendation-controls select { width: 100%; min-width: 0; padding: .55rem .45rem; font-size: .88rem; }
 .recommendation-card .recommended-price { color: #f4f2ed; font-size: 1.35rem; font-weight: 800; }
+.recommendation-card .recommended-score { color: #c8e4a3; font-size: .86rem; line-height: 1.4; }
 .recommendation-card .recommended-detail { color: #c0c1bc; font-size: .82rem; line-height: 1.45; }
 .recommendation-card .recommended-meta { color: #9a9d97; font-size: .76rem; }
 .recommendation-card a { align-self: start; margin-top: .25rem; font-weight: 700; }
+.recommendation-card .unavailable { margin: .2rem 0; color: #ffcb6b; font-size: .88rem; line-height: 1.4; }
 @media (max-width: 680px) { .section-heading { display: block; }.recommendation-note { margin-top: .55rem; }.recommendation-grid { grid-template-columns: 1fr; } }

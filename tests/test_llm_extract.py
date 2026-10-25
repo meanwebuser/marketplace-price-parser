@@ -83,21 +83,22 @@ def test_parse_llm_content_unwraps_object_and_fences():
 
 def test_row_to_offer_normalizes_tier_spellings_and_drops_junk():
     from analyzer.llm_extract import _row_to_offer
-    pack = {"mp": "ggsel", "pid": "1", "url": "u", "title": "t",
+    pack = {"mp": "ggsel", "pid": "1", "url": "u", "title": "t 1 month",
             "opts": [{"t": "PRO X5", "c": 1, "strong": 7999, "p": []}],
             "init_strong": [7999], "init": []}
     o = _row_to_offer(pack, {"opt": "PRO X5", "tier": "Pro X5", "duration": "1m",
                              "delivery": "own_account", "price_rub": 7999}, None)
     assert o["tier"] == "Pro 5X"
-    assert _row_to_offer(pack, {"tier": "Go", "duration": "1m", "delivery": "own_account",
-                                "price_rub": 699}, None)["tier"] == "GO"
+    go_pack = {**pack, "opts": [{"t": "GO 1 month", "c": 1, "strong": 699, "p": []}]}
+    assert _row_to_offer(go_pack, {"opt": "GO 1 month", "tier": "Go", "duration": "1m",
+                                   "delivery": "own_account", "price_rub": 699}, None)["tier"] == "GO"
     assert _row_to_offer(pack, {"tier": "undefined", "duration": "1m", "delivery": "own_account",
                                 "price_rub": 100}, None) is None
 
 
 def test_row_to_offer_flags_price_missing_from_evidence():
     from analyzer.llm_extract import _row_to_offer
-    pack = {"mp": "ggsel", "pid": "1", "url": "u", "title": "t",
+    pack = {"mp": "ggsel", "pid": "1", "url": "u", "title": "t 1 month",
             "opts": [{"t": "PRO X5", "c": 1, "strong": 7999, "p": []}],
             "init_strong": [], "init": []}
     o = _row_to_offer(pack, {"opt": "PRO X5", "tier": "Pro 5X", "duration": "1m",
