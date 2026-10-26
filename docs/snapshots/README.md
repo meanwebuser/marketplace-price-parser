@@ -19,6 +19,14 @@ If a snapshot is wrong, do not edit it — add a new dated file that
 supersedes it and link to the corrected one. Snapshots are immutable
 historical evidence.
 
+For a targeted price-only recheck when no full scan is needed, add a dated
+`YYYY-MM-DD-<family>-price-checks.json` sidecar. It must name the exact
+`sourceSnapshot` filename and include the selected option, old and observed
+prices, check date, method, and whether availability was checked. The catalogue
+builder overlays only matching option identities from that sidecar; it leaves
+the original CSV/raw pair untouched. A sidecar for another source snapshot is
+ignored. Keep price verification separate from availability evidence.
+
 The 2026-10-23 refresh supersedes the earlier five-family snapshots:
 
 | Family | Snapshot date | Raw listings (Plati / GGSEL) | CSV rows |

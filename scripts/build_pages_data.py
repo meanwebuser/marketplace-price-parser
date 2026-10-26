@@ -50,6 +50,19 @@ def latest_csv(root: Path, product_id: str) -> Path | None:
     files = [p for p in root.glob(f"*-{pattern_id}*.csv") if DATE_PREFIX.match(p.name)]
     return max(files, default=None, key=lambda p: p.name)
 
+def gift_card_price_check_supplements(csv_path: Path) -> list[tuple[Path, dict]]:
+    """Load dated manual price checks that explicitly name this immutable scan."""
+    match = re.match(r"^\d{4}-\d{2}-\d{2}-(.+)\.csv$", csv_path.name)
+    if not match:
+        return []
+    family = match.group(1)
+    supplements = []
+    for path in sorted(csv_path.parent.glob(f"*-{family}-price-checks.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if data.get("sourceSnapshot") == csv_path.name and isinstance(data.get("manualPriceChecks"), list):
+            supplements.append((path, data))
+    return supplements
+
 def docs_source_path(source: Path, *, docs_root: Path | None = None) -> str:
     """Return a portable provenance path and reject traversal/symlink escapes."""
     root = (docs_root if docs_root is not None else ROOT / "docs").resolve()
@@ -117,6 +130,12 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
     raw_path = csv_path.with_suffix(".raw.json")
     raw = json.loads(raw_path.read_text(encoding="utf-8")) if raw_path.exists() else {}
     final_results = raw.get("finalVerification", {}).get("results", [])
+    price_check_supplements = gift_card_price_check_supplements(csv_path)
+    manual_price_checks = [check for _, supplement in price_check_supplements for check in supplement["manualPriceChecks"]]
+    price_check_by_offer = {
+        (str(check.get("marketplace", "")).lower(), str(check.get("pid", "")), str(check.get("optionText", ""))): check
+        for check in manual_price_checks
+    }
     offers = []
     for row in rows:
         if str(row.get("region", "")).upper() != spec["region"]:
@@ -188,6 +207,19 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
             except (TypeError, ValueError):
                 continue
             verified = as_bool(row.get("price_verified"))
+        check_key = (
+            str(row.get("marketplace", "")).lower(),
+            str(row.get("pid") or row.get("listing_id", "")),
+            str(row.get("option_text") or row.get("denomination_label", "")),
+        )
+        manual_price_check = price_check_by_offer.get(check_key)
+        if manual_price_check:
+            try:
+                price = float(manual_price_check["observedPriceRub"])
+            except (KeyError, TypeError, ValueError):
+                manual_price_check = None
+            else:
+                verified = True
         if not math.isfinite(denomination) or denomination <= 0 or not math.isfinite(price) or price <= 0:
             continue
         if row.get("available") not in (None, "") and not as_bool(row.get("available")):
@@ -201,7 +233,7 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
             final_price = float(row.get("final_observed_price", ""))
         except (TypeError, ValueError):
             pass
-        final_verified = as_bool(row.get("final_verified")) and final_price == price
+        final_verified = bool(manual_price_check) or (as_bool(row.get("final_verified")) and final_price == price)
         if not verified and not final_verified and not manual_snapshot_verified:
             continue
         availability_status = str(row.get("availability_status") or "").strip().lower()
@@ -223,6 +255,7 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
             "available": available, "availabilityStatus": availability_status,
             "availabilityEvidence": row.get("availability_evidence") or row.get("availability_reason") or "stock status not captured",
             "priceVerified": True, "finalVerified": final_verified,
+            **({"manualPriceCheckDate": manual_price_check.get("checkedDate")} if manual_price_check else {}),
             **({"seller": row["seller"]} if row.get("seller") else {}),
             **({"variantId": row["variant_id"]} if row.get("variant_id") else {}),
             **({"priceEvidence": variant_snapshot_evidence} if variant_snapshot_evidence else {}),
@@ -237,6 +270,9 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
         "listings": len(raw.get("listings", [])) or None,
         "sourceRows": len(rows), "publishedRows": len(offers),
         "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")),
+        "manualPriceChecks": len(manual_price_checks),
+        "manualPriceChecksDate": max((item.get("checkedDate", "") for item in manual_price_checks), default="") or None,
+        "priceCheckSourcePath": docs_source_path(price_check_supplements[-1][0], docs_root=docs_root) if price_check_supplements else None,
         "detailLevel": "full",
     }
     return offers, metadata

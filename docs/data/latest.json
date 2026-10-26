@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T02:50:05.098505+00:00",
+  "generatedAt": "2026-10-26T21:11:23.442825+00:00",
   "products": [
     {
       "id": "minimax",
@@ -3523,6 +3523,9 @@
         "sourceRows": 489,
         "publishedRows": 476,
         "finalVerifiedWinners": 0,
+        "manualPriceChecks": 27,
+        "manualPriceChecksDate": "2026-10-27",
+        "priceCheckSourcePath": "snapshots/targeted/2026-10-27-apple-us-price-checks.json",
         "detailLevel": "full"
       },
       "offers": [
@@ -8224,7 +8227,8 @@
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -9455,16 +9459,17 @@
           "region": "US",
           "denomination": 3.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 61.333333333333336,
+          "pricePerUnit": 111.66666666666667,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 184.0,
+          "priceRub": 335.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -9475,16 +9480,17 @@
           "region": "US",
           "denomination": 4.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 81.75,
+          "pricePerUnit": 111.25,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 327.0,
+          "priceRub": 445.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -10135,16 +10141,17 @@
           "region": "US",
           "denomination": 2.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 92.0,
+          "pricePerUnit": 96.5,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 184.0,
+          "priceRub": 193.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -10555,16 +10562,17 @@
           "region": "US",
           "denomination": 3.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 64.33333333333333,
+          "pricePerUnit": 96.0,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 193.0,
+          "priceRub": 288.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -10784,7 +10792,8 @@
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11255,16 +11264,17 @@
           "region": "US",
           "denomination": 3.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 75.0,
+          "pricePerUnit": 117.66666666666667,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 225.0,
+          "priceRub": 353.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11295,16 +11305,17 @@
           "region": "US",
           "denomination": 5.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 88.2,
+          "pricePerUnit": 112.0,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 441.0,
+          "priceRub": 560.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11415,16 +11426,17 @@
           "region": "US",
           "denomination": 15.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 73.0,
+          "pricePerUnit": 103.33333333333333,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 1095.0,
+          "priceRub": 1550.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11435,16 +11447,17 @@
           "region": "US",
           "denomination": 20.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 77.5,
+          "pricePerUnit": 106.5,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 1550.0,
+          "priceRub": 2130.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11455,16 +11468,17 @@
           "region": "US",
           "denomination": 25.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 85.2,
+          "pricePerUnit": 106.0,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 2130.0,
+          "priceRub": 2650.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11475,16 +11489,17 @@
           "region": "US",
           "denomination": 30.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 88.33333333333333,
+          "pricePerUnit": 109.5,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 2650.0,
+          "priceRub": 3285.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11495,16 +11510,17 @@
           "region": "US",
           "denomination": 50.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 65.7,
+          "pricePerUnit": 107.8,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 3285.0,
+          "priceRub": 5390.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11884,7 +11900,8 @@
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11904,7 +11921,8 @@
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -11924,7 +11942,8 @@
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12024,7 +12043,8 @@
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12055,16 +12075,17 @@
           "region": "US",
           "denomination": 15.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 90.6,
+          "pricePerUnit": 90.53333333333333,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 1359.0,
+          "priceRub": 1358.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12075,16 +12096,17 @@
           "region": "US",
           "denomination": 20.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 90.6,
+          "pricePerUnit": 90.55,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 1812.0,
+          "priceRub": 1811.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12335,16 +12357,17 @@
           "region": "US",
           "denomination": 4.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 81.0,
+          "pricePerUnit": 102.25,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 324.0,
+          "priceRub": 409.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12355,16 +12378,17 @@
           "region": "US",
           "denomination": 5.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 86.6,
+          "pricePerUnit": 102.2,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 433.0,
+          "priceRub": 511.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12375,16 +12399,17 @@
           "region": "US",
           "denomination": 20.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 74.45,
+          "pricePerUnit": 98.25,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 1489.0,
+          "priceRub": 1965.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12395,16 +12420,17 @@
           "region": "US",
           "denomination": 25.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 79.56,
+          "pricePerUnit": 98.0,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 1989.0,
+          "priceRub": 2450.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12415,16 +12441,17 @@
           "region": "US",
           "denomination": 30.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 82.46666666666667,
+          "pricePerUnit": 98.13333333333334,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 2474.0,
+          "priceRub": 2944.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12435,16 +12462,17 @@
           "region": "US",
           "denomination": 35.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 84.8,
+          "pricePerUnit": 98.71428571428571,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 2968.0,
+          "priceRub": 3455.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12455,16 +12483,17 @@
           "region": "US",
           "denomination": 40.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 86.975,
+          "pricePerUnit": 98.875,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 3479.0,
+          "priceRub": 3955.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -12475,16 +12504,17 @@
           "region": "US",
           "denomination": 45.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 88.42222222222222,
+          "pricePerUnit": 101.5111111111111,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 3979.0,
+          "priceRub": 4568.0,
           "strongSignal": true,
           "available": true,
           "availabilityStatus": "in_stock",
           "availabilityEvidence": "buy button disabled state captured",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",

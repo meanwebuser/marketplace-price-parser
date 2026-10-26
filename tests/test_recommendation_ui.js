@@ -113,7 +113,7 @@ test('separate Apple giftCards collection appears in the product picker and rank
   assert.ok(getElement('recommendations-list').innerHTML.includes('Apple Gift Card · ' + denomination + ' · US'));
   assert.ok(getElement('recommendations-list').innerHTML.includes(unitRate + ' ₽ за $1 номинала'));
   assert.match(getElement('recommendations-list').innerHTML, /Наличие:/);
-  assert.ok(getElement('offers').innerHTML.includes(String(best.priceRub) + ' ₽'));
+  assert.ok(getElement('offers').innerHTML.includes(new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(best.priceRub) + ' ₽'));
   assert.match(getElement('offers').innerHTML, /50 USD/);
 });
 
@@ -131,7 +131,7 @@ test('Apple combo calculator finds the cheapest exact amount without reusing one
   const { getElement } = await renderFixture({ products: [], giftCards: [apple] });
   getElement('product').listeners.change({ target: { value: 'apple_us' } });
   let html = getElement('gift-card-combo-result').innerHTML;
-  assert.match(html, /Итого \$50 за 1[\s\u00a0]600 ₽/);
+  assert.match(html, /Оценка по скану: \$50 за 1[\s\u00a0]600 ₽/);
   assert.match(html, /https:\/\/example\.test\/a/);
   assert.match(html, /https:\/\/example\.test\/b/);
   assert.doesNotMatch(html, /example\.test\/c/);
@@ -139,7 +139,7 @@ test('Apple combo calculator finds the cheapest exact amount without reusing one
   getElement('gift-card-target').value = '75';
   getElement('gift-card-target').listeners.input();
   html = getElement('gift-card-combo-result').innerHTML;
-  assert.match(html, /Итого \$75 за 2[\s\u00a0]400 ₽/);
+  assert.match(html, /Оценка по скану: \$75 за 2[\s\u00a0]400 ₽/);
 });
 
 test('Apple combo calculator only includes captured in-stock listings and reports no exact match', async () => {
@@ -151,6 +151,17 @@ test('Apple combo calculator only includes captured in-stock listings and report
   getElement('product').listeners.change({ target: { value: 'apple_us' } });
   assert.match(getElement('gift-card-combo-result').innerHTML, /не нашёл комбинацию ровно на \$50/i);
   assert.match(getElement('gift-card-combo-result').innerHTML, /неизвестным наличием/);
+});
+
+test('Apple calculator chooses the best exact combination among current browser price checks', async () => {
+  const current = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/latest.json'), 'utf8'));
+  const { getElement } = await renderFixture(current);
+  getElement('product').listeners.change({ target: { value: 'apple_us' } });
+  const html = getElement('gift-card-combo-result').innerHTML;
+  assert.match(html, /Цена перепроверена: \$50 за 4[\s\u00a0]699 ₽/);
+  assert.match(html, /103131860/);
+  assert.match(html, /повторно проверены/);
+  assert.doesNotMatch(html, /3[\s\u00a0]285 ₽/);
 });
 
 test('actual MiniMax M Plan tiers map separately from legacy Token Plan tiers', async () => {

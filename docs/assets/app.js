@@ -129,10 +129,11 @@ function recommendation(product, selection, mode) {
     || Number(a.delivery !== 'own_account')-Number(b.delivery !== 'own_account'))[0] || null;
   return cheapest ? { offer: cheapest, multiplier: null, score: null } : null;
 }
-function cheapestGiftCardCombo(product, targetCents) {
+function cheapestGiftCardCombo(product, targetCents, finalVerifiedOnly = false) {
   const listings = new Map();
   for (const offer of product.offers) {
     if (offer.region !== 'US' || offer.denominationCurrency !== 'USD' || offer.availabilityStatus !== 'in_stock'
+      || (finalVerifiedOnly && offer.finalVerified !== true)
       || offer.available === false || offer.priceVerified !== true || offer.glitched
       || !Number.isFinite(offer.priceRub) || offer.priceRub <= 0) continue;
     const cents = Math.round(Number(offer.denomination) * 100);
@@ -173,19 +174,23 @@ function renderGiftCardCombo(product) {
     els['gift-card-combo-result'].innerHTML = '<p class="combo-message">Сумма должна быть указана с точностью до цента.</p>';
     return;
   }
-  const combo = cheapestGiftCardCombo(product, targetCents);
+  const currentCombo = cheapestGiftCardCombo(product, targetCents, true);
+  const combo = currentCombo || cheapestGiftCardCombo(product, targetCents);
   if (!combo) {
     const hasUnknown = product.offers.some(o => o.region === 'US' && o.denominationCurrency === 'USD' && o.availabilityStatus === 'unknown');
     els['gift-card-combo-result'].innerHTML = `<p class="combo-message">Не нашёл комбинацию ровно на $${scoreFormat.format(target)} среди предложений, отмеченных «в наличии» в последнем скане.${hasUnknown ? ' Предложения с неизвестным наличием не считаются доступными.' : ''}</p>`;
     return;
   }
   const rate = combo.cost / target;
-  const lines = combo.picks.map(offer => `<li><span>$${scoreFormat.format(offer.denomination)} · ${rub.format(offer.priceRub)} ₽ · ${offer.marketplace.toUpperCase()}${offer.optionText ? `<small>Выбрать на странице: ${esc(offer.optionText)}</small>` : ''}</span><a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Открыть лот</a></li>`).join('');
-  const scannedAt = product.metadata?.scanCompletedAt || product.metadata?.scanDate;
-  const scanned = scannedAt ? new Date(scannedAt).toLocaleString('ru-RU') : 'неизвестно';
+  const lines = combo.picks.map(offer => `<li><span>$${scoreFormat.format(offer.denomination)} · ${rub.format(offer.priceRub)} ₽ · ${offer.marketplace.toUpperCase()}${offer.optionText ? `<small>Выбрать на странице: ${esc(offer.optionText)}</small>` : ''}${offer.finalVerified ? '<small>Цена повторно проверена</small>' : ''}</span><a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Открыть лот</a></li>`).join('');
+  const scannedAt = currentCombo ? product.metadata?.manualPriceChecksDate : product.metadata?.scanCompletedAt || product.metadata?.scanDate;
+  const scanned = scannedAt ? (String(scannedAt).includes('T') ? new Date(scannedAt).toLocaleString('ru-RU') : new Date(`${scannedAt}T12:00:00`).toLocaleDateString('ru-RU')) : 'неизвестно';
   const count = combo.picks.length;
   const countLabel = count === 1 ? '1 объявление' : count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14) ? `${count} объявления` : `${count} объявлений`;
-  els['gift-card-combo-result'].innerHTML = `<div class="combo-summary"><strong>Итого $${scoreFormat.format(target)} за ${rub.format(combo.cost)} ₽</strong><span>≈ ${scoreFormat.format(rate)} ₽ за $1 · ${countLabel}</span></div><ul class="combo-list">${lines}</ul><p class="combo-footnote">Минимум по сохранённому скану от ${esc(scanned)}: учитываются только подтверждённые US/USD варианты с ценой и статусом «в наличии». Один вариант с каждого объявления; комиссии оплаты не учтены. Остаток и цену перед оплатой проверьте на странице продавца.</p>`;
+  const checkScope = currentCombo
+    ? `Это минимум среди ${Number(product.metadata?.manualPriceChecks || 0)} вариантов, чьи цены повторно проверены ${esc(scanned)}; другие лоты не входят в этот минимум.`
+    : `Это предварительная оценка по сохранённому скану от ${esc(scanned)}; текущие цены могут отличаться.`;
+  els['gift-card-combo-result'].innerHTML = `<div class="combo-summary"><strong>${currentCombo ? 'Цена перепроверена:' : 'Оценка по скану:'} $${scoreFormat.format(target)} за ${rub.format(combo.cost)} ₽</strong><span>≈ ${scoreFormat.format(rate)} ₽ за $1 · ${countLabel}</span></div><ul class="combo-list">${lines}</ul><p class="combo-footnote">${checkScope} Один вариант с каждого объявления; комиссии оплаты не учтены. Наличие/остаток не перепроверены — проверьте их и итоговую цену на странице продавца перед оплатой.</p>`;
 }
 function ordered(values, order) {
   return [...new Set(values)].sort((a,b) => {
@@ -296,7 +301,7 @@ function render() {
 async function init() {
   try {
     const [data, registry] = await Promise.all([
-      fetch('data/latest.json?v=9').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
+      fetch('data/latest.json?v=10').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
       fetch('data/subscription-plan-limits.json').then(r => { if (!r.ok) throw new Error(); return r.json(); })
     ]);
     planRegistry = registry;

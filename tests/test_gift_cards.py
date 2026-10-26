@@ -1,4 +1,5 @@
 import csv
+import json
 from pathlib import Path
 from analyzer.output import gift_card_offers_from_raw
 from cli import best_gift_card_value, rank_gift_card_offers
@@ -184,6 +185,50 @@ def test_site_builder_loads_targeted_gift_card_snapshot_without_replacing_ai_roo
     assert product["region"] == "US"
     assert product["metadata"]["sourcePath"] == "snapshots/targeted/2026-10-25-apple-us.csv"
     assert [offer["pid"] for offer in product["offers"]] == ["verified"]
+
+
+def test_dated_price_check_supplement_updates_catalog_without_mutating_source_scan(tmp_path):
+    targeted = tmp_path / "docs" / "snapshots" / "targeted"
+    targeted.mkdir(parents=True)
+    csv_path = targeted / "2026-10-26-apple-us.csv"
+    csv_path.write_text(
+        "marketplace,pid,url,title,option_text,region,denomination,denomination_currency,delivery,price_rub,available,price_verified,final_verified,final_observed_price\n"
+        "ggsel,verified,https://example.test,Apple Gift Card USA,50 USD,US,50,USD,digital_code,3285,True,True,False,\n",
+        encoding="utf-8",
+    )
+    raw_path = csv_path.with_suffix(".raw.json")
+    raw_path.write_text(json.dumps({"listings": [], "startedAt": "2026-10-26T02:00:00Z"}), encoding="utf-8")
+    supplement = targeted / "2026-10-27-apple-us-price-checks.json"
+    supplement.write_text(json.dumps({
+        "schemaVersion": 1,
+        "sourceSnapshot": csv_path.name,
+        "checkedDate": "2026-10-27",
+        "manualPriceChecks": [{
+            "marketplace": "ggsel", "pid": "verified", "optionText": "50 USD",
+            "observedPriceRub": 4699, "checkedDate": "2026-10-27",
+        }],
+    }), encoding="utf-8")
+
+    offers, metadata = normalize_csv(csv_path, "apple_us", docs_root=tmp_path / "docs")
+
+    assert len(offers) == 1
+    assert offers[0]["priceRub"] == 4699
+    assert offers[0]["priceVerified"] is True
+    assert offers[0]["finalVerified"] is True
+    assert offers[0]["manualPriceCheckDate"] == "2026-10-27"
+    assert metadata["sourcePath"] == "snapshots/targeted/2026-10-26-apple-us.csv"
+    assert metadata["manualPriceChecks"] == 1
+    assert metadata["manualPriceChecksDate"] == "2026-10-27"
+    assert "price-checks.json" in metadata["priceCheckSourcePath"]
+    assert "3285" in csv_path.read_text(encoding="utf-8")
+
+    supplement_data = json.loads(supplement.read_text(encoding="utf-8"))
+    supplement_data["sourceSnapshot"] = "different-scan.csv"
+    supplement.write_text(json.dumps(supplement_data), encoding="utf-8")
+    unchanged, unchanged_metadata = normalize_csv(csv_path, "apple_us", docs_root=tmp_path / "docs")
+    assert unchanged[0]["priceRub"] == 3285
+    assert unchanged[0]["finalVerified"] is False
+    assert unchanged_metadata["manualPriceChecks"] == 0
 
 
 def test_site_builder_publishes_only_source_verified_manual_snapshot_price(tmp_path):
