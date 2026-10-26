@@ -149,7 +149,7 @@ def classify_duration_from_title(title: str) -> str:
 
 
 _DELIV_PATTERNS = [
-    ("shared_account", re.compile(r"\bобщ(ая|ий|ее|ee|ie|iy)?\b.{0,15}\b(доступ|аккаунт|подписк)|общ.{0,10}1\s*месяц|общ.{0,15}\b(plus|pro|max)", re.I)),
+    ("shared_account", re.compile(r"совместн\w*|\bshared\b|\bобщ(ая|ий|ее|ee|ie|iy)?\b.{0,15}\b(доступ|аккаунт|подписк)|общ.{0,10}1\s*месяц|общ.{0,15}\b(plus|pro|max)", re.I)),
     # Whose mailbox wins over everything below: an account registered on
     # the BUYER's email is own even when the seller creates it
     # ("Создание аккаунта на вашу почту" => own).

@@ -149,7 +149,7 @@ def test_ggsel_merge_respects_result_limit():
 
 
 def test_family_without_curated_ids_keeps_category_results():
-    family = FAMILY_REGISTRY["minimax"]
+    family = replace(FAMILY_REGISTRY["minimax"], ggsel_ids=[])
     discovered = [{"source": "ggsel", "native_id": "123", "label": "MiniMax Max 1 month"}]
     with patch("scanner.discover._ggsel_crawl_async", new=AsyncMock(return_value=discovered)):
         assert discover_ggsel(family) == (discovered, "playwright")

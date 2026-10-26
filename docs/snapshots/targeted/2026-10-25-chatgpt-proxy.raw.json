@@ -1,0 +1,4477 @@
+{
+  "schemaVersion": 2,
+  "startedAt": "2026-10-25T19:43:32.605Z",
+  "note": "Pass 1 raw. zai_analyze.py interprets.",
+  "config": {
+    "workers": 2,
+    "pageTimeoutMs": 35000,
+    "clickTimeoutMs": 8000,
+    "priceSettleTimeoutMs": 5000,
+    "captureRetries": 2,
+    "proxyMode": "configured",
+    "proxyCount": 2000
+  },
+  "listings": [
+    {
+      "marketplace": "plati",
+      "pid": 5781619,
+      "url": "https://plati.market/itm/5781619",
+      "title": "Plati.Market — площадка цифровых товаров",
+      "template": "unknown",
+      "initialPrices": [
+        {
+          "text": "200 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "500 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "1000 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "2000 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "80 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "879 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "599 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 819 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "174 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "241 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 820 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "440 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "183 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "21 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "13 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "169 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "699 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "79 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "569 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "30 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "777 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "389 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 819 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "174 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "241 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "13 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "30 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "389 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "799 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "299 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "621 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "500 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 199 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 039 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "49 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "80 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "371 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nПопулярное\nВсе\n\nPlayStation\n\nSteam пополнение\n\nCall of Duty: Modern Warfare 4 (2026)\n\nChatGPT\n\nClaude\n\nApp Store & iTunes\n\nXbox / Microsoft Store\n\nNintendo eShop\n\nWARDOGS\n\nCursor\n\nGrok xAI\n\nFortnite\n\nMinecraft\n\nHELLDIVERS 2\n\nForza Horizon 6\n\nHiggsfield AI\n\nGrand Theft Auto VI\n\nBattle.net пополнение\n\nWorld of Warcraft\n\nCyberpunk 2077\n\nSpotify\n\nRoblox, робуксы\n\nEA Sports FC 27\n\nPhantom Blade Zero\n\nTelegram\n\nGemini\n\nOpenRouter\n\nBattlefield 6\n\nDeepSeek\n\nGrand Theft Auto V\n\nPerplexity\n\nCrimson Desert\n\nПополнение\nSteam\nApp Store & iTunes\nPlaystation\nXbox / Microsoft Store\nRoblox\nNintendo eShop\nTelegram Stars\nBattle.net\nРоссия\nСтраны СНГ\nКазахстан\n₽\n200 ₽\n500 ₽\n1000 ₽\n2000 ₽\nКак узнать логин?\nКупить\nПродано 3.37 млн\nОтзывы 56 522\nIgromagaz\nНовинки\nВсе\nРекомендуем\n\n649 ₽\n\n24/​7 Без Входа |​ ChatGPT 6 ASTRA |​ Plus Go PRO CODEX|​ Код активации |​ Автовыдача\n\nПродано 100+\n\n80 ₽\n\nНИЗКАЯ ЦЕНА|​ PlayStation Network (​USA)​ США 1-​300$.​ ЦЕНА\n\nПродано 17 503\n\n22 ₽\n\nПОПОЛНИТЬ STEAM РФ-​КЗ-​UA-​СНГ НИЗКАЯ ЦЕНА\n\nПродано 3.37 млн\n\n849 ₽\n\n{АВТО} ChatGPT 6 PLUS |​ GO |​ ASTRA|​ 1М PRO |​ CODEX |​ ПОДПИСКА |​ БЕЗ ВХОДА |​ ПРОДЛЕНИЕ\n\nПродано 100+\n\n849 ₽\n\n[​24/​7]​ ChatGPT 6 (​ASTRA)​ PLUS 1М |​ GO |​ PRO 5X 20X |​ SORA\n\nПродано 100+\n\n879 ₽\n\n[​24/​7 АВТО]​ ChatGPT 6 PLUS |​ PRO X20|​ GO |​ CODEX 1 М ПОДПИСКА /​ ПРОДЛЕНИЕ /​ ЧАТ ГПТ\n\nПродано 100+\n\n2 099 ₽\n\n[​24/​7]​ |​ Claude AI FABLE 5.​5 |​ Подписка PRO /​ MAX CODE |​ НА ВАШ АККАУНТ |​ 1 МЕС\n\nПродано 50 738\n\n445 ₽\n\nАВТО PLAYSTATION ТУРЦИЯ PSN КОД ПОПОЛНЕНИЯ БАЛАНС TRY\n\nПродано 127 900\n\n599 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6 ASTRA |​ GO |​ PLUS |​ PRO |​ БЕЗ ВХОДА |​ СЛЕТА\n\nПродано 100+\n\n3 819 ₽\n\nCall of Duty:​ Modern Warfare 4+​ВЫБОР /​ Steam АВТО /​ МИР\n\nПродано 6 323\n\n174 ₽\n\n[​АВТОВЫДАЧА]​ Подарочная карта Apple iTunes (​США)​ 2-​1000$.​ НИЗКАЯ ЦЕНА\n\nПродано 473 316\n\n589 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​1 PLUS |​ PRO |​ GO |​ Код активации |​ 1 месяц |​ Чат ГПТ\n\nПродано 100+\n\n241 ₽\n\n1/​3/​6/​12 МЕСЯЦЕВ SPOTIFY PREMIUM РАБОТАЕТ В РФ\n\nПродано 100+\n\n2 099 ₽\n\n[​БЕЗ БАНА 24/​7]​ FABLE 5.​5 Claude Ai PRO /​ MAX /​ Code Anthropic\n\nПродано 126 791\n\n3 820 ₽\n\nCall of Duty:​ Modern Warfare 4 (​2026)​ +​ВЫБОР ИЗДАНИЯ · STEAM GIFT · АВТО\n\nПродано 3 740\n\n440 ₽\n\nКарта Пополнения Playstation TRY • 250-​5000 TL • GTA 6 PSN Турция +​ ПОДАРОК\n\nПродано 12 340\n\n99 ₽\n\nXBOX GAME PASS ULTIMATE/​PREMIUM 14Д/​ESSENTIAL/​PC 1-​2-​3-​4-​5-​6-​7-​11-​12 МЕСЯЦЕВ\n\nПродано 375 705\n\n22 ₽\n\nНИЗКАЯ ЦЕНА |​ ПОПОЛНИТЬ STEAM UA-​RU-​KZ-​СНГ +​ ПОДАРОК |​ АВТО 24/​7\n\nПродано 434 311\n\n445 ₽\n\nКарта PlayStation(​PSN)​ 250-​5500 TRY(​Лиры)​ Турция\n\nПродано 92 776\n\n183 ₽\n\nApp Store/​iTunes Подарочная Карта США US APPLE USA USD Карта пополнения AppStore КОД\n\nПродано 32 704\n\n21 ₽\n\n3% ПОПОЛНЕНИЕ STEAM АВТО |​ RUB/​KZT/​UAH\n\nПродано 116 409\n\n13 ₽\n\nApp Store/​iTunes Подарочная Карта ТУРЦИЯ TR APPLE Turkey TRY Карта пополнения TL КОД\n\nПродано 36 581\n\n899 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ GROK 4.​7 |​ PLUS |​ PREMIUM |​ SUPER |​ ULTRA |​ Подписка |​ ГРОК\n\nПродано 100+\n\n169 ₽\n\nНИЗКАЯ ЦЕНА |​ Подарочная Карта Apple iTunes (​США)​ 2-​100$ +​ ПОДАРОК\n\nПродано 214 826\n\n2 099 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ Claude MAX X5/​X20 |​ БЕЗ ВХОДА /​ СЛЕТА |​ НА ВАШ АККАУНТ\n\nПродано 44 875\n\n699 ₽\n\n[​АВТОВЫДАЧА]​ |​ ChatGPT 6 PLUS |​ PRO X5 -​ X20 |​ GO |​ 1 МЕСЯЦ |​ ПОДПИСКА |​ CODEX\n\nПродано 100+\n\n589 ₽\n\n[​24/​7]​ ChatGPT 6.​1+​ 6 1M |​ PLUS |​ GO |​ PRO 100/​200 |​ Код Активации |​ Авто Доставка\n\nПродано 100+\n\n79 ₽\n\nXBOX GAME PASS ULTIMATE/​Premium/​PC 1-​12 МЕСЯЦЕВ +​ НАДЕЖНО\n\nПродано 208 109\n\n569 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​1 PLUS |​ PRO |​ GO |​ 1 месяц |​ НА ВАШ АККАУНТ |​ Чат ГПТ\n\nПродано 100+\n\n30 ₽\n\nSTEAM TR-​ARG-​KZ-​UA-​US-​EU и ДРУГИЕ,​ КОД ПОПОЛНЕНИЯ\n\nПродано 6 899\n\n3 ₽\n\nИГРЫ/​Подписки УКРАИНА PS/​PSN/​Playstation GTA 6/​FC 27\n\nПродано 13 312\n\n777 ₽\n\n[​АВТО 24/​7]​ ChatGPT 6 PLUS 1M |​ GO |​ PRO |​ CODEX |​ ПОДПИСКА\n\nПродано 100+\n\n389 ₽\n\nКарты Nintendo 5-​10-​20-​35-​50-​60-​70-​100$ USD-​Долларов США\n\nПродано 294 669\nПредзаказы\nВсе\n\nPhantom Blade Zero\n\nWorld of Warcraft: Forever\n\nGrand Theft Auto VI\n\nActive Matter\n\nWarhammer 40,000: Dawn of War IV\n\nAttack on Titan 3 / A.O.T. 3\n\nDuet Night Abyss\n\nSTRANGER THAN HEAVEN\n\nArizona Sunshine\n\nTropico 7\n\nMETRO 2039\n\nTomb Raider: Legacy of Atlantis\n\nGod of War Laufey\n\nPersona 4 Revival\n\nFable\n\nWo Long 2: Wings of Ember\n\nЛидеры продаж\n\n849 ₽\n\n{АВТО} ChatGPT 6 PLUS |​ GO |​ ASTRA|​ 1М PRO |​ CODEX |​ ПОДПИСКА |​ БЕЗ ВХОДА |​ ПРОДЛЕНИЕ\n\nПродано 100+\nКупить\n\n22 ₽\n\nПОПОЛНИТЬ STEAM РФ-​КЗ-​UA-​СНГ НИЗКАЯ ЦЕНА\n\nПродано 3.37 млн\nКупить\n\n2 099 ₽\n\n[​24/​7]​ |​ Claude AI FABLE 5.​5 |​ Подписка PRO /​ MAX CODE |​ НА ВАШ АККАУНТ |​ 1 МЕС\n\nПродано 50 738\nКупить\n\n445 ₽\n\nАВТО PLAYSTATION ТУРЦИЯ PSN КОД ПОПОЛНЕНИЯ БАЛАНС TRY\n\nПродано 127 900\nКупить\n\n3 819 ₽\n\nCall of Duty:​ Modern Warfare 4+​ВЫБОР /​ Steam АВТО /​ МИР\n\nПродано 6 323\nКупить\n\n174 ₽\n\n[​АВТОВЫДАЧА]​ Подарочная карта Apple iTunes (​США)​ 2-​1000$.​ НИЗКАЯ ЦЕНА\n\nПродано 473 316\nКупить\n\n241 ₽\n\n1/​3/​6/​12 МЕСЯЦЕВ SPOTIFY PREMIUM РАБОТАЕТ В РФ\n\nПродано 100+\nКупить\n\n99 ₽\n\nXBOX GAME PASS ULTIMATE/​PREMIUM 14Д/​ESSENTIAL/​PC 1-​2-​3-​4-​5-​6-​7-​11-​12 МЕСЯЦЕВ\n\nПродано 375 705\nКупить\n\n13 ₽\n\nApp Store/​iTunes Подарочная Карта ТУРЦИЯ TR APPLE Turkey TRY Карта пополнения TL КОД\n\nПродано 36 581\nКупить\n\n899 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ GROK 4.​7 |​ PLUS |​ PREMIUM |​ SUPER |​ ULTRA |​ Подписка |​ ГРОК\n\nПродано 100+\nКупить\n\n30 ₽\n\nSTEAM TR-​ARG-​KZ-​UA-​US-​EU и ДРУГИЕ,​ КОД ПОПОЛНЕНИЯ\n\nПродано 6 899\nКупить\n\n3 ₽\n\nИГРЫ/​Подписки УКРАИНА PS/​PSN/​Playstation GTA 6/​FC 27\n\nПродано 13 312\nКупить\n\n389 ₽\n\nКарты Nintendo 5-​10-​20-​35-​50-​60-​70-​100$ USD-​Долларов США\n\nПродано 294 669\nКупить\n\n799 ₽\n\n[​24/​7]​ |​ Perplexity AI Pro/​Max 1M |​ БЕЗ ВХОДА |​ АВТО\n\nПродано 1 000+\nКупить\n\n299 ₽\n\n24/​7 |​ Google AI Pro +​ 5 ТБ 6 месяцев на ваш Gmail |​ Gemini 4 Argon,​ Omni,​ Nano Banan\n\nПродано 22 57",
+      "descText": "",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Steam"
+        },
+        {
+          "kind": "button",
+          "text": "App Store & iTunes"
+        },
+        {
+          "kind": "button",
+          "text": "Playstation"
+        },
+        {
+          "kind": "button",
+          "text": "Xbox / Microsoft Store"
+        },
+        {
+          "kind": "button",
+          "text": "Roblox"
+        },
+        {
+          "kind": "button",
+          "text": "Nintendo eShop"
+        },
+        {
+          "kind": "button",
+          "text": "Telegram Stars"
+        },
+        {
+          "kind": "button",
+          "text": "Battle.net"
+        },
+        {
+          "kind": "button",
+          "text": "200 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "500 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "1000 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "2000 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "200"
+        },
+        {
+          "kind": "button",
+          "text": "500"
+        },
+        {
+          "kind": "button",
+          "text": "1000"
+        },
+        {
+          "kind": "button",
+          "text": "2000"
+        },
+        {
+          "kind": "button",
+          "text": "Понятно"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Россия"
+        },
+        {
+          "kind": "label",
+          "text": "Страны СНГ"
+        },
+        {
+          "kind": "label",
+          "text": "Казахстан"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 6245022,
+      "url": "https://plati.market/itm/6245022",
+      "title": "Купить [24/7 АВТО] CHATGPT PLUS 1 МЕСЯЦ ⚡ GPT-6.1 и DALL-E 3 | ПОЛНАЯ ГАРАНТИЯ",
+      "template": "plati-A",
+      "initialPrices": [
+        {
+          "text": "405 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "405 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "405 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "405 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "470 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "499 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "658 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 659 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "103 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "404 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "378 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "299 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "450 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "329 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "405 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nChatGPT\n[24/7 АВТО] CHATGPT PLUS 1 МЕСЯЦ GPT-6.1 и DALL-E 3 | ПОЛНАЯ ГАРАНТИЯ\nПродано 14\nОписание\nОтзывы\nОписание товара\n🔥 ДОБРО ПОЖАЛОВАТЬ В МАГАЗИН TFNUYSP! 🔥\nОфициальный доступ к ChatGPT Plus на 1 Месяц (30 Дней).\nМгновенный доступ к самым передовым нейросетям: GPT-6, GPT-4o, DALL-E 3, голосовому режиму и Canvas!\n\n📌 ВАЖНО: СОВМЕСТНЫЙ АККАУНТ И ЛИМИТЫ:\n• Данный товар является Общим (Совместным) аккаунтом, что позволяет получить доступ к ChatGPT Plus по минимальной цене.\n• В сервисе OpenAI действуют стандартные лимиты на количество сообщений для тяжелых моделей (GPT-6, GPT-4o, o1). В пиковые часы лимит сообщений может временно исчерпываться. В это время всегда доступны быстрые безлимитные модели (GPT-4o-mini) либо необходимо подождать сброса таймера.\n\n⚡️ ЭКСКЛЮЗИВ: АВТОМАТИЧЕСКИЙ 2FA ПОРТАЛ 24/7!\nВам не нужно ждать продавца для получения кода безопасности!\n👉 Входите на chatgpt.com и забирайте свежий 6-значный 2FA код в реальном времени через наш удобный сайт!\n\n✨ ЧТО ВХОДИТ В ПОДПИСКУ:\n• 🚀 Новейшие модели GPT-6 и GPT-4o с максимальной скоростью\n• 🎨 Генерация изображений DALL-E 3 и работа с Canvas\n• 🎙️ Продвинутый голосовой режим (Voice Mode) и анализ файлов/PDF\n• 📁 Работа с документами, веб-поиск и плагины\n• 🛡️ Полная гарантия на весь срок подписки (30 Дней)\n\n🚀 КАК ВОЙТИ В АККАУНТ (3 ПРОСТЫХ ШАГА):\n1️⃣ Перейдите на сайт https://chatgpt.com и введите выданные логин и пароль.\n2️⃣ Когда система попросит 6-значный 2FA код, перейдите по ссылке на наш портал кодов.\n3️⃣ Скопируйте актуальный код, вставьте в ChatGPT и пользуйтесь возможностями Plus!\n\n⚠️ ПРАВИЛА ИСПОЛЬЗОВАНИЯ И ГАРАНТИЯ:\n1. Запрещено менять настройки: Изменение пароля, почты или настроек 2FA строго запрещено. Попытка смены данных аннулирует гарантию.\n2. Конфиденциальность: Так как аккаунт совместный, не вводите личные данные. Рекомендуем использовать режим «Временный чат» (Temporary Chat).\n3. Индивидуальное использование: Данные выдаются строго в одни руки, передача третьим лицам запрещена.\n4. Полная гарантия 30 дней: Если вас разлогинит, просто зайдите на наш сайт, скопируйте новый 2FA код и войдите снова.\n\n📞 ПОДДЕРЖКА 24/7:\nАвтоматическая выдача товара сразу после оплаты. Мы на связи круглосуточно!\n\n— TFNUYSP 💎\nОсновные характеристики\nОбновлен на площадке\n10.10.2026\nДополнительное описание\n405 ₽\nЕсть промокод?\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\n[24/7 АВТО] CHATGPT PLUS 1 МЕСЯЦ GPT-6.1 и DALL-E 3 | ПОЛНАЯ ГАРАНТИЯ\n174\nПродано 14\n405 ₽\nКупить сейчас\nБезопасная сделка\nМгновенная доставка\ntfnuysp\n174\nНаписать продавцу\n\nОнлайн\n\nНакопительная скидка\n500 $ скидка 20%\n150 $ скидка 10%\n50 $ скидка 1%\nПроверить свою скидку\nЗаработай 0.44 $ на товаре!\nПодарочная карта на 7.00 ₽ за положительный отзыв\nС этим товаром смотрят\n\n470 ₽\n\nChatGPT GO |​ PLUS |​ ДЛЯ ЛИЧНОГО ИСПОЛЬЗОВАНИЯ — БЫСТРО И НЕДОРОГО\n\nПродано 47\nКупить\n\n499 ₽\n\nChatGPT 6 ASTRA PLUS+​ Аккаунт с подпиской КОД 24/​7 1 Месяц GPT\n\nПродано 100+\nКупить\n\n658 ₽\n\n[​24/​7]​ CHATGPT PLUS 6 ASTRA |​ CODEX |​ PRO 20X |​ БИЗНЕС |​ GO |​ ПОДПИСКА/​ПРОДЛЕНИЕ\n\nПродано 100+\nКупить\n\n589 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​ 1 PLUS |​ PRO |​ GO |​ Код активации |​ 1 месяц |​ Чат ГПТ\n\nПродано 100+\nКупить\n\n2 659 ₽\n\nBattlefield 6 +​ВЫБОР STEAM•RU АВТОДОСТАВКА 0%\n\nПродано 27 670\nКупить\n\n103 ₽\n\nAPI |​ CHATGPT 6 ASTRA • 6.​ 1 SOL • TERRA • LUNA |​ АВТО ДОСТАВКА |​ 1M -​ 1B\n\nПродано 850\nКупить\n\n404 ₽\n\nПодписка ChatGPT Plus на 1 месяц |​ Искусственный интеллект для творчества,​ написания\n\nПродано менее 10\nКупить\n\n378 ₽\n\nADOBE CREATIVE CLOUD ALL APPS |​ 1/​7/​14 ДНЕЙ • 1/​3 МЕСЯЦА |​ ГАРАНТИЯ\n\nПродано 100+\nКупить\n\n299 ₽\n\n[​ХИТ]​ Google AI PRO l 24/​7 АВТО l Gemini 3.​ 7,​ Nano Banana Pro,​ Veo 3.​ 1,​ 5 TB\n\nПродано 5 995\nКупить\n\n2 099 ₽\n\n[​БЕЗ БАНА 24/​7]​ FABLE 5.​ 5 Claude Ai PRO /​ MAX /​ Code Anthropic\n\nПродано 126 791\nКупить\n\n450 ₽\n\n24/​7 АВТО |​ Apple &​ iTunes 250 TRY (​подарочная карта)​\n\nПродано 2 750\nКупить\n\n329 ₽\n\nPerplexity AI Pro на 1 месяц — личный премиум -​ аккаунт |​ Мгновенная доставка\n\nПродано 682\nКупить\n \nВы смотрели\n\n405 ₽\n\n[​24/​7 АВТО]​ CHATGPT PLUS 1 МЕСЯЦ GPT-​6.​1 и DALL-​E 3 |​ ПОЛНАЯ ГАРАНТИЯ\n\nПродано 14\n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара 🔥 ДОБРО ПОЖАЛОВАТЬ В МАГАЗИН TFNUYSP! 🔥 Официальный доступ к ChatGPT Plus на 1 Месяц (30 Дней). Мгновенный доступ к самым передовым нейросетям: GPT-6, GPT-4o, DALL-E 3, голосовому режиму и Canvas! 📌 ВАЖНО: СОВМЕСТНЫЙ АККАУНТ И ЛИМИТЫ: • Данный товар является Общим (Совместным) аккаунтом, что позволяет получить доступ к ChatGPT Plus по минимальной цене. • В сервисе OpenAI действуют стандартные лимиты на количество сообщений для тяжелых моделей (GPT-6, GPT-4o, o1). В пиковые часы лимит сообщений может временно исчерпываться. В это время всегда доступны быстрые безлимитные модели (GPT-4o-mini) либо необходимо подождать сброса таймера. ⚡️ ЭКСКЛЮЗИВ: АВТОМАТИЧЕСКИЙ 2FA ПОРТАЛ 24/7! Вам не нужно ждать продавца для получения кода безопасности! 👉 Входите на chatgpt.com и забирайте свежий 6-значный 2FA код в реальном времени через наш удобный сайт! ✨ ЧТО ВХОДИТ В ПОДПИСКУ: • 🚀 Новейшие модели GPT-6 и GPT-4o с максимальной скоростью • 🎨 Генерация изображений DALL-E 3 и работа с Canvas • 🎙️ Продвинутый голосовой режим (Voice Mode) и анализ файлов/PDF • 📁 Работа с документами, веб-поиск и плагины • 🛡️ Полная гарантия на весь срок подписки (30 Дней) 🚀 КАК ВОЙТИ В АККАУНТ (3 ПРОСТЫХ ШАГА): 1️⃣ Перейдите на сайт https://chatgpt.com и введите выданные логин и пароль. 2️⃣ Когда система попросит 6-значный 2FA код, перейдите по ссылке на наш портал кодов. 3️⃣ Скопируйте актуальный код, вставьте в ChatGPT и пользуйтесь возможностями Plus! ⚠️ ПРАВИЛА ИСПОЛЬЗОВАНИЯ И ГАРАНТИЯ: 1. Запрещено менять настройки: Изменение пароля, почты или настроек 2FA строго запрещено. Попытка смены данных аннулирует гарантию. 2. Конфиденциальность: Так как аккаунт совместный, не вводите личные данные. Рекомендуем использовать режим «Временный чат» (Temporary Chat). 3. Индивидуальное использование: Данные выдаются строго в одни руки, передача третьим лицам запрещена. 4. Полная гарантия 30 дней: Если вас разлогинит, просто зайдите на наш сайт, скопируйте новый 2FA код и войдите снова. 📞 ПОДДЕРЖКА 24/7: Автоматическая выдача товара сразу после оплаты. Мы на связи круглосуточно! — TFNUYSP 💎 Основные характеристики Обновлен на площадке 10.10.2026 Дополнительное описание ⚠️ ВАЖНО – ПОЛИТИКА ВОЗВРАТА (RU) ⚠️ Пожалуйста, внимательно ознакомьтесь перед покупкой • Возврат средств после доставки не производится, так как это цифровой товар. • Совершая покупку, вы подтверждаете, что прочитали и приняли описание товара и условия. • В исключительных случаях, если возврат необходим, он осуществляется с удержанием 20% комиссии за обслуживание и обработку. • Запросы на возврат по причинам, связанным с негарантированными функциями, ошибками пользователя или несовместимостью, не принимаются. • После передачи данных аккаунта товар считается использованным и полностью предоставленным. Продолжая покупку, вы соглашаетесь с данными условиями.",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Применить"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    405 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу\n\nОнлайн"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу\n                        \n                            \n                                \n                                    \n                                \n                                Онлайн"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 6259795,
+      "url": "https://plati.market/itm/6259795",
+      "title": "Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",
+      "template": "plati-C",
+      "initialPrices": [
+        {
+          "text": "258 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "258 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "258 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "258 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "390 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "679 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "5 039 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "88 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "658 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "234 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "100 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "89 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "281 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "127 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "272 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "258 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nChatGPT\nChat GPT Plus на 1/3/6/12 месяцев, общий или приватный\nОтзывы 1\nтип *\n1 Месяц [ Совместный - Плюс ]\nВыбран\n3 Месяц [ Совместный - Плюс ]\n+460 ₽\n6 Месяц [ Совместный - Плюс ]\n+1 120 ₽\n1 год [ Совместный - Плюс ]\n+2 441 ₽\n1 месяца [ Индивидуальная - Плюс ]\n+1 716 ₽\n3 месяца [ Индивидуальная - Плюс ]\n+5 501 ₽\n6 месяца [ Индивидуальная - Плюс ]\n+11 139 ₽\n1 год [ Индивидуальная - Плюс ]\n+22 173 ₽\nОписание\nОтзывы\n1\nОписание товара\nChatGPT Plus — это премиум-подписка, предназначенная для профессионалов и активных пользователей, которая предлагает приоритетный доступ к флагманским моделям, расширенные возможности рассуждения и максимальные лимиты использования.\n\nВ отличие от нее, ChatGPT Go — это доступный промежуточный тарифный план, созданный для пользователей с умеренными потребностями, которым уже не хватает бесплатных лимитов. Он предоставляет увеличенное количество сообщений и базовую генерацию изображений, но без продвинутых режимов «мышления» и приоритета в часы пиковой нагрузки, которые есть в плане Plus.\nОсновные характеристики\nТип содержимого\nТекст\nОписание содержимого\n16 символов\n258 ₽\nЕсть промокод?\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\nChat GPT Plus на 1/3/6/12 месяцев, общий или приватный\n1\nОтзывы 1\n258 ₽\nКупить сейчас\nБезопасная сделка\nNaspay\n1\nНаписать продавцу\nНакопительная скидка\n150 $ скидка 5%\n100 $ скидка 4%\n75 $ скидка 3%\n50 $ скидка 2%\n10 $ скидка 1%\nПроверить свою скидку\nЗаработай 0.04 $ на товаре!\nПодарочная карта на 12.89 ₽ за положительный отзыв\nС этим товаром смотрят\n\n390 ₽\n\nChat GPT Plus 6.​ 0 +​ Sora 2\n\nПродано 100+\nКупить\n\n649 ₽\n\n24/​7 Без Входа |​ ChatGPT 6 ASTRA |​ Plus Go PRO CODEX|​ Код активации |​ Автовыдача\n\nПродано 100+\nКупить\n\n679 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​ 1 (​ASTRA)​ PLUS |​ PRO |​ GO |​ БЕЗ ВХОДА |​ 1 МЕСЯЦ Чат ГПТ\n\nПродано 100+\nКупить\n\n5 039 ₽\n\nCALL OF DUTY®:​ MODERN WARFARE® 4 XBOX SERIES X|​S КЛЮЧ\n\nПродано 313\nКупить\n\n88 ₽\n\nБез авторизации Gemini Ai Pro на 6 месяцев на ВАШ аккаунт |​ Gemini 3.​ 1,​ Nano Banana\n\nПродано 100+\nКупить\n\n658 ₽\n\n[​24/​7]​ CHATGPT PLUS 6 ASTRA |​ CODEX |​ PRO 20X |​ БИЗНЕС |​ GO |​ ПОДПИСКА/​ПРОДЛЕНИЕ\n\nПродано 100+\nКупить\n\n234 ₽\n\nАккаунт UltraGPT на 5 лет |​ 24/​7 |​ Plus |​ Pro |​ Ultra |​ Ultra GPT|​ Без входа\n\nПродано 100+\nКупить\n\n100 ₽\n\nCLIVE BARKER'S HELLRAISER:​ REVIVAL DELUXE |​ ВСЕ ДОПОЛНЕНИЯ И БОНУСЫ |​ STEAM |​ ДЛЯ ПК\n\nПродано 100+\nКупить\n\n89 ₽\n\nClaude AI |​ Личный аккаунт |​ Claude Pro (​1/​3/​6/​12 месяцев)​\n\nПродано менее 10\nКупить\n\n281 ₽\n\nChatGPT Business Инвайт /​ Продление |​ На ваш аккаунт |​ Официальная подписка |​ Быстро\n\nПродано 34\nКупить\n\n127 ₽\n\nDeepSeek ОПЛАТА АПИ ПОПОЛНИТЬ БАЛАНС ДИПСИК API\n\nПродано 5 646\nКупить\n\n2 099 ₽\n\n{АВТО 24/​7} CLAUDE 5.​ 1 AI FABLE 5 PRO|​ MAX |​ БЕЗ ВХОДА |​ Code |​ НА ВАШ АККАУНТ\n\nПродано 15 043\nКупить\n\n272 ₽\n\nБыстрый доступ Notion Team PLUS Business |​ ВАШ АККАУНТ |​ 1 мин\n\nПродано 100+\nКупить\n\n1 099 ₽\n\n24/​7 — SUNO AI — Pro/​Premier — БЕЗ ОЖИДАНИЯ — НА ВАШ АККАУНТ\n\nПродано 4 784\nКупить\n \nВы смотрели\n\n258 ₽\n\nChat GPT Plus на 1/​3/​6/​12 месяцев,​ общий или приватный\n\n \n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара ChatGPT Plus — это премиум-подписка, предназначенная для профессионалов и активных пользователей, которая предлагает приоритетный доступ к флагманским моделям, расширенные возможности рассуждения и максимальные лимиты использования. В отличие от нее, ChatGPT Go — это доступный промежуточный тарифный план, созданный для пользователей с умеренными потребностями, которым уже не хватает бесплатных лимитов. Он предоставляет увеличенное количество сообщений и базовую генерацию изображений, но без продвинутых режимов «мышления» и приоритета в часы пиковой нагрузки, которые есть в плане Plus. Основные характеристики Тип содержимого Текст Описание содержимого 16 символов",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Применить"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    258 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все"
+        },
+        {
+          "kind": "button",
+          "text": "Скрыть"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы\n1"
+        },
+        {
+          "kind": "button",
+          "text": "Все отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Сначала новые"
+        },
+        {
+          "kind": "button",
+          "text": "Показать еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Положительные"
+        },
+        {
+          "kind": "label",
+          "text": "Отрицательные"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [
+        {
+          "kind": "label",
+          "text": "3 Месяц [ Совместный - Плюс ]\n+460 ₽",
+          "domIndex": 3,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "258 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "258 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "258 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "717 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "717 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "717 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "717 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 1644
+        },
+        {
+          "kind": "label",
+          "text": "6 Месяц [ Совместный - Плюс ]\n+1 120 ₽",
+          "domIndex": 4,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "717 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "717 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "717 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "717 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "1 378 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "1 378 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "1 378 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "1 378 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 612
+        },
+        {
+          "kind": "label",
+          "text": "1 год [ Совместный - Плюс ]\n+2 441 ₽",
+          "domIndex": 5,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "1 378 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "1 378 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "1 378 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "1 378 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "2 699 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "2 699 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "2 699 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "2 699 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 621
+        },
+        {
+          "kind": "label",
+          "text": "1 месяца [ Индивидуальная - Плюс ]\n+1 716 ₽",
+          "domIndex": 6,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "2 699 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "2 699 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "2 699 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "2 699 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "1 974 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "1 974 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "1 974 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "1 974 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 617
+        },
+        {
+          "kind": "label",
+          "text": "3 месяца [ Индивидуальная - Плюс ]\n+5 501 ₽",
+          "domIndex": 7,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "1 974 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "1 974 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "1 974 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "1 974 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "5 759 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "5 759 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "5 759 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "5 759 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 614
+        },
+        {
+          "kind": "label",
+          "text": "6 месяца [ Индивидуальная - Плюс ]\n+11 139 ₽",
+          "domIndex": 8,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "5 759 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "5 759 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "5 759 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "5 759 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "11 397 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "11 397 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "11 397 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "11 397 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 611
+        },
+        {
+          "kind": "label",
+          "text": "1 год [ Индивидуальная - Плюс ]\n+22 173 ₽",
+          "domIndex": 9,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "11 397 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "11 397 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "11 397 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "11 397 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "22 430 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "22 430 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "22 430 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "22 430 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 612
+        },
+        {
+          "kind": "label",
+          "text": "1 Месяц [ Совместный - Плюс ]\nВыбран",
+          "domIndex": 2,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": true,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "22 430 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "22 430 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "22 430 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "22 430 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "258 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "258 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "258 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "390 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "679 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "5 039 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "234 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "127 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "272 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "258 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 834
+        }
+      ],
+      "error": null,
+      "controlCount": 8,
+      "controlsClicked": 8,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 6257466,
+      "url": "https://plati.market/itm/6257466",
+      "title": "Купить CHATGPT PLUS 6 ASTRA + CODEX | 1 месяц",
+      "template": "plati-C",
+      "initialPrices": [
+        {
+          "text": "200 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "200 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "200 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "200 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "235 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "366 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "658 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "658 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "281 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "117 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "80 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 271 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "141 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "614 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "339 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "242 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 913 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "100 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "200 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nChatGPT\nCHATGPT PLUS 6 ASTRA + CODEX | 1 месяц\nПродано менее 10\nОтзывы 2\nВыберите пакет токенов *\n1 устройство\nВыбран\n2 устройства\n+180 ₽\n3 устройства\n+350 ₽\nОписание\nОтзывы\n2\nОписание товара\n✅ Общий аккаунт\n✅ Гарантия качества 100%\n✅ Поддержка клиентов 24/7\n✅ Вы получите один аккаунт CHATGPT 6 ASTRA + CODEX\n\nВозможности ChatGPT Plus:\n\n🖼️ Создание изображений по текстовым описаниям.\n\n📚 Помощь в обучении: создание уникальных текстов, написание и редактирование контента.\n\n💻 Помощь в программировании: отладка кода, создание приложений и веб-сайтов с помощью Codex.\n\n🔑 Как оформить заказ:\n1️⃣ Оплатите товар через платформу.\n2️⃣ После оплаты вам будет отправлен уникальный 16-значный код.\n3️⃣ Перейдите в чат заказа на сайте oplata.info.\n4️⃣ Отправьте нам ваш уникальный код в сообщении чата заказа.\nОсновные характеристики\nТип содержимого\nТекст\nОписание содержимого\n16 символов\n200 ₽\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\nCHATGPT PLUS 6 ASTRA + CODEX | 1 месяц\n1\nПродано менее 10\nОтзывы 2\n200 ₽\nКупить сейчас\nБезопасная сделка\ninfynic\n1\nНаписать продавцу\nЗаработай 0.02 $ на товаре!\nС этим товаром смотрят\n\n235 ₽\n\nChatGPT Plus • Pro • GO • Codex |​ Подписка на 1 месяц |​ Мгновенная выдача личного\n\nПродано 110\nКупить\n\n366 ₽\n\nChatGPT Plus на 1 месяц |​ Активация на ваш аккаунт |​ Быстро\n\nПродано 25\nКупить\n\n658 ₽\n\n[​24/​7]​ CHATGPT PLUS 6 ASTRA |​ CODEX |​ PRO 20X |​ БИЗНЕС |​ GO |​ ПОДПИСКА/​ПРОДЛЕНИЕ\n\nПродано 100+\nКупить\n\n658 ₽\n\n[​24/​7 АВТО]​ ChatGPT Plus 6 ASTRA |​ Codex |​ Pro 5x |​ Business |​ GO |​ Готовый аккаунт\n\nПродано 100+\nКупить\n\n281 ₽\n\nChatGPT Business Инвайт /​ Продление |​ На ваш аккаунт |​ Официальная подписка |​ Быстро\n\nПродано 34\nКупить\n\n117 ₽\n\nAPI -​ KEY 1M–10МЛРД [​AUTO 24/​7]​ ASTRA 6 &​ SOL 6\n\nПродано 15\nКупить\n\n80 ₽\n\nАвтовыдача 24/​7 |​ Telegram Звёзды |​ Моментально\n\nПродано 49 020\nКупить\n\n1 271 ₽\n\nManus AI – Умный ассистент для заметок,​ 1 месяц\n\nПродано 43\nКупить\n\n141 ₽\n\nУчетные записи CapCut PRO:​ 7 -​ ,​ 14 -​ и 30 -​ дневные тарифные планы CAPCUT PRO\n\nПродано менее 10\nКупить\n\n614 ₽\n\nКарта Apple iTunes /​ AppStore [​Россия]​ 500 -​ 9000 рублей -​ Ключ АВТОВЫДАЧА\n\nПродано 6 861\nКупить\n\n339 ₽\n\nEpic Games DBD ЗОЛОТЫЕ КЛЕТКИ Без привязок\n\nПродано 94\nКупить\n\n242 ₽\n\nGoogle Gemini AI Pro +​ 5 ТБ хранилища +​ Anti‑Gravity Flow — 6 месяцев — Ссылка для\n\nПродано 3 013\nКупить\n\n1 913 ₽\n\nClaude 5.​ 5 +​ GPT 6.​ 1 +​ Grok 4.​ 7 — 150M токенов ×1 |​ Кеш ×0.​ 1 |​ 24/​7\n\nПродано менее 10\nКупить\n\n100 ₽\n\nPerplexity AI Pro – Премиум подписка на 1 месяц\n\nПродано 16\nКупить\n \nВы смотрели\n\n200 ₽\n\nCHATGPT PLUS 6 ASTRA +​ CODEX |​ 1 месяц\n\nПродано менее 10\n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара ✅ Общий аккаунт ✅ Гарантия качества 100% ✅ Поддержка клиентов 24/7 ✅ Вы получите один аккаунт CHATGPT 6 ASTRA + CODEX Возможности ChatGPT Plus: 🖼️ Создание изображений по текстовым описаниям. 📚 Помощь в обучении: создание уникальных текстов, написание и редактирование контента. 💻 Помощь в программировании: отладка кода, создание приложений и веб-сайтов с помощью Codex. 🔑 Как оформить заказ: 1️⃣ Оплатите товар через платформу. 2️⃣ После оплаты вам будет отправлен уникальный 16-значный код. 3️⃣ Перейдите в чат заказа на сайте oplata.info. 4️⃣ Отправьте нам ваш уникальный код в сообщении чата заказа. Основные характеристики Тип содержимого Текст Описание содержимого 16 символов",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    200 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все"
+        },
+        {
+          "kind": "button",
+          "text": "Скрыть"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы\n2"
+        },
+        {
+          "kind": "button",
+          "text": "Все отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Сначала новые"
+        },
+        {
+          "kind": "button",
+          "text": "Показать еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "1 устройство\nВыбран"
+        },
+        {
+          "kind": "label",
+          "text": "2 устройства\n+180 ₽"
+        },
+        {
+          "kind": "label",
+          "text": "3 устройства\n+350 ₽"
+        },
+        {
+          "kind": "label",
+          "text": "Положительные"
+        },
+        {
+          "kind": "label",
+          "text": "Отрицательные"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 6008654,
+      "url": "https://plati.market/itm/6008654",
+      "title": "Купить 🚀 ChatGPT Plus • Pro • GO • Codex | Подписка на 1 месяц | Мгновенная выдача личного",
+      "template": "plati-C",
+      "initialPrices": [
+        {
+          "text": "235 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "235 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "235 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "235 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "249 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "437 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "658 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "167 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "180 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "100 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "478 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "281 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "235 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nChatGPT\nChatGPT Plus • Pro • GO • Codex | Подписка на 1 месяц | Мгновенная выдача личного\nПродано 110\nОтзывы 12\nВарианты получения услуги *\nChatGPT GO 1 месяц | Подписка / Продление (общий аккаунт)\nВыбран\nChatGPT GO 1 месяц | Подписка / Продление (готовый аккаунт)\n+752 ₽\nChatGPT GO на 6 месяцев | Подписка / Продление (\n+4 229 ₽\nОписание\nОтзывы\n12\nИзображения\nОписание товара\n🟢 Добро пожаловать в popcorn.official 🟢\n\n🔥 Официальные подписки ChatGPT с быстрой активацией, выгодной ценой и профессиональной поддержкой.\n\n✨ Доступные варианты\n\n👤 Личный аккаунт\n\nГотовый личный аккаунт\nПродление существующей подписки\nНовый аккаунт на вашу почту\nПолный доступ к электронной почте (для выбранных вариантов)\n\n👥 Общий аккаунт\n\nЭкономичный вариант для знакомства с премиум-возможностями\nОтлично подходит для проверки качества сервиса перед покупкой личного аккаунта\n💎 Почему выбирают popcorn.official?\n\n✅ Официальные подписки ChatGPT\n\n⚡ Быстрая активация\n\n💬 Оперативная поддержка\n\n🔒 Безопасное обслуживание\n\n⭐ Высокий рейтинг и довольные покупатели\n\n💰 Конкурентные цены\n\n🤖 Возможности подписки\n\n✔️ Доступ к современным моделям ChatGPT\n\n✔️ Быстрые ответы\n\n✔️ Инструменты Codex для программирования\n\n✔️ Помощь с текстами, переводами и анализом\n\n✔️ Повышенные лимиты использования\n\n🛒 Как оформить заказ\n\n1️⃣ Выберите нужный вариант.\n\n2️⃣ Оплатите заказ.\n\n3️⃣ Получите уникальный код.\n\n4️⃣ Отправьте код в чат заказа.\n\n5️⃣ Мы активируем подписку в кратчайшие сроки.\n\n📦 Срок активации\n\n⚡ Обычно от 5 минут до 2 часов.\n\n⏳ В редких случаях — до 12 часов.\n\n🛡️ Гарантия\n\n✅ Доступ гарантирован на весь оплаченный срок.\n\n✅ Помощь при активации.\n\n✅ Поддержка после покупки.\n\n📌 Важная информация\n\n✔️ Срок подписки — 1 месяц.\n\n✔️ Для некоторых товаров доступна покупка без входа в аккаунт.\n\n✔️ Не изменяйте данные аккаунта без необходимости.\n\n✔️ Мы не несем ответственности за ограничения, возникшие из-за нарушения правил OpenAI.\n\n✔️ При возврате средств не по вине продавца может удерживаться сервисный сбор.\n\n🍿 popcorn.official\n\nПрофессионально • Быстро • Надежно • Безопасно\n\nСпасибо за выбор popcorn.official!\nОсновные характеристики\nТип содержимого\nТекст\nОписание содержимого\n16 символов\nДополнительное описание\n235 ₽\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\nChatGPT Plus • Pro • GO • Codex | Подписка на 1 месяц | Мгновенная выдача личного\n81\nПродано 110\nОтзывы 12\n235 ₽\nКупить сейчас\nБезопасная сделка\npopcorn.official\n81\nНаписать продавцу\n\nОнлайн\n\nЗаработай 0.03 $ на товаре!\nС этим товаром смотрят\n\n249 ₽\n\nCHATGPT PLUS ГАРАНТИЯ PREMIUM 1 МЕСЯЦ АВТО -​ ПОДКЛЮЧЕНИЕ\n\nПродано 100+\nКупить\n\n437 ₽\n\nАВТОВЫДАЧА 24/​7 |​ ChatGPT 6.​ 1 PLUS |​ PRO |​ GO |​ 1 месяц |​ НА ВАШ ЛИЧНЫЙ АККАУНТ\n\nПродано 100+\nКупить\n\n658 ₽\n\n[​24/​7]​ CHATGPT PLUS 6 ASTRA |​ CODEX |​ PRO 20X |​ БИЗНЕС |​ GO |​ ПОДПИСКА/​ПРОДЛЕНИЕ\n\nПродано 100+\nКупить\n\n167 ₽\n\nКруглосуточно |​ Автоматическая доставка |​ Google AI Pro 6 месяцев на Your Mail |​ 5TB\n\nПродано 2 511\nКупить\n\n180 ₽\n\nGPT -​ 6.​ 1 Sol /​ 6 Astra /​ 6 Luna API |​ Общий баланс |​ Автовыдача\n\nПродано менее 10\nКупить\n\n100 ₽\n\nCODEX |​ SMS -​ АКТИВАЦИЯ (​24/​7 АВТО)​ НА ВАШ АККАУНТ |​ СМС |​ CHATGPT OPENAI |​ ГАРАНТИЯ\n\nПродано 100+\nКупить\n\n478 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 5.​ 6 PLUS 1M |​ CODEX |​ PRO |​ o3 |​ SORA |​ ЛИЧНЫЙ\n\nПродано 344\nКупить\n\n281 ₽\n\nChatGPT Business Инвайт /​ Продление |​ На ваш аккаунт |​ Официальная подписка |​ Быстро\n\nПродано 34\nКупить\n\n2 099 ₽\n\n[​БЕЗ БАНА 24/​7]​ FABLE 5.​ 5 Claude Ai PRO /​ MAX /​ Code Anthropic\n\nПродано 126 791\nКупить\n \nВы смотрели\n\n235 ₽\n\nChatGPT Plus • Pro • GO • Codex |​ Подписка на 1 месяц |​ Мгновенная выдача личного\n\nПродано 110\n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара 🟢 Добро пожаловать в popcorn.official 🟢 🔥 Официальные подписки ChatGPT с быстрой активацией, выгодной ценой и профессиональной поддержкой. ✨ Доступные варианты 👤 Личный аккаунт Готовый личный аккаунт Продление существующей подписки Новый аккаунт на вашу почту Полный доступ к электронной почте (для выбранных вариантов) 👥 Общий аккаунт Экономичный вариант для знакомства с премиум-возможностями Отлично подходит для проверки качества сервиса перед покупкой личного аккаунта 💎 Почему выбирают popcorn.official? ✅ Официальные подписки ChatGPT ⚡ Быстрая активация 💬 Оперативная поддержка 🔒 Безопасное обслуживание ⭐ Высокий рейтинг и довольные покупатели 💰 Конкурентные цены 🤖 Возможности подписки ✔️ Доступ к современным моделям ChatGPT ✔️ Быстрые ответы ✔️ Инструменты Codex для программирования ✔️ Помощь с текстами, переводами и анализом ✔️ Повышенные лимиты использования 🛒 Как оформить заказ 1️⃣ Выберите нужный вариант. 2️⃣ Оплатите заказ. 3️⃣ Получите уникальный код. 4️⃣ Отправьте код в чат заказа. 5️⃣ Мы активируем подписку в кратчайшие сроки. 📦 Срок активации ⚡ Обычно от 5 минут до 2 часов. ⏳ В редких случаях — до 12 часов. 🛡️ Гарантия ✅ Доступ гарантирован на весь оплаченный срок. ✅ Помощь при активации. ✅ Поддержка после покупки. 📌 Важная информация ✔️ Срок подписки — 1 месяц. ✔️ Для некоторых товаров доступна покупка без входа в аккаунт. ✔️ Не изменяйте данные аккаунта без необходимости. ✔️ Мы не несем ответственности за ограничения, возникшие из-за нарушения правил OpenAI. ✔️ При возврате средств не по вине продавца может удерживаться сервисный сбор. 🍿 popcorn.official Профессионально • Быстро • Надежно • Безопасно Спасибо за выбор popcorn.official! Основные характеристики Тип содержимого Текст Описание содержимого 16 символов Дополнительное описание ❤️Привет, дружище! ⏰ Из-за разницы во времени, если возникнет проблема, я отвечу сразу после того, как проснусь. Если у вас возникли проблемы с продуктом, свяжитесь с нами в чате https://digiseller.me/, мы ответим в течение 8 часов (по времени Марокко с 10:00 до 00:00 и с 16:00 до 22:00. Что касается времени по Москве, то с 12:00 до 14:00 и с 18:00 до 00:00). 🎁 Любая задержка будет компенсирована дополнительными днями — просто напомните мне.",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    235 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все"
+        },
+        {
+          "kind": "button",
+          "text": "Скрыть"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы\n12"
+        },
+        {
+          "kind": "button",
+          "text": "Изображения"
+        },
+        {
+          "kind": "button",
+          "text": "Все отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Сначала новые"
+        },
+        {
+          "kind": "button",
+          "text": "Показать еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу\n\nОнлайн"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу\n                        \n                            \n                                \n                                    \n                                \n                                Онлайн"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Положительные"
+        },
+        {
+          "kind": "label",
+          "text": "Отрицательные"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [
+        {
+          "kind": "label",
+          "text": "ChatGPT GO 1 месяц | Подписка / Продление (готовый аккаунт)\n+752 ₽",
+          "domIndex": 3,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "235 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "235 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "235 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "235 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "249 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "437 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "167 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "180 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "478 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "235 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "987 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "987 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "987 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "987 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "249 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "437 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "167 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "180 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "478 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "235 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 1032
+        },
+        {
+          "kind": "label",
+          "text": "ChatGPT GO на 6 месяцев | Подписка / Продление (\n+4 229 ₽",
+          "domIndex": 4,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "987 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "987 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "987 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "987 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "249 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "437 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "167 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "180 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "478 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "235 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "4 463 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "4 463 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "4 463 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "4 463 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "249 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "437 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "167 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "180 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "478 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "235 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 820
+        },
+        {
+          "kind": "label",
+          "text": "ChatGPT GO 1 месяц | Подписка / Продление (общий аккаунт)\nВыбран",
+          "domIndex": 2,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": true,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "4 463 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "4 463 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "4 463 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "4 463 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "249 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "437 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "167 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "180 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "478 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "235 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "235 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "235 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "235 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "235 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "249 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "437 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "658 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "167 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "180 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "100 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "478 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "281 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 099 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "235 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 831
+        }
+      ],
+      "error": null,
+      "controlCount": 3,
+      "controlsClicked": 3,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 4676486,
+      "url": "https://plati.market/itm/4676486",
+      "title": "Купить CHATGPT PLUS🤖 ГАРАНТИЯ 🔥 PREMIUM 1 МЕСЯЦ✅ АВТО-ПОДКЛЮЧЕНИЕ",
+      "template": "plati-C",
+      "initialPrices": [
+        {
+          "text": "249 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "249 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "249 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "249 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "499 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "620 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "522 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "658 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "249 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nChatGPT\nCHATGPT PLUS ГАРАНТИЯ PREMIUM 1 МЕСЯЦ АВТО-ПОДКЛЮЧЕНИЕ\nПродано 100+\nВозвратов 60\nОтзывы 100+\nСколько устройств ? *\n1\nВыбран\n2\n+50 ₽\n3\n+90 ₽\nОписание\nОтзывы\n100+\nОписание товара\n✅🔥 Аккаунт зарегистрирован и оплачен нами, доступ будет без проблем 🔥✅\n⭐️ Важно: аккаунт общий, могут быть лимиты ⭐️\n🔥 Для входа используется двухфакторная аутентификация. Код можно получить через личное сообщение.\n🔥 Лицензионный аккаунт ChatGPT PLUS с активной Premium.\n\n⭐️ ChatGPT PLUS предлагает улучшенный функционал по сравнению с базовой версией. Среди преимуществ:\n💎 Расширенная база знаний, позволяющая отвечать на большее количество запросов.\n💎 Дополнительные функции, такие как персонализированные рекомендации, поддержка дополнительных языков и многое другое.\n💎 Увеличенная скорость работы, обеспечивающая быстрое и точное выполнение запросов.\n\n⚡️ Вот что вы сможете делать с ChatGPT PLUS:\n✅ Писать продающие тексты для Instagram, Telegram, VK.\n✅ Создавать сценарии для видео на YouTube.\n✅ Разрабатывать метатеги и ключевые слова, находить целевую аудиторию для продвижения сайтов.\n✅ Писать программный код для приложений, сайтов и ботов.\n✅ Разрабатывать бизнес-планы и многое другое.\n\n🏆 Покупая этот товар, вы получаете:\n🔥 Доступ к ChatGPT PLUS.\n🔥 Мгновенную доставку данных на электронную почту.\n🔥 Логин и пароль для входа.\n🔥 Быструю поддержку при возникновении вопросов.\n\n🎁 Будем рады вашему отзыву! 🎁\nОсновные характеристики\nОбновлен на площадке\n25.10.2026\n249 ₽\nЕсть промокод?\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\nCHATGPT PLUS ГАРАНТИЯ PREMIUM 1 МЕСЯЦ АВТО-ПОДКЛЮЧЕНИЕ\n96\nПродано 100+\nВозвратов 60\nОтзывы 100+\n249 ₽\nКупить сейчас\nБезопасная сделка\nМгновенная доставка\nPixelPlex\n96\nНаписать продавцу\nЗаработай 0.36 $ на товаре!\nС этим товаром смотрят\n\n499 ₽\n\nChatGPT 6 ASTRA PLUS+​ Аккаунт с подпиской КОД 24/​7 1 Месяц GPT\n\nПродано 100+\nКупить\n\n620 ₽\n\nChatGPT 5.​ 5 PLUS /​ PRO /​ GO |​ 1 МЕС |​ ПРОДЛЕНИЕ /​ АКТИВАЦИЯ |​ 24/​7 АВТО |​ ГАРАНТИЯ\n\nПродано 463\nКупить\n\n522 ₽\n\nCodex API |​ GPT -​ 6 Astra |​ GPT -​ 6.​ 1 Sol |​ Codex CLI |​ 24 часа /​ 7 /​ 30 дней |​ $120 в де\n\nПродано 581\nКупить\n\n658 ₽\n\n[​24/​7]​ CHATGPT PLUS 6 ASTRA |​ CODEX |​ PRO 20X |​ БИЗНЕС |​ GO |​ ПОДПИСКА/​ПРОДЛЕНИЕ\n\nПродано 100+\nКупить\n\n649 ₽\n\n24/​7 Без Входа |​ ChatGPT 6 ASTRA |​ Plus Go PRO CODEX|​ Код активации |​ Автовыдача\n\nПродано 100+\nКупить\n\n2 099 ₽\n\n[​БЕЗ БАНА 24/​7]​ FABLE 5.​ 5 Claude Ai PRO /​ MAX /​ Code Anthropic\n\nПродано 126 792\nКупить\n \nВы смотрели\n\n249 ₽\n\nCHATGPT PLUS ГАРАНТИЯ PREMIUM 1 МЕСЯЦ АВТО-​ПОДКЛЮЧЕНИЕ\n\nПродано 100+\n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара ✅🔥 Аккаунт зарегистрирован и оплачен нами, доступ будет без проблем 🔥✅ ⭐️ Важно: аккаунт общий, могут быть лимиты ⭐️ 🔥 Для входа используется двухфакторная аутентификация. Код можно получить через личное сообщение. 🔥 Лицензионный аккаунт ChatGPT PLUS с активной Premium. ⭐️ ChatGPT PLUS предлагает улучшенный функционал по сравнению с базовой версией. Среди преимуществ: 💎 Расширенная база знаний, позволяющая отвечать на большее количество запросов. 💎 Дополнительные функции, такие как персонализированные рекомендации, поддержка дополнительных языков и многое другое. 💎 Увеличенная скорость работы, обеспечивающая быстрое и точное выполнение запросов. ⚡️ Вот что вы сможете делать с ChatGPT PLUS: ✅ Писать продающие тексты для Instagram, Telegram, VK. ✅ Создавать сценарии для видео на YouTube. ✅ Разрабатывать метатеги и ключевые слова, находить целевую аудиторию для продвижения сайтов. ✅ Писать программный код для приложений, сайтов и ботов. ✅ Разрабатывать бизнес-планы и многое другое. 🏆 Покупая этот товар, вы получаете: 🔥 Доступ к ChatGPT PLUS. 🔥 Мгновенную доставку данных на электронную почту. 🔥 Логин и пароль для входа. 🔥 Быструю поддержку при возникновении вопросов. 🎁 Будем рады вашему отзыву! 🎁 Основные характеристики Обновлен на площадке 25.10.2026",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Применить"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    249 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все"
+        },
+        {
+          "kind": "button",
+          "text": "Скрыть"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы\n100+"
+        },
+        {
+          "kind": "button",
+          "text": "Все отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Сначала новые"
+        },
+        {
+          "kind": "button",
+          "text": "Показать еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "1\nВыбран"
+        },
+        {
+          "kind": "label",
+          "text": "2\n+50 ₽"
+        },
+        {
+          "kind": "label",
+          "text": "3\n+90 ₽"
+        },
+        {
+          "kind": "label",
+          "text": "Положительные"
+        },
+        {
+          "kind": "label",
+          "text": "Отрицательные"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 5690641,
+      "url": "https://plati.market/itm/5690641",
+      "title": "Plati.Market — площадка цифровых товаров",
+      "template": "unknown",
+      "initialPrices": [
+        {
+          "text": "200 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "500 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "1000 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "2000 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "275 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "879 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "599 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 819 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "174 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "241 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 820 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "440 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "183 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "21 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "13 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "169 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "699 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "79 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "569 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "30 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "777 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "389 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 819 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "174 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "241 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "13 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "30 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "389 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "799 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "299 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "621 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "500 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 199 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 039 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "49 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "80 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "371 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nПопулярное\nВсе\n\nPlayStation\n\nSteam пополнение\n\nCall of Duty: Modern Warfare 4 (2026)\n\nChatGPT\n\nClaude\n\nApp Store & iTunes\n\nXbox / Microsoft Store\n\nNintendo eShop\n\nWARDOGS\n\nCursor\n\nGrok xAI\n\nFortnite\n\nMinecraft\n\nHELLDIVERS 2\n\nForza Horizon 6\n\nHiggsfield AI\n\nGrand Theft Auto VI\n\nBattle.net пополнение\n\nWorld of Warcraft\n\nCyberpunk 2077\n\nSpotify\n\nRoblox, робуксы\n\nEA Sports FC 27\n\nPhantom Blade Zero\n\nTelegram\n\nGemini\n\nOpenRouter\n\nBattlefield 6\n\nDeepSeek\n\nGrand Theft Auto V\n\nPerplexity\n\nCrimson Desert\n\nПополнение\nSteam\nApp Store & iTunes\nPlaystation\nXbox / Microsoft Store\nRoblox\nNintendo eShop\nTelegram Stars\nBattle.net\nРоссия\nСтраны СНГ\nКазахстан\n₽\n200 ₽\n500 ₽\n1000 ₽\n2000 ₽\nКак узнать логин?\nКупить\nПродано 237\nОтзывы 15\nhmmml\nНовинки\nВсе\nРекомендуем\n\n589 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​1 PLUS |​ PRO |​ GO |​ Код активации |​ 1 месяц |​ Чат ГПТ\n\nПродано 100+\n\n275 ₽\n\nПОКУПКА ИГР/​ПОПОЛНЕНИЕ КОДАМИ/​ПОДПИСКИ PSN ТУРЦИЯ\n\nПродано 29 338\n\n22 ₽\n\nНИЗКАЯ ЦЕНА |​ ПОПОЛНИТЬ STEAM UA-​RU-​KZ-​СНГ +​ ПОДАРОК |​ АВТО 24/​7\n\nПродано 434 311\n\n849 ₽\n\n{АВТО} ChatGPT 6 PLUS |​ GO |​ ASTRA|​ 1М PRO |​ CODEX |​ ПОДПИСКА |​ БЕЗ ВХОДА |​ ПРОДЛЕНИЕ\n\nПродано 100+\n\n22 ₽\n\nПОПОЛНИТЬ STEAM РФ-​КЗ-​UA-​СНГ НИЗКАЯ ЦЕНА\n\nПродано 3.37 млн\n\n849 ₽\n\n[​24/​7]​ ChatGPT 6 (​ASTRA)​ PLUS 1М |​ GO |​ PRO 5X 20X |​ SORA\n\nПродано 100+\n\n879 ₽\n\n[​24/​7 АВТО]​ ChatGPT 6 PLUS |​ PRO X20|​ GO |​ CODEX 1 М ПОДПИСКА /​ ПРОДЛЕНИЕ /​ ЧАТ ГПТ\n\nПродано 100+\n\n2 099 ₽\n\n[​24/​7]​ |​ Claude AI FABLE 5.​5 |​ Подписка PRO /​ MAX CODE |​ НА ВАШ АККАУНТ |​ 1 МЕС\n\nПродано 50 738\n\n649 ₽\n\n24/​7 Без Входа |​ ChatGPT 6 ASTRA |​ Plus Go PRO CODEX|​ Код активации |​ Автовыдача\n\nПродано 100+\n\n445 ₽\n\nАВТО PLAYSTATION ТУРЦИЯ PSN КОД ПОПОЛНЕНИЯ БАЛАНС TRY\n\nПродано 127 900\n\n599 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6 ASTRA |​ GO |​ PLUS |​ PRO |​ БЕЗ ВХОДА |​ СЛЕТА\n\nПродано 100+\n\n3 819 ₽\n\nCall of Duty:​ Modern Warfare 4+​ВЫБОР /​ Steam АВТО /​ МИР\n\nПродано 6 324\n\n174 ₽\n\n[​АВТОВЫДАЧА]​ Подарочная карта Apple iTunes (​США)​ 2-​1000$.​ НИЗКАЯ ЦЕНА\n\nПродано 473 316\n\n241 ₽\n\n1/​3/​6/​12 МЕСЯЦЕВ SPOTIFY PREMIUM РАБОТАЕТ В РФ\n\nПродано 100+\n\n2 099 ₽\n\n[​БЕЗ БАНА 24/​7]​ FABLE 5.​5 Claude Ai PRO /​ MAX /​ Code Anthropic\n\nПродано 126 791\n\n3 820 ₽\n\nCall of Duty:​ Modern Warfare 4 (​2026)​ +​ВЫБОР ИЗДАНИЯ · STEAM GIFT · АВТО\n\nПродано 3 740\n\n440 ₽\n\nКарта Пополнения Playstation TRY • 250-​5000 TL • GTA 6 PSN Турция +​ ПОДАРОК\n\nПродано 12 340\n\n99 ₽\n\nXBOX GAME PASS ULTIMATE/​PREMIUM 14Д/​ESSENTIAL/​PC 1-​2-​3-​4-​5-​6-​7-​11-​12 МЕСЯЦЕВ\n\nПродано 375 705\n\n445 ₽\n\nКарта PlayStation(​PSN)​ 250-​5500 TRY(​Лиры)​ Турция\n\nПродано 92 777\n\n183 ₽\n\nApp Store/​iTunes Подарочная Карта США US APPLE USA USD Карта пополнения AppStore КОД\n\nПродано 32 704\n\n21 ₽\n\n3% ПОПОЛНЕНИЕ STEAM АВТО |​ RUB/​KZT/​UAH\n\nПродано 116 409\n\n13 ₽\n\nApp Store/​iTunes Подарочная Карта ТУРЦИЯ TR APPLE Turkey TRY Карта пополнения TL КОД\n\nПродано 36 581\n\n899 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ GROK 4.​7 |​ PLUS |​ PREMIUM |​ SUPER |​ ULTRA |​ Подписка |​ ГРОК\n\nПродано 100+\n\n169 ₽\n\nНИЗКАЯ ЦЕНА |​ Подарочная Карта Apple iTunes (​США)​ 2-​100$ +​ ПОДАРОК\n\nПродано 214 826\n\n2 099 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ Claude MAX X5/​X20 |​ БЕЗ ВХОДА /​ СЛЕТА |​ НА ВАШ АККАУНТ\n\nПродано 44 875\n\n699 ₽\n\n[​АВТОВЫДАЧА]​ |​ ChatGPT 6 PLUS |​ PRO X5 -​ X20 |​ GO |​ 1 МЕСЯЦ |​ ПОДПИСКА |​ CODEX\n\nПродано 100+\n\n589 ₽\n\n[​24/​7]​ ChatGPT 6.​1+​ 6 1M |​ PLUS |​ GO |​ PRO 100/​200 |​ Код Активации |​ Авто Доставка\n\nПродано 100+\n\n79 ₽\n\nXBOX GAME PASS ULTIMATE/​Premium/​PC 1-​12 МЕСЯЦЕВ +​ НАДЕЖНО\n\nПродано 208 109\n\n569 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​1 PLUS |​ PRO |​ GO |​ 1 месяц |​ НА ВАШ АККАУНТ |​ Чат ГПТ\n\nПродано 100+\n\n30 ₽\n\nSTEAM TR-​ARG-​KZ-​UA-​US-​EU и ДРУГИЕ,​ КОД ПОПОЛНЕНИЯ\n\nПродано 6 899\n\n3 ₽\n\nИГРЫ/​Подписки УКРАИНА PS/​PSN/​Playstation GTA 6/​FC 27\n\nПродано 13 312\n\n777 ₽\n\n[​АВТО 24/​7]​ ChatGPT 6 PLUS 1M |​ GO |​ PRO |​ CODEX |​ ПОДПИСКА\n\nПродано 100+\n\n389 ₽\n\nКарты Nintendo 5-​10-​20-​35-​50-​60-​70-​100$ USD-​Долларов США\n\nПродано 294 669\nПредзаказы\nВсе\n\nPhantom Blade Zero\n\nWorld of Warcraft: Forever\n\nGrand Theft Auto VI\n\nActive Matter\n\nWarhammer 40,000: Dawn of War IV\n\nAttack on Titan 3 / A.O.T. 3\n\nDuet Night Abyss\n\nSTRANGER THAN HEAVEN\n\nArizona Sunshine\n\nTropico 7\n\nMETRO 2039\n\nTomb Raider: Legacy of Atlantis\n\nGod of War Laufey\n\nPersona 4 Revival\n\nFable\n\nWo Long 2: Wings of Ember\n\nЛидеры продаж\n\n849 ₽\n\n{АВТО} ChatGPT 6 PLUS |​ GO |​ ASTRA|​ 1М PRO |​ CODEX |​ ПОДПИСКА |​ БЕЗ ВХОДА |​ ПРОДЛЕНИЕ\n\nПродано 100+\nКупить\n\n22 ₽\n\nПОПОЛНИТЬ STEAM РФ-​КЗ-​UA-​СНГ НИЗКАЯ ЦЕНА\n\nПродано 3.37 млн\nКупить\n\n2 099 ₽\n\n[​24/​7]​ |​ Claude AI FABLE 5.​5 |​ Подписка PRO /​ MAX CODE |​ НА ВАШ АККАУНТ |​ 1 МЕС\n\nПродано 50 739\nКупить\n\n445 ₽\n\nАВТО PLAYSTATION ТУРЦИЯ PSN КОД ПОПОЛНЕНИЯ БАЛАНС TRY\n\nПродано 127 900\nКупить\n\n3 819 ₽\n\nCall of Duty:​ Modern Warfare 4+​ВЫБОР /​ Steam АВТО /​ МИР\n\nПродано 6 324\nКупить\n\n174 ₽\n\n[​АВТОВЫДАЧА]​ Подарочная карта Apple iTunes (​США)​ 2-​1000$.​ НИЗКАЯ ЦЕНА\n\nПродано 473 316\nКупить\n\n241 ₽\n\n1/​3/​6/​12 МЕСЯЦЕВ SPOTIFY PREMIUM РАБОТАЕТ В РФ\n\nПродано 100+\nКупить\n\n99 ₽\n\nXBOX GAME PASS ULTIMATE/​PREMIUM 14Д/​ESSENTIAL/​PC 1-​2-​3-​4-​5-​6-​7-​11-​12 МЕСЯЦЕВ\n\nПродано 375 705\nКупить\n\n13 ₽\n\nApp Store/​iTunes Подарочная Карта ТУРЦИЯ TR APPLE Turkey TRY Карта пополнения TL КОД\n\nПродано 36 581\nКупить\n\n899 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ GROK 4.​7 |​ PLUS |​ PREMIUM |​ SUPER |​ ULTRA |​ Подписка |​ ГРОК\n\nПродано 100+\nКупить\n\n30 ₽\n\nSTEAM TR-​ARG-​KZ-​UA-​US-​EU и ДРУГИЕ,​ КОД ПОПОЛНЕНИЯ\n\nПродано 6 899\nКупить\n\n3 ₽\n\nИГРЫ/​Подписки УКРАИНА PS/​PSN/​Playstation GTA 6/​FC 27\n\nПродано 13 312\nКупить\n\n389 ₽\n\nКарты Nintendo 5-​10-​20-​35-​50-​60-​70-​100$ USD-​Долларов США\n\nПродано 294 669\nКупить\n\n799 ₽\n\n[​24/​7]​ |​ Perplexity AI Pro/​Max 1M |​ БЕЗ ВХОДА |​ АВТО\n\nПродано 1 000+\nКупить\n\n299 ₽\n\n24/​7 |​ Google AI Pro +​ 5 ТБ 6 месяцев на ваш Gmail |​ Gemini 4 Argon,​ Omni,​ Nano Banan\n\nПродано 22 570\nКупить\n\n1 899 ₽\n\nКа",
+      "descText": "",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Steam"
+        },
+        {
+          "kind": "button",
+          "text": "App Store & iTunes"
+        },
+        {
+          "kind": "button",
+          "text": "Playstation"
+        },
+        {
+          "kind": "button",
+          "text": "Xbox / Microsoft Store"
+        },
+        {
+          "kind": "button",
+          "text": "Roblox"
+        },
+        {
+          "kind": "button",
+          "text": "Nintendo eShop"
+        },
+        {
+          "kind": "button",
+          "text": "Telegram Stars"
+        },
+        {
+          "kind": "button",
+          "text": "Battle.net"
+        },
+        {
+          "kind": "button",
+          "text": "200 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "500 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "1000 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "2000 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "200"
+        },
+        {
+          "kind": "button",
+          "text": "500"
+        },
+        {
+          "kind": "button",
+          "text": "1000"
+        },
+        {
+          "kind": "button",
+          "text": "2000"
+        },
+        {
+          "kind": "button",
+          "text": "Понятно"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Россия"
+        },
+        {
+          "kind": "label",
+          "text": "Страны СНГ"
+        },
+        {
+          "kind": "label",
+          "text": "Казахстан"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 5652066,
+      "url": "https://plati.market/itm/5652066",
+      "title": "Plati.Market — площадка цифровых товаров",
+      "template": "unknown",
+      "initialPrices": [
+        {
+          "text": "200 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "500 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "1000 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "2000 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "499 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "879 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "599 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 819 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "174 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "241 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 820 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "440 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "183 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "21 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "13 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "169 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "699 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "79 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "569 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "30 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "777 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "389 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nПопулярное\nВсе\n\nPlayStation\n\nSteam пополнение\n\nCall of Duty: Modern Warfare 4 (2026)\n\nChatGPT\n\nClaude\n\nApp Store & iTunes\n\nXbox / Microsoft Store\n\nNintendo eShop\n\nWARDOGS\n\nCursor\n\nGrok xAI\n\nFortnite\n\nMinecraft\n\nHELLDIVERS 2\n\nForza Horizon 6\n\nHiggsfield AI\n\nGrand Theft Auto VI\n\nBattle.net пополнение\n\nWorld of Warcraft\n\nCyberpunk 2077\n\nSpotify\n\nRoblox, робуксы\n\nEA Sports FC 27\n\nPhantom Blade Zero\n\nTelegram\n\nGemini\n\nOpenRouter\n\nBattlefield 6\n\nDeepSeek\n\nGrand Theft Auto V\n\nPerplexity\n\nCrimson Desert\n\nПополнение\nSteam\nApp Store & iTunes\nPlaystation\nXbox / Microsoft Store\nRoblox\nNintendo eShop\nTelegram Stars\nBattle.net\nРоссия\nСтраны СНГ\nКазахстан\n₽\n200 ₽\n500 ₽\n1000 ₽\n2000 ₽\nКак узнать логин?\nКупить\nНовинки\nВсе\nРекомендуем\n\n849 ₽\n\n{АВТО} ChatGPT 6 PLUS |​ GO |​ ASTRA|​ 1М PRO |​ CODEX |​ ПОДПИСКА |​ БЕЗ ВХОДА |​ ПРОДЛЕНИЕ\n\nПродано 100+\n\n499 ₽\n\nPS PLUS ЛЮКС ЭКСТРА ОСНОВНАЯ 1-​12 EA PLAY УКРАИНА БЫСТРО!\n\nПродано 33 021\n\n22 ₽\n\nНИЗКАЯ ЦЕНА |​ ПОПОЛНИТЬ STEAM UA-​RU-​KZ-​СНГ +​ ПОДАРОК |​ АВТО 24/​7\n\nПродано 434 312\n\n22 ₽\n\nПОПОЛНИТЬ STEAM РФ-​КЗ-​UA-​СНГ НИЗКАЯ ЦЕНА\n\nПродано 3.37 млн\n\n849 ₽\n\n[​24/​7]​ ChatGPT 6 (​ASTRA)​ PLUS 1М |​ GO |​ PRO 5X 20X |​ SORA\n\nПродано 100+\n\n879 ₽\n\n[​24/​7 АВТО]​ ChatGPT 6 PLUS |​ PRO X20|​ GO |​ CODEX 1 М ПОДПИСКА /​ ПРОДЛЕНИЕ /​ ЧАТ ГПТ\n\nПродано 100+\n\n2 099 ₽\n\n[​24/​7]​ |​ Claude AI FABLE 5.​5 |​ Подписка PRO /​ MAX CODE |​ НА ВАШ АККАУНТ |​ 1 МЕС\n\nПродано 50 739\n\n649 ₽\n\n24/​7 Без Входа |​ ChatGPT 6 ASTRA |​ Plus Go PRO CODEX|​ Код активации |​ Автовыдача\n\nПродано 100+\n\n445 ₽\n\nАВТО PLAYSTATION ТУРЦИЯ PSN КОД ПОПОЛНЕНИЯ БАЛАНС TRY\n\nПродано 127 900\n\n599 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6 ASTRA |​ GO |​ PLUS |​ PRO |​ БЕЗ ВХОДА |​ СЛЕТА\n\nПродано 100+\n\n3 819 ₽\n\nCall of Duty:​ Modern Warfare 4+​ВЫБОР /​ Steam АВТО /​ МИР\n\nПродано 6 324\n\n174 ₽\n\n[​АВТОВЫДАЧА]​ Подарочная карта Apple iTunes (​США)​ 2-​1000$.​ НИЗКАЯ ЦЕНА\n\nПродано 473 316\n\n589 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​1 PLUS |​ PRO |​ GO |​ Код активации |​ 1 месяц |​ Чат ГПТ\n\nПродано 100+\n\n241 ₽\n\n1/​3/​6/​12 МЕСЯЦЕВ SPOTIFY PREMIUM РАБОТАЕТ В РФ\n\nПродано 100+\n\n2 099 ₽\n\n[​БЕЗ БАНА 24/​7]​ FABLE 5.​5 Claude Ai PRO /​ MAX /​ Code Anthropic\n\nПродано 126 792\n\n3 820 ₽\n\nCall of Duty:​ Modern Warfare 4 (​2026)​ +​ВЫБОР ИЗДАНИЯ · STEAM GIFT · АВТО\n\nПродано 3 740\n\n440 ₽\n\nКарта Пополнения Playstation TRY • 250-​5000 TL • GTA 6 PSN Турция +​ ПОДАРОК\n\nПродано 12 340\n\n99 ₽\n\nXBOX GAME PASS ULTIMATE/​PREMIUM 14Д/​ESSENTIAL/​PC 1-​2-​3-​4-​5-​6-​7-​11-​12 МЕСЯЦЕВ\n\nПродано 375 705\n\n445 ₽\n\nКарта PlayStation(​PSN)​ 250-​5500 TRY(​Лиры)​ Турция\n\nПродано 92 778\n\n183 ₽\n\nApp Store/​iTunes Подарочная Карта США US APPLE USA USD Карта пополнения AppStore КОД\n\nПродано 32 705\n\n21 ₽\n\n3% ПОПОЛНЕНИЕ STEAM АВТО |​ RUB/​KZT/​UAH\n\nПродано 116 409\n\n13 ₽\n\nApp Store/​iTunes Подарочная Карта ТУРЦИЯ TR APPLE Turkey TRY Карта пополнения TL КОД\n\nПродано 36 581\n\n899 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ GROK 4.​7 |​ PLUS |​ PREMIUM |​ SUPER |​ ULTRA |​ Подписка |​ ГРОК\n\nПродано 100+\n\n169 ₽\n\nНИЗКАЯ ЦЕНА |​ Подарочная Карта Apple iTunes (​США)​ 2-​100$ +​ ПОДАРОК\n\nПродано 214 826\n\n2 099 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ Claude MAX X5/​X20 |​ БЕЗ ВХОДА /​ СЛЕТА |​ НА ВАШ АККАУНТ\n\nПродано 44 875\n\n699 ₽\n\n[​АВТОВЫДАЧА]​ |​ ChatGPT 6 PLUS |​ PRO X5 -​ X20 |​ GO |​ 1 МЕСЯЦ |​ ПОДПИСКА |​ CODEX\n\nПродано 100+\n\n589 ₽\n\n[​24/​7]​ ChatGPT 6.​1+​ 6 1M |​ PLUS |​ GO |​ PRO 100/​200 |​ Код Активации |​ Авто Доставка\n\nПродано 100+\n\n79 ₽\n\nXBOX GAME PASS ULTIMATE/​Premium/​PC 1-​12 МЕСЯЦЕВ +​ НАДЕЖНО\n\nПродано 208 109\n\n569 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​1 PLUS |​ PRO |​ GO |​ 1 месяц |​ НА ВАШ АККАУНТ |​ Чат ГПТ\n\nПродано 100+\n\n30 ₽\n\nSTEAM TR-​ARG-​KZ-​UA-​US-​EU и ДРУГИЕ,​ КОД ПОПОЛНЕНИЯ\n\nПродано 6 899\n\n3 ₽\n\nИГРЫ/​Подписки УКРАИНА PS/​PSN/​Playstation GTA 6/​FC 27\n\nПродано 13 312\n\n777 ₽\n\n[​АВТО 24/​7]​ ChatGPT 6 PLUS 1M |​ GO |​ PRO |​ CODEX |​ ПОДПИСКА\n\nПродано 100+\n\n389 ₽\n\nКарты Nintendo 5-​10-​20-​35-​50-​60-​70-​100$ USD-​Долларов США\n\nПродано 294 669\nПредзаказы\nВсе\n\nPhantom Blade Zero\n\nWorld of Warcraft: Forever\n\nGrand Theft Auto VI\n\nActive Matter\n\nWarhammer 40,000: Dawn of War IV\n\nAttack on Titan 3 / A.O.T. 3\n\nDuet Night Abyss\n\nSTRANGER THAN HEAVEN\n\nArizona Sunshine\n\nTropico 7\n\nMETRO 2039\n\nTomb Raider: Legacy of Atlantis\n\nGod of War Laufey\n\nPersona 4 Revival\n\nFable\n\nWo Long 2: Wings of Ember\n\nЛидеры продаж\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "Steam"
+        },
+        {
+          "kind": "button",
+          "text": "App Store & iTunes"
+        },
+        {
+          "kind": "button",
+          "text": "Playstation"
+        },
+        {
+          "kind": "button",
+          "text": "Xbox / Microsoft Store"
+        },
+        {
+          "kind": "button",
+          "text": "Roblox"
+        },
+        {
+          "kind": "button",
+          "text": "Nintendo eShop"
+        },
+        {
+          "kind": "button",
+          "text": "Telegram Stars"
+        },
+        {
+          "kind": "button",
+          "text": "Battle.net"
+        },
+        {
+          "kind": "button",
+          "text": "200 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "500 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "1000 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "2000 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Понятно"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Россия"
+        },
+        {
+          "kind": "label",
+          "text": "Страны СНГ"
+        },
+        {
+          "kind": "label",
+          "text": "Казахстан"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    }
+  ],
+  "lastUpdate": "2026-10-25T19:44:25.535Z",
+  "finishedAt": "2026-10-25T19:44:25.537Z",
+  "discovery": {
+    "platiFound": 8,
+    "ggselFound": 0,
+    "transports": {
+      "plati": "urllib-proxy",
+      "platiQueryFailures": [],
+      "ggsel": "playwright-proxy-error",
+      "ggselRequestFailures": []
+    },
+    "errors": [],
+    "proxyMode": "configured",
+    "proxyCount": 2000
+  },
+  "finalVerification": {
+    "skipped": false,
+    "results": []
+  },
+  "scanContext": {
+    "collectionCommand": "PYTHONPATH=. node click.py --workers 2 --out /Users/user/Documents/Apps/low_price/.tmp/chatgpt_raw.json --headless --plati-pids 5781619,6245022,6259795,6257466,6008654,4676486,5690641,5652066",
+    "headless": true,
+    "collectionContextSource": "effective collector mode",
+    "workers": 2,
+    "proxyMode": "configured",
+    "proxyCount": 2000,
+    "maxResults": 10,
+    "discoveryCounts": {
+      "plati": 8,
+      "ggsel": 0
+    },
+    "discoveryCountsSource": "saved discovery result",
+    "listingCounts": {
+      "plati": 8,
+      "ggsel": 0
+    },
+    "analysis": {
+      "command": "PYTHONPATH=. /opt/homebrew/opt/python@3.14/bin/python3.14 cli.py --family chatgpt,claude,kimi,minimax,zai --max 10 --workers 2 --headless --analyzer auto --raw docs/snapshots/targeted/2026-10-25-all-ai-proxy.raw.json --csv docs/snapshots/targeted/2026-10-25-all-ai-proxy.csv --md docs/snapshots/targeted/2026-10-25-all-ai-proxy.md",
+      "workers": 2,
+      "analyzer": "regex",
+      "discoveryReused": false,
+      "finalVerificationReused": false
+    }
+  }
+}

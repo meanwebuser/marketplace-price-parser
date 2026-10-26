@@ -101,5 +101,7 @@ def test_run_one_preserves_discovery_failure_metadata_when_no_candidates(monkeyp
             "ggselFound": 0,
             "transports": discovery["transports"],
             "errors": discovery["errors"],
+            "proxyMode": "direct",
+            "proxyCount": 0,
         },
     }

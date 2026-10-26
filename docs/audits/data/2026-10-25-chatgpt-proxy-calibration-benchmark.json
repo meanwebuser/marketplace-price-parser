@@ -1,0 +1,422 @@
+{
+  "gold_description": "Small source-backed calibration set annotated by the worker model from the headless-captured ChatGPT pages. No LLM_API_KEY was configured, so this is not an analyzer API run and is not an independent human gold set. Use only to compare deterministic fields on these 8 rows.",
+  "gold_rows": 8,
+  "predictions": {
+    "worker_model": {
+      "gold_rows": 8,
+      "predicted_rows": 8,
+      "row_recall": {
+        "correct": 8,
+        "total": 8
+      },
+      "exact_rows": {
+        "correct": 8,
+        "total": 8
+      },
+      "fields": {
+        "tier": {
+          "correct": 8,
+          "total": 8
+        },
+        "duration": {
+          "correct": 8,
+          "total": 8
+        },
+        "delivery": {
+          "correct": 8,
+          "total": 8
+        },
+        "price_rub": {
+          "correct": 8,
+          "total": 8
+        }
+      },
+      "details": [
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6259795",
+            "price_rub": 258
+          },
+          "source_case": "selected 1-month chip explicitly says Совместный; selected-state and 258 RUB were captured",
+          "present": true,
+          "expected": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "shared_account",
+            "price_rub": 258
+          },
+          "observed": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "shared_account",
+            "price_rub": 258
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6259795",
+            "price_rub": 717
+          },
+          "source_case": "selected 3-month chip explicitly says Совместный; selected-state and 717 RUB were captured",
+          "present": true,
+          "expected": {
+            "tier": "Plus",
+            "duration": "3m",
+            "delivery": "shared_account",
+            "price_rub": 717
+          },
+          "observed": {
+            "tier": "Plus",
+            "duration": "3m",
+            "delivery": "shared_account",
+            "price_rub": 717
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6259795",
+            "price_rub": 1974
+          },
+          "source_case": "Индивидуальная distinguishes it from shared, but the captured option does not prove account ownership",
+          "present": true,
+          "expected": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "unknown",
+            "price_rub": 1974
+          },
+          "observed": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "unknown",
+            "price_rub": 1974
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6008654",
+            "price_rub": 987
+          },
+          "source_case": "selected option explicitly says готовый аккаунт",
+          "present": true,
+          "expected": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "new_account",
+            "price_rub": 987
+          },
+          "observed": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "new_account",
+            "price_rub": 987
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6008654",
+            "price_rub": 235
+          },
+          "source_case": "selected option explicitly says общий аккаунт",
+          "present": true,
+          "expected": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "shared_account",
+            "price_rub": 235
+          },
+          "observed": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "shared_account",
+            "price_rub": 235
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "ggsel",
+            "pid": "102927947",
+            "price_rub": 1599
+          },
+          "source_case": "listing says full access data and linked mailbox are delivered to the buyer",
+          "present": true,
+          "expected": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "new_account",
+            "price_rub": 1599
+          },
+          "observed": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "new_account",
+            "price_rub": 1599
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "ggsel",
+            "pid": "4658858",
+            "price_rub": 11998
+          },
+          "source_case": "option is a subscription renewal performed through the buyer-provided token",
+          "present": true,
+          "expected": {
+            "tier": "Pro",
+            "duration": "1m",
+            "delivery": "own_account",
+            "price_rub": 11998
+          },
+          "observed": {
+            "tier": "Pro",
+            "duration": "1m",
+            "delivery": "own_account",
+            "price_rub": 11998
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "ggsel",
+            "pid": "102353570",
+            "price_rub": 699
+          },
+          "source_case": "listing describes token-based subscription and selected 1-month GO variant",
+          "present": true,
+          "expected": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "own_account",
+            "price_rub": 699
+          },
+          "observed": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "own_account",
+            "price_rub": 699
+          },
+          "exact_fields": 4
+        }
+      ]
+    },
+    "regex": {
+      "gold_rows": 8,
+      "predicted_rows": 22,
+      "row_recall": {
+        "correct": 8,
+        "total": 8
+      },
+      "exact_rows": {
+        "correct": 8,
+        "total": 8
+      },
+      "fields": {
+        "tier": {
+          "correct": 8,
+          "total": 8
+        },
+        "duration": {
+          "correct": 8,
+          "total": 8
+        },
+        "delivery": {
+          "correct": 8,
+          "total": 8
+        },
+        "price_rub": {
+          "correct": 8,
+          "total": 8
+        }
+      },
+      "details": [
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6259795",
+            "price_rub": 258
+          },
+          "source_case": "selected 1-month chip explicitly says Совместный; selected-state and 258 RUB were captured",
+          "present": true,
+          "expected": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "shared_account",
+            "price_rub": 258
+          },
+          "observed": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "shared_account",
+            "price_rub": 258
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6259795",
+            "price_rub": 717
+          },
+          "source_case": "selected 3-month chip explicitly says Совместный; selected-state and 717 RUB were captured",
+          "present": true,
+          "expected": {
+            "tier": "Plus",
+            "duration": "3m",
+            "delivery": "shared_account",
+            "price_rub": 717
+          },
+          "observed": {
+            "tier": "Plus",
+            "duration": "3m",
+            "delivery": "shared_account",
+            "price_rub": 717
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6259795",
+            "price_rub": 1974
+          },
+          "source_case": "Индивидуальная distinguishes it from shared, but the captured option does not prove account ownership",
+          "present": true,
+          "expected": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "unknown",
+            "price_rub": 1974
+          },
+          "observed": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "unknown",
+            "price_rub": 1974
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6008654",
+            "price_rub": 987
+          },
+          "source_case": "selected option explicitly says готовый аккаунт",
+          "present": true,
+          "expected": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "new_account",
+            "price_rub": 987
+          },
+          "observed": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "new_account",
+            "price_rub": 987
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "plati",
+            "pid": "6008654",
+            "price_rub": 235
+          },
+          "source_case": "selected option explicitly says общий аккаунт",
+          "present": true,
+          "expected": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "shared_account",
+            "price_rub": 235
+          },
+          "observed": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "shared_account",
+            "price_rub": 235
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "ggsel",
+            "pid": "102927947",
+            "price_rub": 1599
+          },
+          "source_case": "listing says full access data and linked mailbox are delivered to the buyer",
+          "present": true,
+          "expected": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "new_account",
+            "price_rub": 1599
+          },
+          "observed": {
+            "tier": "Plus",
+            "duration": "1m",
+            "delivery": "new_account",
+            "price_rub": 1599
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "ggsel",
+            "pid": "4658858",
+            "price_rub": 11998
+          },
+          "source_case": "option is a subscription renewal performed through the buyer-provided token",
+          "present": true,
+          "expected": {
+            "tier": "Pro",
+            "duration": "1m",
+            "delivery": "own_account",
+            "price_rub": 11998
+          },
+          "observed": {
+            "tier": "Pro",
+            "duration": "1m",
+            "delivery": "own_account",
+            "price_rub": 11998
+          },
+          "exact_fields": 4
+        },
+        {
+          "key": {
+            "marketplace": "ggsel",
+            "pid": "102353570",
+            "price_rub": 699
+          },
+          "source_case": "listing describes token-based subscription and selected 1-month GO variant",
+          "present": true,
+          "expected": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "own_account",
+            "price_rub": 699
+          },
+          "observed": {
+            "tier": "GO",
+            "duration": "1m",
+            "delivery": "own_account",
+            "price_rub": 699
+          },
+          "exact_fields": 4
+        }
+      ]
+    }
+  }
+}

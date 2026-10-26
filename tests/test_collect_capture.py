@@ -3,9 +3,11 @@ offline manual audit of the analyzer (page text + skipped variant
 controls). These run against the collector source because the collector
 itself is a Node subprocess driven by live marketplaces."""
 
+import json
 import subprocess
 import sys
 from pathlib import Path
+import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -70,9 +72,48 @@ def test_collector_defers_default_variant_and_requires_a_price_snapshot():
 
 def test_collector_retries_integrity_failures_and_ignores_sidebar_price_noise():
     assert "CAPTURE_RETRIES" in CLICK
+    assert "MAX_CAPTURE_RETRIES = 4" in CLICK
     assert "missing price snapshot" in CLICK
     assert "unstable changed price" in CLICK
     assert "primary.length > 0 ? primary : all" in CLICK
+
+
+def test_capture_retry_parser_keeps_default_accepts_limit_and_rejects_invalid_values():
+    click_path = Path(__file__).resolve().parents[1] / "click.py"
+    script = r"""
+const fs = require('fs');
+const vm = require('vm');
+const src = fs.readFileSync(process.argv[1], 'utf8');
+const start = src.indexOf('const MAX_CAPTURE_RETRIES = 4;');
+const end = src.indexOf('\nlet CAPTURE_RETRIES;', start);
+if (start < 0 || end < 0) throw new Error('capture retry parser boundary not found');
+const sandbox = {};
+vm.runInNewContext(src.slice(start, end) + '\nthis.parse = parseCaptureRetries;', sandbox);
+const failures = [5, -1, 1.5, 'invalid', true].map(value => {
+  try { sandbox.parse(value); return null; } catch (error) { return error.message; }
+});
+console.log(JSON.stringify({defaultValue: sandbox.parse(undefined), maximumValue: sandbox.parse(4), failures}));
+"""
+    result = subprocess.run(["node", "-e", script, str(click_path)], check=True, capture_output=True, text=True)
+    parsed = json.loads(result.stdout)
+    assert parsed["defaultValue"] == 2
+    assert parsed["maximumValue"] == 4
+    assert len(parsed["failures"]) == 5
+    assert all("--capture-retries must be an integer from 0 to 4" in message for message in parsed["failures"])
+
+
+def test_direct_collector_cli_rejects_retry_count_above_hard_limit(tmp_path):
+    click_path = Path(__file__).resolve().parents[1] / "click.py"
+    output = tmp_path / "must-not-be-created.json"
+    result = subprocess.run(
+        ["node", str(click_path), "--capture-retries", "5", "--out", str(output)],
+        capture_output=True,
+        text=True,
+        timeout=15,
+    )
+    assert result.returncode == 2
+    assert "error: --capture-retries must be an integer from 0 to 4 (default 2)" in result.stderr
+    assert not output.exists()
 
 
 def test_collector_keeps_a_stable_locator_when_control_text_mutates():

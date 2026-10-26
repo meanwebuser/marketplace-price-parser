@@ -1,0 +1,98 @@
+{
+  "description": "Small source-backed calibration set annotated by the worker model from the headless-captured ChatGPT pages. No LLM_API_KEY was configured, so this is not an analyzer API run and is not an independent human gold set. Use only to compare deterministic fields on these 8 rows.",
+  "annotation_method": "worker-model source annotation; selected option label and browser price evidence only",
+  "llm_api_calls": 0,
+  "raw_snapshot": "snapshots/targeted/2026-10-25-chatgpt-proxy-calibration.raw.json",
+  "raw_snapshot_sha256": "6086df9a24068a3443e507634ecb580102e27656aa2178e91d2f9fd07eef4ad5",
+  "model_prediction_csv": "data/2026-10-25-chatgpt-proxy-worker-model.csv",
+  "rows": [
+    {
+      "marketplace": "plati",
+      "pid": "6259795",
+      "price_rub": 258,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "shared_account",
+      "source_case": "selected 1-month chip explicitly says Совместный; selected-state and 258 RUB were captured",
+      "source_url": "https://plati.market/itm/6259795",
+      "source_option": "1 Месяц [ Совместный - Плюс ]"
+    },
+    {
+      "marketplace": "plati",
+      "pid": "6259795",
+      "price_rub": 717,
+      "tier": "Plus",
+      "duration": "3m",
+      "delivery": "shared_account",
+      "source_case": "selected 3-month chip explicitly says Совместный; selected-state and 717 RUB were captured",
+      "source_url": "https://plati.market/itm/6259795",
+      "source_option": "3 Месяц [ Совместный - Плюс ]"
+    },
+    {
+      "marketplace": "plati",
+      "pid": "6259795",
+      "price_rub": 1974,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "unknown",
+      "source_case": "Индивидуальная distinguishes it from shared, but the captured option does not prove account ownership",
+      "source_url": "https://plati.market/itm/6259795",
+      "source_option": "1 месяца [ Индивидуальная - Плюс ]"
+    },
+    {
+      "marketplace": "plati",
+      "pid": "6008654",
+      "price_rub": 987,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "new_account",
+      "source_case": "selected option explicitly says готовый аккаунт",
+      "source_url": "https://plati.market/itm/6008654",
+      "source_option": "ChatGPT GO 1 месяц | Подписка / Продление (готовый аккаунт)"
+    },
+    {
+      "marketplace": "plati",
+      "pid": "6008654",
+      "price_rub": 235,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "shared_account",
+      "source_case": "selected option explicitly says общий аккаунт",
+      "source_url": "https://plati.market/itm/6008654",
+      "source_option": "ChatGPT GO 1 месяц | Подписка / Продление (общий аккаунт)"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102927947",
+      "price_rub": 1599,
+      "tier": "Plus",
+      "duration": "1m",
+      "delivery": "new_account",
+      "source_case": "listing says full access data and linked mailbox are delivered to the buyer",
+      "source_url": "https://ggsel.net/catalog/product/102927947",
+      "source_option": "ChatGPT 6.1 Plus — Полный комплект данных для доступа"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "4658858",
+      "price_rub": 11998,
+      "tier": "Pro",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "option is a subscription renewal performed through the buyer-provided token",
+      "source_url": "https://ggsel.net/catalog/product/4658858",
+      "source_option": "4 - Продлить подписку [РУЧНАЯ] | PRO 100 | ЧЕРЕЗ ДАННЫЕ"
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102353570",
+      "price_rub": 699,
+      "tier": "GO",
+      "duration": "1m",
+      "delivery": "own_account",
+      "source_case": "listing describes token-based subscription and selected 1-month GO variant",
+      "source_url": "https://ggsel.net/catalog/product/102353570",
+      "source_option": "GO 1 месяц"
+    }
+  ]
+}

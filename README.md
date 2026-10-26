@@ -2,13 +2,14 @@
 
 Семейство-ориентированный парсер для двух маркетплейсов — [GGSEL](https://ggsel.net/) и [Plati](https://plati.market/). Канонический путь — `cli.py --family <name>`: добавить новый продукт (Cursor, Claude, Grok, Kimi) теперь стоит 30 строк конфига, а не копию всего сканера.
 
-Поддерживаемые семейства: `minimax` (Token Plan Max), `zai` (GLM Coding Max), `chatgpt` (Plus / Pro / Pro X5 / Pro X20), `claude` (Pro / Max), `kimi` (Kimi AI / Kimi K3 Plus / Pro / Max / Ultra).
+Поддерживаемые семейства: `minimax` (Token Plan Max), `zai` (GLM Coding Max), `chatgpt` (Plus / Pro / Pro X5 / Pro X20), `claude` (Pro / Max), `kimi` (Kimi AI / Kimi K3 Plus / Pro / Max / Ultra), `apple_gift_card` (отдельный prepaid-каталог по региону и номиналу).
 
 Kimi uses the parser's `1m`, `3m`, `6m`, and `12m` durations and includes all four delivery types for the public catalogue, including shared and unknown delivery. API, top-up, balance, and credit listings are excluded during discovery and eligibility filtering. GGSEL category discovery merges curated listing IDs from the 2026-10-02 snapshot without importing historical prices. Availability and verified-price checks still apply.
 
 ## Что умеет
 
 - автоматически искать кандидатов в каталоге GGSEL и API каталога Plati;
+- при настройке пользователя загружать HTTP-прокси из endpoint и менять proxy по карточкам, не сохраняя адреса прокси в снимках;
 - открывать карточки товаров в браузере и кликать каждый вариант (Max / Pro+ / Lite × 1/3/12 мес × свой аккаунт / случайный email);
 - читать финальную цену выбранного варианта, а не доверять минимальной цене каталога;
 - различать `own_account`, `new_account`, `shared_account` и `unknown` виды выдачи;
@@ -18,10 +19,11 @@ Kimi uses the parser's `1m`, `3m`, `6m`, and `12m` durations and includes all fo
   «плоских» лотов) и классифицирует батчами ~24 КБ — контекст не
   накапливается, `--llm-dry-run` показывает точные размеры промптов;
   регэксп-анализатор остаётся офлайн-фолбэком (`--analyzer regex`);
+- analyzer `auto` по умолчанию использует детерминированный regex и не делает LLM-вызов даже при заданном API key; `--analyzer llm` включается явно для калибровки;
 - чинить цену варианта, когда блок цены не успел обновиться после клика (чип «+N ₽» = наценка к базовой цене лота);
 - фильтровать по eligibility-правилам конкретного семейства (tier × duration × delivery, purpose preset);
 - детектить UI-глитчи цен (12-мес Max за 1.5M RUB вместо 162K — отбрасываем);
-- параллельный сбор через 6 Playwright-воркеров (~90 сек на 42 листинга);
+- ограниченный параллельный сбор (не более 2 Playwright-воркеров) с ротацией прокси;
 - выводить результат в CSV + Markdown.
 
 ## Быстрый запуск
@@ -35,8 +37,8 @@ npm ci --prefix ggsel_plati
 Канонический CLI:
 
 ```bash
-# Свежий скан: discovery → collect → analyze
-PYTHONPATH=. .venv/bin/python cli.py --family zai --workers 6
+# Свежий скан: discovery → collect → deterministic analyze (без LLM по умолчанию)
+PYTHONPATH=. .venv/bin/python cli.py --family zai --workers 2 --headless --analyzer auto
 
 # Kimi AI / Kimi K3: fresh subscription catalogue, no visible browser windows
 PYTHONPATH=. .venv/bin/python cli.py --family kimi --workers 2 --headless
@@ -61,6 +63,19 @@ PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --purpose renew --analyzer
 PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --analyzer llm --llm-dry-run \
   --skip-discover --raw docs/audits/data/2026-08-16-audit-raw.json
 ```
+
+Подробный порядок прокси-сканирования, LLM-калибровки и детерминированного
+повторного анализа описан в [marketplace parser skill](skills/marketplace-price-parser/SKILL.md)
+и его [повторяемом workflow](skills/marketplace-price-parser/references/proxy-and-two-pass.md).
+
+Чтобы подключить собственный HTTP proxy-list endpoint, задайте локально
+`MARKETPLACE_PROXY_SOURCE_URL`. Endpoint должен возвращать `text/plain`, по
+одному HTTP(S) URL прокси на непустую строку. Если источнику нужен bearer token,
+передайте его через `MARKETPLACE_PROXY_SOURCE_TOKEN`; не включайте token в URL.
+Не добавляйте endpoint, прокси, user-info или token в Git. Если переменная URL
+не задана, используется прямое подключение; если настроенный источник ошибся
+или вернул пустой список, сбор завершается с ошибкой вместо скрытого перехода
+на direct.
 
 ## Бюджет локального сравнения (Mac, 2026-10-22)
 

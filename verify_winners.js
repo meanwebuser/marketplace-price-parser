@@ -21,6 +21,14 @@ if (!args.input || !args.out) throw new Error("--input and --out are required");
 
 const CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const normalize = (value) => String(value || "").replace(/\s+/g, " ").trim();
+const proxyOptions = (proxyUrl) => {
+  const parsed = new URL(proxyUrl);
+  const host = parsed.hostname.includes(":") ? `[${parsed.hostname}]` : parsed.hostname;
+  const result = { server: `${parsed.protocol}//${host}:${parsed.port}` };
+  if (parsed.username) result.username = decodeURIComponent(parsed.username);
+  if (parsed.password) result.password = decodeURIComponent(parsed.password);
+  return result;
+};
 // Variant labels may embed a live surcharge.  It is page state, not part of
 // the variant identity; tier/duration/delivery text must still match exactly.
 const controlKey = (value) => normalize(value)
@@ -54,6 +62,13 @@ async function primaryPrice(page) {
     }
     return null;
   });
+}
+
+let proxyRedactions = [];
+function redactProxyText(value) {
+  let text = String(value || "");
+  for (const secret of proxyRedactions) text = text.split(secret).join("[proxy]");
+  return text;
 }
 
 async function locateExact(page, offer) {
@@ -114,12 +129,14 @@ async function selectedState(locator) {
   });
 }
 
-async function verifyOne(browser, offer) {
+async function verifyOne(browser, offer, proxyUrl = null) {
   const result = { ...offer, observedPrice: null, selected: false, stable: false, verified: false, verifiedAt: new Date().toISOString(), error: null };
-  const context = await browser.newContext({
+  const contextOptions = {
     locale: "ru-RU",
     userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${browser.version()} Safari/537.36`,
-  });
+  };
+  if (proxyUrl) contextOptions.proxy = proxyOptions(proxyUrl);
+  const context = await browser.newContext(contextOptions);
   const page = await context.newPage();
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "webdriver", { get: () => undefined });
@@ -162,7 +179,7 @@ async function verifyOne(browser, offer) {
     }
     result.verified = true;
   } catch (error) {
-    result.error = String(error && error.message || error);
+    result.error = redactProxyText(error && error.message || error);
   } finally {
     await context.close();
   }
@@ -171,15 +188,30 @@ async function verifyOne(browser, offer) {
 
 (async () => {
   const input = JSON.parse(fs.readFileSync(args.input, "utf8"));
+  const proxyUrls = Array.isArray(input.proxyUrls) ? input.proxyUrls : [];
+  proxyRedactions = proxyUrls.flatMap((proxyUrl) => {
+    const parsed = new URL(proxyUrl);
+    return [proxyUrl, parsed.host, parsed.hostname, decodeURIComponent(parsed.username), decodeURIComponent(parsed.password)]
+      .filter(Boolean);
+  });
+  for (const proxyUrl of proxyUrls) {
+    const parsed = new URL(proxyUrl);
+    if (!["http:", "https:"].includes(parsed.protocol) || !parsed.hostname || !parsed.port ||
+        !["", "/"].includes(parsed.pathname) || parsed.search || parsed.hash) {
+      throw new Error("proxy list contains an invalid URL");
+    }
+  }
   const browser = await chromium.launch({
     headless: true,
     executablePath: CHROME_PATH,
     args: ["--no-sandbox", "--disable-blink-features=AutomationControlled"],
   });
   const results = [];
+  let proxyIndex = 0;
+  const nextProxy = () => proxyUrls.length ? proxyUrls[proxyIndex++ % proxyUrls.length] : null;
   try {
     for (const offer of input.offers || []) {
-      const first = await verifyOne(browser, offer);
+      const first = await verifyOne(browser, offer, nextProxy());
       if (first.verified) {
         first.attempts = 1;
         results.push(first);
@@ -187,7 +219,7 @@ async function verifyOne(browser, offer) {
       }
       // Fresh contexts can recover from a transient marketplace navigation or
       // variant-control hiccup without weakening the price/selection checks.
-      const retry = await verifyOne(browser, offer);
+      const retry = await verifyOne(browser, offer, nextProxy());
       retry.attempts = 2;
       retry.firstAttemptError = first.error;
       results.push(retry);
@@ -199,6 +231,6 @@ async function verifyOne(browser, offer) {
   fs.writeFileSync(args.out, JSON.stringify(report, null, 2));
   process.exitCode = results.every((item) => item.verified) ? 0 : 1;
 })().catch((error) => {
-  fs.writeFileSync(args.out, JSON.stringify({ schemaVersion: 1, results: [], error: String(error && error.stack || error) }, null, 2));
+  fs.writeFileSync(args.out, JSON.stringify({ schemaVersion: 1, results: [], error: redactProxyText(error && error.stack || error) }, null, 2));
   process.exitCode = 2;
 });

@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 3,
+  "updatedAtUtc": "2026-10-25 17:35:47 UTC",
+  "marketplace": "GGSEL",
+  "scope": "Previously discovered US Apple gift card offers only",
+  "capture": {
+    "startedAtUtc": "2026-10-25 17:34:59 UTC",
+    "completedAtUtc": "2026-10-25 17:35:47 UTC",
+    "concurrency": 1,
+    "retryPolicy": "one retry for network/5xx only",
+    "requested": 11,
+    "http200": 11,
+    "httpUnavailable": [],
+    "totalOptions": 179,
+    "confirmedOptionMappings": 157
+  },
+  "confirmedWinner": {
+    "id": "102664570",
+    "title": "Купить  Apple Gift Card США $2–$100 | Только US App Store",
+    "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-tolko-us-app-store-102664570",
+    "seller": "FiatPay",
+    "label": "5$ (USDT)",
+    "faceValueUsd": 5,
+    "totalRub": 289,
+    "rubPerUsd": 57.8,
+    "default": false,
+    "modifierRub": "100.0",
+    "variantId": 36715422,
+    "sha256": "524530f5fffd3d9844bbf6e89253893669126ebcbfd58bac56555f05c91d150f"
+  },
+  "perListingBest": [
+    {
+      "id": "5211966",
+      "status": 200,
+      "title": "Купить  Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК",
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-5211966",
+      "sha256": "053e86cc41577b0d2770c26932d245481988d0d9a72c2269bda60229cfce0c1d",
+      "variantCount": 22,
+      "best": {
+        "id": "5211966",
+        "title": "Купить  Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-5211966",
+        "seller": "All for Gamers",
+        "label": "100$ (USD)",
+        "faceValueUsd": 100,
+        "totalRub": 11232,
+        "rubPerUsd": 112.32,
+        "default": false,
+        "modifierRub": "10774.0",
+        "variantId": 147019,
+        "sha256": "053e86cc41577b0d2770c26932d245481988d0d9a72c2269bda60229cfce0c1d"
+      }
+    },
+    {
+      "id": "102664570",
+      "status": 200,
+      "title": "Купить  Apple Gift Card США $2–$100 | Только US App Store",
+      "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-tolko-us-app-store-102664570",
+      "sha256": "524530f5fffd3d9844bbf6e89253893669126ebcbfd58bac56555f05c91d150f",
+      "variantCount": 8,
+      "best": {
+        "id": "102664570",
+        "title": "Купить  Apple Gift Card США $2–$100 | Только US App Store",
+        "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-tolko-us-app-store-102664570",
+        "seller": "FiatPay",
+        "label": "5$ (USDT)",
+        "faceValueUsd": 5,
+        "totalRub": 289,
+        "rubPerUsd": 57.8,
+        "default": false,
+        "modifierRub": "100.0",
+        "variantId": 36715422,
+        "sha256": "524530f5fffd3d9844bbf6e89253893669126ebcbfd58bac56555f05c91d150f"
+      }
+    },
+    {
+      "id": "102552039",
+      "status": 200,
+      "title": "Купить  Карта Пополнения Apple 2-100$USD",
+      "url": "https://ggsel.net/catalog/product/karta-popolneniia-apple-2-100-usd-102552039",
+      "sha256": "e8ba6857039df8c6dbbcd4b99ade8388d42ca8914791cc0aaedabea696afd933",
+      "variantCount": 8,
+      "best": {
+        "id": "102552039",
+        "title": "Купить  Карта Пополнения Apple 2-100$USD",
+        "url": "https://ggsel.net/catalog/product/karta-popolneniia-apple-2-100-usd-102552039",
+        "seller": "XcodeGames",
+        "label": "5 USD",
+        "faceValueUsd": 5,
+        "totalRub": 319,
+        "rubPerUsd": 63.8,
+        "default": false,
+        "modifierRub": "160.0",
+        "variantId": 47258949,
+        "sha256": "e8ba6857039df8c6dbbcd4b99ade8388d42ca8914791cc0aaedabea696afd933"
+      }
+    },
+    {
+      "id": "4852424",
+      "status": 200,
+      "title": "Купить  Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК",
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-4852424",
+      "sha256": "b4ff2027850997e5915a7d447cc07e74b3b1efa446cfc2261e8c993232a65a6c",
+      "variantCount": 22,
+      "best": {
+        "id": "4852424",
+        "title": "Купить  Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-4852424",
+        "seller": "KEYFORY",
+        "label": "14 $ (USD)",
+        "faceValueUsd": 14,
+        "totalRub": 1455.67,
+        "rubPerUsd": 103.976429,
+        "default": false,
+        "modifierRub": "1246.67",
+        "variantId": 71076590,
+        "sha256": "b4ff2027850997e5915a7d447cc07e74b3b1efa446cfc2261e8c993232a65a6c"
+      }
+    },
+    {
+      "id": "102724474",
+      "status": 200,
+      "title": "Купить  Подарочная карта Apple iTunes США — цифровой код",
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-ssa-cifrovoi-kod-102724474",
+      "sha256": "197447d4af16fa4f5ff086f3ea5b34d56fee8bccd2b26107169938d6ef612088",
+      "variantCount": 4,
+      "best": {
+        "id": "102724474",
+        "title": "Купить  Подарочная карта Apple iTunes США — цифровой код",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-ssa-cifrovoi-kod-102724474",
+        "seller": "Edo_Market",
+        "label": "5 USD",
+        "faceValueUsd": 5,
+        "totalRub": 690,
+        "rubPerUsd": 138,
+        "default": true,
+        "modifierRub": "0.0",
+        "variantId": 40550080,
+        "sha256": "197447d4af16fa4f5ff086f3ea5b34d56fee8bccd2b26107169938d6ef612088"
+      }
+    },
+    {
+      "id": "102662580",
+      "status": 200,
+      "title": "Купить  Подарочная карта Apple App Store & iTunes 15-100 USD (USA)",
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-app-store-itunes-15-100-usd-usa-102662580",
+      "sha256": "b33f57456cc3c4f5f10511bac4bf83cccc836dc260027bfc92daefb8d5b4ba67",
+      "variantCount": 9,
+      "best": {
+        "id": "102662580",
+        "title": "Купить  Подарочная карта Apple App Store & iTunes 15-100 USD (USA)",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-app-store-itunes-15-100-usd-usa-102662580",
+        "seller": "AppleTR",
+        "label": "15+75=90 USD",
+        "faceValueUsd": 90,
+        "totalRub": 9030,
+        "rubPerUsd": 100.333333,
+        "default": false,
+        "modifierRub": "7485.0",
+        "variantId": 48277573,
+        "sha256": "b33f57456cc3c4f5f10511bac4bf83cccc836dc260027bfc92daefb8d5b4ba67"
+      }
+    },
+    {
+      "id": "102691390",
+      "status": 200,
+      "title": "Купить  Apple → Подарочная карта iTunes → $2–100 USD → Подарочная карта USD",
+      "url": "https://ggsel.net/catalog/product/apple-podarocnaia-karta-itunes-2-100-usd-podarocnaia-karta-usd-102691390",
+      "sha256": "9b9afca080ec1e140e1604277f8776a2d3af8028a604ea527d0fb1567936a2c6",
+      "variantCount": 21,
+      "best": {
+        "id": "102691390",
+        "title": "Купить  Apple → Подарочная карта iTunes → $2–100 USD → Подарочная карта USD",
+        "url": "https://ggsel.net/catalog/product/apple-podarocnaia-karta-itunes-2-100-usd-podarocnaia-karta-usd-102691390",
+        "seller": "DarknessAlpha",
+        "label": "2 USD",
+        "faceValueUsd": 2,
+        "totalRub": 199,
+        "rubPerUsd": 99.5,
+        "default": true,
+        "modifierRub": "0.0",
+        "variantId": 71498566,
+        "sha256": "9b9afca080ec1e140e1604277f8776a2d3af8028a604ea527d0fb1567936a2c6"
+      }
+    },
+    {
+      "id": "5162399",
+      "status": 200,
+      "title": "Купить  Код пополнения Apple iTunes AppStore Айтюнс Эпл США USD",
+      "url": "https://ggsel.net/catalog/product/kod-popolneniia-apple-itunes-appstore-aitiuns-epl-ssa-usd-5162399",
+      "sha256": "a77b65dc55631f5d25f89971a90dcb0cb28c6b728435074f4e1913ef722f687a",
+      "variantCount": 21,
+      "best": null
+    },
+    {
+      "id": "102708567",
+      "status": 200,
+      "title": "Купить  Подарочная карта App Store USA (США) 2-100$ (АВТОВЫДАЧА)",
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-app-store-usa-ssa-2-100-avtovydaca-102708567",
+      "sha256": "99008cbf34c4c52d426f16a7fdff56d8ae4d09c735091912bb97dbcd130e1274",
+      "variantCount": 21,
+      "best": {
+        "id": "102708567",
+        "title": "Купить  Подарочная карта App Store USA (США) 2-100$ (АВТОВЫДАЧА)",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-app-store-usa-ssa-2-100-avtovydaca-102708567",
+        "seller": "ForeignPay",
+        "label": "100 USD",
+        "faceValueUsd": 100,
+        "totalRub": 11278,
+        "rubPerUsd": 112.78,
+        "default": false,
+        "modifierRub": "10999.0",
+        "variantId": 40174058,
+        "sha256": "99008cbf34c4c52d426f16a7fdff56d8ae4d09c735091912bb97dbcd130e1274"
+      }
+    },
+    {
+      "id": "102083320",
+      "status": 200,
+      "title": "Купить  Apple GIFT CARD USA",
+      "url": "https://ggsel.net/catalog/product/apple-gift-card-usa-102083320",
+      "sha256": "514da6dd020643c35093a391071d0dfff78d20ae0fbef698118db7a6fdf2b21d",
+      "variantCount": 8,
+      "best": {
+        "id": "102083320",
+        "title": "Купить  Apple GIFT CARD USA",
+        "url": "https://ggsel.net/catalog/product/apple-gift-card-usa-102083320",
+        "seller": "Hann",
+        "label": "70 USD",
+        "faceValueUsd": 70,
+        "totalRub": 11498,
+        "rubPerUsd": 164.257143,
+        "default": false,
+        "modifierRub": "10999.0",
+        "variantId": 1784974,
+        "sha256": "514da6dd020643c35093a391071d0dfff78d20ae0fbef698118db7a6fdf2b21d"
+      }
+    },
+    {
+      "id": "102163314",
+      "status": 200,
+      "title": "Купить  Apple Gift Card США | $2-$100 | App Store и iTunes |",
+      "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-app-store-i-itunes-102163314",
+      "sha256": "519d62262a917d0728151f065a0d99346adea27e206e1a7b198cb5ad4317d674",
+      "variantCount": 35,
+      "best": {
+        "id": "102163314",
+        "title": "Купить  Apple Gift Card США | $2-$100 | App Store и iTunes |",
+        "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-app-store-i-itunes-102163314",
+        "seller": "Xelvra store",
+        "label": "2 USD",
+        "faceValueUsd": 2,
+        "totalRub": 205,
+        "rubPerUsd": 102.5,
+        "default": true,
+        "modifierRub": "0.0",
+        "variantId": 61939032,
+        "sha256": "519d62262a917d0728151f065a0d99346adea27e206e1a7b198cb5ad4317d674"
+      }
+    }
+  ],
+  "coverageComplete": false,
+  "artifactPaths": {
+    "raw": "docs/snapshots/targeted/2026-10-25-apple-us.raw.json",
+    "csv": "docs/snapshots/targeted/2026-10-25-apple-us.csv",
+    "audit": "docs/audits/2026-10-25-apple-us-manual-discovery.md"
+  },
+  "availabilityAssessment": {
+    "capturedAtUtc": "2026-10-25T17:56:21Z",
+    "method": "Direct public SSR GET, sequential, no proxy",
+    "listingIdsChecked": [
+      "102664570",
+      "102552039",
+      "102691390",
+      "102163314"
+    ],
+    "optionRowsChecked": 72,
+    "counts": {
+      "in_stock": 0,
+      "out_of_stock": 1,
+      "unknown": 71
+    },
+    "screenshotEvidence": {
+      "listingId": "102664570",
+      "denomination": "50$ (USDT)",
+      "status": "out_of_stock",
+      "scope": "only this option"
+    },
+    "bestAvailableWinner": null,
+    "bestPriceCandidate": {
+      "listingId": "102664570",
+      "denomination": "5$ (USDT)",
+      "priceRub": 289,
+      "rubPerUsd": 57.8,
+      "availability": "unknown"
+    },
+    "note": "Availability is not exposed in SSR option state (num_in_stock=null and disabled=null). The user screenshot proves only the $50 option unavailable; current best available option cannot be determined."
+  },
+  "proxyPreflight": {
+    "route": "SSH to bezrabotnyi.com:22104 confirmed roomhacker-server-100",
+    "service": "searxng-proxy-pool.service",
+    "listener": "127.0.0.1:18090",
+    "resourceLimits": {
+      "cpu": "50%",
+      "memoryHighMiB": 256,
+      "memoryMaxMiB": 512,
+      "tasksMax": 64,
+      "maxUpstreamTries": 4,
+      "probeTimeoutSeconds": 1.5,
+      "deadCooldownSeconds": 300,
+      "tunnelTimeoutSeconds": 12,
+      "clientHeadTimeoutSeconds": 15
+    },
+    "result": "Four sequential proxy GETs returned HTTP 401. The local pool code does not generate 401 and has no client-auth handler; source of 401 remains unresolved. Direct SSR used for inventory check.",
+    "clientScope": "service documentation describes SearXNG use; no GGSEL client-specific runbook found"
+  }
+}

@@ -1,0 +1,23 @@
+marketplace,pid,url,title,option_text,raw_option_text,control_kind,control_dom_index,control_input_id,control_value,tier,duration,delivery,price_rub,strong_signal,glitched,glitch_reason,available,availability_reason,price_changed,price_stable,price_verified,final_verified,final_observed_price
+plati,6259795,https://plati.market/itm/6259795,"Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",3 Месяц [ Совместный - Плюс ] | +460 ₽,"3 Месяц [ Совместный - Плюс ]
++460 ₽",label,3,,,Plus,3m,shared_account,717.0,True,False,,True,,True,True,True,False,
+plati,6259795,https://plati.market/itm/6259795,"Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",6 Месяц [ Совместный - Плюс ] | +1 120 ₽,"6 Месяц [ Совместный - Плюс ]
++1 120 ₽",label,4,,,Plus,6m,shared_account,1378.0,True,False,,True,,True,True,True,False,
+plati,6259795,https://plati.market/itm/6259795,"Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",1 год [ Совместный - Плюс ] | +2 441 ₽,"1 год [ Совместный - Плюс ]
++2 441 ₽",label,5,,,Plus,12m,shared_account,2699.0,True,False,,True,,True,True,True,False,
+plati,6259795,https://plati.market/itm/6259795,"Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",1 месяца [ Индивидуальная - Плюс ] | +1 716 ₽,"1 месяца [ Индивидуальная - Плюс ]
++1 716 ₽",label,6,,,Plus,1m,unknown,1974.0,True,False,,True,,True,True,True,False,
+plati,6259795,https://plati.market/itm/6259795,"Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",3 месяца [ Индивидуальная - Плюс ] | +5 501 ₽,"3 месяца [ Индивидуальная - Плюс ]
++5 501 ₽",label,7,,,Plus,3m,unknown,5759.0,True,False,,True,,True,True,True,False,
+plati,6259795,https://plati.market/itm/6259795,"Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",6 месяца [ Индивидуальная - Плюс ] | +11 139 ₽,"6 месяца [ Индивидуальная - Плюс ]
++11 139 ₽",label,8,,,Plus,6m,unknown,11397.0,True,False,,True,,True,True,True,False,
+plati,6259795,https://plati.market/itm/6259795,"Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",1 год [ Индивидуальная - Плюс ] | +22 173 ₽,"1 год [ Индивидуальная - Плюс ]
++22 173 ₽",label,9,,,Plus,12m,unknown,22430.0,True,False,,True,,True,True,True,False,
+plati,6259795,https://plati.market/itm/6259795,"Купить Chat GPT Plus на 1/3/6/12 месяцев, общий или приватный",1 Месяц [ Совместный - Плюс ] | Выбран,"1 Месяц [ Совместный - Плюс ]
+Выбран",label,2,,,Plus,1m,shared_account,258.0,True,True,Price 258.0 too low for subscription,True,,True,True,True,False,
+plati,6008654,https://plati.market/itm/6008654,Купить 🚀 ChatGPT Plus • Pro • GO • Codex | Подписка на 1 месяц | Мгновенная выдача личного,ChatGPT GO 1 месяц | Подписка / Продление (готовый аккаунт) | +752 ₽,"ChatGPT GO 1 месяц | Подписка / Продление (готовый аккаунт)
++752 ₽",label,3,,,GO,1m,new_account,987.0,True,False,,True,,True,True,True,False,
+plati,6008654,https://plati.market/itm/6008654,Купить 🚀 ChatGPT Plus • Pro • GO • Codex | Подписка на 1 месяц | Мгновенная выдача личного,ChatGPT GO на 6 месяцев | Подписка / Продление ( | +4 229 ₽,"ChatGPT GO на 6 месяцев | Подписка / Продление (
++4 229 ₽",label,4,,,GO,6m,own_account,4463.0,True,False,,True,,True,True,True,False,
+plati,6008654,https://plati.market/itm/6008654,Купить 🚀 ChatGPT Plus • Pro • GO • Codex | Подписка на 1 месяц | Мгновенная выдача личного,ChatGPT GO 1 месяц | Подписка / Продление (общий аккаунт) | Выбран,"ChatGPT GO 1 месяц | Подписка / Продление (общий аккаунт)
+Выбран",label,2,,,GO,1m,shared_account,235.0,True,True,Price 235.0 too low for subscription,True,,True,True,True,False,

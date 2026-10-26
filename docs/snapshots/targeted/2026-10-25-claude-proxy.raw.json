@@ -1,0 +1,2706 @@
+{
+  "schemaVersion": 2,
+  "startedAt": "2026-10-25T19:44:35.848Z",
+  "note": "Pass 1 raw. zai_analyze.py interprets.",
+  "config": {
+    "workers": 2,
+    "pageTimeoutMs": 35000,
+    "clickTimeoutMs": 8000,
+    "priceSettleTimeoutMs": 5000,
+    "captureRetries": 2,
+    "proxyMode": "configured",
+    "proxyCount": 2000
+  },
+  "listings": [
+    {
+      "marketplace": "plati",
+      "pid": 5942140,
+      "url": "https://plati.market/itm/5942140",
+      "title": "Plati.Market — площадка цифровых товаров",
+      "template": "unknown",
+      "initialPrices": [
+        {
+          "text": "200 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "500 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "1000 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "2000 ₽",
+          "cls": "footnote-medium",
+          "id": ""
+        },
+        {
+          "text": "879 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "card-title title-bold m-0",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "599 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 819 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "174 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "241 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 820 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "440 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "183 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "21 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "13 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "169 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "699 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "589 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "79 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "569 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "30 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "777 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "389 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "799 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "22 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "445 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 819 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "174 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "241 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "13 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "30 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "3 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "389 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "799 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "299 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "621 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "500 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 199 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 039 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "49 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "80 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "371 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nПопулярное\nВсе\n\nPlayStation\n\nSteam пополнение\n\nCall of Duty: Modern Warfare 4 (2026)\n\nChatGPT\n\nClaude\n\nApp Store & iTunes\n\nXbox / Microsoft Store\n\nNintendo eShop\n\nWARDOGS\n\nCursor\n\nGrok xAI\n\nFortnite\n\nMinecraft\n\nHELLDIVERS 2\n\nForza Horizon 6\n\nHiggsfield AI\n\nGrand Theft Auto VI\n\nBattle.net пополнение\n\nWorld of Warcraft\n\nCyberpunk 2077\n\nSpotify\n\nRoblox, робуксы\n\nEA Sports FC 27\n\nPhantom Blade Zero\n\nTelegram\n\nGemini\n\nOpenRouter\n\nBattlefield 6\n\nDeepSeek\n\nGrand Theft Auto V\n\nPerplexity\n\nCrimson Desert\n\nПополнение\nSteam\nApp Store & iTunes\nPlaystation\nXbox / Microsoft Store\nRoblox\nNintendo eShop\nTelegram Stars\nBattle.net\nРоссия\nСтраны СНГ\nКазахстан\n₽\n200 ₽\n500 ₽\n1000 ₽\n2000 ₽\nКак узнать логин?\nКупить\nПродано 116 447\nОтзывы 3 574\nPlumid\nНовинки\nВсе\nРекомендуем\n\n879 ₽\n\n[​24/​7 АВТО]​ ChatGPT 6 PLUS |​ PRO X20|​ GO |​ CODEX 1 М ПОДПИСКА /​ ПРОДЛЕНИЕ /​ ЧАТ ГПТ\n\nПродано 100+\n\n445 ₽\n\nАВТО PLAYSTATION ТУРЦИЯ PSN КОД ПОПОЛНЕНИЯ БАЛАНС TRY\n\nПродано 127 900\n\n22 ₽\n\nПОПОЛНИТЬ STEAM РФ-​КЗ-​UA-​СНГ НИЗКАЯ ЦЕНА\n\nПродано 3.37 млн\n\n849 ₽\n\n{АВТО} ChatGPT 6 PLUS |​ GO |​ ASTRA|​ 1М PRO |​ CODEX |​ ПОДПИСКА |​ БЕЗ ВХОДА |​ ПРОДЛЕНИЕ\n\nПродано 100+\n\n849 ₽\n\n[​24/​7]​ ChatGPT 6 (​ASTRA)​ PLUS 1М |​ GO |​ PRO 5X 20X |​ SORA\n\nПродано 100+\n\n2 099 ₽\n\n[​24/​7]​ |​ Claude AI FABLE 5.​5 |​ Подписка PRO /​ MAX CODE |​ НА ВАШ АККАУНТ |​ 1 МЕС\n\nПродано 50 739\n\n649 ₽\n\n24/​7 Без Входа |​ ChatGPT 6 ASTRA |​ Plus Go PRO CODEX|​ Код активации |​ Автовыдача\n\nПродано 100+\n\n599 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6 ASTRA |​ GO |​ PLUS |​ PRO |​ БЕЗ ВХОДА |​ СЛЕТА\n\nПродано 100+\n\n3 819 ₽\n\nCall of Duty:​ Modern Warfare 4+​ВЫБОР /​ Steam АВТО /​ МИР\n\nПродано 6 324\n\n174 ₽\n\n[​АВТОВЫДАЧА]​ Подарочная карта Apple iTunes (​США)​ 2-​1000$.​ НИЗКАЯ ЦЕНА\n\nПродано 473 317\n\n589 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​1 PLUS |​ PRO |​ GO |​ Код активации |​ 1 месяц |​ Чат ГПТ\n\nПродано 100+\n\n241 ₽\n\n1/​3/​6/​12 МЕСЯЦЕВ SPOTIFY PREMIUM РАБОТАЕТ В РФ\n\nПродано 100+\n\n2 099 ₽\n\n[​БЕЗ БАНА 24/​7]​ FABLE 5.​5 Claude Ai PRO /​ MAX /​ Code Anthropic\n\nПродано 126 792\n\n3 820 ₽\n\nCall of Duty:​ Modern Warfare 4 (​2026)​ +​ВЫБОР ИЗДАНИЯ · STEAM GIFT · АВТО\n\nПродано 3 740\n\n440 ₽\n\nКарта Пополнения Playstation TRY • 250-​5000 TL • GTA 6 PSN Турция +​ ПОДАРОК\n\nПродано 12 340\n\n99 ₽\n\nXBOX GAME PASS ULTIMATE/​PREMIUM 14Д/​ESSENTIAL/​PC 1-​2-​3-​4-​5-​6-​7-​11-​12 МЕСЯЦЕВ\n\nПродано 375 705\n\n22 ₽\n\nНИЗКАЯ ЦЕНА |​ ПОПОЛНИТЬ STEAM UA-​RU-​KZ-​СНГ +​ ПОДАРОК |​ АВТО 24/​7\n\nПродано 434 312\n\n445 ₽\n\nКарта PlayStation(​PSN)​ 250-​5500 TRY(​Лиры)​ Турция\n\nПродано 92 778\n\n183 ₽\n\nApp Store/​iTunes Подарочная Карта США US APPLE USA USD Карта пополнения AppStore КОД\n\nПродано 32 706\n\n21 ₽\n\n3% ПОПОЛНЕНИЕ STEAM АВТО |​ RUB/​KZT/​UAH\n\nПродано 116 409\n\n13 ₽\n\nApp Store/​iTunes Подарочная Карта ТУРЦИЯ TR APPLE Turkey TRY Карта пополнения TL КОД\n\nПродано 36 581\n\n899 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ GROK 4.​7 |​ PLUS |​ PREMIUM |​ SUPER |​ ULTRA |​ Подписка |​ ГРОК\n\nПродано 100+\n\n169 ₽\n\nНИЗКАЯ ЦЕНА |​ Подарочная Карта Apple iTunes (​США)​ 2-​100$ +​ ПОДАРОК\n\nПродано 214 827\n\n2 099 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ Claude MAX X5/​X20 |​ БЕЗ ВХОДА /​ СЛЕТА |​ НА ВАШ АККАУНТ\n\nПродано 44 875\n\n699 ₽\n\n[​АВТОВЫДАЧА]​ |​ ChatGPT 6 PLUS |​ PRO X5 -​ X20 |​ GO |​ 1 МЕСЯЦ |​ ПОДПИСКА |​ CODEX\n\nПродано 100+\n\n589 ₽\n\n[​24/​7]​ ChatGPT 6.​1+​ 6 1M |​ PLUS |​ GO |​ PRO 100/​200 |​ Код Активации |​ Авто Доставка\n\nПродано 100+\n\n79 ₽\n\nXBOX GAME PASS ULTIMATE/​Premium/​PC 1-​12 МЕСЯЦЕВ +​ НАДЕЖНО\n\nПродано 208 109\n\n569 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ ChatGPT 6.​1 PLUS |​ PRO |​ GO |​ 1 месяц |​ НА ВАШ АККАУНТ |​ Чат ГПТ\n\nПродано 100+\n\n30 ₽\n\nSTEAM TR-​ARG-​KZ-​UA-​US-​EU и ДРУГИЕ,​ КОД ПОПОЛНЕНИЯ\n\nПродано 6 899\n\n3 ₽\n\nИГРЫ/​Подписки УКРАИНА PS/​PSN/​Playstation GTA 6/​FC 27\n\nПродано 13 312\n\n777 ₽\n\n[​АВТО 24/​7]​ ChatGPT 6 PLUS 1M |​ GO |​ PRO |​ CODEX |​ ПОДПИСКА\n\nПродано 100+\n\n389 ₽\n\nКарты Nintendo 5-​10-​20-​35-​50-​60-​70-​100$ USD-​Долларов США\n\nПродано 294 670\n\n799 ₽\n\n[​24/​7]​ |​ Perplexity AI Pro/​Max 1M |​ БЕЗ ВХОДА |​ АВТО\n\nПродано 1 000+\nПредзаказы\nВсе\n\nPhantom Blade Zero\n\nWorld of Warcraft: Forever\n\nGrand Theft Auto VI\n\nActive Matter\n\nWarhammer 40,000: Dawn of War IV\n\nAttack on Titan 3 / A.O.T. 3\n\nDuet Night Abyss\n\nSTRANGER THAN HEAVEN\n\nArizona Sunshine\n\nTropico 7\n\nMETRO 2039\n\nTomb Raider: Legacy of Atlantis\n\nGod of War Laufey\n\nPersona 4 Revival\n\nFable\n\nWo Long 2: Wings of Ember\n\nЛидеры продаж\n\n849 ₽\n\n{АВТО} ChatGPT 6 PLUS |​ GO |​ ASTRA|​ 1М PRO |​ CODEX |​ ПОДПИСКА |​ БЕЗ ВХОДА |​ ПРОДЛЕНИЕ\n\nПродано 100+\nКупить\n\n22 ₽\n\nПОПОЛНИТЬ STEAM РФ-​КЗ-​UA-​СНГ НИЗКАЯ ЦЕНА\n\nПродано 3.37 млн\nКупить\n\n2 099 ₽\n\n[​24/​7]​ |​ Claude AI FABLE 5.​5 |​ Подписка PRO /​ MAX CODE |​ НА ВАШ АККАУНТ |​ 1 МЕС\n\nПродано 50 739\nКупить\n\n445 ₽\n\nАВТО PLAYSTATION ТУРЦИЯ PSN КОД ПОПОЛНЕНИЯ БАЛАНС TRY\n\nПродано 127 900\nКупить\n\n3 819 ₽\n\nCall of Duty:​ Modern Warfare 4+​ВЫБОР /​ Steam АВТО /​ МИР\n\nПродано 6 324\nКупить\n\n174 ₽\n\n[​АВТОВЫДАЧА]​ Подарочная карта Apple iTunes (​США)​ 2-​1000$.​ НИЗКАЯ ЦЕНА\n\nПродано 473 317\nКупить\n\n241 ₽\n\n1/​3/​6/​12 МЕСЯЦЕВ SPOTIFY PREMIUM РАБОТАЕТ В РФ\n\nПродано 100+\nКупить\n\n99 ₽\n\nXBOX GAME PASS ULTIMATE/​PREMIUM 14Д/​ESSENTIAL/​PC 1-​2-​3-​4-​5-​6-​7-​11-​12 МЕСЯЦЕВ\n\nПродано 375 705\nКупить\n\n13 ₽\n\nApp Store/​iTunes Подарочная Карта ТУРЦИЯ TR APPLE Turkey TRY Карта пополнения TL КОД\n\nПродано 36 581\nКупить\n\n899 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ GROK 4.​7 |​ PLUS |​ PREMIUM |​ SUPER |​ ULTRA |​ Подписка |​ ГРОК\n\nПродано 100+\nКупить\n\n30 ₽\n\nSTEAM TR-​ARG-​KZ-​UA-​US-​EU и ДРУГИЕ,​ КОД ПОПОЛНЕНИЯ\n\nПродано 6 899\nКупить\n\n3 ₽\n\nИГРЫ/​Подписки УКРАИНА PS/​PSN/​Playstation GTA 6/​FC 27\n\nПродано 13 312\nКупить\n\n389 ₽\n\nКарты Nintendo 5-​10-​20-​35-​50-​60-​70-​100$ USD-​Долларов США\n\nПродано 294 670\nКупить\n\n799 ₽\n\n[​24/​7]​ |​ Perplexity AI Pro/​Max 1M |​ БЕЗ ВХОДА |​ АВТО\n\nПродано 1 000+\nКупить\n\n299 ₽\n\n24/​7 |​ Google AI Pro +​ 5 ТБ 6 месяцев на ваш Gmail |​ Gemini 4 Argon,​ Omni,​ Nano Banan\n\nПродано 22 570\nКуп",
+      "descText": "",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Steam"
+        },
+        {
+          "kind": "button",
+          "text": "App Store & iTunes"
+        },
+        {
+          "kind": "button",
+          "text": "Playstation"
+        },
+        {
+          "kind": "button",
+          "text": "Xbox / Microsoft Store"
+        },
+        {
+          "kind": "button",
+          "text": "Roblox"
+        },
+        {
+          "kind": "button",
+          "text": "Nintendo eShop"
+        },
+        {
+          "kind": "button",
+          "text": "Telegram Stars"
+        },
+        {
+          "kind": "button",
+          "text": "Battle.net"
+        },
+        {
+          "kind": "button",
+          "text": "200 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "500 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "1000 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "2000 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "200"
+        },
+        {
+          "kind": "button",
+          "text": "500"
+        },
+        {
+          "kind": "button",
+          "text": "1000"
+        },
+        {
+          "kind": "button",
+          "text": "2000"
+        },
+        {
+          "kind": "button",
+          "text": "Понятно"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Россия"
+        },
+        {
+          "kind": "label",
+          "text": "Страны СНГ"
+        },
+        {
+          "kind": "label",
+          "text": "Казахстан"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 6024391,
+      "url": "https://plati.market/itm/6024391",
+      "title": "Купить Claude AI | Личный аккаунт | Claude Pro (1/3/6/12 месяцев)",
+      "template": "plati-C",
+      "initialPrices": [
+        {
+          "text": "89 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "89 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "89 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "89 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "375 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "88 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "214 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "289 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "83 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 388 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "90 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "329 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "242 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "99 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "89 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nClaude\nClaude AI | Личный аккаунт | Claude Pro (1/3/6/12 месяцев)\nПродано менее 10\nAccount Type *\nClaude Standard Account\nВыбран\nClaude Pro 1 month\n+2 453 ₽\nнет в наличии\nClaude Pro 3 months\n+5 886 ₽\nнет в наличии\nClaude Pro 6 months\n+11 772 ₽\nнет в наличии\nОписание\nОтзывы\nОписание товара\nClaude AI | Личный кабинет\nКак войти в бесплатный аккаунт Claude: https://youtu.be/EoBmNOR0G2g\nОсновные характеристики\nОбновлен на площадке\n11.08.2026\n89 ₽\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\nClaude AI | Личный аккаунт | Claude Pro (1/3/6/12 месяцев)\n5\nПродано менее 10\n89 ₽\nКупить сейчас\nБезопасная сделка\nМгновенная доставка\nngonampc\n5\nНаписать продавцу\nЗаработай 0.01 $ на товаре!\nС этим товаром смотрят\n\n375 ₽\n\nClaude AI Pro Anthropic — 1 месяц Доступ через панель гарантии PayPal\n\nПродано 100+\nКупить\n\n88 ₽\n\nCLAUDE AI |​ АККАУНТЫ |​ РЕГИСТРАЦИЯ С SMS -​ ПОДТВЕРЖДЕНИЕМ |​ ANTHROPIC\n\nПродано 100+\nКупить\n\n214 ₽\n\nLovable AI Pro – 1 год |​ 304+​ кредитов на вашем аккаунте |​ GPT -​ 4o и Claude 3.​ 5 Sonnet\n\nПродано 100+\nКупить\n\n289 ₽\n\nGoogle AI PRO |​ Antigravity |​ CLAUDE CODE |​ Gemini 3.​ 8 Pro |​ ГАРАНТИЯ\n\nПродано 92\nКупить\n\n83 ₽\n\nПополнение баланса |​ API KEY |​ Claude Opus 5\n\nПродано 75\nКупить\n\n2 388 ₽\n\nClaude Pro 1 -​ 12 Месяцев |​ АВТОВЫДАЧА|​ Мгновенная выдача|​ Лучшая цен |​ ПОЛНАЯ ГАРАНТИЯ\n\nПродано менее 10\nКупить\n\n90 ₽\n\nClaude Opus 5.​ 5 /​ 5 API |​ Общий баланс |​ Автовыдача\n\nПродано менее 10\nКупить\n\n329 ₽\n\nPerplexity AI Pro на 1 месяц — личный премиум -​ аккаунт |​ Мгновенная доставка\n\nПродано 682\nКупить\n\n849 ₽\n\n[​24/​7]​ ChatGPT 6 (​ASTRA)​ PLUS 1М |​ GO |​ PRO 5X 20X |​ SORA\n\nПродано 100+\nКупить\n\n242 ₽\n\nGoogle Gemini AI Pro +​ 5 ТБ хранилища +​ Anti‑Gravity Flow — 6 месяцев — Ссылка для\n\nПродано 3 013\nКупить\n\n99 ₽\n\nAntigravity Pro 6 месяцев |​ Antigravity Standard 30 дней |​ Гарантия\n\nПродано 81\nКупить\n \nВы смотрели\n\n89 ₽\n\nClaude AI |​ Личный аккаунт |​ Claude Pro (​1/​3/​6/​12 месяцев)​\n\nПродано менее 10\n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара Claude AI | Личный кабинет Как войти в бесплатный аккаунт Claude: https://youtu.be/EoBmNOR0G2g Основные характеристики Обновлен на площадке 11.08.2026",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    89 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все"
+        },
+        {
+          "kind": "button",
+          "text": "Скрыть"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [
+        {
+          "kind": "label",
+          "text": "Claude Pro 1 month\n+2 453 ₽\nнет в наличии",
+          "domIndex": 3,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": false,
+          "unavailableReason": "unavailable text",
+          "selected": false,
+          "clicked": false
+        },
+        {
+          "kind": "label",
+          "text": "Claude Pro 3 months\n+5 886 ₽\nнет в наличии",
+          "domIndex": 4,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": false,
+          "unavailableReason": "unavailable text",
+          "selected": false,
+          "clicked": false
+        },
+        {
+          "kind": "label",
+          "text": "Claude Pro 6 months\n+11 772 ₽\nнет в наличии",
+          "domIndex": 5,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": false,
+          "unavailableReason": "unavailable text",
+          "selected": false,
+          "clicked": false
+        },
+        {
+          "kind": "label",
+          "text": "Claude Standard Account\nВыбран",
+          "domIndex": 2,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": true,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "89 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "89 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "89 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "375 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "214 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "289 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "83 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 388 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "90 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "329 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "849 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "242 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "99 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "89 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "89 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "89 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "375 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "88 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "214 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "289 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "83 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 388 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "90 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "329 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "849 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "242 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "99 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "89 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": false,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 822
+        }
+      ],
+      "error": null,
+      "controlCount": 4,
+      "controlsClicked": 1,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 5077840,
+      "url": "https://plati.market/itm/5077840",
+      "title": "Купить 🟤Claude AI Pro Anthropic — 1 месяц Доступ через панель гарантии PayPal🟤",
+      "template": "plati-C",
+      "initialPrices": [
+        {
+          "text": "375 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "375 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "375 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "375 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "2 099 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "652 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "985 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "319 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "849 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "999 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "168 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "299 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "924 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 117 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 316 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "375 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nClaude\nClaude AI Pro Anthropic — 1 месяц Доступ через панель гарантии PayPal\nПродано 100+\nВозвратов 3\nОтзывы 12\nОписание *\nЯ внимательно прочитал описание.\nОписание\nОтзывы\n12\nОписание товара\n⚠️ ВАЖНО: Вы покупаете доступ к Claude AI Pro через нашу панель на сайте. Вы НЕ получите официальные данные для прямого входа.\n\nClaude AI от Anthropic — один из сильнейших ИИ-ассистентов в мире, идеально подходящий для сложных задач программирования, работы с текстом, аналитики и повседневных дел.\n\nДоступные Pro-модели:\n• Claude Opus 5, Sonnet 5 и новейшие модели\n• Claude 4.5 Haiku\n• Модели с режимом глубокого мышления (Thinking Mode)\n• Общий аккаунт Claude с преимуществами PRO-подписки\n• Гарантия: 1 месяц полной поддержки\n\nПочему выбирают нас? (Лучший общий доступ)\n🔒 100% ПРИВАТНОСТЬ ЧАТОВ: Несмотря на общий доступ, ваша история диалогов остается полностью приватной! Другие пользователи не видят ваши чаты и файлы.\n\n👥 ОГРАНИЧЕННОЕ ЧИСЛО ПОЛЬЗОВАТЕЛЕЙ: В отличие от других продавцов, мы не добавляем сотни людей на один аккаунт. Вы получаете то, за что платите — стабильный доступ и высокую скорость.\n\n🟢 Лучшая цена и удобная панель управления\n🟢 Надежный сервис с полной гарантией\n🟢 Мгновенная автоматическая доставка — без ожидания!\n\nКак это работает и важные условия:\n• Прямой доступ через нашу защищенную веб-панель в браузере.\n• Доступ только через браузер (без официального прямого логина).\n• Использование Claude Code (CLI / терминал) НЕ поддерживается.\n• Система кредитов: Каждый пользователь получает 50 КРЕДИТОВ в день.\n\n💡 Как расходуются кредиты:\n• Обычный чат: 1 кредит\n• Загрузка файла: +5 кредитов за файл\n• Модели Opus: Множитель 2.0x – 3.0x\n• Модели Sonnet: Множитель 1.0x – 1.2x\n• Модели Haiku: Множитель 0.5x (Экономичный)\n• Режим мышления (Thinking Mode): Расход зависит от уровня (Low: 1.2x | Med: 1.5x | High: 2x | Extra: 2.8x | Max: 3.5x)\n\n💡 Совет: Длинные диалоги расходуют кредиты быстрее из-за объема контекста. Создавайте новые чаты чаще, чтобы экономить баланс!\n\nПримечание: Поскольку доступ является общим, действуют дневные лимиты кредитов. Если вам нужен неограниченный доступ, рекомендуем приобрести личный аккаунт. Возврат средств при исчерпании дневного лимита не производится.\n\nПоддержка клиентов:\n🟢 Быстрая замена аккаунта в случае неисправности.\n🟢 Пропорциональный возврат средств, если сервис не работает более 48 часов.\n🟢 Простой вход прямо через наш сайт.\n\nЧто вы получаете после покупки:\n• Ссылку на нашу панель 🖥️\n• 8-значный промокод для активации 🔑\n• Полную пошаговую инструкцию 🌐\n• Приглашаем реселлеров к сотрудничеству! ☎️\n\n💡 Экономьте умнее! Зачем переплачивать за личный аккаунт, если наша панель дает приватный и выгодный ежедневный доступ?\nОсновные характеристики\nОбновлен на площадке\n22.08.2026\n375 ₽\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\nClaude AI Pro Anthropic — 1 месяц Доступ через панель гарантии PayPal\n24\nПродано 100+\nВозвратов 3\nОтзывы 12\n375 ₽\nКупить сейчас\nБезопасная сделка\nМгновенная доставка\nPcstore\n24\nНаписать продавцу\n\nОнлайн\n\nНакопительная скидка\n200 $ скидка 20%\n20 $ скидка 10%\nПроверить свою скидку\nЗаработай 0.05 $ на товаре!\nПодарочная карта на 16.07 ₽ за положительный отзыв\nС этим товаром смотрят\n\n2 099 ₽\n\n[​БЕЗ БАНА 24/​7]​ FABLE 5.​ 5 Claude Ai PRO /​ MAX /​ Code Anthropic\n\nПродано 126 792\nКупить\n\n652 ₽\n\nClaudeAi PRO Anthropic Общий аккаунт 1 МЕСЯЦ\n\nПродано 100+\nКупить\n\n985 ₽\n\nClaude Ai Pro Мгновенная доставка 1 месяц\n\nПродано 26\nКупить\n\n319 ₽\n\nClaude Code Max API |​ Opus 5.​ 5 |​ Fable 5.​ 1 |​ GPT -​ 6 Astra |​ GPT -​ 6.​ 1 Sol |​ VIP подписка\n\nПродано 541\nКупить\n\n849 ₽\n\n[​24/​7]​ ChatGPT 6 (​ASTRA)​ PLUS 1М |​ GO |​ PRO 5X 20X |​ SORA\n\nПродано 100+\nКупить\n\n999 ₽\n\n[​24/​7 АВТО]​ Cursor AI Plus |​ Premium |​ Super |​ Ultra |​ 1 месяц |​ 1 год |​ ЛИЧНЫЙ АКК\n\nПродано 26 149\nКупить\n\n649 ₽\n\n1 -​ 6MONTHS ANTIGRAVITY |​PRO|​ULTRA Claude Opus 4.​ 6+​GEMINI3.​ 1\n\nПродано 100+\nКупить\n\n168 ₽\n\nGemini Google AI PRO +​ VEO 3 |​ 1 MONTH |​ ЛИЧНЫЙ АККАУНТ\n\nПродано 100+\nКупить\n\n299 ₽\n\n24/​7 |​ Google AI Pro +​ 5 ТБ 6 месяцев на ваш Gmail |​ Gemini 4 Argon,​ Omni,​ Nano Banan\n\nПродано 22 570\nКупить\n\n924 ₽\n\nAntigravity +​ Google AI PRO /​ ULTRA |​ Gemini 4 Argon |​ Claude Opus 4.​ 6 |​ ЛИЧНЫЙ\n\nПродано 653\nКупить\n\n1 117 ₽\n\nPerplexity AI PRO 1 МЕСЯЦ |​ НА ВАШ АККАУНТ |​ АВТОАКТИВАЦИЯ 24/​7 |​ ГАРАНТИЯ\n\nПродано 51 249\nКупить\n\n1 316 ₽\n\nGitHub Copilot PRO — личный аккаунт (​1 месяц)​\n\nКупить\n \nВы смотрели\n\n375 ₽\n\nClaude AI Pro Anthropic — 1 месяц Доступ через панель гарантии PayPal\n\nПродано 100+\n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара ⚠️ ВАЖНО: Вы покупаете доступ к Claude AI Pro через нашу панель на сайте. Вы НЕ получите официальные данные для прямого входа. Claude AI от Anthropic — один из сильнейших ИИ-ассистентов в мире, идеально подходящий для сложных задач программирования, работы с текстом, аналитики и повседневных дел. Доступные Pro-модели: • Claude Opus 5, Sonnet 5 и новейшие модели • Claude 4.5 Haiku • Модели с режимом глубокого мышления (Thinking Mode) • Общий аккаунт Claude с преимуществами PRO-подписки • Гарантия: 1 месяц полной поддержки Почему выбирают нас? (Лучший общий доступ) 🔒 100% ПРИВАТНОСТЬ ЧАТОВ: Несмотря на общий доступ, ваша история диалогов остается полностью приватной! Другие пользователи не видят ваши чаты и файлы. 👥 ОГРАНИЧЕННОЕ ЧИСЛО ПОЛЬЗОВАТЕЛЕЙ: В отличие от других продавцов, мы не добавляем сотни людей на один аккаунт. Вы получаете то, за что платите — стабильный доступ и высокую скорость. 🟢 Лучшая цена и удобная панель управления 🟢 Надежный сервис с полной гарантией 🟢 Мгновенная автоматическая доставка — без ожидания! Как это работает и важные условия: • Прямой доступ через нашу защищенную веб-панель в браузере. • Доступ только через браузер (без официального прямого логина). • Использование Claude Code (CLI / терминал) НЕ поддерживается. • Система кредитов: Каждый пользователь получает 50 КРЕДИТОВ в день. 💡 Как расходуются кредиты: • Обычный чат: 1 кредит • Загрузка файла: +5 кредитов за файл • Модели Opus: Множитель 2.0x – 3.0x • Модели Sonnet: Множитель 1.0x – 1.2x • Модели Haiku: Множитель 0.5x (Экономичный) • Режим мышления (Thinking Mode): Расход зависит от уровня (Low: 1.2x | Med: 1.5x | High: 2x | Extra: 2.8x | Max: 3.5x) 💡 Совет: Длинные диалоги расходуют кредиты быстрее из-за объема контекста. Создавайте новые чаты чаще, чтобы экономить баланс! Примечание: Поскольку доступ является общим, действуют дневные лимиты кредитов. Если вам нужен неограниченный доступ, рекомендуем приобрести личный аккаунт. Возврат средств при исчерпании дневного лимита не производится. Поддержка клиентов: 🟢 Быстрая замена аккаунта в случае неисправности. 🟢 Пропорциональный возврат средств, если сервис не работает более 48 часов. 🟢 Простой вход прямо через наш сайт. Что вы получаете после покупки: • Ссылку на нашу панель 🖥️ • 8-значный промокод для активации 🔑 • Полную пошаговую инструкцию 🌐 • Приглашаем реселлеров к сотрудничеству! ☎️ 💡 Экономьте умнее! Зачем переплачивать за личный аккаунт, если наша панель дает приватный и выгодный ежедневный доступ? Основные характеристики Обновлен на площадке 22.08.2026",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    375 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы\n12"
+        },
+        {
+          "kind": "button",
+          "text": "Все отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Сначала новые"
+        },
+        {
+          "kind": "button",
+          "text": "Показать еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу\n\nОнлайн"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу\n                        \n                            \n                                \n                                    \n                                \n                                Онлайн"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Я внимательно прочитал описание."
+        },
+        {
+          "kind": "label",
+          "text": "Положительные"
+        },
+        {
+          "kind": "label",
+          "text": "Отрицательные"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 5740968,
+      "url": "https://plati.market/itm/5740968",
+      "title": "Купить 1-6MONTHS ANTIGRAVITY |PRO|ULTRA Claude Opus 4.6+GEMINI3.1",
+      "template": "plati-C",
+      "initialPrices": [
+        {
+          "text": "649 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "649 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "649 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "371 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "924 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "867 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "684 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "399 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "9 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "375 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "699 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "806 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "637 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "11 990 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "808 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 181 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 772 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nAntigravity\n1-6MONTHS ANTIGRAVITY |PRO|ULTRA Claude Opus 4.6+GEMINI3.1\nПродано 100+\nВозвратов 2\nОтзывы 6\nSubscription Type *\nANTIGRAVITY + Google AI (FREE VERSION)\n-200 ₽\nGemini Google AI Pro + ANTIGRAVITY PRO (3Month Ready Account))\nВыбран\n6Month Gemini AI Pro + ANTIGRAVITY PRO(Готовый аккаунт)\n+300 ₽\nОписание\nОтзывы\n6\nОписание товара\n🛒 Как оформить заказ:\n⚠️ Инструкция для покупателя ⚠️\n1️⃣ После оплаты вы получите УНИКАЛЬНЫЙ КОД\n2️⃣ Отправьте этот код в чат или нажмите «Передать код продавцу»\n3️⃣ После проверки вы получите данные от аккаунта в течение 1-4Hours (в рабочее время)\n🎁 Что входит в Google AI Pro (пакет на 1 / 6 месяцев)\n\n🧠 Искусственный интеллект ✨\n💻 Gemini 3 Pro — продвинутая AI-модель для программирования, аналитики, SEO и работы с документами/PDF. ✅\n🎬 Veo 3.1 + Flow — инструменты для создания реалистичных видео, креативов и визуального контента. 🎥\n🖼️ Nano Banana Pro — AI-модель для работы с изображениями: рисование по описанию, улучшение фото, удаление объектов. 🌟\n📚 NotebookLM Pro — расширенные лимиты для работы с документами.\n⚠️НУЖЕН VPN ДЛЯ US/UK/EUROPE/TURKEY\n\n☁️ Хранилище и поддержка 🛡️\n💾 Google One 2 ТБ — 2 ТБ облачного пространства для резервных копий и файлов. ☁️\n💬 Приоритетная поддержка Google. ✅\n\n📊 Ключевые лимиты 📈\n(FOR PRO) ⏱️ Генерация видео (Veo): дневной лимит ~3 видео через Gemini или до ✅\n\n🛡️ Дополнительная информация:\n🔄 Все проблемы решаются в течение 1–24 часов\n🕒 Мы работаем ежедневно с 13:00 до 23:00 по московскому времени\nОсновные характеристики\nТип содержимого\nТекст\nОписание содержимого\n16 символов\nДополнительное описание\n649 ₽\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\n1-6MONTHS ANTIGRAVITY |PRO|ULTRA Claude Opus 4.6+GEMINI3.1\n607\nПродано 100+\nВозвратов 2\nОтзывы 6\n649 ₽\nКупить сейчас\nБезопасная сделка\nDigi361\n607\nНаписать продавцу\n\nОнлайн\n\nЗаработай 0.12 $ на товаре!\nС этим товаром смотрят\n\n371 ₽\n\nGoogle Antigravity/​Gemini 4/​Nano Banana/​Flow |​ PRO |​ ULTRA АВТО ВЫДАЧА Google AI\n\nПродано 10 771\nКупить\n\n924 ₽\n\nAntigravity +​ Google AI PRO /​ ULTRA |​ Gemini 4 Argon |​ Claude Opus 4.​ 6 |​ ЛИЧНЫЙ\n\nПродано 653\nКупить\n\n867 ₽\n\nAntigravity +​ Google AI PRO /​ ULTRA|​Gemini 4 Argon |​ Nano Banana Pro|​Veo 3.​ 1 |​ЛИЧНЫЙ\n\nПродано 1 722\nКупить\n\n684 ₽\n\nAntigravity:​ Доступ в РФ без смены региона |​ Fix \"Not Eligible\" |​ Win/​Mac/​Linux\n\nПродано 100+\nКупить\n\n399 ₽\n\nGoogle One AI PRO1/​3/​6 Month |​ ANTIGRAVITY |​Gemini 3.​ 1|​Veo3|​BananaPRO\n\nПродано 4 287\nКупить\n\n9 ₽\n\nClaude AI API |​ Claude Code |​ Opus 5.​ 5 |​ Fable 5.​ 1 |​ Sonnet 5 |​ до 180M токенов\n\nПродано 5 739\nКупить\n\n375 ₽\n\nClaude AI Pro Anthropic — 1 месяц Доступ через панель гарантии PayPal\n\nПродано 100+\nКупить\n\n699 ₽\n\n[​24/​7]​ ChatGPT PLUS 1 МЕСЯЦ,​ GO 1 МЕС |​ НА ВАШ АККАУНТ |​ 6.​ 1 SOL +​ 6 ASTRA |​ CODEX\n\nПродано 100+\nКупить\n\n806 ₽\n\nHiggsfield AI -​ 1 -​ 12 месяц /​ Все тарифные планы /​ Официальная подписка /​ Мгновенный\n\nПродано 169\nКупить\n\n637 ₽\n\nАВТО 24/​7 |​ Claude Code 1000$ API |​ OPUS 5.​ 5 |​ GPT 6 ASTRA |​ GPT 6 Sol |​ FABLE 5.​ 1\n\nПродано 1 338\nКупить\n\n11 990 ₽\n\nPlaystation Network 9000 INR Gift Card 0%\n\nПродано 124\nКупить\n\n808 ₽\n\n24/​7 Google AI Pro/​ULTRA |​ ANTIGRAVITY 2.​ 0 • 6 МЕСЯЦЕВ • 5 ТБ • ГАРАНТИЯ\n\nПродано 1 169\nКупить\n\n2 181 ₽\n\nCURSOR AI PRO |​ ПОДПИСКА НА ВАШ АККАУНТ |​ 1 МЕС\n\nПродано 101\nКупить\n\n1 772 ₽\n\nПлан GitHub Copilot 1–12M:​ Claude 5.​ 5,​ GPT 6 |​ БЫСТРО,​ ПОЛНАЯ ГАРАНТИЯ\n\nПродано 299\nКупить\n \nВы смотрели\n\n649 ₽\n\n1-​6MONTHS ANTIGRAVITY |​PRO|​ULTRA Claude Opus 4.​6+​GEMINI3.​1\n\nПродано 100+\n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара 🛒 Как оформить заказ: ⚠️ Инструкция для покупателя ⚠️ 1️⃣ После оплаты вы получите УНИКАЛЬНЫЙ КОД 2️⃣ Отправьте этот код в чат или нажмите «Передать код продавцу» 3️⃣ После проверки вы получите данные от аккаунта в течение 1-4Hours (в рабочее время) 🎁 Что входит в Google AI Pro (пакет на 1 / 6 месяцев) 🧠 Искусственный интеллект ✨ 💻 Gemini 3 Pro — продвинутая AI-модель для программирования, аналитики, SEO и работы с документами/PDF. ✅ 🎬 Veo 3.1 + Flow — инструменты для создания реалистичных видео, креативов и визуального контента. 🎥 🖼️ Nano Banana Pro — AI-модель для работы с изображениями: рисование по описанию, улучшение фото, удаление объектов. 🌟 📚 NotebookLM Pro — расширенные лимиты для работы с документами. ⚠️НУЖЕН VPN ДЛЯ US/UK/EUROPE/TURKEY ☁️ Хранилище и поддержка 🛡️ 💾 Google One 2 ТБ — 2 ТБ облачного пространства для резервных копий и файлов. ☁️ 💬 Приоритетная поддержка Google. ✅ 📊 Ключевые лимиты 📈 (FOR PRO) ⏱️ Генерация видео (Veo): дневной лимит ~3 видео через Gemini или до ✅ 🛡️ Дополнительная информация: 🔄 Все проблемы решаются в течение 1–24 часов 🕒 Мы работаем ежедневно с 13:00 до 23:00 по московскому времени Основные характеристики Тип содержимого Текст Описание содержимого 16 символов Дополнительное описание ● Если вы захотите оформить возврат после покупки, мы удерживаем 30% комиссии от оплаченной суммы. (Only before the delivery of product) v",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    649 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все"
+        },
+        {
+          "kind": "button",
+          "text": "Скрыть"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы\n6"
+        },
+        {
+          "kind": "button",
+          "text": "Все отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Сначала новые"
+        },
+        {
+          "kind": "button",
+          "text": "Показать еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу\n\nОнлайн"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу\n                        \n                            \n                                \n                                    \n                                \n                                Онлайн"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Положительные"
+        },
+        {
+          "kind": "label",
+          "text": "Отрицательные"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [
+        {
+          "kind": "label",
+          "text": "ANTIGRAVITY + Google AI (FREE VERSION)\n-200 ₽",
+          "domIndex": 2,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "649 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "649 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "649 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "371 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "924 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "867 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "684 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "399 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "9 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "375 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "699 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "806 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "637 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "11 990 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "808 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 181 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 772 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "449 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "449 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "449 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "449 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "371 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "924 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "867 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "684 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "399 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "9 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "375 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "699 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "806 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "637 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "11 990 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "808 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 181 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 772 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 616
+        },
+        {
+          "kind": "label",
+          "text": "6Month Gemini AI Pro + ANTIGRAVITY PRO(Готовый аккаунт)\n+300 ₽",
+          "domIndex": 4,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": false,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "449 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "449 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "449 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "449 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "371 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "924 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "867 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "684 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "399 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "9 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "375 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "699 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "806 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "637 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "11 990 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "808 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 181 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 772 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "949 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "949 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "949 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "949 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "371 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "924 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "867 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "684 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "399 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "9 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "375 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "699 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "806 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "637 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "11 990 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "808 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 181 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 772 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 615
+        },
+        {
+          "kind": "label",
+          "text": "Gemini Google AI Pro + ANTIGRAVITY PRO (3Month Ready Account))\nВыбран",
+          "domIndex": 3,
+          "disabled": false,
+          "ariaDisabled": false,
+          "available": true,
+          "unavailableReason": "",
+          "selected": true,
+          "clicked": true,
+          "beforePrices": [
+            {
+              "text": "949 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "949 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "949 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "949 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "371 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "924 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "867 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "684 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "399 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "9 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "375 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "699 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "806 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "637 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "11 990 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "808 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 181 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 772 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "prices": [
+            {
+              "text": "649 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price2"
+            },
+            {
+              "text": "649 ₽",
+              "cls": "id_product_price",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "display-bold color-text-title round-8 id_product_price",
+              "id": "product_price1"
+            },
+            {
+              "text": "649 ₽",
+              "cls": "display-bold color-text-title user-select-none id_product_price",
+              "id": ""
+            },
+            {
+              "text": "371 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "924 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "867 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "684 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "399 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "9 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "375 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "699 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "806 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "637 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "11 990 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "808 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "2 181 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "1 772 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            },
+            {
+              "text": "649 ₽",
+              "cls": "title-bold color-text-title",
+              "id": ""
+            }
+          ],
+          "priceChanged": true,
+          "priceStable": true,
+          "selectedAfter": true,
+          "priceVerified": true,
+          "priceSettleMs": 612
+        }
+      ],
+      "error": null,
+      "controlCount": 3,
+      "controlsClicked": 3,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "plati",
+      "pid": 6165800,
+      "url": "https://plati.market/itm/6165800",
+      "title": "Купить Claude Fable 5 Max Pro - 1 Месяц | Фиксированная цена (Без токенов) + Figma Бонус",
+      "template": "plati-A",
+      "initialPrices": [
+        {
+          "text": "1 201 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price2"
+        },
+        {
+          "text": "1 201 ₽",
+          "cls": "id_product_price",
+          "id": ""
+        },
+        {
+          "text": "1 201 ₽",
+          "cls": "display-bold color-text-title round-8 id_product_price",
+          "id": "product_price1"
+        },
+        {
+          "text": "1 201 ₽",
+          "cls": "display-bold color-text-title user-select-none id_product_price",
+          "id": ""
+        },
+        {
+          "text": "1 609 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 360 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 034 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "470 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "429 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 409 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "289 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "899 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "437 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "2 354 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "263 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "446 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 769 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "649 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        },
+        {
+          "text": "1 236 ₽",
+          "cls": "title-bold color-text-title",
+          "id": ""
+        }
+      ],
+      "pageText": "Покупателям\nПродавцам\nПартнерам\nRUB\nРусский\nКаталог\nЧат\nПокупки\nИзбранное\nКорзина\nИгры\nКарты\nПО для ПК\niTunes & App Store\nИгровые аккаунты\nСоциальные сети\nМобильное ПО\nГлавная\nИгры\nClaude\nClaude Fable 5 Max Pro - 1 Месяц | Фиксированная цена (Без токенов) + Figma Бонус\nПродано менее 10\nОписание\nОтзывы\nОписание товара\nТип подписки: Профессиональная (Pro)\n\nСрок действия: 1 Месяц (30 дней)\n\nОписание:\n\nНикакого подсчета токенов, никакой сложной тарификации!\n\nБлагодаря инфраструктуре WayLabs, работайте с Claude Fable 5 Max Pro не думая о бюджете, независимо от размера ваших запросов и файлов. Получите 30 дней непрерывного доступа к искусственному интеллекту по фиксированной цене — без зарубежных карт и переплат за официальные подписки.\n\nClaude — одна из самых мощных нейросетей в мире для программистов, авторов контента, студентов и дизайнеров: пишет код, анализирует длинные документы, работает с файлами и управляет сложными проектами.\n\nОсновные особенности:\n\nПолный доступ на 1 месяц: 30 дней работы с моделью Claude Fable 5 Max Pro через сервис WayLabs.\n\nРежим Агента (Agent Mode): Подключайте локальную папку с проектом — Claude сможет напрямую читать, редактировать файлы и выполнять задачи.\n\nФиксированная цена (Без токенов): Задаете ли вы короткий вопрос или загружаете огромный файл с кодом — каждое сообщение считается как одна единица.\n\nСовместимость с мобильными устройствами: Удобный доступ с устройств iOS и Android в любое время.\n\nБонус Figma: Бесплатный доступ к Figma в подарок для ваших интерфейсов и творческих проектов.\n\nБез VPN: Прямое подключение без необходимости использования сторонних VPN-сервисов.\n\nКак это работает:\n\nПолучите Ключ доступа (License Key) после покупки.\n\nАктивируйте ключ на сайте waylabs.ru.\n\nНачните работу в интерфейсе платформы: общайтесь, загружайте файлы и используйте режим Агента.\n\nВажная информация: WayLabs является агрегатором ИИ-сервисов. Данный продукт предоставляет доступ к возможностям модели через собственную платформу; он не является прямым официальным аккаунтом Anthropic или сторонним API-ключом.\n\n🔑 Как оформить заказ:\n1️⃣ Оплатите товар через платформу.\n2️⃣ После оплаты вам будет отправлен уникальный 16-значный код.\n3️⃣ Перейдите в чат заказа на сайте oplata.info.\n4️⃣ Отправьте нам ваш уникальный код в сообщении чата заказа.\nОсновные характеристики\nТип содержимого\nТекст\nОписание содержимого\n16 символов\n1 201 ₽\nКупить сейчас\nНажимая на кнопку, вы соглашаетесь с \nправилами покупки\nClaude Fable 5 Max Pro - 1 Месяц | Фиксированная цена (Без токенов) + Figma Бонус\n1\nПродано менее 10\n1 201 ₽\nКупить сейчас\nБезопасная сделка\ninfynic\n1\nНаписать продавцу\nЗаработай 0.15 $ на товаре!\nС этим товаром смотрят\n\n1 609 ₽\n\nClaude MAX x20 — использование на 1 месяц,​ общий доступ,​ без входа в аккаунт.​\n\nПродано 43\nКупить\n\n1 360 ₽\n\nClaude pro /​ 1 месяц /​ gift link\n\nПродано 30\nКупить\n\n1 034 ₽\n\nFigma Pro (​Education)​ |​ 1 Год или 2 Года |​ Личный аккаунт |​\n\nПродано менее 10\nКупить\n\n470 ₽\n\n[​ Figma ]​ Pro => :​:​:​ (​ полная собственность )​ учетная запись 6 месяцев !\n\nКупить\n\n429 ₽\n\nFigma Full |​ Dev |​ Подписка на коллаб 1 месяца 丨NO EDU\n\nПродано 10\nКупить\n\n1 409 ₽\n\nПодписка Claude Pro на 1 месяц -​ Общий аккаунт (​Глобально)​\n\nПродано менее 10\nКупить\n\n289 ₽\n\nNuclear Nightmare Steam Gift Россия мгновенно\n\nПродано 10\nКупить\n\n899 ₽\n\n[​АВТОВЫДАЧА 24/​7]​ GROK 4.​ 7 |​ PLUS |​ PREMIUM |​ SUPER |​ ULTRA |​ Подписка |​ ГРОК\n\nПродано 100+\nКупить\n\n437 ₽\n\nАВТОВЫДАЧА 24/​7 |​ ChatGPT 6.​ 1 PLUS |​ PRO |​ GO |​ 1 месяц |​ НА ВАШ ЛИЧНЫЙ АККАУНТ\n\nПродано 100+\nКупить\n\n2 354 ₽\n\n[​Круглосуточно]​ Claude PRO |​ Максимум 5x,​ 20x |​ Без входа в систему |​ Пополнение счет\n\nПродано менее 10\nКупить\n\n263 ₽\n\nМгновенно |​ GOOGLE AI PRO на 6 месяцев |​ Gemini 4,​ Veo 3.​ 1,​ Nano Banana Pro,​ 5 ТБ\n\nПродано 8 257\nКупить\n\n446 ₽\n\nClaude Fable 5.​ 1 +​ Opus 5 API -​ ключ |​ 10–60 млн токенов\n\nПродано менее 10\nКупить\n\n1 769 ₽\n\nCursor AI Plus |​ Премиум на 1 месяц |​ Продление +​ Персональная учетная запись\n\nПродано менее 10\nКупить\n\n649 ₽\n\n1 -​ 6MONTHS ANTIGRAVITY |​PRO|​ULTRA Claude Opus 4.​ 6+​GEMINI3.​ 1\n\nПродано 100+\nКупить\n \nВы смотрели\n\n1 236 ₽\n\nClaude Fable 5 Max Pro -​ 1 Месяц |​ Фиксированная цена (​Без токенов)​ +​ Figma Бонус\n\nПродано менее 10\n\nВсе используемые изображения, логотипы и наименования игр, программ и иных продуктов взяты из открытых источников и предназначены исключительно для информационных целей. Все товарные знаки, логотипы, наименования и иные объекты интеллектуальной собственности принадлежат их законным владельцам. Использование на сайте не подразумевает принадлежности или аффилированности с правообладателями.\n\nRUB\nРусский\nПокупателям\nИзбранное\nМои покупки\nМой чат\nПартнерам\nОписание\nРегистрация\nAPI\nПродавцам\nВход\nСтать продавцом\nПравовая информация\nПользовательское соглашение\nПолитика обработки персональных данных\nПолитика cookie\n© 2026 Fincom Teh Ltd.\nПерсональные данные пользователей в России обрабатывает ООО \"Вебмани.ру\" Подробнее\nОбслуживанием клиентов на территории РФ осуществляется через филиал компании DigiCore Solutions LTD, ИНН 9909773220\nОбработка данных на сайте\n\nДля работы сайта, сохранения настроек, анализа посещаемости и улучшения сервиса мы используем файлы cookie и обрабатываем персональные данные. Продолжая пользоваться сайтом, вы подтверждаете и принимаете :\n\nПОЛИТИКУ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ\nСОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ\nПОЛИТИКУ ИСПОЛЬЗОВАНИЯ ФАЙЛОВ COOKIE\nХорошо",
+      "descText": "Описание товара Тип подписки: Профессиональная (Pro) Срок действия: 1 Месяц (30 дней) Описание: Никакого подсчета токенов, никакой сложной тарификации! Благодаря инфраструктуре WayLabs, работайте с Claude Fable 5 Max Pro не думая о бюджете, независимо от размера ваших запросов и файлов. Получите 30 дней непрерывного доступа к искусственному интеллекту по фиксированной цене — без зарубежных карт и переплат за официальные подписки. Claude — одна из самых мощных нейросетей в мире для программистов, авторов контента, студентов и дизайнеров: пишет код, анализирует длинные документы, работает с файлами и управляет сложными проектами. Основные особенности: Полный доступ на 1 месяц: 30 дней работы с моделью Claude Fable 5 Max Pro через сервис WayLabs. Режим Агента (Agent Mode): Подключайте локальную папку с проектом — Claude сможет напрямую читать, редактировать файлы и выполнять задачи. Фиксированная цена (Без токенов): Задаете ли вы короткий вопрос или загружаете огромный файл с кодом — каждое сообщение считается как одна единица. Совместимость с мобильными устройствами: Удобный доступ с устройств iOS и Android в любое время. Бонус Figma: Бесплатный доступ к Figma в подарок для ваших интерфейсов и творческих проектов. Без VPN: Прямое подключение без необходимости использования сторонних VPN-сервисов. Как это работает: Получите Ключ доступа (License Key) после покупки. Активируйте ключ на сайте waylabs.ru. Начните работу в интерфейсе платформы: общайтесь, загружайте файлы и используйте режим Агента. Важная информация: WayLabs является агрегатором ИИ-сервисов. Данный продукт предоставляет доступ к возможностям модели через собственную платформу; он не является прямым официальным аккаунтом Anthropic или сторонним API-ключом. 🔑 Как оформить заказ: 1️⃣ Оплатите товар через платформу. 2️⃣ После оплаты вам будет отправлен уникальный 16-значный код. 3️⃣ Перейдите в чат заказа на сайте oplata.info. 4️⃣ Отправьте нам ваш уникальный код в сообщении чата заказа. Основные характеристики Тип содержимого Текст Описание содержимого 16 символов",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "RUB\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Отмена"
+        },
+        {
+          "kind": "button",
+          "text": "Показать все результаты"
+        },
+        {
+          "kind": "button",
+          "text": "Чат"
+        },
+        {
+          "kind": "button",
+          "text": "RUBРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Ключи и пин-коды"
+        },
+        {
+          "kind": "button",
+          "text": "Программное обеспечение"
+        },
+        {
+          "kind": "button",
+          "text": "Цифровые товары"
+        },
+        {
+          "kind": "button",
+          "text": "Электронные книги"
+        },
+        {
+          "kind": "button",
+          "text": "Еще"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас за \n                                    1 201 ₽"
+        },
+        {
+          "kind": "button",
+          "text": "Описание"
+        },
+        {
+          "kind": "button",
+          "text": "Отзывы"
+        },
+        {
+          "kind": "button",
+          "text": "Купить сейчас"
+        },
+        {
+          "kind": "button",
+          "text": "Написать продавцу"
+        },
+        {
+          "kind": "button",
+          "text": "Купить"
+        },
+        {
+          "kind": "button",
+          "text": "Хорошо"
+        },
+        {
+          "kind": "label",
+          "text": "Переводить сообщения"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "103188317",
+      "url": "https://ggsel.net/catalog/product/103188317",
+      "title": "Купить Apple Gift Card 2–250 EUR (Финляндия)",
+      "template": "ggsel",
+      "initialPrices": [
+        {
+          "text": "2 289 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        },
+        {
+          "text": "2 249 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        }
+      ],
+      "pageText": "Рубли (RUB)\n·\nРусский\nФранция\n\nНаходитесь в этой стране?\n\nДа\nНет\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nApple ID\nПодарочные карты\n🇫🇮 Финляндия\nApple Gift Card 2–250 EUR (Финляндия)\nApple Gift Card 2–250 EUR (Финляндия)\nНет продаж\nНет отзывов\nВ избранное\nНоминал*\n2 EUR\n5 EUR\n10 EUR\n15 EUR\n20 EUR\n25 EUR\n50 EUR\n75 EUR\n100 EUR\n150 EUR\n200 EUR\n250 EUR\nО товаре\n\nApple Gift Card номиналом выбранного при покупке.\n\nРегион активации: Финляндия. Код действует только в этом регионе — аккаунт должен быть зарегистрирован в нём, иначе пополнение не пройдёт.\n\nЧто вы получаете: цифровой код пополнения. Номинал указан в валюте региона и зачисляется на баланс аккаунта полностью.\n\nКак активировать: войдите в аккаунт нужного региона, откройте раздел пополнения баланса и введите полученный код.\n\nКод выдаётся один раз и возврату не подлежит после использования. Если код не сработал — напишите в чат площадки, разберёмся.\n\nDigitalLavka\n5\n(10)\n226 продаж\nНет в наличии\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 199 182\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 490 125\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n125 392\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n570 008\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка",
+      "descText": "Apple Gift Card номиналом выбранного при покупке. Регион активации: Финляндия. Код действует только в этом регионе — аккаунт должен быть зарегистрирован в нём, иначе пополнение не пройдёт. Что вы получаете: цифровой код пополнения. Номинал указан в валюте региона и зачисляется на баланс аккаунта полностью. Как активировать: войдите в аккаунт нужного региона, откройте раздел пополнения баланса и введите полученный код. Код выдаётся один раз и возврату не подлежит после использования. Если код не сработал — напишите в чат площадки, разберёмся.\n---\nВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nВернем оплату, если товар не получен или он не соответствует описанию\n---\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "Рубли (RUB)\n·\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Нет"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Войти"
+        },
+        {
+          "kind": "button",
+          "text": "Мои заказы"
+        },
+        {
+          "kind": "button",
+          "text": "Избранное"
+        },
+        {
+          "kind": "button",
+          "text": "Оформление\nВсегда светлое"
+        },
+        {
+          "kind": "button",
+          "text": "В избранное"
+        },
+        {
+          "kind": "button",
+          "text": "2 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "5 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "10 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "15 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "20 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "25 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "50 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "75 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "100 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "150 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "200 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "250 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасныеВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Нет в наличии"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Показать ещё"
+        },
+        {
+          "kind": "button",
+          "text": "каталог"
+        },
+        {
+          "kind": "button",
+          "text": "профиль"
+        },
+        {
+          "kind": "button",
+          "text": "Поддержка"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "103188318",
+      "url": "https://ggsel.net/catalog/product/103188318",
+      "title": "Купить Apple Gift Card 2–150 EUR (Франция)",
+      "template": "ggsel",
+      "initialPrices": [
+        {
+          "text": "2 289 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        },
+        {
+          "text": "2 249 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        }
+      ],
+      "pageText": "Рубли (RUB)\n·\nРусский\nФранция\n\nНаходитесь в этой стране?\n\nДа\nНет\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nСервисы и соцсети\nApple ID\nПодарочные карты\n🇫🇷 Франция\nApple Gift Card 2–150 EUR (Франция)\nApple Gift Card 2–150 EUR (Франция)\nНет продаж\nНет отзывов\nВ избранное\nНоминал*\n2 EUR\n5 EUR\n10 EUR\n15 EUR\n20 EUR\n25 EUR\n50 EUR\n75 EUR\n100 EUR\n150 EUR\nО товаре\n\nApple Gift Card номиналом выбранного при покупке.\n\nРегион активации: Франция. Код действует только в этом регионе — аккаунт должен быть зарегистрирован в нём, иначе пополнение не пройдёт.\n\nЧто вы получаете: цифровой код пополнения. Номинал указан в валюте региона и зачисляется на баланс аккаунта полностью.\n\nКак активировать: войдите в аккаунт нужного региона, откройте раздел пополнения баланса и введите полученный код.\n\nКод выдаётся один раз и возврату не подлежит после использования. Если код не сработал — напишите в чат площадки, разберёмся.\n\nDigitalLavka\n5\n(10)\n226 продаж\nНет в наличии\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 199 182\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 490 125\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n125 392\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n570 008\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка",
+      "descText": "Apple Gift Card номиналом выбранного при покупке. Регион активации: Франция. Код действует только в этом регионе — аккаунт должен быть зарегистрирован в нём, иначе пополнение не пройдёт. Что вы получаете: цифровой код пополнения. Номинал указан в валюте региона и зачисляется на баланс аккаунта полностью. Как активировать: войдите в аккаунт нужного региона, откройте раздел пополнения баланса и введите полученный код. Код выдаётся один раз и возврату не подлежит после использования. Если код не сработал — напишите в чат площадки, разберёмся.\n---\nВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nВернем оплату, если товар не получен или он не соответствует описанию\n---\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "Рубли (RUB)\n·\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Нет"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Войти"
+        },
+        {
+          "kind": "button",
+          "text": "Мои заказы"
+        },
+        {
+          "kind": "button",
+          "text": "Избранное"
+        },
+        {
+          "kind": "button",
+          "text": "Оформление\nВсегда светлое"
+        },
+        {
+          "kind": "button",
+          "text": "В избранное"
+        },
+        {
+          "kind": "button",
+          "text": "2 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "5 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "10 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "15 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "20 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "25 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "50 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "75 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "100 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "150 EUR"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасныеВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Нет в наличии"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Показать ещё"
+        },
+        {
+          "kind": "button",
+          "text": "каталог"
+        },
+        {
+          "kind": "button",
+          "text": "профиль"
+        },
+        {
+          "kind": "button",
+          "text": "Поддержка"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "102745891",
+      "url": "https://ggsel.net/catalog/product/102745891",
+      "title": "Купить Razer Gold Gift Card — IDR 200000 — Indonesia",
+      "template": "ggsel",
+      "initialPrices": [],
+      "pageText": "Начать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nЦифровые товары\nПополнение баланса\nRazer Gold Gift Card — IDR 200000 — Indonesia\nRazer Gold Gift Card — IDR 200000 — Indonesia\nНет продаж\nНет отзывов\nВ избранное\n\nОригинальный код для активации, выдача 24/7.\n\nПлатформа: Razer Gold\nНоминал: IDR 200000\nРегион: Indonesia\nФормат: Цифровой код\n\nПодарочная карта Razer Gold — это предоплаченный код, выпускаемый компанией Razer, предназначенный для улучшения вашего игрового опыта в экосистеме Razer. Эта подарочная карта позволяет пользователям легко получать доступ к разнообразному цифровому контенту, включая игры и покупки внутри игры, все это поддерживается обширной платформой…\n\n🔎 Проверяем перед выдачей\n💬 Поможем, если возникнут сложности\n\nРаскрыть\nLootCodes\n4.9\n(41)\n742 продажи\nНет в наличии\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка",
+      "descText": "Оригинальный код для активации, выдача 24/7. Платформа: Razer Gold Номинал: IDR 200000 Регион: Indonesia Формат: Цифровой код Подарочная карта Razer Gold — это предоплаченный код, выпускаемый компанией Razer, предназначенный для улучшения вашего игрового опыта в экосистеме Razer. Эта подарочная карта позволяет пользователям легко получать доступ к разнообразному цифровому контенту, включая игры и покупки внутри игры, все это поддерживается обширной платформой… 🔎 Проверяем перед выдачей 💬 Поможем, если возникнут сложности\n---\nВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nВернем оплату, если товар не получен или он не соответствует описанию",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Войти"
+        },
+        {
+          "kind": "button",
+          "text": "Мои заказы"
+        },
+        {
+          "kind": "button",
+          "text": "Избранное"
+        },
+        {
+          "kind": "button",
+          "text": "Оформление\nВсегда светлое"
+        },
+        {
+          "kind": "button",
+          "text": "В избранное"
+        },
+        {
+          "kind": "button",
+          "text": "Раскрыть"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасныеВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Нет в наличии"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "каталог"
+        },
+        {
+          "kind": "button",
+          "text": "профиль"
+        },
+        {
+          "kind": "button",
+          "text": "Поддержка"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "103366929",
+      "url": "https://ggsel.net/catalog/product/103366929",
+      "title": "Купить 10 Anvil IV best attch (Оружие) | ARC Raiders",
+      "template": "ggsel",
+      "initialPrices": [
+        {
+          "text": "2 289 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        },
+        {
+          "text": "2 249 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        }
+      ],
+      "pageText": "Рубли (RUB)\n·\nРусский\nФранция\n\nНаходитесь в этой стране?\n\nДа\nНет\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nИгры\nARC Raiders\nСнаряжение и ресурсы\n10 Anvil IV best attch (Оружие) | ARC Raiders\n10 Anvil IV best attch (Оружие) | ARC Raiders\nНет продаж\nНет отзывов\nВ избранное\n\n10 Anvil IV best attch — оружие для ARC Raiders\n\n• Игра: ARC Raiders\n• Предмет: 10 Anvil IV best attch\n• Тип: Оружие\n\nПолучение: в игре. После оплаты напишите в чат заказа ваш ник в\nARC Raiders (Embark ID) и платформу (PC / PlayStation / Xbox) - вас\nвстретят в игре и передадут предмет.\n\ngangb\n4.7\n(30)\n136 продаж\nНет в наличии\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 199 182\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 490 125\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n125 392\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n570 008\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка",
+      "descText": "10 Anvil IV best attch — оружие для ARC Raiders • Игра: ARC Raiders • Предмет: 10 Anvil IV best attch • Тип: Оружие Получение: в игре. После оплаты напишите в чат заказа ваш ник в ARC Raiders (Embark ID) и платформу (PC / PlayStation / Xbox) - вас встретят в игре и передадут предмет.\n---\nВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nВернем оплату, если товар не получен или он не соответствует описанию\n---\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "Рубли (RUB)\n·\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Нет"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Войти"
+        },
+        {
+          "kind": "button",
+          "text": "Мои заказы"
+        },
+        {
+          "kind": "button",
+          "text": "Избранное"
+        },
+        {
+          "kind": "button",
+          "text": "Оформление\nВсегда светлое"
+        },
+        {
+          "kind": "button",
+          "text": "В избранное"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасныеВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Нет в наличии"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Показать ещё"
+        },
+        {
+          "kind": "button",
+          "text": "каталог"
+        },
+        {
+          "kind": "button",
+          "text": "профиль"
+        },
+        {
+          "kind": "button",
+          "text": "Поддержка"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    },
+    {
+      "marketplace": "ggsel",
+      "pid": "103145687",
+      "url": "https://ggsel.net/catalog/product/103145687",
+      "title": "Купить ELDEN RING | STEAM GIFT МОМЕНТАЛЬНАЯ ДОСТАВКА [SA]",
+      "template": "ggsel",
+      "initialPrices": [
+        {
+          "text": "2 289 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        },
+        {
+          "text": "2 249 ₽",
+          "cls": "ProductPrice-module-scss-module__nLqhda__price",
+          "id": ""
+        }
+      ],
+      "pageText": "Рубли (RUB)\n·\nРусский\nФранция\n\nНаходитесь в этой стране?\n\nДа\nНет\nНачать продавать\nКаталог\nИзбранное\nЗаказы\nВойти\n\nПрофиль\n\nВойти\n\nМои заказы\n\nИзбранное\n\nОформление\nВсегда светлое\nПоддержка\nДонат\nСкидки 90%\nПополнение PSN\nRoblox\nCS2 Market\nПополнение Steam\nApple карты\nИгры\nГлавная\nКаталог\nИгры\nElden Ring\nКлючи и гифты\nSteam\nStandard Edition\nELDEN RING | STEAM GIFT МОМЕНТАЛЬНАЯ ДОСТАВКА [SA]\nELDEN RING | STEAM GIFT МОМЕНТАЛЬНАЯ ДОСТАВКА [SA]\nНет продаж\nНет отзывов\nВ избранное\nСсылка на быстрое добавление в друзья Steam (Friend Link)*\n\nЭкспресс-доставка (в течение 5-10 минут)\nВключить (+50 ₽)(+50 ₽)\nЧаевые продавцу\n+50 ₽(+50 ₽)\n+100 ₽(+100 ₽)\n+200 ₽(+200 ₽)\nЯ подтверждаю, что проверил выбранный мной вариант и это именно то, что я хочу купить*\nПодтверждаю правильность выбора\nО товаре\n\n═════════════════ ОПИСАНИЕ ТОВАРА ═════════════════\nДобро пожаловать! Предлагаем официальный Steam Gift игры ELDEN RING с автоматической доставкой 24/7.\nТовар передаётся подарком напрямую в вашу личную библиотеку Steam без посредников и рисков.\n\n► ПРЕИМУЩЕСТВА ПОКУПКИ В НАШЕМ МАГАЗИНЕ:\n■ 100% официальная лицензия ELDEN RING от авторизованных партнеров Steam\n■ Полный доступ к онлайн-серверам, мультиплееру, облачным сохранениям и достижениям\n■ Отправка подарка автоматизированным ботом 24/7 сразу после подтверждения платежа\n■ Совместимость с регионом: Саудовская Аравия (SA)\n■ Бессрочная привязка игры к вашему аккаунту навсегда\n\n► ПОШАГОВОЕ РУКОВОДСТВО ДЛЯ ПОКУПАТЕЛЯ:\n1. Совершите оплату заказа удобным способом.\n2. На странице получения заказа укажите ссылку на добавление в друзья Steam (Friend Link).\n3. Примите входящую заявку в друзья от нашего бота в Steam.\n4. Примите подарок в клиенте Steam и загружайте игру!\n\n► ГАРАНТИЙНЫЕ ОБЯЗАТЕЛЬСТВА И ПОДДЕРЖКА:\nМы предоставляем пожизненную гарантию на все передаваемые лицензии.\nКруглосуточная служба поддержки готова ответить на любые вопросы.\n═══════════════════════════════════════════════════\n\n🏷️ Ключевые слова для поиска на торговой площадке:\nELDEN RING, купить ELDEN RING, ELDEN RING ключ, ELDEN RING steam, ELDEN RING лицензия, ELDEN RING россия, ELDEN RING снг, ELDEN RING global, скидка ELDEN RING, ELDEN RING автовыдача, игры стим дешево, лицензионные ключи steam, steam gifts, моментальная доставка, онлайн магазин игр, цифровые товары 24 7, официальная лицензия pc, ELDEN RING SA\n\nРаскрыть\nGomerBartov\n5\n(19)\n74 продажи\nНет в наличии\nВсе сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию\nРекомендовано вам\nПополнение\n1 Steam RUB = 1.07₽\nSTEAM РФ-СНГ RUB-KZT-UAH 24/7\n6 199 182\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)\n1 490 125\nпродаж\nКупить\nПополнение\n1 Steam KZT = 0.2₽\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН ТЕНГЕ (KZT) 24/7\n125 392\nпродаж\nКупить\nПополнение\n1 Steam RUB = 1.1₽\nАВТОМАТИЧЕСКОЕ ПОПОЛНЕНИЕ STEAM RUB UAH KZT СНГ\n570 008\nпродаж\nКупить\nПокупка подписки\n2 289 ₽\n24/7 | Claude AI FABLE 5.5 | PRO | Подписка AI | 1 МЕСЯЦ | Клод АИ\n1 000+\nпродаж\nКупить\nПокупка подписки\n2 249 ₽\n24/7 | ChatGPT 6 (ASTRA) + 5.6 PLUS | ПОДПИСКА ЧЕРЕЗ ТОКЕН | 1M | ЧатГПТ\n1 000+\nпродаж\nКупить\nПоказать ещё\nПартнёрам\nСтать продавцом на ggsel\nПартнерская программа\nПравила для Продавца\nАвтоматическое B2B решение\nПокупателям\nЧасто задаваемые вопросы\nПолитика возврата средств\nggsel\nКонтакты\nОтзывы\nПубличная оферта\nПолитика конфиденциальности\nИнформация для правообладателей\n\n© 2017-2026\n\nNeurovexis L.L.C-FZ, регистрационный номер: 2542154\n\nВсе права защищены\n\nПоддержка: support@ggsel.net\n\nИспользуем cookies и системы аналитики. Используя сайт, вы соглашаетесь с этим в соответствии с Политикой конфиденциальности.\n\nOK\nПоддержка",
+      "descText": "═════════════════ ОПИСАНИЕ ТОВАРА ═════════════════ Добро пожаловать! Предлагаем официальный Steam Gift игры ELDEN RING с автоматической доставкой 24/7. Товар передаётся подарком напрямую в вашу личную библиотеку Steam без посредников и рисков. ► ПРЕИМУЩЕСТВА ПОКУПКИ В НАШЕМ МАГАЗИНЕ: ■ 100% официальная лицензия ELDEN RING от авторизованных партнеров Steam ■ Полный доступ к онлайн-серверам, мультиплееру, облачным сохранениям и достижениям ■ Отправка подарка автоматизированным ботом 24/7 сразу после подтверждения платежа ■ Совместимость с регионом: Саудовская Аравия (SA) ■ Бессрочная привязка игры к вашему аккаунту навсегда ► ПОШАГОВОЕ РУКОВОДСТВО ДЛЯ ПОКУПАТЕЛЯ: 1. Совершите оплату заказа удобным способом. 2. На странице получения заказа укажите ссылку на добавление в друзья Steam (Friend Link). 3. Примите входящую заявку в друзья от нашего бота в Steam. 4. Примите подарок в клиенте Steam и загружайте игру! ► ГАРАНТИЙНЫЕ ОБЯЗАТЕЛЬСТВА И ПОДДЕРЖКА: Мы предоставляем пожизненную гарантию на все передаваемые лицензии. Круглосуточная служба поддержки готова ответить на любые вопросы. ═══════════════════════════════════════════════════ 🏷️ Ключевые слова для поиска на торговой площадке: ELDEN RING, купить ELDEN RING, ELDEN RING ключ, ELDEN RING steam, ELDEN RING лицензия, ELDEN RING россия, ELDEN RING снг, ELDEN RING global, скидка ELDEN RING, ELDEN RING автовыдача, игры стим дешево, лицензионные ключи steam, steam gifts, моментальная доставка, онлайн магазин игр, цифровые товары 24 7, официальная лицензия pc, ELDEN RING SA\n---\nВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию\n---\nВернем оплату, если товар не получен или он не соответствует описанию\n---\nАВТОПОПОЛНЕНИЕ STEAM КАЗАХСТАН Тенге (KZT)",
+      "skippedControls": [
+        {
+          "kind": "button",
+          "text": "Рубли (RUB)\n·\nРусский"
+        },
+        {
+          "kind": "button",
+          "text": "Нет"
+        },
+        {
+          "kind": "button",
+          "text": "Каталог"
+        },
+        {
+          "kind": "button",
+          "text": "Войти"
+        },
+        {
+          "kind": "button",
+          "text": "Мои заказы"
+        },
+        {
+          "kind": "button",
+          "text": "Избранное"
+        },
+        {
+          "kind": "button",
+          "text": "Оформление\nВсегда светлое"
+        },
+        {
+          "kind": "button",
+          "text": "В избранное"
+        },
+        {
+          "kind": "button",
+          "text": "Раскрыть"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасныеВсе сделки на ggsel — безопасныеДеньги резервируютсяВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Нет в наличии"
+        },
+        {
+          "kind": "button",
+          "text": "Все сделки на ggsel — безопасные\nДеньги резервируются\nВернем оплату, если товар не получен или он не соответствует описанию"
+        },
+        {
+          "kind": "button",
+          "text": "Показать ещё"
+        },
+        {
+          "kind": "button",
+          "text": "каталог"
+        },
+        {
+          "kind": "button",
+          "text": "профиль"
+        },
+        {
+          "kind": "button",
+          "text": "Поддержка"
+        },
+        {
+          "kind": "label",
+          "text": "Включить (+50 ₽)(+50 ₽)"
+        },
+        {
+          "kind": "label",
+          "text": "+50 ₽(+50 ₽)"
+        },
+        {
+          "kind": "label",
+          "text": "+100 ₽(+100 ₽)"
+        },
+        {
+          "kind": "label",
+          "text": "+200 ₽(+200 ₽)"
+        },
+        {
+          "kind": "label",
+          "text": "Подтверждаю правильность выбора"
+        }
+      ],
+      "options": [],
+      "error": null,
+      "controlCount": 0,
+      "controlsClicked": 0,
+      "captureAttempts": 1,
+      "captureRetryReasons": []
+    }
+  ],
+  "lastUpdate": "2026-10-25T19:45:20.845Z",
+  "finishedAt": "2026-10-25T19:45:20.846Z",
+  "discovery": {
+    "platiFound": 5,
+    "ggselFound": 5,
+    "transports": {
+      "plati": "urllib-proxy",
+      "platiQueryFailures": [],
+      "ggsel": "playwright-proxy-error",
+      "ggselRequestFailures": []
+    },
+    "errors": [],
+    "proxyMode": "configured",
+    "proxyCount": 2000
+  },
+  "finalVerification": {
+    "skipped": false,
+    "results": []
+  },
+  "scanContext": {
+    "collectionCommand": "PYTHONPATH=. node click.py --workers 2 --out /Users/user/Documents/Apps/low_price/.tmp/claude_raw.json --headless --plati-pids 5942140,6024391,5077840,5740968,6165800 --ggsel-ids 103188317,103188318,102745891,103366929,103145687",
+    "headless": true,
+    "collectionContextSource": "effective collector mode",
+    "workers": 2,
+    "proxyMode": "configured",
+    "proxyCount": 2000,
+    "maxResults": 10,
+    "discoveryCounts": {
+      "plati": 5,
+      "ggsel": 5
+    },
+    "discoveryCountsSource": "saved discovery result",
+    "listingCounts": {
+      "plati": 5,
+      "ggsel": 5
+    },
+    "analysis": {
+      "command": "PYTHONPATH=. /opt/homebrew/opt/python@3.14/bin/python3.14 cli.py --family chatgpt,claude,kimi,minimax,zai --max 10 --workers 2 --headless --analyzer auto --raw docs/snapshots/targeted/2026-10-25-all-ai-proxy.raw.json --csv docs/snapshots/targeted/2026-10-25-all-ai-proxy.csv --md docs/snapshots/targeted/2026-10-25-all-ai-proxy.md",
+      "workers": 2,
+      "analyzer": "regex",
+      "discoveryReused": false,
+      "finalVerificationReused": false
+    }
+  }
+}

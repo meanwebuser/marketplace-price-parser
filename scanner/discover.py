@@ -19,11 +19,13 @@ import json
 import os
 import re
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
 from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+from urllib.request import ProxyHandler, Request, build_opener, urlopen
 
 from families.base import FamilyConfig
+from scanner.proxy_source import playwright_proxy_options
 
 DEFAULT_PLATI_API_URL = "https://api.digiseller.com/api/cataloguer/front/products"
 DEFAULT_PLATI_BASE_URL = "https://plati.market"
@@ -31,6 +33,16 @@ DEFAULT_GGSEL_BASE_URL = "https://ggsel.net"
 GGSEL_CATEGORY_URL = f"{DEFAULT_GGSEL_BASE_URL}/catalog/{{category}}"
 GGSEL_SEARCH_URL = f"{DEFAULT_GGSEL_BASE_URL}/search?text={{q}}"
 CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+# Query variants are intentionally generic; never ship a dated listing-ID list
+# as if it were a live marketplace inventory.
+GIFT_CARD_QUERIES = {
+    "US": ("Apple Gift Card USA", "Apple iTunes Gift Card USA", "Apple Gift Card US", "iTunes Gift Card US"),
+}
+_GIFT_CARD_REGION_RE = {
+    "US": re.compile(r"(?:\busa\b|\bunited states\b|\bu\.?s\.?\b|сша)", re.I),
+    "TR": re.compile(r"(?:\bturkey\b|\bturkiye\b|\btürkiye\b|\btur\b|турц\w*)", re.I),
+}
 
 
 def normalise(value: str) -> str:
@@ -78,13 +90,15 @@ def discover_plati(
     max_results: int = 80,
     *,
     query_errors: list[str] | None = None,
+    proxy_urls: tuple[str, ...] | list[str] = (),
 ) -> tuple[list[dict], str]:
     api_url = os.getenv("PLATI_API_URL", DEFAULT_PLATI_API_URL)
     base_url = os.getenv("PLATI_BASE_URL", DEFAULT_PLATI_BASE_URL).rstrip("/")
     seen: set[str] = set()
     out: list[dict] = []
-    transport = "urllib-fallback"
-    for query in family.search_terms:
+    transport = "urllib-proxy" if proxy_urls else "urllib"
+
+    def fetch_query(index: int, query: str) -> tuple[dict | None, str | None]:
         params = {
             "categoryId": "", "getProductsRecursive": "true",
             "sellerCategoryId": "", "productId": "",
@@ -98,11 +112,30 @@ def discover_plati(
         try:
             url = f"{api_url}?{urlencode(params)}"
             req = Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
-            with urlopen(req, timeout=30) as resp:
+            if proxy_urls:
+                proxy = proxy_urls[index % len(proxy_urls)]
+                opener = build_opener(ProxyHandler({"http": proxy, "https": proxy}))
+                response = opener.open(req, timeout=30)
+            else:
+                response = urlopen(req, timeout=30)
+            with response as resp:
                 payload = json.loads(resp.read().decode("utf-8"))
-            transport = "urllib"
-        except Exception as e:
-            failure = f"plati search '{query}': {e}"
+            return payload, None
+        except Exception as error:
+            # Error strings can include proxy URLs/user-info. Keep evidence
+            # useful without serializing any configured proxy value.
+            failure = f"plati search '{query}': request failed" if proxy_urls else f"plati search '{query}': {error}"
+            return None, failure
+
+    indexed_queries = list(enumerate(family.search_terms))
+    if proxy_urls and len(indexed_queries) > 1:
+        with ThreadPoolExecutor(max_workers=min(2, len(indexed_queries), len(proxy_urls))) as pool:
+            query_results = list(pool.map(lambda pair: fetch_query(*pair), indexed_queries))
+    else:
+        query_results = [fetch_query(index, query) for index, query in indexed_queries]
+
+    for query, (payload, failure) in zip(family.search_terms, query_results):
+        if failure:
             print(f"  {failure}", file=sys.stderr)
             if query_errors is not None:
                 query_errors.append(failure)
@@ -245,6 +278,7 @@ async def _ggsel_crawl_async(
     max_results: int,
     *,
     request_failures: list[str] | None = None,
+    proxy_urls: tuple[str, ...] | list[str] = (),
 ) -> list[dict]:
     """Single PlaywrightCrawler category run. Other
     crawlers (HttpCrawler with ImpitHttpClient) return 401 because GGSEL
@@ -259,23 +293,31 @@ async def _ggsel_crawl_async(
     if not start_urls:
         return []
     products: list[dict] = []
-    crawler = PlaywrightCrawler(
-        max_requests_per_crawl=len(start_urls),
-        browser_type="chromium",
-        browser_launch_options={
+    crawler_options = {
+        "max_requests_per_crawl": len(start_urls),
+        "browser_type": "chromium",
+        "browser_launch_options": {
             "executable_path": CHROME_PATH,
             "headless": True,
             "args": ["--no-sandbox"],
         },
+    }
+    if proxy_urls:
+        crawler_options["browser_new_context_options"] = {
+            "proxy": playwright_proxy_options(proxy_urls[0])
+        }
+    crawler = PlaywrightCrawler(
+        **crawler_options,
     )
 
     failures = request_failures if request_failures is not None else []
 
     @crawler.failed_request_handler
     async def handle_failed_request(ctx, error):
-        failures.append(
-            f"GGSEL request failed after retries: {ctx.request.url}: {error}"
-        )
+        if proxy_urls:
+            failures.append("GGSEL request failed through configured proxy")
+        else:
+            failures.append(f"GGSEL request failed after retries: {ctx.request.url}: {error}")
 
     @crawler.router.default_handler
     async def handle(ctx):
@@ -294,17 +336,20 @@ def discover_ggsel(
     max_results: int = 80,
     *,
     request_failures: list[str] | None = None,
+    proxy_urls: tuple[str, ...] | list[str] = (),
 ) -> tuple[list[dict], str]:
     """Merge category results with curated IDs, keeping live card metadata."""
     failures: list[str] = []
     try:
         products = asyncio.run(
-            _ggsel_crawl_async(family, max_results, request_failures=failures)
+            _ggsel_crawl_async(
+                family, max_results, request_failures=failures, proxy_urls=proxy_urls
+            )
         )
         transport = "playwright-partial" if failures else "playwright"
     except Exception as e:
         products = []
-        transport = f"playwright-error: {e}"
+        transport = "playwright-proxy-error" if proxy_urls else f"playwright-error: {e}"
     if request_failures is not None:
         request_failures.extend(failures)
     merged = {str(p["native_id"]): p for p in products}
@@ -324,12 +369,20 @@ def discover_ggsel(
     return list(merged.values())[:max_results], transport
 
 
-def discover_all(family: FamilyConfig, max_results: int = 80) -> dict:
+def discover_all(
+    family: FamilyConfig,
+    max_results: int = 80,
+    *,
+    proxy_urls: tuple[str, ...] | list[str] = (),
+) -> dict:
     plati_query_errors: list[str] = []
-    plati, plati_t = discover_plati(family, max_results, query_errors=plati_query_errors)
+    plati, plati_t = discover_plati(
+        family, max_results, query_errors=plati_query_errors, proxy_urls=proxy_urls
+    )
     ggsel_request_failures: list[str] = []
     ggsel, ggsel_t = discover_ggsel(
-        family, max_results, request_failures=ggsel_request_failures
+        family, max_results, request_failures=ggsel_request_failures,
+        proxy_urls=proxy_urls,
     )
     errors = list(plati_query_errors)
     errors.extend(ggsel_request_failures)
@@ -347,6 +400,157 @@ def discover_all(family: FamilyConfig, max_results: int = 80) -> dict:
             "ggselRequestFailures": ggsel_request_failures,
         },
         "errors": errors,
+        "proxyMode": "configured" if proxy_urls else "direct",
+        "proxyCount": len(proxy_urls),
+    }
+
+
+def _extract_ggsel_gift_cards(html: str, region: str) -> list[dict]:
+    """Extract Apple gift-card listings only when region is explicit in the card."""
+    parser = _GGSELAnchorParser()
+    parser.feed(html)
+    seen: set[str] = set()
+    out = []
+    for anchor in parser.anchors:
+        match = _GGSEL_PRODUCT_PATH_RE.fullmatch(anchor["href"])
+        if not match:
+            continue
+        href, slug, pid = match.group(1), match.group(2), match.group(3)
+        if pid in seen:
+            continue
+        parts = [" ".join(anchor[key]) for key in ("titles", "text", "alts")]
+        card = anchor.get("card")
+        if card is not None and card["product_ids"] == {pid}:
+            parts.extend(" ".join(card[key]) for key in ("titles", "alts", "text"))
+        evidence = normalise(" ".join([*parts, (slug or "").replace("-", " ")]))
+        if not re.search(r"\b(?:apple|itunes)\b", evidence):
+            continue
+        if not _GIFT_CARD_REGION_RE[region].search(evidence):
+            continue
+        other_region = "TR" if region == "US" else "US"
+        if _GIFT_CARD_REGION_RE[other_region].search(evidence):
+            continue
+        seen.add(pid)
+        label = next((part.strip() for part in parts if re.search(r"apple|itunes", part, re.I)), evidence)
+        out.append({
+            "source": "ggsel", "native_id": pid, "label": label,
+            "url": f"{DEFAULT_GGSEL_BASE_URL}{href}", "catalog_price_rub": None,
+            "seller": None, "sales": None, "region": region,
+        })
+    return out
+
+
+async def _ggsel_gift_card_search_async(
+    region: str,
+    max_results: int,
+    failures: list[str],
+    proxy_urls: tuple[str, ...] | list[str] = (),
+) -> list[dict]:
+    """Search GGSEL's visible catalog search for query variants and load-more pages."""
+    from crawlee import ConcurrencySettings, Request
+    from crawlee.crawlers import PlaywrightCrawler
+
+    queries = GIFT_CARD_QUERIES[region]
+    crawler_options = {
+        "max_requests_per_crawl": len(queries),
+        "concurrency_settings": ConcurrencySettings(
+            min_concurrency=1, max_concurrency=1, desired_concurrency=1
+        ),
+        "browser_type": "chromium",
+        "browser_launch_options": {
+            "executable_path": CHROME_PATH,
+            "headless": True,
+            "args": ["--no-sandbox"],
+        },
+    }
+    if proxy_urls:
+        crawler_options["browser_new_context_options"] = {
+            "proxy": playwright_proxy_options(proxy_urls[0])
+        }
+    crawler = PlaywrightCrawler(**crawler_options)
+    found: dict[str, dict] = {}
+
+    @crawler.failed_request_handler
+    async def on_failure(ctx, error):
+        if proxy_urls:
+            failures.append("GGSEL gift-card query failed through configured proxy")
+        else:
+            failures.append(f"GGSEL gift-card query failed: {ctx.request.url}: {error}")
+
+    @crawler.router.default_handler
+    async def handle(ctx):
+        query = str(ctx.request.user_data.get("gift_card_query", ""))
+        try:
+            search = ctx.page.get_by_placeholder(re.compile(r"Найти товар|Поиск по товарам", re.I)).first
+            await search.fill(query)
+            await search.press("Enter")
+            await ctx.page.wait_for_load_state("domcontentloaded", timeout=10000)
+            await ctx.page.wait_for_timeout(700)
+            # Search results are progressively loaded. Stop at the bounded page
+            # cap or when the visible show-more control disappears.
+            for _ in range(6):
+                for candidate in _extract_ggsel_gift_cards(await ctx.page.content(), region):
+                    found.setdefault(candidate["native_id"], candidate)
+                if len(found) >= max_results:
+                    break
+                more = ctx.page.get_by_role("button", name=re.compile(r"показать (?:больше|ещ[её])|load more", re.I)).first
+                if await more.count() == 0 or not await more.is_visible():
+                    break
+                await more.click()
+                await ctx.page.wait_for_timeout(500)
+        except Exception as error:
+            if proxy_urls:
+                failures.append(f"GGSEL gift-card query {query!r} failed through configured proxy")
+            else:
+                failures.append(f"GGSEL gift-card query {query!r}: {error}")
+
+    await crawler.run([
+        Request.from_url(
+            f"{DEFAULT_GGSEL_BASE_URL}/catalog?gift_card_query={index}",
+            user_data={"gift_card_query": query},
+        )
+        for index, query in enumerate(queries)
+    ])
+    return list(found.values())[:max_results]
+
+
+def discover_gift_cards(
+    region: str = "US",
+    max_results: int = 80,
+    *,
+    proxy_urls: tuple[str, ...] | list[str] = (),
+) -> dict:
+    """Search generic GGSEL queries for one region-locked Apple gift-card type."""
+    region = str(region).upper()
+    if region == "TR":
+        return {
+            "product": "apple_gift_card", "region": region, "candidates": [],
+            "ggsel_found": 0, "queries": [], "transport": "not-collected",
+            "errors": [], "coverage": "Turkey scan is intentionally deferred",
+        }
+    if region not in GIFT_CARD_QUERIES:
+        raise ValueError(f"unsupported gift-card region {region!r}")
+    failures: list[str] = []
+    try:
+        candidates = asyncio.run(
+            _ggsel_gift_card_search_async(region, max_results, failures, proxy_urls)
+        )
+        transport = "playwright-search-partial" if failures else "playwright-search"
+    except Exception as error:
+        candidates = []
+        failures.append("GGSEL gift-card search failed through configured proxy" if proxy_urls else str(error))
+        transport = "playwright-proxy-error" if proxy_urls else f"playwright-error: {error}"
+    return {
+        "product": "apple_gift_card",
+        "region": region,
+        "candidates": candidates,
+        "ggsel_found": len(candidates),
+        "queries": list(GIFT_CARD_QUERIES[region]),
+        "transport": transport,
+        "errors": failures,
+        "coverage": "visible catalog search query variants; bounded load-more pages, not exhaustive",
+        "proxyMode": "configured" if proxy_urls else "direct",
+        "proxyCount": len(proxy_urls),
     }
 
 

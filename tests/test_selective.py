@@ -132,7 +132,7 @@ def test_cli_passes_only_gate_selected_listings_to_llm(monkeypatch):
     assert len(offers) == 2
 
 
-def test_auto_with_key_uses_selective_gate_for_chatgpt(monkeypatch):
+def test_auto_with_key_stays_deterministic_for_chatgpt(monkeypatch):
     import cli
     import analyzer.llm_extract
 
@@ -142,19 +142,16 @@ def test_auto_with_key_uses_selective_gate_for_chatgpt(monkeypatch):
     raw = {"listings": [clean, uncertain]}
     seen = []
 
-    def fake_extract(subset, **kwargs):
-        seen.extend(item["pid"] for item in subset["listings"])
-        return [], {"called": 1, "batches": 1, "failed": 0}
+    def unexpected_call(*_args, **_kwargs):
+        raise AssertionError("auto must not invoke the LLM")
 
     monkeypatch.setenv("LLM_API_KEY", "unit-test-key")
-    monkeypatch.setattr(analyzer.llm_extract, "extract_offers", fake_extract)
+    monkeypatch.setattr(analyzer.llm_extract, "extract_offers", unexpected_call)
     args = cli._parse_args(["--family", "chatgpt"])
     family = cli._resolve_families(args)[0]
     offers, meta = cli._analyze(raw, family, args)
 
-    assert seen == ["uncertain"]
-    assert meta["analyzer"] == "selective"
-    assert meta["routedListings"] == 1
+    assert meta["analyzer"] == "regex"
     assert len(offers) == 2
 
 
@@ -177,7 +174,7 @@ def test_auto_without_key_keeps_regex_and_never_calls_llm(monkeypatch):
     assert offers
 
 
-def test_auto_non_chatgpt_and_explicit_llm_keep_all_listing_mode(monkeypatch):
+def test_auto_is_deterministic_but_explicit_llm_uses_all_listings(monkeypatch):
     import cli
     import analyzer.llm_extract
 
@@ -190,12 +187,16 @@ def test_auto_non_chatgpt_and_explicit_llm_keep_all_listing_mode(monkeypatch):
 
     monkeypatch.setenv("LLM_API_KEY", "unit-test-key")
     monkeypatch.setattr(analyzer.llm_extract, "extract_offers", fake_extract)
-    for argv in (["--family", "claude"], ["--family", "chatgpt", "--analyzer", "llm"]):
-        args = cli._parse_args(argv)
-        family = cli._resolve_families(args)[0]
-        _, meta = cli._analyze(raw, family, args)
-        assert meta["analyzer"] == "llm"
-    assert seen == [["one", "two"], ["one", "two"]]
+    args = cli._parse_args(["--family", "claude"])
+    family = cli._resolve_families(args)[0]
+    _, meta = cli._analyze(raw, family, args)
+    assert meta["analyzer"] == "regex"
+
+    args = cli._parse_args(["--family", "chatgpt", "--analyzer", "llm"])
+    family = cli._resolve_families(args)[0]
+    _, meta = cli._analyze(raw, family, args)
+    assert meta["analyzer"] == "llm"
+    assert seen == [["one", "two"]]
 
 
 def test_default_analyzer_remains_auto(monkeypatch):
@@ -203,6 +204,17 @@ def test_default_analyzer_remains_auto(monkeypatch):
 
     args = cli._parse_args(["--family", "chatgpt"])
     assert args.analyzer == "auto"
+
+
+def test_auto_analyzer_stays_deterministic_when_llm_key_is_configured(monkeypatch):
+    import cli
+
+    monkeypatch.setenv("LLM_API_KEY", "unit-test-key")
+    args = cli._parse_args(["--family", "claude"])
+    family = cli._resolve_families(args)[0]
+    offers, meta = cli._analyze({"listings": []}, family, args)
+    assert offers == []
+    assert meta["analyzer"] == "regex"
 
 
 def test_dry_run_report_includes_selective_routing_metric_only(capsys):

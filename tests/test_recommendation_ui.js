@@ -55,7 +55,9 @@ const registry = { families: {
 } };
 
 async function renderFixture(productOrProducts, planMetadata = registry) {
-  const products = Array.isArray(productOrProducts) ? productOrProducts : [productOrProducts];
+  const catalogue = Array.isArray(productOrProducts) ? { products: productOrProducts }
+    : Array.isArray(productOrProducts?.products) ? productOrProducts : { products: [productOrProducts] };
+  const products = [...(catalogue.products || []), ...(catalogue.giftCards || [])];
   const elements = new Map();
   const getElement = id => {
     if (!elements.has(id)) elements.set(id, {
@@ -70,7 +72,7 @@ async function renderFixture(productOrProducts, planMetadata = registry) {
   const context = {
     document: { getElementById: getElement },
     Option: function Option(text, value) { this.text = text; this.value = value; },
-    fetch: async url => ({ ok: true, json: async () => String(url).includes('subscription-plan-limits') ? planMetadata : ({ products }) }),
+    fetch: async url => ({ ok: true, json: async () => String(url).includes('subscription-plan-limits') ? planMetadata : catalogue }),
     Intl, Date, Set, Map, Number, String, Object, Array, Math
   };
   vm.runInNewContext(script, context);
@@ -87,7 +89,28 @@ test('current catalogue renders with the canonical registry without inventing an
   assert.equal((html.match(/class="recommendation-card"/g) || []).length, current.products.length);
   assert.match(html, /Официальный план:/);
   assert.doesNotMatch(html, /undefined|null ×/);
-  assert.match(html, /Pro 20X/);
+  // This date's live marketplace scan did not rediscover a Pro 20X offer.
+  // The canonical registry and X-value handling are covered by the fixture tests below.
+  assert.match(html, /Plus/);
+});
+
+test('separate Apple giftCards collection appears in the product picker and ranks by RUB per USD', async () => {
+  const current = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/latest.json'), 'utf8'));
+  const officialPlans = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/subscription-plan-limits.json'), 'utf8'));
+  assert.ok(Array.isArray(current.giftCards));
+  assert.equal(current.products.some(product => product.id === 'apple_us'), false);
+  const { getElement } = await renderFixture(current, officialPlans);
+
+  assert.ok(getElement('product').options.some(option => option.value === 'apple_us'));
+  getElement('product').listeners.change({ target: { value: 'apple_us' } });
+  assert.match(getElement('recommendations-list').innerHTML, /Apple Gift Card · 5 USD · US/);
+  assert.match(getElement('recommendations-list').innerHTML, /57[,\.]8 ₽ за \$1 номинала/);
+  assert.match(getElement('recommendations-list').innerHTML, /Наличие: Наличие не проверено/);
+  assert.doesNotMatch(getElement('recommendations-list').innerHTML, /Apple Gift Card · 50 USD/);
+  assert.match(getElement('offers').innerHTML, /289 ₽<span class="sub">57[,\.]8 ₽ за \$1 номинала<\/span>/);
+  assert.match(getElement('offers').innerHTML, /50 USD/);
+  assert.match(getElement('offers').innerHTML, /Наличие: Нет в наличии/);
+  assert.match(getElement('offers').innerHTML, /FiatPay/);
 });
 
 test('actual MiniMax M Plan tiers map separately from legacy Token Plan tiers', async () => {
@@ -117,18 +140,14 @@ test('actual MiniMax M Plan tiers map separately from legacy Token Plan tiers', 
   assert.match(card('Ambiguous M Plan fixture'), /нет подтверждённого числового лимита плана/);
 });
 
-test('saved GGSEL MiniMax offers participate in value ranking with the original scan date', async () => {
+test('fresh MiniMax catalogue uses the current headless GGSEL snapshot', async () => {
   const current = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/latest.json'), 'utf8'));
-  const officialPlans = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/subscription-plan-limits.json'), 'utf8'));
   const item = current.products.find(product => product.id === 'minimax');
-  assert.equal(item.metadata.scanDate, '2026-10-23');
-  assert.equal(item.metadata.reanalysisDate, '2026-10-25');
+  assert.equal(item.metadata.scanDate, '2026-10-25');
+  assert.equal(item.metadata.listings, 12);
   const ggsel = { ...item, offers: item.offers.filter(offer => offer.marketplace === 'ggsel') };
-  assert.equal(ggsel.offers.length, 8);
-  const { getElement } = await renderFixture(ggsel, officialPlans);
-  getElement('recommendation-mode-value').listeners.click();
-  assert.match(getElement('recommendations-list').innerHTML, /minimax\.m_plan\.explore/);
-  assert.match(getElement('recommendations-list').innerHTML, /Полная цена: 4&nbsp;800 ₽|Полная цена: 4\s800 ₽/);
+  assert.equal(ggsel.offers.length, 28);
+  assert.ok(ggsel.offers.some(offer => offer.pid === '102443754' && offer.tier === 'Ultra'));
 });
 
 test('actual registry aliases resolve Claude variants specifically and keep Kimi Pro+ separate from Pro', async () => {
@@ -195,6 +214,46 @@ test('default price recommendation includes every eligible tier and term and cho
   assert.equal(getElement('tier').value, '');
   assert.equal(getElement('duration').value, '');
   assert.match(html, /value="Pro 20X"/);
+});
+
+test('Apple gift-card recommendation chooses lowest RUB per face-value USD and shows total plus unit price', async () => {
+  const apple = {
+    ...product('apple_us', [], 'Apple Gift Card · США'),
+    kind: 'gift_card', region: 'US', allowedTiers: null,
+    offers: [
+      { marketplace: 'ggsel', pid: '2', url: 'https://example.test/2', title: 'Apple Gift Card USA', optionText: '$2 USD', region: 'US', denomination: 2, denominationCurrency: 'USD', priceRub: 159, pricePerUnit: 79.5, delivery: 'instant digital code', available: true, priceVerified: true, glitched: false },
+      { marketplace: 'ggsel', pid: '100', url: 'https://example.test/100', title: 'Apple Gift Card USA', optionText: '$100 USD', region: 'US', denomination: 100, denominationCurrency: 'USD', priceRub: 6000, pricePerUnit: 60, delivery: 'instant digital code', available: true, priceVerified: true, glitched: false }
+    ]
+  };
+  const { getElement } = await renderFixture(apple);
+  const recommendation = getElement('recommendations-list').innerHTML;
+  const offers = getElement('offers').innerHTML;
+
+  assert.match(recommendation, /Apple Gift Card · 100 USD · US/);
+  assert.match(recommendation, /Полная цена: 6\s?000 ₽ · 60 ₽ за \$1 номинала/);
+  assert.match(offers, /6\s?000 ₽<span class="sub">60 ₽ за \$1 номинала<\/span>/);
+  assert.ok(offers.indexOf('100 USD') < offers.indexOf('2 USD'));
+});
+
+test('gift-card stock stays separate from price: unknown can be ranked, out-of-stock cannot be recommended', async () => {
+  const apple = {
+    ...product('apple_us', [], 'Apple Gift Card · США'),
+    kind: 'gift_card', region: 'US', allowedTiers: null,
+    offers: [
+      { marketplace: 'ggsel', pid: '50', url: 'https://example.test/50', title: 'Apple Gift Card USA', optionText: '$50 (USDT)', region: 'US', denomination: 50, denominationCurrency: 'USD', priceRub: 500, pricePerUnit: 10, delivery: 'unknown', seller: 'FiatPay', available: false, availabilityStatus: 'out_of_stock', priceVerified: true, glitched: false },
+      { marketplace: 'ggsel', pid: '5-unknown', url: 'https://example.test/5', title: 'Apple Gift Card USA', optionText: '$5 USD', region: 'US', denomination: 5, denominationCurrency: 'USD', priceRub: 289, pricePerUnit: 57.8, delivery: 'unknown', seller: 'FiatPay', available: null, availabilityStatus: 'unknown', priceVerified: true, glitched: false },
+      { marketplace: 'ggsel', pid: '10', url: 'https://example.test/10', title: 'Apple Gift Card USA', optionText: '$10 USD', region: 'US', denomination: 10, denominationCurrency: 'USD', priceRub: 600, pricePerUnit: 60, delivery: 'unknown', seller: 'Other', available: true, availabilityStatus: 'in_stock', priceVerified: true, glitched: false }
+    ]
+  };
+  const { getElement } = await renderFixture(apple);
+  const recommendation = getElement('recommendations-list').innerHTML;
+  const offers = getElement('offers').innerHTML;
+
+  assert.match(recommendation, /Apple Gift Card · 5 USD · US/);
+  assert.match(recommendation, /Наличие: Наличие не проверено/);
+  assert.doesNotMatch(recommendation, /Apple Gift Card · 50 USD/);
+  assert.match(offers, /Нет в наличии/);
+  assert.match(offers, /Наличие не проверено/);
 });
 
 test('card-level filters can select a tier, and an incompatible term resets to Any instead of falling back', async () => {

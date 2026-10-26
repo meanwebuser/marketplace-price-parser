@@ -6,8 +6,11 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Sequence
+
+from scanner.proxy_source import redact_proxy_details
 
 ROOT = Path(__file__).resolve().parents[1]
 CLICK_JS = ROOT / "click.py"
@@ -17,10 +20,11 @@ def collect(
     candidates: Sequence[dict] | None = None,
     out_path: Path | None = None,
     *,
-    workers: int = 6,
+    workers: int = 2,
     headless: bool = False,
     plati_pids: Sequence[int | str] | None = None,
     ggsel_ids: Sequence[str] | None = None,
+    proxy_urls: Sequence[str] | None = None,
 ) -> dict:
     """Invoke click.py with --plati-pids / --ggsel-ids derived from
     candidates (or from explicit plati_pids/ggsel_ids kwargs).
@@ -56,10 +60,28 @@ def collect(
         cmd.extend(["--plati-pids", ",".join(plati_unique)])
     if ggsel_unique:
         cmd.extend(["--ggsel-ids", ",".join(ggsel_unique)])
-
-    proc = subprocess.run(cmd, capture_output=True, text=True, check=False, cwd=ROOT)
+    proxy_file: str | None = None
+    urls = list(proxy_urls or [])
+    if urls:
+        fd, proxy_file = tempfile.mkstemp(prefix="marketplace-proxies-", suffix=".json")
+        try:
+            os.fchmod(fd, 0o600)
+            with os.fdopen(fd, "w", encoding="utf-8") as stream:
+                json.dump(urls, stream, ensure_ascii=False)
+            cmd.extend(["--proxy-list-file", proxy_file])
+            proc = subprocess.run(
+                cmd, capture_output=True, text=True, check=False, cwd=ROOT
+            )
+        finally:
+            try:
+                Path(proxy_file).unlink(missing_ok=True)
+            except OSError:
+                pass
+    else:
+        proc = subprocess.run(cmd, capture_output=True, text=True, check=False, cwd=ROOT)
     if proc.returncode != 0:
-        raise RuntimeError(f"click.py failed: {proc.stderr or proc.stdout}")
+        details = redact_proxy_details(proc.stderr or proc.stdout, urls)
+        raise RuntimeError(f"click.py failed: {details}")
     return json.loads(Path(out_path).read_text())
 
 
@@ -67,17 +89,24 @@ if __name__ == "__main__":
     import argparse
     from scanner.discover import discover_all
     from families import FAMILY_REGISTRY
+    from scanner.proxy_source import fetch_proxy_urls
 
     p = argparse.ArgumentParser()
     p.add_argument("--family", required=True, choices=list(FAMILY_REGISTRY))
     p.add_argument("--max", type=int, default=80)
-    p.add_argument("--workers", type=int, default=6)
+    p.add_argument("--workers", type=int, default=2)
     p.add_argument("--headless", action="store_true", help="force all marketplace browsers to stay hidden")
     p.add_argument("--out", default="/tmp/raw.json")
     args = p.parse_args()
 
+    proxy_urls = fetch_proxy_urls()
+    if proxy_urls:
+        print(f"proxy source: {len(proxy_urls)} HTTP proxies loaded (addresses hidden)")
     family = FAMILY_REGISTRY[args.family]
-    discovery = discover_all(family, args.max)
+    discovery = discover_all(family, args.max, proxy_urls=proxy_urls)
     print(f"discovery: plati={discovery['plati_found']}, ggsel={discovery['ggsel_found']}")
-    result = collect(discovery["candidates"], Path(args.out), workers=args.workers, headless=args.headless)
+    result = collect(
+        discovery["candidates"], Path(args.out), workers=args.workers,
+        headless=args.headless, proxy_urls=proxy_urls,
+    )
     print(f"collected: {len(result['listings'])} listings → {args.out}")

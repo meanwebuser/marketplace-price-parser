@@ -80,6 +80,11 @@ def test_classify_delivery_shared_account():
     assert classify_delivery("Общий доступ подписка") == "shared_account"
 
 
+def test_classify_delivery_plati_shared_variant_and_keeps_ambiguous_individual_unknown():
+    assert classify_delivery("1 Месяц [Совместный - Плюс]") == "shared_account"
+    assert classify_delivery("1 Месяц [Индивидуальная - Плюс]") == "unknown"
+
+
 def test_classify_delivery_unknown():
     assert classify_delivery("обычное название без маркеров") == "unknown"
 

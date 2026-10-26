@@ -1,4 +1,5 @@
 const labels = { own_account: 'На личный аккаунт', new_account: 'Отдельный аккаунт', shared_account: 'Общий аккаунт', unknown: 'Уточнить у продавца', '1m': '1 месяц', '3m': '3 месяца', '6m': '6 месяцев', '12m': '1 год' };
+const availabilityLabels = { in_stock: 'В наличии', out_of_stock: 'Нет в наличии', unknown: 'Наличие не проверено' };
 const ids = ['product','recommendations-list','recommendation-mode-price','recommendation-mode-value','search','tier','duration','delivery','marketplace','sort','hide-glitched','reset','offers','result','updated','offer-count','minimum-price','marketplace-count','product-kicker','product-title','product-description','source-note'];
 const els = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
 const rub = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
@@ -17,12 +18,36 @@ const durationRank = ['1m', '3m', '6m', '12m'];
 
 const esc = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 const label = value => labels[value] || value;
+const availabilityLabel = offer => availabilityLabels[offer.availabilityStatus] || (offer.available === true ? 'В наличии' : offer.available === false ? 'Нет в наличии' : 'Наличие не проверено');
 const safeUrl = value => /^https:\/\//.test(value) ? value : '#';
+const denominationUnit = offer => offer.denominationCurrency === 'USD' ? '$1' : `1 ${offer.denominationCurrency || 'ед.'}`;
 function resetOptions(id, initial) { els[id].innerHTML = `<option value="">${initial}</option>`; }
 function addOptions(id, values) { [...values].sort().forEach(value => els[id].append(new Option(label(value), value))); }
 function resetFilters() {
-  els.search.value = ''; ['tier','duration','delivery','marketplace'].forEach(id => resetOptions(id, id === 'duration' ? 'Любой' : id === 'delivery' ? 'Любая' : 'Все'));
-  addOptions('tier', new Set(active.allowedTiers || offers.map(o => o.tier))); addOptions('duration', new Set(offers.map(o => o.duration))); addOptions('delivery', new Set(offers.map(o => o.delivery))); addOptions('marketplace', new Set(offers.map(o => o.marketplace)));
+  const isGiftCard = active.kind === 'gift_card';
+  els.search.value = '';
+  resetOptions('tier', isGiftCard ? 'Любой номинал' : 'Все');
+  resetOptions('duration', isGiftCard ? 'Любой регион' : 'Любой');
+  resetOptions('delivery', 'Любая'); resetOptions('marketplace', 'Все');
+  const tierLabel = els.tier.closest?.('label')?.querySelector?.('span');
+  const durationLabel = els.duration.closest?.('label')?.querySelector?.('span');
+  const headings = document.querySelectorAll?.('thead th') || [];
+  if (tierLabel) tierLabel.textContent = isGiftCard ? 'Номинал' : 'Тариф';
+  if (durationLabel) durationLabel.textContent = isGiftCard ? 'Регион' : 'Срок';
+  if (headings[1]) headings[1].textContent = isGiftCard ? 'Номинал' : 'Тариф';
+  if (headings[2]) headings[2].textContent = isGiftCard ? 'Регион' : 'Срок';
+  const unitPriceSort = els.sort.querySelector?.('option[value="price-asc"]');
+  if (unitPriceSort) unitPriceSort.textContent = isGiftCard ? `Цена за ${denominationUnit(offers[0] || {})} номинала` : 'Сначала дешевле';
+  const durationSort = els.sort.querySelector?.('option[value="duration"]');
+  if (durationSort) durationSort.textContent = isGiftCard ? 'По региону' : 'По сроку';
+  if (isGiftCard) {
+    addOptions('tier', new Set(offers.map(o => `${o.denomination} ${o.denominationCurrency}`)));
+    addOptions('duration', new Set(offers.map(o => o.region)));
+  } else {
+    addOptions('tier', new Set(active.allowedTiers || offers.map(o => o.tier)));
+    addOptions('duration', new Set(offers.map(o => o.duration)));
+  }
+  addOptions('delivery', new Set(offers.map(o => o.delivery))); addOptions('marketplace', new Set(offers.map(o => o.marketplace)));
   els.sort.value = 'price-asc'; els['hide-glitched'].checked = true;
 }
 function eligibleOffers(product) {
@@ -78,14 +103,17 @@ function recommendationTier(product, offer) {
   return offer.tier;
 }
 function recommendationName(product, offer) {
+  if (product.kind === 'gift_card') return `Apple Gift Card · ${offer.denomination} ${offer.denominationCurrency} · ${offer.region}`;
   const tier = recommendationTier(product, offer);
   if (product.id === 'zai') return `Z.ai GLM ${tier}`;
   if (product.id === 'minimax') return `MiniMax M Plan ${tier}`;
   return tier;
 }
 function recommendation(product, selection, mode) {
-  const matching = eligibleOffers(product).filter(o => (!selection.tier || recommendationTier(product, o) === selection.tier)
-    && (!selection.duration || o.duration === selection.duration));
+  const isGiftCard = product.kind === 'gift_card';
+  const matching = eligibleOffers(product).filter(o => (!selection.tier || (isGiftCard ? `${o.denomination} ${o.denominationCurrency}` : recommendationTier(product, o)) === selection.tier)
+    && (!selection.duration || (isGiftCard ? o.region : o.duration) === selection.duration));
+  if (isGiftCard && mode === 'value') return null;
   if (mode === 'value') {
     const ranked = matching.map(offer => ({ offer, plan: planForOffer(product, offer), months: Number.parseInt(offer.duration, 10) }))
       .filter(item => Number.isFinite(item.months) && item.months > 0 && Number.isFinite(item.plan?.limitPoints) && item.plan.limitPoints > 0)
@@ -94,7 +122,9 @@ function recommendation(product, selection, mode) {
       || Number(!a.offer.finalVerified)-Number(!b.offer.finalVerified)
       || Number(a.offer.delivery !== 'own_account')-Number(b.offer.delivery !== 'own_account'))[0] || null;
   }
-  const cheapest = [...matching].sort((a,b) => a.priceRub-b.priceRub
+  const unitPrice = offer => Number.isFinite(offer.pricePerUnit) ? offer.pricePerUnit : offer.priceRub / offer.denomination;
+  const cheapest = [...matching].sort((a,b) => (isGiftCard ? unitPrice(a)-unitPrice(b) : a.priceRub-b.priceRub)
+    || a.priceRub-b.priceRub
     || Number(!a.finalVerified)-Number(!b.finalVerified)
     || Number(a.delivery !== 'own_account')-Number(b.delivery !== 'own_account'))[0] || null;
   return cheapest ? { offer: cheapest, multiplier: null, score: null } : null;
@@ -107,30 +137,33 @@ function ordered(values, order) {
 }
 function renderRecommendation(product) {
   const eligible = eligibleOffers(product);
+  const isGiftCard = product.kind === 'gift_card';
   const tierOrder = product.id === 'claude' ? ['Pro', 'Max 5X', 'Max 20X'] : tierRank[product.id] || [];
-  const tiers = ordered(eligible.map(o => recommendationTier(product, o)), tierOrder);
+  const tiers = isGiftCard
+    ? ordered(eligible.map(o => `${o.denomination} ${o.denominationCurrency}`), [])
+    : ordered(eligible.map(o => recommendationTier(product, o)), tierOrder);
   const selection = recommendationSelection.get(product.id) || { tier: '', duration: '' };
   if (selection.tier && !tiers.includes(selection.tier)) selection.tier = '';
-  const durationOffers = eligible.filter(o => !selection.tier || recommendationTier(product, o) === selection.tier);
-  const durations = ordered(durationOffers.map(o => o.duration), durationRank);
+  const durationOffers = eligible.filter(o => !selection.tier || (isGiftCard ? `${o.denomination} ${o.denominationCurrency}` : recommendationTier(product, o)) === selection.tier);
+  const durations = ordered(durationOffers.map(o => isGiftCard ? o.region : o.duration), isGiftCard ? [] : durationRank);
   if (selection.duration && !durations.includes(selection.duration)) selection.duration = '';
   recommendationSelection.set(product.id, selection);
   const chosen = recommendation(product, selection, recommendationMode);
   const offer = chosen?.offer;
   const id = esc(product.id);
-  const tierOptions = [`<option value=""${selection.tier ? '' : ' selected'}>Все уровни</option>`, ...tiers.map(tier => `<option value="${esc(tier)}"${tier === selection.tier ? ' selected' : ''}>${esc(tier)}</option>`)].join('');
-  const durationOptions = [`<option value=""${selection.duration ? '' : ' selected'}>Любой срок</option>`, ...durations.map(duration => `<option value="${esc(duration)}"${duration === selection.duration ? ' selected' : ''}>${esc(label(duration))}</option>`)].join('');
+  const tierOptions = [`<option value=""${selection.tier ? '' : ' selected'}>${isGiftCard ? 'Любой номинал' : 'Все уровни'}</option>`, ...tiers.map(tier => `<option value="${esc(tier)}"${tier === selection.tier ? ' selected' : ''}>${esc(tier)}</option>`)].join('');
+  const durationOptions = [`<option value=""${selection.duration ? '' : ' selected'}>${isGiftCard ? 'Любой регион' : 'Любой срок'}</option>`, ...durations.map(duration => `<option value="${esc(duration)}"${duration === selection.duration ? ' selected' : ''}>${esc(isGiftCard ? duration : label(duration))}</option>`)].join('');
   const controls = `<div class="recommendation-controls">
-      <label><span>Уровень</span><select data-product="${id}" data-selection="tier">${tierOptions}</select></label>
-      <label><span>Срок</span><select data-product="${id}" data-selection="duration">${durationOptions}</select></label>
+      <label><span>${isGiftCard ? 'Номинал' : 'Уровень'}</span><select data-product="${id}" data-selection="tier">${tierOptions}</select></label>
+      <label><span>${isGiftCard ? 'Регион' : 'Срок'}</span><select data-product="${id}" data-selection="duration">${durationOptions}</select></label>
     </div>`;
   if (!offer) return `<article class="recommendation-card">
     <span class="service">${esc(product.label)}</span>
     ${controls}
-    <p class="unavailable">${recommendationMode === 'value' ? 'Для выбранных условий нет подтверждённого числового лимита плана. Все предложения доступны в таблице.' : 'Нет проверенного предложения для выбранных условий. Все предложения доступны в таблице.'}</p>
+    <p class="unavailable">${isGiftCard && recommendationMode === 'value' ? 'Показатель лимита за рубль применяется к подпискам. Для gift cards используйте сортировку по цене.' : recommendationMode === 'value' ? 'Для выбранных условий нет подтверждённого числового лимита плана. Все предложения доступны в таблице.' : 'Нет проверенного предложения для выбранных условий. Все предложения доступны в таблице.'}</p>
     <a href="#offers" data-product="${id}" class="show-product-offers">Смотреть предложения</a>
   </article>`;
-  const details = [label(offer.delivery), offer.marketplace.toUpperCase()].filter(Boolean).join(' · ');
+  const details = [label(offer.delivery), offer.seller, offer.marketplace.toUpperCase()].filter(Boolean).join(' · ');
   const planFamily = planRegistry?.families?.[product.id === 'zai' ? 'zai_glm' : product.id];
   const planSource = chosen?.plan?.sourceUrl || planFamily?.sourceUrl;
   const score = recommendationMode === 'value'
@@ -138,13 +171,13 @@ function renderRecommendation(product) {
     : '';
   return `<article class="recommendation-card">
     <span class="service">${esc(product.label)}</span>
-    <h3>${esc(recommendationName(product, offer))} · ${esc(label(offer.duration))}</h3>
+    <h3>${esc(recommendationName(product, offer))}${isGiftCard ? '' : ` · ${esc(label(offer.duration))}`}</h3>
     ${controls}
     ${score}
-    <span class="recommended-price">Полная цена: ${rub.format(offer.priceRub)} ₽</span>
+    <span class="recommended-price">Полная цена: ${rub.format(offer.priceRub)} ₽${isGiftCard ? ` · ${scoreFormat.format(offer.pricePerUnit ?? (offer.priceRub / offer.denomination))} ₽ за ${denominationUnit(offer)} номинала` : ''}</span>
     <span class="recommended-detail">${esc(offer.optionText || offer.title)}</span>
     ${offer.sellerNote ? `<span class="recommended-detail">Заметка продавца (не проверена): ${esc(offer.sellerNote)}</span>` : ''}
-    <span class="recommended-meta">${esc(details)}${offer.finalVerified ? ' · проверено в браузере' : ''}</span>
+    <span class="recommended-meta">${isGiftCard ? `Наличие: ${esc(availabilityLabel(offer))} · ` : ''}${esc(details)}${offer.finalVerified ? ' · проверено в браузере' : ''}</span>
     <a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Смотреть предложение</a>
   </article>`;
 }
@@ -166,30 +199,49 @@ function chooseProduct(id) {
   els['product-description'].textContent = active.description;
   const finished = active.metadata.scanCompletedAt || active.metadata.scanStartedAt;
   els.updated.textContent = `Скан: ${finished ? new Date(finished).toLocaleString('ru-RU') : active.metadata.scanDate} · ${active.metadata.listings || '—'} карточек`;
-  els['source-note'].textContent = `${active.metadata.detailLevel === 'summary' ? 'Это сохранённая итоговая сводка: полный raw/CSV этого исторического Z.ai-скана не был закоммичен. ' : 'Полный CSV и raw-снимок доступны в репозитории. '}Тип выдачи «не определён» требует ручной проверки условий продавца.`;
+  els['source-note'].textContent = active.kind === 'gift_card'
+    ? 'Регион Apple Account должен совпадать с регионом карты. Номинал — в валюте карты, цена продавца — в рублях. Цена и наличие проверяются отдельно; неизвестное наличие не означает, что товар можно купить.'
+    : `${active.metadata.detailLevel === 'summary' ? 'Это сохранённая итоговая сводка: полный raw/CSV этого исторического Z.ai-скана не был закоммичен. ' : 'Полный CSV и raw-снимок доступны в репозитории. '}Тип выдачи «не определён» требует ручной проверки условий продавца.`;
   resetFilters(); render();
 }
 function filtered() {
   const query = els.search.value.trim().toLowerCase();
-  return offers.filter(o => (!query || [o.title,o.optionText,o.marketplace,o.tier].join(' ').toLowerCase().includes(query))
-    && (!els.tier.value || o.tier === els.tier.value) && (!els.duration.value || o.duration === els.duration.value)
+  const isGiftCard = active?.kind === 'gift_card';
+  const unitPrice = offer => Number.isFinite(offer.pricePerUnit) ? offer.pricePerUnit : offer.priceRub / offer.denomination;
+  return offers.filter(o => (!query || [o.title,o.optionText,o.marketplace,o.tier,o.region,o.denomination].join(' ').toLowerCase().includes(query))
+    && (!els.tier.value || (isGiftCard ? `${o.denomination} ${o.denominationCurrency}` : o.tier) === els.tier.value)
+    && (!els.duration.value || (isGiftCard ? o.region : o.duration) === els.duration.value)
     && (!els.delivery.value || o.delivery === els.delivery.value) && (!els.marketplace.value || o.marketplace === els.marketplace.value)
     && (!els['hide-glitched'].checked || !o.glitched))
-    .sort((a,b) => els.sort.value === 'price-desc' ? b.priceRub-a.priceRub : els.sort.value === 'duration' ? a.duration.localeCompare(b.duration) || a.priceRub-b.priceRub : a.priceRub-b.priceRub);
+    .sort((a,b) => els.sort.value === 'price-desc' ? b.priceRub-a.priceRub
+      : els.sort.value === 'duration' ? (isGiftCard ? String(a.region).localeCompare(String(b.region)) : String(a.duration).localeCompare(String(b.duration))) || a.priceRub-b.priceRub
+      : isGiftCard ? unitPrice(a)-unitPrice(b) || a.priceRub-b.priceRub : a.priceRub-b.priceRub);
 }
 function render() {
   const rows = filtered(); els.result.textContent = `Показано ${rows.length} из ${offers.length} вариантов`;
-  els['offer-count'].textContent = rows.length; els['minimum-price'].textContent = rows.length ? `${rub.format(rows[0].priceRub)} ₽` : '—'; els['marketplace-count'].textContent = new Set(rows.map(o => o.marketplace)).size;
-  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(o.tier)}</span></td><td>${esc(label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span>${o.sellerNote ? `<span class="sub">Заметка продавца (не проверена): ${esc(o.sellerNote)}</span>` : ''}</td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
+  els['offer-count'].textContent = rows.length;
+  const isGiftCard = active?.kind === 'gift_card';
+  const metricLabel = els['minimum-price'].parentElement?.querySelector?.('span');
+  if (metricLabel) metricLabel.textContent = isGiftCard ? `Минимум за ${denominationUnit(rows[0] || {})}` : 'Минимальная цена';
+  if (isGiftCard) {
+    const buyableOrUnknown = rows.filter(o => o.available !== false);
+    const bestUnitPrice = buyableOrUnknown.length ? Math.min(...buyableOrUnknown.map(o => o.pricePerUnit ?? o.priceRub / o.denomination)) : null;
+    els['minimum-price'].textContent = bestUnitPrice === null ? '—' : `${scoreFormat.format(bestUnitPrice)} ₽`;
+  } else {
+    const minimumPrice = rows.length ? Math.min(...rows.map(o => o.priceRub)) : null;
+    els['minimum-price'].textContent = minimumPrice === null ? '—' : `${rub.format(minimumPrice)} ₽`;
+  }
+  els['marketplace-count'].textContent = new Set(rows.map(o => o.marketplace)).size;
+  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${isGiftCard ? `<span class="sub">${scoreFormat.format(o.pricePerUnit ?? (o.priceRub / o.denomination))} ₽ за ${denominationUnit(o)} номинала</span><span class="sub">Наличие: ${esc(availabilityLabel(o))}</span>` : ''}${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(isGiftCard ? `${o.denomination} ${o.denominationCurrency}` : o.tier)}</span></td><td>${esc(isGiftCard ? o.region : label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span>${o.seller ? `<span class="sub">${esc(o.seller)}</span>` : ''}${o.sellerNote ? `<span class="sub">Заметка продавца (не проверена): ${esc(o.sellerNote)}</span>` : ''}</td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
 }
 async function init() {
   try {
     const [data, registry] = await Promise.all([
-      fetch('data/latest.json?v=7').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
+      fetch('data/latest.json?v=8').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
       fetch('data/subscription-plan-limits.json').then(r => { if (!r.ok) throw new Error(); return r.json(); })
     ]);
     planRegistry = registry;
-    products = data.products; renderRecommendations(); els.product.innerHTML = ''; products.forEach(item => els.product.append(new Option(item.label, item.id))); chooseProduct(products[0]?.id);
+    products = [...(data.products || []), ...(data.giftCards || [])]; renderRecommendations(); els.product.innerHTML = ''; products.forEach(item => els.product.append(new Option(item.label, item.id))); chooseProduct(products[0]?.id);
   } catch { els.result.textContent = 'Не удалось загрузить каталог снимков.'; }
 }
 ['search','tier','duration','delivery','marketplace','sort','hide-glitched'].forEach(id => els[id].addEventListener(id === 'search' ? 'input' : 'change', render));
@@ -201,7 +253,7 @@ els['recommendations-list'].addEventListener('change', event => {
   const selection = recommendationSelection.get(product.id) || { tier: '', duration: '' };
   selection[select.dataset.selection] = select.value;
   if (select.dataset.selection === 'tier') {
-    const durations = ordered(eligibleOffers(product).filter(o => !select.value || recommendationTier(product, o) === select.value).map(o => o.duration), durationRank);
+    const durations = ordered(eligibleOffers(product).filter(o => !select.value || (product.kind === 'gift_card' ? `${o.denomination} ${o.denominationCurrency}` : recommendationTier(product, o)) === select.value).map(o => product.kind === 'gift_card' ? o.region : o.duration), product.kind === 'gift_card' ? [] : durationRank);
     if (selection.duration && !durations.includes(selection.duration)) selection.duration = '';
   }
   recommendationSelection.set(product.id, selection);

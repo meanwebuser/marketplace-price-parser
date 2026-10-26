@@ -1,0 +1,5 @@
+marketplace,pid,url,title,option_text,raw_option_text,control_kind,control_dom_index,control_input_id,control_value,tier,duration,delivery,price_rub,strong_signal,glitched,glitch_reason,available,availability_reason,price_changed,price_stable,price_verified,final_verified,final_observed_price
+plati,5740968,https://plati.market/itm/5740968,Купить 1-6MONTHS ANTIGRAVITY |PRO|ULTRA Claude Opus 4.6+GEMINI3.1,6Month Gemini AI Pro + ANTIGRAVITY PRO(Готовый аккаунт) | +300 ₽,"6Month Gemini AI Pro + ANTIGRAVITY PRO(Готовый аккаунт)
++300 ₽",label,4,,,Pro+,6m,new_account,949.0,True,False,,True,,True,True,True,False,
+plati,5740968,https://plati.market/itm/5740968,Купить 1-6MONTHS ANTIGRAVITY |PRO|ULTRA Claude Opus 4.6+GEMINI3.1,Gemini Google AI Pro + ANTIGRAVITY PRO (3Month Ready Account)) | Выбран,"Gemini Google AI Pro + ANTIGRAVITY PRO (3Month Ready Account))
+Выбран",label,3,,,Pro+,3m,new_account,649.0,True,False,,True,,True,True,True,False,

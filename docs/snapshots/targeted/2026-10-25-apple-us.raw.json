@@ -1,0 +1,3032 @@
+{
+  "schemaVersion": 3,
+  "scan": {
+    "marketplace": "GGSEL",
+    "scope": "Previously discovered US Apple gift card URLs only",
+    "method": "Sequential direct public SSR GET; no proxy, browser, login, cart, or purchase",
+    "startedAtUtc": "2026-10-25 17:34:59 UTC",
+    "completedAtUtc": "2026-10-25 17:35:47 UTC",
+    "concurrency": 1,
+    "retryPolicy": "one retry for network/5xx only; no retry for 404/410",
+    "queriedIds": [
+      "5211966",
+      "102664570",
+      "102552039",
+      "4852424",
+      "102724474",
+      "102662580",
+      "102691390",
+      "5162399",
+      "102708567",
+      "102083320",
+      "102163314"
+    ],
+    "http200": 11,
+    "unavailable": [],
+    "priorCandidateSetCount": 19,
+    "searchCoverageComplete": false
+  },
+  "priceMethod": "For every option, effective total RUB = SSR price_wmr + option modify_value_default (RUB). Rate = effective total / explicit face USD. An option label with explicit USD or $ is eligible for confirmed rate comparison; labels without explicit unit stay in raw/CSV but are excluded from winner.",
+  "confirmedWinner": {
+    "id": "102664570",
+    "title": "Купить  Apple Gift Card США $2–$100 | Только US App Store",
+    "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-tolko-us-app-store-102664570",
+    "seller": "FiatPay",
+    "label": "5$ (USDT)",
+    "faceValueUsd": 5,
+    "totalRub": 289,
+    "rubPerUsd": 57.8,
+    "default": false,
+    "modifierRub": "100.0",
+    "variantId": 36715422,
+    "sha256": "524530f5fffd3d9844bbf6e89253893669126ebcbfd58bac56555f05c91d150f"
+  },
+  "confirmedOptionCount": 157,
+  "pages": [
+    {
+      "id": "5211966",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-5211966",
+      "title": "Купить  Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК",
+      "bodyBytes": 537272,
+      "bodySha256": "053e86cc41577b0d2770c26932d245481988d0d9a72c2269bda60229cfce0c1d",
+      "metaPrice": "458 ₽",
+      "priceWmrRub": 458,
+      "seller": "All for Gamers",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-5211966",
+        "price": 458,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "All for Gamers"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 458,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "4$ (USD)",
+          4,
+          731,
+          182.75,
+          true,
+          "273.0",
+          "RUB",
+          false,
+          146968
+        ],
+        [
+          "5$ (USD)",
+          5,
+          846,
+          169.2,
+          false,
+          "388.0",
+          "RUB",
+          false,
+          146971
+        ],
+        [
+          "6$ (USD)",
+          6,
+          981,
+          163.5,
+          false,
+          "523.0",
+          "RUB",
+          false,
+          146975
+        ],
+        [
+          "7$ (USD)",
+          7,
+          1172,
+          167.428571,
+          false,
+          "714.0",
+          "RUB",
+          false,
+          146979
+        ],
+        [
+          "8$ (USD)",
+          8,
+          1241,
+          155.125,
+          false,
+          "783.0",
+          "RUB",
+          false,
+          146981
+        ],
+        [
+          "9$ (USD)",
+          9,
+          1361,
+          151.222222,
+          false,
+          "903.0",
+          "RUB",
+          false,
+          146984
+        ],
+        [
+          "10$ (USD)",
+          10,
+          1372,
+          137.2,
+          false,
+          "914.0",
+          "RUB",
+          false,
+          146987
+        ],
+        [
+          "15$ (USD)",
+          15,
+          2032,
+          135.466667,
+          false,
+          "1574.0",
+          "RUB",
+          false,
+          146989
+        ],
+        [
+          "20$ (USD)",
+          20,
+          2652,
+          132.6,
+          false,
+          "2194.0",
+          "RUB",
+          false,
+          146994
+        ],
+        [
+          "25$ (USD)",
+          25,
+          3272,
+          130.88,
+          false,
+          "2814.0",
+          "RUB",
+          false,
+          146997
+        ],
+        [
+          "30$ (USD)",
+          30,
+          3872,
+          129.066667,
+          false,
+          "3414.0",
+          "RUB",
+          false,
+          147000
+        ],
+        [
+          "35$ (USD)",
+          35,
+          4276,
+          122.171429,
+          false,
+          "3818.0",
+          "RUB",
+          false,
+          26185746
+        ],
+        [
+          "40$ (USD)",
+          40,
+          5072,
+          126.8,
+          false,
+          "4614.0",
+          "RUB",
+          false,
+          147002
+        ],
+        [
+          "45$ (USD)",
+          45,
+          5522,
+          122.711111,
+          false,
+          "5064.0",
+          "RUB",
+          false,
+          26185747
+        ],
+        [
+          "50$ (USD)",
+          50,
+          6092,
+          121.84,
+          false,
+          "5634.0",
+          "RUB",
+          false,
+          147004
+        ],
+        [
+          "60$ (USD)",
+          60,
+          7262,
+          121.033333,
+          false,
+          "6804.0",
+          "RUB",
+          false,
+          147006
+        ],
+        [
+          "70$ (USD)",
+          70,
+          8362,
+          119.457143,
+          false,
+          "7904.0",
+          "RUB",
+          false,
+          147010
+        ],
+        [
+          "75$ (USD)",
+          75,
+          8672,
+          115.626667,
+          false,
+          "8214.0",
+          "RUB",
+          false,
+          26185750
+        ],
+        [
+          "80$ (USD)",
+          80,
+          9442,
+          118.025,
+          false,
+          "8984.0",
+          "RUB",
+          false,
+          147011
+        ],
+        [
+          "90$ (USD)",
+          90,
+          10592,
+          117.688889,
+          false,
+          "10134.0",
+          "RUB",
+          false,
+          147014
+        ],
+        [
+          "100$ (USD)",
+          100,
+          11232,
+          112.32,
+          false,
+          "10774.0",
+          "RUB",
+          false,
+          147019
+        ],
+        [
+          "Я полностью прочитал описание товара и согласен с ним",
+          null,
+          458,
+          null,
+          false,
+          "0.0",
+          "RUB",
+          false,
+          147024
+        ]
+      ]
+    },
+    {
+      "id": "102664570",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-tolko-us-app-store-102664570",
+      "title": "Купить  Apple Gift Card США $2–$100 | Только US App Store",
+      "bodyBytes": 421547,
+      "bodySha256": "524530f5fffd3d9844bbf6e89253893669126ebcbfd58bac56555f05c91d150f",
+      "metaPrice": "189 ₽",
+      "priceWmrRub": 189,
+      "seller": "FiatPay",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-tolko-us-app-store-102664570",
+        "price": 189,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "FiatPay"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 189,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2$ (USDT)",
+          2,
+          189,
+          94.5,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          36715419
+        ],
+        [
+          "3$ (USDT)",
+          3,
+          289,
+          96.333333,
+          false,
+          "100.0",
+          "RUB",
+          false,
+          36715420
+        ],
+        [
+          "4$ (USDT)",
+          4,
+          289,
+          72.25,
+          false,
+          "100.0",
+          "RUB",
+          false,
+          36715421
+        ],
+        [
+          "5$ (USDT)",
+          5,
+          289,
+          57.8,
+          false,
+          "100.0",
+          "RUB",
+          false,
+          36715422
+        ],
+        [
+          "10$ (USDT)",
+          10,
+          1089,
+          108.9,
+          false,
+          "900.0",
+          "RUB",
+          false,
+          36715423
+        ],
+        [
+          "20$ (USDT)",
+          20,
+          2039,
+          101.95,
+          false,
+          "1850.0",
+          "RUB",
+          false,
+          36715424
+        ],
+        [
+          "50$ (USDT)",
+          50,
+          4989,
+          99.78,
+          false,
+          "4800.0",
+          "RUB",
+          false,
+          36715426
+        ],
+        [
+          "100$ (USDT)",
+          100,
+          9989,
+          99.89,
+          false,
+          "9800.0",
+          "RUB",
+          false,
+          36715427
+        ]
+      ]
+    },
+    {
+      "id": "102552039",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/karta-popolneniia-apple-2-100-usd-102552039",
+      "title": "Купить  Карта Пополнения Apple 2-100$USD",
+      "bodyBytes": 433216,
+      "bodySha256": "e8ba6857039df8c6dbbcd4b99ade8388d42ca8914791cc0aaedabea696afd933",
+      "metaPrice": "159 ₽",
+      "priceWmrRub": 159,
+      "seller": "XcodeGames",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/karta-popolneniia-apple-2-100-usd-102552039",
+        "price": 159,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "XcodeGames"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 159,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2 USD",
+          2,
+          159,
+          79.5,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          47258948
+        ],
+        [
+          "5 USD",
+          5,
+          319,
+          63.8,
+          false,
+          "160.0",
+          "RUB",
+          false,
+          47258949
+        ],
+        [
+          "10 USD",
+          10,
+          1019,
+          101.9,
+          false,
+          "860.0",
+          "RUB",
+          false,
+          47258950
+        ],
+        [
+          "15 USD",
+          15,
+          1639,
+          109.266667,
+          false,
+          "1480.0",
+          "RUB",
+          false,
+          47258951
+        ],
+        [
+          "20 USD",
+          20,
+          2189,
+          109.45,
+          false,
+          "2030.0",
+          "RUB",
+          false,
+          47258952
+        ],
+        [
+          "25 USD",
+          25,
+          2639,
+          105.56,
+          false,
+          "2480.0",
+          "RUB",
+          false,
+          47258953
+        ],
+        [
+          "50 USD",
+          50,
+          5149,
+          102.98,
+          false,
+          "4990.0",
+          "RUB",
+          false,
+          47258954
+        ],
+        [
+          "100 USD",
+          100,
+          10599,
+          105.99,
+          false,
+          "10440.0",
+          "RUB",
+          false,
+          47258955
+        ]
+      ]
+    },
+    {
+      "id": "4852424",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-4852424",
+      "title": "Купить  Подарочная карта Apple iTunes 2-100 USD (USA) + ПОДАРОК",
+      "bodyBytes": 533741,
+      "bodySha256": "b4ff2027850997e5915a7d447cc07e74b3b1efa446cfc2261e8c993232a65a6c",
+      "metaPrice": "209 ₽",
+      "priceWmrRub": 209,
+      "seller": "KEYFORY",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-2-100-usd-usa-podarok-4852424",
+        "price": 209,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "KEYFORY"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 209,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2 $ (USD)",
+          2,
+          209,
+          104.5,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          70576270
+        ],
+        [
+          "3 $ (USD)",
+          3,
+          329,
+          109.666667,
+          false,
+          "120.0",
+          "RUB",
+          false,
+          69724228
+        ],
+        [
+          "6 $ (USD)",
+          6,
+          659,
+          109.833333,
+          false,
+          "450.0",
+          "RUB",
+          false,
+          69723949
+        ],
+        [
+          "12 $ (USD)",
+          12,
+          1508.76,
+          125.73,
+          false,
+          "1299.76",
+          "RUB",
+          false,
+          70576284
+        ],
+        [
+          "13 $ (USD)",
+          13,
+          1635.97,
+          125.843846,
+          false,
+          "1426.97",
+          "RUB",
+          false,
+          69891187
+        ],
+        [
+          "4 $ (USD)",
+          4,
+          439,
+          109.75,
+          false,
+          "230.0",
+          "RUB",
+          false,
+          71076573
+        ],
+        [
+          "5 $ (USD)",
+          5,
+          549,
+          109.8,
+          false,
+          "340.0",
+          "RUB",
+          false,
+          67208352
+        ],
+        [
+          "7 $ (USD)",
+          7,
+          769,
+          109.857143,
+          false,
+          "560.0",
+          "RUB",
+          false,
+          69723964
+        ],
+        [
+          "14 $ (USD)",
+          14,
+          1455.67,
+          103.976429,
+          false,
+          "1246.67",
+          "RUB",
+          false,
+          71076590
+        ],
+        [
+          "8 $ (USD)",
+          8,
+          869,
+          108.625,
+          false,
+          "660.0",
+          "RUB",
+          false,
+          65077234
+        ],
+        [
+          "25 $ (USD)",
+          25,
+          2629,
+          105.16,
+          false,
+          "2420.0",
+          "RUB",
+          false,
+          69958126
+        ],
+        [
+          "9 $ (USD)",
+          9,
+          979,
+          108.777778,
+          false,
+          "770.0",
+          "RUB",
+          false,
+          71076583
+        ],
+        [
+          "40 $ (USD)",
+          40,
+          4279,
+          106.975,
+          false,
+          "4070.0",
+          "RUB",
+          false,
+          68981228
+        ],
+        [
+          "20 $ (USD)",
+          20,
+          2179,
+          108.95,
+          false,
+          "1970.0",
+          "RUB",
+          false,
+          69724756
+        ],
+        [
+          "10 $ (USD)",
+          10,
+          1089,
+          108.9,
+          false,
+          "880.0",
+          "RUB",
+          false,
+          69891160
+        ],
+        [
+          "15 $ (USD)",
+          15,
+          1569,
+          104.6,
+          false,
+          "1360.0",
+          "RUB",
+          false,
+          68701191
+        ],
+        [
+          "30 $ (USD)",
+          30,
+          3249,
+          108.3,
+          false,
+          "3040.0",
+          "RUB",
+          false,
+          67036239
+        ],
+        [
+          "60 $ (USD)",
+          60,
+          6499,
+          108.316667,
+          false,
+          "6290.0",
+          "RUB",
+          false,
+          61849178
+        ],
+        [
+          "80 $ (USD)",
+          80,
+          8899,
+          111.2375,
+          false,
+          "8690.0",
+          "RUB",
+          false,
+          69802718
+        ],
+        [
+          "90 $ (USD)",
+          90,
+          9899,
+          109.988889,
+          false,
+          "9690.0",
+          "RUB",
+          false,
+          58979800
+        ],
+        [
+          "50 $ (USD)",
+          50,
+          5449,
+          108.98,
+          false,
+          "5240.0",
+          "RUB",
+          false,
+          69802707
+        ],
+        [
+          "70 $ (USD)",
+          70,
+          7629,
+          108.985714,
+          false,
+          "7420.0",
+          "RUB",
+          false,
+          65077235
+        ]
+      ]
+    },
+    {
+      "id": "102724474",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-ssa-cifrovoi-kod-102724474",
+      "title": "Купить  Подарочная карта Apple iTunes США — цифровой код",
+      "bodyBytes": 442073,
+      "bodySha256": "197447d4af16fa4f5ff086f3ea5b34d56fee8bccd2b26107169938d6ef612088",
+      "metaPrice": "690 ₽",
+      "priceWmrRub": 690,
+      "seller": "Edo_Market",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-itunes-ssa-cifrovoi-kod-102724474",
+        "price": 690,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "Edo_Market"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 690,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2 USD",
+          2,
+          690,
+          345,
+          false,
+          "0.0",
+          "RUB",
+          false,
+          40546930
+        ],
+        [
+          "5 USD",
+          5,
+          690,
+          138,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          40550080
+        ],
+        [
+          "10 USD",
+          10,
+          1760,
+          176,
+          false,
+          "1070.0",
+          "RUB",
+          false,
+          40550085
+        ],
+        [
+          "20 USD",
+          20,
+          3100,
+          155,
+          false,
+          "2410.0",
+          "RUB",
+          false,
+          40596647
+        ]
+      ]
+    },
+    {
+      "id": "102662580",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-app-store-itunes-15-100-usd-usa-102662580",
+      "title": "Купить  Подарочная карта Apple App Store & iTunes 15-100 USD (USA)",
+      "bodyBytes": 447745,
+      "bodySha256": "b33f57456cc3c4f5f10511bac4bf83cccc836dc260027bfc92daefb8d5b4ba67",
+      "metaPrice": "1545 ₽",
+      "priceWmrRub": 1545,
+      "seller": "AppleTR",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-app-store-itunes-15-100-usd-usa-102662580",
+        "price": 1545,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "AppleTR"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 1545,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "15 USD",
+          15,
+          1545,
+          103,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          48277567
+        ],
+        [
+          "25 USD",
+          25,
+          2635,
+          105.4,
+          false,
+          "1090.0",
+          "RUB",
+          false,
+          48277570
+        ],
+        [
+          "15+15=30 USD",
+          30,
+          3100,
+          103.333333,
+          false,
+          "1555.0",
+          "RUB",
+          false,
+          48277571
+        ],
+        [
+          "15+25=40 USD",
+          40,
+          4050,
+          101.25,
+          false,
+          "2505.0",
+          "RUB",
+          false,
+          48277572
+        ],
+        [
+          "50 USD",
+          50,
+          5150,
+          103,
+          false,
+          "3605.0",
+          "RUB",
+          false,
+          48277574
+        ],
+        [
+          "15+50=65 USD",
+          65,
+          6550,
+          100.769231,
+          false,
+          "5005.0",
+          "RUB",
+          false,
+          48277569
+        ],
+        [
+          "75 USD",
+          75,
+          7550,
+          100.666667,
+          false,
+          "6005.0",
+          "RUB",
+          false,
+          48277576
+        ],
+        [
+          "15+75=90 USD",
+          90,
+          9030,
+          100.333333,
+          false,
+          "7485.0",
+          "RUB",
+          false,
+          48277573
+        ],
+        [
+          "100 USD",
+          100,
+          10070,
+          100.7,
+          false,
+          "8525.0",
+          "RUB",
+          false,
+          48277577
+        ]
+      ]
+    },
+    {
+      "id": "102691390",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/apple-podarocnaia-karta-itunes-2-100-usd-podarocnaia-karta-usd-102691390",
+      "title": "Купить  Apple → Подарочная карта iTunes → $2–100 USD → Подарочная карта USD",
+      "bodyBytes": 524728,
+      "bodySha256": "9b9afca080ec1e140e1604277f8776a2d3af8028a604ea527d0fb1567936a2c6",
+      "metaPrice": "199 ₽",
+      "priceWmrRub": 199,
+      "seller": "DarknessAlpha",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/apple-podarocnaia-karta-itunes-2-100-usd-podarocnaia-karta-usd-102691390",
+        "price": 199,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "DarknessAlpha"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 199,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2 USD",
+          2,
+          199,
+          99.5,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          71498566
+        ],
+        [
+          "3 USD",
+          3,
+          350,
+          116.666667,
+          false,
+          "151.0",
+          "RUB",
+          false,
+          71498567
+        ],
+        [
+          "4 USD",
+          4,
+          480,
+          120,
+          false,
+          "281.0",
+          "RUB",
+          false,
+          71498569
+        ],
+        [
+          "5 USD",
+          5,
+          599,
+          119.8,
+          false,
+          "400.0",
+          "RUB",
+          false,
+          38282676
+        ],
+        [
+          "6 USD",
+          6,
+          735,
+          122.5,
+          false,
+          "536.0",
+          "RUB",
+          false,
+          71498573
+        ],
+        [
+          "7 USD",
+          7,
+          859,
+          122.714286,
+          false,
+          "660.0",
+          "RUB",
+          false,
+          71498576
+        ],
+        [
+          "8 USD",
+          8,
+          999,
+          124.875,
+          false,
+          "800.0",
+          "RUB",
+          false,
+          71498577
+        ],
+        [
+          "9 USD",
+          9,
+          1099,
+          122.111111,
+          false,
+          "900.0",
+          "RUB",
+          false,
+          71498578
+        ],
+        [
+          "10 USD",
+          10,
+          1149,
+          114.9,
+          false,
+          "950.0",
+          "RUB",
+          false,
+          38282681
+        ],
+        [
+          "15 USD",
+          15,
+          1799,
+          119.933333,
+          false,
+          "1600.0",
+          "RUB",
+          false,
+          38282682
+        ],
+        [
+          "20 USD",
+          20,
+          2499,
+          124.95,
+          false,
+          "2300.0",
+          "RUB",
+          false,
+          38282683
+        ],
+        [
+          "25 USD",
+          25,
+          2999,
+          119.96,
+          false,
+          "2800.0",
+          "RUB",
+          false,
+          38282684
+        ],
+        [
+          "30 USD",
+          30,
+          3599,
+          119.966667,
+          false,
+          "3400.0",
+          "RUB",
+          false,
+          38282685
+        ],
+        [
+          "40 USD",
+          40,
+          4849,
+          121.225,
+          false,
+          "4650.0",
+          "RUB",
+          false,
+          38282686
+        ],
+        [
+          "50 USD",
+          50,
+          5999,
+          119.98,
+          false,
+          "5800.0",
+          "RUB",
+          false,
+          38282693
+        ],
+        [
+          "60 USD",
+          60,
+          6999,
+          116.65,
+          false,
+          "6800.0",
+          "RUB",
+          false,
+          38282687
+        ],
+        [
+          "70 USD",
+          70,
+          8299,
+          118.557143,
+          false,
+          "8100.0",
+          "RUB",
+          false,
+          38282688
+        ],
+        [
+          "80 USD",
+          80,
+          9199,
+          114.9875,
+          false,
+          "9000.0",
+          "RUB",
+          false,
+          38282690
+        ],
+        [
+          "75 USD",
+          75,
+          8399,
+          111.986667,
+          false,
+          "8200.0",
+          "RUB",
+          false,
+          38282689
+        ],
+        [
+          "100 USD",
+          100,
+          10999,
+          109.99,
+          false,
+          "10800.0",
+          "RUB",
+          false,
+          38282692
+        ],
+        [
+          "90 USD",
+          90,
+          10399,
+          115.544444,
+          false,
+          "10200.0",
+          "RUB",
+          false,
+          38282691
+        ]
+      ]
+    },
+    {
+      "id": "5162399",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/kod-popolneniia-apple-itunes-appstore-aitiuns-epl-ssa-usd-5162399",
+      "title": "Купить  Код пополнения Apple iTunes AppStore Айтюнс Эпл США USD",
+      "bodyBytes": 450443,
+      "bodySha256": "a77b65dc55631f5d25f89971a90dcb0cb28c6b728435074f4e1913ef722f687a",
+      "metaPrice": "290 ₽",
+      "priceWmrRub": 290,
+      "seller": "DigiSelling",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/kod-popolneniia-apple-itunes-appstore-aitiuns-epl-ssa-usd-5162399",
+        "price": 290,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "DigiSelling"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 290,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2",
+          null,
+          290,
+          null,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          1029737
+        ],
+        [
+          "3",
+          null,
+          440,
+          null,
+          false,
+          "150.0",
+          "RUB",
+          false,
+          1029745
+        ],
+        [
+          "4",
+          null,
+          590,
+          null,
+          false,
+          "300.0",
+          "RUB",
+          false,
+          1029753
+        ],
+        [
+          "5",
+          null,
+          740,
+          null,
+          false,
+          "450.0",
+          "RUB",
+          false,
+          1029757
+        ],
+        [
+          "6",
+          null,
+          890,
+          null,
+          false,
+          "600.0",
+          "RUB",
+          false,
+          1029764
+        ],
+        [
+          "7",
+          null,
+          1040,
+          null,
+          false,
+          "750.0",
+          "RUB",
+          false,
+          1029771
+        ],
+        [
+          "8",
+          null,
+          1190,
+          null,
+          false,
+          "900.0",
+          "RUB",
+          false,
+          1029777
+        ],
+        [
+          "9",
+          null,
+          1340,
+          null,
+          false,
+          "1050.0",
+          "RUB",
+          false,
+          1029785
+        ],
+        [
+          "10",
+          null,
+          1490,
+          null,
+          false,
+          "1200.0",
+          "RUB",
+          false,
+          1029787
+        ],
+        [
+          "15",
+          null,
+          2240,
+          null,
+          false,
+          "1950.0",
+          "RUB",
+          false,
+          1029791
+        ],
+        [
+          "20",
+          null,
+          2990,
+          null,
+          false,
+          "2700.0",
+          "RUB",
+          false,
+          1029793
+        ],
+        [
+          "25",
+          null,
+          3740,
+          null,
+          false,
+          "3450.0",
+          "RUB",
+          false,
+          1029796
+        ],
+        [
+          "30",
+          null,
+          4490,
+          null,
+          false,
+          "4200.0",
+          "RUB",
+          false,
+          1029799
+        ],
+        [
+          "40",
+          null,
+          5990,
+          null,
+          false,
+          "5700.0",
+          "RUB",
+          false,
+          1029805
+        ],
+        [
+          "50",
+          null,
+          7490,
+          null,
+          false,
+          "7200.0",
+          "RUB",
+          false,
+          1029810
+        ],
+        [
+          "60",
+          null,
+          8990,
+          null,
+          false,
+          "8700.0",
+          "RUB",
+          false,
+          1029816
+        ],
+        [
+          "70",
+          null,
+          10490,
+          null,
+          false,
+          "10200.0",
+          "RUB",
+          false,
+          1029821
+        ],
+        [
+          "75",
+          null,
+          11240,
+          null,
+          false,
+          "10950.0",
+          "RUB",
+          false,
+          1029828
+        ],
+        [
+          "80",
+          null,
+          11990,
+          null,
+          false,
+          "11700.0",
+          "RUB",
+          false,
+          1029831
+        ],
+        [
+          "90",
+          null,
+          13490,
+          null,
+          false,
+          "13200.0",
+          "RUB",
+          false,
+          1029833
+        ],
+        [
+          "100",
+          null,
+          14990,
+          null,
+          false,
+          "14700.0",
+          "RUB",
+          false,
+          1029835
+        ]
+      ]
+    },
+    {
+      "id": "102708567",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-app-store-usa-ssa-2-100-avtovydaca-102708567",
+      "title": "Купить  Подарочная карта App Store USA (США) 2-100$ (АВТОВЫДАЧА)",
+      "bodyBytes": 529369,
+      "bodySha256": "99008cbf34c4c52d426f16a7fdff56d8ae4d09c735091912bb97dbcd130e1274",
+      "metaPrice": "279 ₽",
+      "priceWmrRub": 279,
+      "seller": "ForeignPay",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/podarocnaia-karta-app-store-usa-ssa-2-100-avtovydaca-102708567",
+        "price": 279,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "ForeignPay"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 279,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2 USD",
+          2,
+          279,
+          139.5,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          40174038
+        ],
+        [
+          "3 USD",
+          3,
+          405,
+          135,
+          false,
+          "126.0",
+          "RUB",
+          false,
+          40174039
+        ],
+        [
+          "4 USD",
+          4,
+          521,
+          130.25,
+          false,
+          "242.0",
+          "RUB",
+          false,
+          40174040
+        ],
+        [
+          "5 USD",
+          5,
+          642,
+          128.4,
+          false,
+          "363.0",
+          "RUB",
+          false,
+          40174041
+        ],
+        [
+          "6 USD",
+          6,
+          803,
+          133.833333,
+          false,
+          "524.0",
+          "RUB",
+          false,
+          40174042
+        ],
+        [
+          "7 USD",
+          7,
+          941,
+          134.428571,
+          false,
+          "662.0",
+          "RUB",
+          false,
+          40174043
+        ],
+        [
+          "8 USD",
+          8,
+          1077,
+          134.625,
+          false,
+          "798.0",
+          "RUB",
+          false,
+          40174044
+        ],
+        [
+          "9 USD",
+          9,
+          1214,
+          134.888889,
+          false,
+          "935.0",
+          "RUB",
+          false,
+          40174045
+        ],
+        [
+          "10 USD",
+          10,
+          1203,
+          120.3,
+          false,
+          "924.0",
+          "RUB",
+          false,
+          40174046
+        ],
+        [
+          "15 USD",
+          15,
+          1959,
+          130.6,
+          false,
+          "1680.0",
+          "RUB",
+          false,
+          40174047
+        ],
+        [
+          "20 USD",
+          20,
+          2629,
+          131.45,
+          false,
+          "2350.0",
+          "RUB",
+          false,
+          40174048
+        ],
+        [
+          "25 USD",
+          25,
+          3229,
+          129.16,
+          false,
+          "2950.0",
+          "RUB",
+          false,
+          40174049
+        ],
+        [
+          "30 USD",
+          30,
+          3829,
+          127.633333,
+          false,
+          "3550.0",
+          "RUB",
+          false,
+          40174050
+        ],
+        [
+          "40 USD",
+          40,
+          5079,
+          126.975,
+          false,
+          "4800.0",
+          "RUB",
+          false,
+          40174051
+        ],
+        [
+          "50 USD",
+          50,
+          6279,
+          125.58,
+          false,
+          "6000.0",
+          "RUB",
+          false,
+          40174052
+        ],
+        [
+          "60 USD",
+          60,
+          7679,
+          127.983333,
+          false,
+          "7400.0",
+          "RUB",
+          false,
+          40174053
+        ],
+        [
+          "70 USD",
+          70,
+          8979,
+          128.271429,
+          false,
+          "8700.0",
+          "RUB",
+          false,
+          40174054
+        ],
+        [
+          "75 USD",
+          75,
+          9278,
+          123.706667,
+          false,
+          "8999.0",
+          "RUB",
+          false,
+          40174055
+        ],
+        [
+          "80 USD",
+          80,
+          9579,
+          119.7375,
+          false,
+          "9300.0",
+          "RUB",
+          false,
+          40174056
+        ],
+        [
+          "90 USD",
+          90,
+          10979,
+          121.988889,
+          false,
+          "10700.0",
+          "RUB",
+          false,
+          40174057
+        ],
+        [
+          "100 USD",
+          100,
+          11278,
+          112.78,
+          false,
+          "10999.0",
+          "RUB",
+          false,
+          40174058
+        ]
+      ]
+    },
+    {
+      "id": "102083320",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/apple-gift-card-usa-102083320",
+      "title": "Купить  Apple GIFT CARD USA",
+      "bodyBytes": 435262,
+      "bodySha256": "514da6dd020643c35093a391071d0dfff78d20ae0fbef698118db7a6fdf2b21d",
+      "metaPrice": "499 ₽",
+      "priceWmrRub": 499,
+      "seller": "Hann",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/apple-gift-card-usa-102083320",
+        "price": 499,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "Hann"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 499,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2 USD",
+          2,
+          499,
+          249.5,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          1784968
+        ],
+        [
+          "30 USD",
+          30,
+          5498,
+          183.266667,
+          false,
+          "4999.0",
+          "RUB",
+          false,
+          1784972
+        ],
+        [
+          "10 USD",
+          10,
+          4098,
+          409.8,
+          false,
+          "3599.0",
+          "RUB",
+          false,
+          1784970
+        ],
+        [
+          "100 USD",
+          100,
+          22498,
+          224.98,
+          false,
+          "21999.0",
+          "RUB",
+          false,
+          1784975
+        ],
+        [
+          "5 USD",
+          5,
+          1298,
+          259.6,
+          false,
+          "799.0",
+          "RUB",
+          false,
+          1784969
+        ],
+        [
+          "50 USD",
+          50,
+          9498,
+          189.96,
+          false,
+          "8999.0",
+          "RUB",
+          false,
+          1784973
+        ],
+        [
+          "20 USD",
+          20,
+          5098,
+          254.9,
+          false,
+          "4599.0",
+          "RUB",
+          false,
+          1784971
+        ],
+        [
+          "70 USD",
+          70,
+          11498,
+          164.257143,
+          false,
+          "10999.0",
+          "RUB",
+          false,
+          1784974
+        ]
+      ]
+    },
+    {
+      "id": "102163314",
+      "status": 200,
+      "attempts": 1,
+      "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-app-store-i-itunes-102163314",
+      "title": "Купить  Apple Gift Card США | $2-$100 | App Store и iTunes |",
+      "bodyBytes": 448890,
+      "bodySha256": "519d62262a917d0728151f065a0d99346adea27e206e1a7b198cb5ad4317d674",
+      "metaPrice": "205 ₽",
+      "priceWmrRub": 205,
+      "seller": "Xelvra store",
+      "structuredOffer": {
+        "@type": "Offer",
+        "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-app-store-i-itunes-102163314",
+        "price": 205,
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Organization",
+          "name": "Xelvra store"
+        },
+        "priceSpecification": [
+          {
+            "@type": "UnitPriceSpecification",
+            "priceCurrency": "RUB",
+            "price": 205,
+            "description": "Обычная цена"
+          }
+        ]
+      },
+      "variants": [
+        [
+          "2 USD",
+          2,
+          205,
+          102.5,
+          true,
+          "0.0",
+          "RUB",
+          false,
+          61939032
+        ],
+        [
+          "3 USD",
+          3,
+          316,
+          105.333333,
+          false,
+          "111.0",
+          "RUB",
+          false,
+          61939033
+        ],
+        [
+          "4 USD",
+          4,
+          430,
+          107.5,
+          false,
+          "225.0",
+          "RUB",
+          false,
+          61939034
+        ],
+        [
+          "5 USD",
+          5,
+          537,
+          107.4,
+          false,
+          "332.0",
+          "RUB",
+          false,
+          61939035
+        ],
+        [
+          "6 USD",
+          6,
+          653,
+          108.833333,
+          false,
+          "448.0",
+          "RUB",
+          false,
+          61939036
+        ],
+        [
+          "7 USD",
+          7,
+          765,
+          109.285714,
+          false,
+          "560.0",
+          "RUB",
+          false,
+          61939037
+        ],
+        [
+          "8 USD",
+          8,
+          876,
+          109.5,
+          false,
+          "671.0",
+          "RUB",
+          false,
+          61939038
+        ],
+        [
+          "9 USD",
+          9,
+          979,
+          108.777778,
+          false,
+          "774.0",
+          "RUB",
+          false,
+          61939039
+        ],
+        [
+          "10 USD",
+          10,
+          1090,
+          109,
+          false,
+          "885.0",
+          "RUB",
+          false,
+          61939040
+        ],
+        [
+          "11 USD",
+          11,
+          1200,
+          109.090909,
+          false,
+          "995.0",
+          "RUB",
+          false,
+          61939041
+        ],
+        [
+          "12 USD",
+          12,
+          1311,
+          109.25,
+          false,
+          "1106.0",
+          "RUB",
+          false,
+          61939042
+        ],
+        [
+          "13 USD",
+          13,
+          1421,
+          109.307692,
+          false,
+          "1216.0",
+          "RUB",
+          false,
+          61939043
+        ],
+        [
+          "14 USD",
+          14,
+          1532,
+          109.428571,
+          false,
+          "1327.0",
+          "RUB",
+          false,
+          61939044
+        ],
+        [
+          "15 USD",
+          15,
+          1642,
+          109.466667,
+          false,
+          "1437.0",
+          "RUB",
+          false,
+          61939045
+        ],
+        [
+          "16 USD",
+          16,
+          1753,
+          109.5625,
+          false,
+          "1548.0",
+          "RUB",
+          false,
+          61939046
+        ],
+        [
+          "17 USD",
+          17,
+          1864,
+          109.647059,
+          false,
+          "1659.0",
+          "RUB",
+          false,
+          61939047
+        ],
+        [
+          "18 USD",
+          18,
+          1974,
+          109.666667,
+          false,
+          "1769.0",
+          "RUB",
+          false,
+          61939048
+        ],
+        [
+          "19 USD",
+          19,
+          2085,
+          109.736842,
+          false,
+          "1880.0",
+          "RUB",
+          false,
+          61939049
+        ],
+        [
+          "20 USD",
+          20,
+          2196,
+          109.8,
+          false,
+          "1991.0",
+          "RUB",
+          false,
+          61939050
+        ],
+        [
+          "25 USD",
+          25,
+          2774,
+          110.96,
+          false,
+          "2569.0",
+          "RUB",
+          false,
+          61939051
+        ],
+        [
+          "30 USD",
+          30,
+          3301,
+          110.033333,
+          false,
+          "3096.0",
+          "RUB",
+          false,
+          61939052
+        ],
+        [
+          "35 USD",
+          35,
+          3891,
+          111.171429,
+          false,
+          "3686.0",
+          "RUB",
+          false,
+          61939053
+        ],
+        [
+          "40 USD",
+          40,
+          4449,
+          111.225,
+          false,
+          "4244.0",
+          "RUB",
+          false,
+          61939054
+        ],
+        [
+          "45 USD",
+          45,
+          4997,
+          111.044444,
+          false,
+          "4792.0",
+          "RUB",
+          false,
+          61939055
+        ],
+        [
+          "50 USD",
+          50,
+          5541,
+          110.82,
+          false,
+          "5336.0",
+          "RUB",
+          false,
+          61939056
+        ],
+        [
+          "55 USD",
+          55,
+          6110,
+          111.090909,
+          false,
+          "5905.0",
+          "RUB",
+          false,
+          61939057
+        ],
+        [
+          "60 USD",
+          60,
+          6679,
+          111.316667,
+          false,
+          "6474.0",
+          "RUB",
+          false,
+          61939058
+        ],
+        [
+          "65 USD",
+          65,
+          7238,
+          111.353846,
+          false,
+          "7033.0",
+          "RUB",
+          false,
+          61939059
+        ],
+        [
+          "70 USD",
+          70,
+          7797,
+          111.385714,
+          false,
+          "7592.0",
+          "RUB",
+          false,
+          61939060
+        ],
+        [
+          "75 USD",
+          75,
+          8354,
+          111.386667,
+          false,
+          "8149.0",
+          "RUB",
+          false,
+          61939061
+        ],
+        [
+          "80 USD",
+          80,
+          8891,
+          111.1375,
+          false,
+          "8686.0",
+          "RUB",
+          false,
+          61939062
+        ],
+        [
+          "85 USD",
+          85,
+          9428,
+          110.917647,
+          false,
+          "9223.0",
+          "RUB",
+          false,
+          61939063
+        ],
+        [
+          "90 USD",
+          90,
+          9966,
+          110.733333,
+          false,
+          "9761.0",
+          "RUB",
+          false,
+          61939064
+        ],
+        [
+          "95 USD",
+          95,
+          10503,
+          110.557895,
+          false,
+          "10298.0",
+          "RUB",
+          false,
+          61939065
+        ],
+        [
+          "100 USD",
+          100,
+          11039,
+          110.39,
+          false,
+          "10834.0",
+          "RUB",
+          false,
+          61939066
+        ]
+      ]
+    }
+  ],
+  "availabilityRefresh": {
+    "capturedAtUtc": "2026-10-25T17:56:21Z",
+    "method": "Direct public SSR GET, sequential, no proxy; four pages",
+    "queriedListingIds": [
+      "102664570",
+      "102552039",
+      "102691390",
+      "102163314"
+    ],
+    "optionRowsChecked": 72,
+    "counts": {
+      "in_stock": 0,
+      "out_of_stock": 1,
+      "unknown": 71
+    },
+    "observedAvailability": [
+      {
+        "listingId": "102664570",
+        "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-tolko-us-app-store-102664570",
+        "variants": [
+          {
+            "label": "2$ (USDT)",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "3$ (USDT)",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "4$ (USDT)",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "5$ (USDT)",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "10$ (USDT)",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "20$ (USDT)",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "50$ (USDT)",
+            "status": "out_of_stock",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "User screenshot showed this selected option as «Нет в наличии»; SSR fields num_in_stock=null, disabled=null (screenshot is the only out-of-stock evidence)."
+          },
+          {
+            "label": "100$ (USDT)",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          }
+        ]
+      },
+      {
+        "listingId": "102552039",
+        "url": "https://ggsel.net/catalog/product/karta-popolneniia-apple-2-100-usd-102552039",
+        "variants": [
+          {
+            "label": "2 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "5 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "10 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "15 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "20 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "25 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "50 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "100 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          }
+        ]
+      },
+      {
+        "listingId": "102691390",
+        "url": "https://ggsel.net/catalog/product/apple-podarocnaia-karta-itunes-2-100-usd-podarocnaia-karta-usd-102691390",
+        "variants": [
+          {
+            "label": "2 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "3 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "4 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "5 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "6 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "7 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "8 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "9 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "10 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "15 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "20 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "25 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "30 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "40 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "50 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "60 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "70 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "80 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "75 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "100 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "90 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          }
+        ]
+      },
+      {
+        "listingId": "102163314",
+        "url": "https://ggsel.net/catalog/product/apple-gift-card-ssa-2-100-app-store-i-itunes-102163314",
+        "variants": [
+          {
+            "label": "2 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "3 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "4 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "5 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "6 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "7 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "8 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "9 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "10 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "11 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "12 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "13 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "14 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "15 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "16 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "17 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "18 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "19 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "20 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "25 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "30 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "35 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "40 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "45 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "50 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "55 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "60 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "65 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "70 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "75 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "80 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "85 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "90 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "95 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          },
+          {
+            "label": "100 USD",
+            "status": "unknown",
+            "numInStock": null,
+            "disabled": null,
+            "controlDisabled": false,
+            "evidence": "Direct SSR: num_in_stock=null and disabled=null; control not disabled; availability not exposed."
+          }
+        ]
+      }
+    ],
+    "screenshotEvidence": {
+      "listingId": "102664570",
+      "denomination": "50$ (USDT)",
+      "status": "out_of_stock",
+      "scope": "This one selected option only; does not establish stock for other options."
+    }
+  },
+  "bestAvailableAssessment": {
+    "status": "undetermined",
+    "priceLeader": {
+      "listingId": "102664570",
+      "denomination": "5$ (USDT)",
+      "totalRub": 289,
+      "rubPerUsd": 57.8
+    },
+    "availability": "unknown",
+    "reason": "The cheapest rate option is not confirmed in stock by SSR; the supplied screenshot applies only to the $50 option."
+  },
+  "manualBrowserProofs": [
+    {
+      "marketplace": "GGSEL",
+      "listingId": "102662580",
+      "url": "https://ggsel.net/catalog/product/podarocnaia-karta-apple-app-store-itunes-15-100-usd-usa-102662580",
+      "seller": "AppleTR",
+      "region": "US",
+      "denominationLabel": "50 USD",
+      "faceValueUsd": 50,
+      "selected": true,
+      "buyEnabled": true,
+      "effectiveTotalRub": 5150,
+      "rubPerUsd": 103,
+      "capturedAtUtc": "2026-10-25T19:12:52Z",
+      "screenshotPath": "/tmp/apple-us-102662580-50.png",
+      "variantId": "48277574"
+    }
+  ]
+}

@@ -4,7 +4,12 @@ from pathlib import Path
 
 from families.minimax import CONFIG as MINIMAX
 from families.zai import CONFIG as ZAI
-from scanner.discover import _extract_ggsel_products
+from scanner.discover import (
+    GIFT_CARD_QUERIES,
+    _extract_ggsel_gift_cards,
+    _extract_ggsel_products,
+    discover_gift_cards,
+)
 
 
 def test_ggsel_titleless_cards_fall_back_to_slug_and_filter_other_max_products():
@@ -75,3 +80,31 @@ def test_card_metadata_does_not_promote_topup_or_leak_between_product_ids():
     """
 
     assert [offer["native_id"] for offer in _extract_ggsel_products(html, ZAI)] == ["9002"]
+
+
+def test_gift_card_search_has_query_variants_and_does_not_collect_turkey_yet():
+    tr = discover_gift_cards("TR")
+
+    assert len(GIFT_CARD_QUERIES["US"]) >= 3
+    assert any("Apple Gift Card" in query and "USA" in query for query in GIFT_CARD_QUERIES["US"])
+    assert any("iTunes Gift Card" in query for query in GIFT_CARD_QUERIES["US"])
+    assert tr["candidates"] == []
+    assert tr["transport"] == "not-collected"
+    assert "deferred" in tr["coverage"]
+
+
+def test_ggsel_gift_card_discovery_uses_explicit_region_evidence():
+    html = """
+    <div data-testid="card"><a href="/catalog/product/apple-itunes-usa-102552039"></a>
+      <img alt="Apple iTunes Gift Card $2-$100 USA"></div>
+    <div data-testid="card"><a href="/catalog/product/apple-itunes-turkey-5211965"></a>
+      <img alt="Подарочная карта Apple iTunes Turkey 10-4000 TL"></div>
+    <div data-testid="card"><a href="/catalog/product/itunes-unknown-5000000"></a>
+      <img alt="Apple iTunes Gift Card 2-100"></div>
+    """
+
+    us = _extract_ggsel_gift_cards(html, "US")
+    tr = _extract_ggsel_gift_cards(html, "TR")
+
+    assert [item["native_id"] for item in us] == ["102552039"]
+    assert [item["native_id"] for item in tr] == ["5211965"]

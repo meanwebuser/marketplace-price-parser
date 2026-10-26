@@ -8,6 +8,7 @@ requires both a selected-state signal and a stable primary buy-block price.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -35,7 +36,12 @@ def _identity(offer: dict) -> tuple:
     )
 
 
-def verify_winners(winners: Iterable[dict], all_offers: list[dict]) -> list[dict]:
+def verify_winners(
+    winners: Iterable[dict],
+    all_offers: list[dict],
+    *,
+    proxy_urls: Iterable[str] = (),
+) -> list[dict]:
     """Verify winners and annotate their matching offer rows.
 
     Raises RuntimeError unless every requested winner is independently tied to
@@ -46,6 +52,7 @@ def verify_winners(winners: Iterable[dict], all_offers: list[dict]) -> list[dict
     requested = list(winners)
     if not requested:
         return []
+    configured_proxies = list(proxy_urls)
     payload = {
         "offers": [
             {
@@ -65,11 +72,14 @@ def verify_winners(winners: Iterable[dict], all_offers: list[dict]) -> list[dict
             for item in requested
         ]
     }
+    if configured_proxies:
+        payload["proxyUrls"] = configured_proxies
     FINAL_VERIFY_TMP_DIR.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="price-final-verify-", dir=FINAL_VERIFY_TMP_DIR) as directory:
         input_path = Path(directory) / "input.json"
         output_path = Path(directory) / "output.json"
         input_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        os.chmod(input_path, 0o600)
         try:
             proc = subprocess.run(
                 ["node", str(VERIFY_JS), "--input", str(input_path), "--out", str(output_path)],

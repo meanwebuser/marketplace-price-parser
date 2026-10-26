@@ -25,8 +25,10 @@ from pathlib import Path
 
 from families import FAMILY_REGISTRY
 from scanner.discover import discover_all
+from scanner.discover import discover_gift_cards
 from scanner.collect import collect
-from analyzer.output import offers_from_raw, dedupe, cheapest_per_tier, write_csv, write_markdown
+from scanner.proxy_source import ProxySourceError, fetch_proxy_urls
+from analyzer.output import offers_from_raw, gift_card_offers_from_raw, dedupe, cheapest_per_tier, write_csv, write_markdown
 from analyzer.validate import validate_rankings
 from scanner.final_verify import FinalVerificationError, verify_winners
 
@@ -36,15 +38,27 @@ LLM_PROMPTS_DIR = ROOT / ".tmp" / "llm-efficiency" / "llm_prompts"
 
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Marketplace price scanner (Plati + GGSEL).")
+
+    def browser_workers(value: str) -> int:
+        try:
+            workers = int(value)
+        except ValueError as error:
+            raise argparse.ArgumentTypeError("browser workers must be an integer from 1 to 2") from error
+        if workers < 1 or workers > 2:
+            raise argparse.ArgumentTypeError("browser workers must be between 1 and 2 under the reviewed local budget")
+        return workers
+
     p.add_argument("--family", required=True,
-                   help="Family: minimax, zai, chatgpt, claude, kimi (comma-separated for multi)")
+                   help="Family: minimax, zai, chatgpt, claude, kimi, apple_gift_card (comma-separated for multi)")
+    p.add_argument("--region", default="US", choices=["US", "TR"],
+                   help="Apple gift-card account region (currently collected seeds exist only for US)")
     p.add_argument("--purpose", default=None,
                    help="ChatGPT only: renew | new-account | any")
     p.add_argument("--duration", default=None, choices=["1m", "3m", "12m", "6m"])
     p.add_argument("--tier", default=None)
     p.add_argument("--delivery", default=None)
     p.add_argument("--max", type=int, default=80)
-    p.add_argument("--workers", type=int, default=6)
+    p.add_argument("--workers", type=browser_workers, default=2)
     p.add_argument("--headless", action="store_true", help="force browser collection to stay hidden on both marketplaces")
     p.add_argument("--raw", default=str(ROOT / ".tmp" / "raw.json"))
     p.add_argument("--csv", default=str(ROOT / ".tmp" / "table.csv"))
@@ -54,8 +68,8 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
                    help="unsafe/offline mode: do not independently reopen and verify ranked winners")
     p.add_argument("--analyzer", default="auto", choices=["auto", "regex", "llm", "selective"],
                    help="pass-2 engine: llm = all-listing evidence packs; selective = ChatGPT-only uncertainty gate; "
-                        "regex = offline heuristics; auto = selective for ChatGPT or llm for other families "
-                        "when LLM_API_KEY is set, else regex")
+                        "regex = offline heuristics; auto = regex (no LLM calls). Use llm for calibration or "
+                        "selective explicitly when the uncertainty gate is needed")
     p.add_argument("--llm-batch-chars", type=int, default=6000,
                    help="evidence-pack chars per LLM batch; local models stop "
                         "following the strict JSON schema above ~3 listings")
@@ -66,7 +80,9 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--llm-base-url", default=None)
     p.add_argument("--llm-model", default=None)
     p.add_argument("--llm-required", action="store_true")
-    return p.parse_args(argv)
+    args = p.parse_args(argv)
+    args.proxy_urls = []
+    return args
 
 
 def _resolve_families(args: argparse.Namespace) -> list:
@@ -106,13 +122,17 @@ def _run_one(family, args, raw_path: Path) -> dict:
         print(f"[{family.name}] reusing {raw_path}: {len(raw.get('listings', []))} listings")
         return raw
     print(f"[{family.name}] discovering...")
-    discovery = discover_all(family, args.max)
+    proxy_urls = getattr(args, "proxy_urls", [])
+    discovery_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
+    discovery = discover_all(family, args.max, **discovery_kwargs)
     print(f"[{family.name}]   plati: {discovery['plati_found']}, ggsel: {discovery['ggsel_found']}")
     discovery_metadata = {
         "platiFound": discovery["plati_found"],
         "ggselFound": discovery["ggsel_found"],
         "transports": discovery["transports"],
         "errors": discovery["errors"],
+        "proxyMode": discovery.get("proxyMode", "direct"),
+        "proxyCount": discovery.get("proxyCount", 0),
     }
     if discovery["plati_found"] + discovery["ggsel_found"] == 0:
         print(f"[{family.name}] WARNING: no candidates found", file=sys.stderr)
@@ -121,7 +141,11 @@ def _run_one(family, args, raw_path: Path) -> dict:
     # discover_all already merges curated GGSEL IDs into canonical candidates.
     # Passing slugs separately would collect the same listing twice because
     # collect deduplicates the slug and numeric native ID as different strings.
-    raw = collect(discovery["candidates"], raw_path, workers=args.workers, headless=args.headless)
+    collect_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
+    raw = collect(
+        discovery["candidates"], raw_path, workers=args.workers,
+        headless=args.headless, **collect_kwargs,
+    )
     raw["discovery"] = discovery_metadata
     print(f"[{family.name}]   collected {len(raw.get('listings', []))} listings → {raw_path}")
     return raw
@@ -173,8 +197,11 @@ def _apply_verification_results(offers: list[dict], results: list[dict]) -> None
 
 def _verify_winners_and_persist_failure(
     raw: dict, targets: list[dict], offers: list[dict], raw_path: Path,
+    *, proxy_urls: list[str] | tuple[str, ...] = (),
 ) -> list[dict]:
     try:
+        if proxy_urls:
+            return verify_winners(targets, offers, proxy_urls=proxy_urls)
         return verify_winners(targets, offers)
     except FinalVerificationError as error:
         failure_record = {
@@ -230,11 +257,97 @@ def _selected_winners(cheapest: dict, args: argparse.Namespace) -> list[dict]:
     ]
 
 
+def gift_card_unit_price(offer: dict) -> float:
+    return float(offer["price_rub"]) / float(offer["denomination"])
+
+
+def rank_gift_card_offers(offers: list[dict]) -> list[dict]:
+    """Sort current rows by RUB per one unit of face value, retaining unchecked offers."""
+    return sorted(
+        (offer for offer in offers if float(offer.get("denomination") or 0) > 0),
+        key=lambda item: (gift_card_unit_price(item), float(item.get("price_rub") or 0)),
+    )
+
+
+def best_gift_card_value(offers: list[dict]) -> dict | None:
+    """Choose the lowest verified RUB cost per one unit of card face value."""
+    eligible = [
+        offer for offer in offers
+        if offer.get("available") is not False and offer.get("price_verified")
+        and float(offer.get("denomination") or 0) > 0
+        and float(offer.get("price_rub") or 0) > 0
+    ]
+    return min(eligible, key=gift_card_unit_price, default=None)
+
+
+def _run_gift_card_scan(args: argparse.Namespace) -> int:
+    """Run the separate prepaid path; never invent subscription tier/term."""
+    proxy_urls = getattr(args, "proxy_urls", [])
+    discovery_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
+    discovery = discover_gift_cards(args.region, args.max, **discovery_kwargs)
+    print(f"[apple_gift_card/{args.region}] GGSEL curated candidates: {len(discovery['candidates'])}")
+    if not discovery["candidates"]:
+        print(f"[apple_gift_card/{args.region}] no curated listing IDs; no scan performed")
+        return 0
+    raw_path, csv_path, md_path = Path(args.raw), Path(args.csv), Path(args.md)
+    _ensure_parent_dirs(raw_path, csv_path, md_path)
+    # The top-up path is always headless; on hosts where variant controls do
+    # not react in headless mode those options remain unverified and are not
+    # published as a confirmed price.
+    collect_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
+    raw = collect(
+        discovery["candidates"], raw_path, workers=args.workers,
+        headless=True, **collect_kwargs,
+    )
+    raw["discovery"] = {
+        "product": discovery["product"], "region": args.region,
+        "ggselFound": discovery["ggsel_found"], "coverage": discovery["coverage"],
+        "proxyMode": discovery.get("proxyMode", "direct"),
+        "proxyCount": discovery.get("proxyCount", 0),
+    }
+    offers = list(gift_card_offers_from_raw(raw, args.region))
+    winner = best_gift_card_value(offers)
+    results = []
+    if winner and not args.skip_final_verify:
+        results = _verify_winners_and_persist_failure(
+            raw, [winner], offers, raw_path, proxy_urls=proxy_urls
+        )
+    elif args.skip_final_verify:
+        print(f"[apple_gift_card/{args.region}] final verification skipped")
+    raw["finalVerification"] = {
+        "skipped": bool(args.skip_final_verify), "results": results,
+    }
+    raw_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_csv(offers, csv_path)
+    with md_path.open("w", encoding="utf-8") as target:
+        target.write(f"# Apple gift cards — region {args.region}\n\n")
+        target.write(f"Candidates: {discovery['ggsel_found']} ({discovery['coverage']}).\n\n")
+        target.write("No tier or subscription duration is inferred for gift cards.\n\n")
+        target.write("| Denomination | Price | RUB per unit | Availability | Price verified | Marketplace | Listing |\n|---|---:|---:|---|---|---|---|\n")
+        for offer in rank_gift_card_offers(offers):
+            stock_status = offer.get("availability_status") or ("in_stock" if offer.get("available") is True else "out_of_stock" if offer.get("available") is False else "unknown")
+            target.write(
+                f"| {offer['denomination']:g} {offer['denomination_currency']} | "
+                f"{offer['price_rub']:.0f} ₽ | {offer['price_per_unit']:.2f} ₽ per unit | {stock_status} | {offer['price_verified']} | "
+                f"{offer['marketplace']} | [{offer['pid']}]({offer['url']}) |\n"
+            )
+    print(f"[apple_gift_card/{args.region}] parsed {len(offers)} selected variants; "
+          f"{sum(bool(offer.get('price_verified')) for offer in offers)} price-verified")
+    if winner:
+        unit = "$1" if winner["denomination_currency"] == "USD" else f"1 {winner['denomination_currency']}"
+        availability = winner.get("availability_status") or ("in_stock" if winner.get("available") is True else "unknown")
+        print(f"best verified rate: {winner['price_rub'] / winner['denomination']:.2f} ₽ per {unit}; "
+              f"{winner['denomination']:g} {winner['denomination_currency']} for {winner['price_rub']:.0f} ₽ "
+              f"(availability: {availability}) — {winner['url']}")
+    print(f"CSV: {csv_path}\nMD: {md_path}")
+    return 0
+
+
 def _maybe_llm(offers: list, args: argparse.Namespace) -> None:
-    if args.analyzer == "llm" or (args.analyzer == "auto" and os.environ.get("LLM_API_KEY")):
-        return  # LLM already produced the offers; a second pass adds nothing
-    if not (args.llm or os.environ.get("LLM_API_KEY")):
-        return
+    if args.analyzer in {"llm", "selective"}:
+        return  # LLM already produced or selectively reviewed the offers.
+    if not args.llm:
+        return  # An API key alone must not trigger an LLM call.
     from analyzer.llm import review_with_gemma, apply_llm_reviews
     api_key = os.environ.get("LLM_API_KEY", "")
     base_url = args.llm_base_url or os.environ.get("LLM_BASE_URL", "https://llm.bezrabotnyi.com/v1")
@@ -258,12 +371,7 @@ def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
     """Run pass 2 with the selected analyzer. Returns (offers, meta)."""
     analyzer = args.analyzer
     if analyzer == "auto":
-        if not os.environ.get("LLM_API_KEY"):
-            analyzer = "regex"
-        elif family.name == "chatgpt":
-            analyzer = "selective"
-        else:
-            analyzer = "llm"
+        analyzer = "regex"
 
     if analyzer == "selective":
         if family.name != "chatgpt":
@@ -351,6 +459,18 @@ def _print_dry_run_summary(family_name: str, meta: dict) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
+    needs_proxy = args.family == "apple_gift_card" or not (args.skip_discover and args.skip_final_verify)
+    try:
+        args.proxy_urls = fetch_proxy_urls() if needs_proxy else []
+    except ProxySourceError as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 2
+    if args.proxy_urls:
+        print(f"Proxy source: {len(args.proxy_urls)} HTTP proxies loaded (addresses hidden)")
+    else:
+        print("Proxy source: not configured; direct requests")
+    if args.family == "apple_gift_card":
+        return _run_gift_card_scan(args)
     families = _resolve_families(args)
     raw_path = Path(args.raw)
     csv_path = Path(args.csv)
@@ -392,7 +512,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             targets = _selected_winners(cheapest, args)
             final_report = _verify_winners_and_persist_failure(
-                raw, targets, fam_offers, fam_raw_path
+                raw, targets, fam_offers, fam_raw_path, proxy_urls=args.proxy_urls
             )
             print(f"[{fam.name}] final browser verification: OK ({len(final_report)} winners)")
         if not args.skip_final_verify or not prior_verification:
@@ -424,6 +544,8 @@ def main(argv: list[str] | None = None) -> int:
             "headless": bool(args.headless or not ggsel_ids),
             "collectionContextSource": "effective collector mode",
             "workers": collection_workers,
+            "proxyMode": "configured" if getattr(args, "proxy_urls", []) else "direct",
+            "proxyCount": len(getattr(args, "proxy_urls", [])),
             "maxResults": args.max,
             "discoveryCounts": discovered_counts,
             "discoveryCountsSource": "saved discovery result" if discovery else "reconstructed from collected raw listings",

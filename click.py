@@ -19,6 +19,7 @@ const CHROME_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrom
 // Populated via --plati-pids / --ggsel-ids CLI args. Empty defaults.
 const PLATI_PIDS = [];
 const GGSEL_IDS = [];
+const PROXY_URLS = [];
 
 // Parse --key=value OR --key value (next must not start with --)
 const argv = process.argv.slice(2);
@@ -54,12 +55,67 @@ if (args['ggsel-ids']) {
     if (!GGSEL_IDS.includes(id)) GGSEL_IDS.push(id);
   }
 }
-const WORKERS = Number(args.workers || 6);
+if (args['proxy-list-file']) {
+  try {
+    const list = JSON.parse(fs.readFileSync(String(args['proxy-list-file']), 'utf8'));
+    if (!Array.isArray(list)) throw new Error('not an array');
+    for (let i = 0; i < list.length; i++) {
+      const value = list[i];
+      const parsed = new URL(value);
+      if (!['http:', 'https:'].includes(parsed.protocol) || !parsed.hostname || !parsed.port ||
+          !['', '/'].includes(parsed.pathname) || parsed.search || parsed.hash) {
+        throw new Error(`invalid entry ${i + 1}`);
+      }
+      PROXY_URLS.push(value);
+    }
+  } catch (e) {
+    process.stderr.write('Invalid proxy-list file; expected HTTP(S) URLs, one per list item.\n');
+    process.exit(2);
+  }
+}
+const PROXY_REDACTIONS = PROXY_URLS.flatMap((proxyUrl) => {
+  try {
+    const parsed = new URL(proxyUrl);
+    return [proxyUrl, parsed.host, parsed.hostname, decodeURIComponent(parsed.username), decodeURIComponent(parsed.password)]
+      .filter(Boolean);
+  } catch (_) {
+    return [proxyUrl];
+  }
+});
+function redactProxyText(value) {
+  let text = String(value || '');
+  for (const secret of PROXY_REDACTIONS) text = text.split(secret).join('[proxy]');
+  return text;
+}
+const WORKERS = Number(args.workers || 2);
+if (!Number.isInteger(WORKERS) || WORKERS < 1 || WORKERS > 2) {
+  process.stderr.write('Browser worker count must be between 1 and 2 for the reviewed Mac budget.\n');
+  process.exit(2);
+}
+const MAX_CAPTURE_RETRIES = 4;
+function parseCaptureRetries(value) {
+  if (value === undefined) return 2;
+  const text = String(value);
+  if (!/^\d+$/.test(text)) {
+    throw new Error(`--capture-retries must be an integer from 0 to ${MAX_CAPTURE_RETRIES} (default 2)`);
+  }
+  const retries = Number(text);
+  if (!Number.isSafeInteger(retries) || retries > MAX_CAPTURE_RETRIES) {
+    throw new Error(`--capture-retries must be an integer from 0 to ${MAX_CAPTURE_RETRIES} (default 2)`);
+  }
+  return retries;
+}
+let CAPTURE_RETRIES;
+try {
+  CAPTURE_RETRIES = parseCaptureRetries(args['capture-retries']);
+} catch (e) {
+  process.stderr.write(`error: ${e.message}\n`);
+  process.exit(2);
+}
 const OUT_PATH = args.out || '/tmp/zai_raw.json';
 const PAGE_TIMEOUT_MS = Number(args['page-timeout'] || 35000);
 const CLICK_TIMEOUT_MS = Number(args['click-timeout'] || 8000);
 const PRICE_SETTLE_TIMEOUT_MS = Number(args['price-settle-timeout'] || 5000);
-const CAPTURE_RETRIES = Number(args['capture-retries'] || 2);
 // GGSEL's MUI product form applies variant changes in a regular browser but
 // suppresses them in headless Chrome. Keep Plati-only runs headless, while a
 // run containing GGSEL uses a visible guest browser by default. --headless
@@ -87,6 +143,8 @@ fs.writeFileSync(OUT_PATH, JSON.stringify({
     clickTimeoutMs: CLICK_TIMEOUT_MS,
     priceSettleTimeoutMs: PRICE_SETTLE_TIMEOUT_MS,
     captureRetries: CAPTURE_RETRIES,
+    proxyMode: PROXY_URLS.length ? 'configured' : 'direct',
+    proxyCount: PROXY_URLS.length,
   },
   listings: [],
 }, null, 2));
@@ -490,19 +548,80 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
   return out;
 }
 
-async function runWorker(workerId, queue, context, onDone) {
+function playwrightProxyOptions(proxyUrl) {
+  const parsed = new URL(proxyUrl);
+  const host = parsed.hostname.includes(':') ? `[${parsed.hostname}]` : parsed.hostname;
+  const options = { server: `${parsed.protocol}//${host}:${parsed.port}` };
+  if (parsed.username) options.username = decodeURIComponent(parsed.username);
+  if (parsed.password) options.password = decodeURIComponent(parsed.password);
+  return options;
+}
+
+let proxyCursor = 0;
+const activeProxyIndexes = new Set();
+
+async function acquireProxyIndex(excluded = new Set()) {
+  while (true) {
+    for (let offset = 0; offset < PROXY_URLS.length; offset++) {
+      const index = (proxyCursor + offset) % PROXY_URLS.length;
+      if (!activeProxyIndexes.has(index) && !excluded.has(index)) {
+        activeProxyIndexes.add(index);
+        proxyCursor = (index + 1) % PROXY_URLS.length;
+        return index;
+      }
+    }
+    if (excluded.size >= PROXY_URLS.length) return null;
+    await sleep(25);
+  }
+}
+
+async function runWorker(workerId, queue, browser, sharedContext, contextOptions, onDone) {
   while (queue.length > 0) {
     const job = queue.shift();
     if (!job) break;
     const t0 = Date.now();
     process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)}...\n`);
+    let finalResult = null;
+    const allRetryReasons = [];
+    const failedProxyIndexes = new Set();
+    let captureAttempts = 0;
     try {
-      let result;
-      const retryReasons = [];
-      let captureAttempts = 0;
       for (let attempt = 0; attempt <= CAPTURE_RETRIES; attempt++) {
-        captureAttempts = attempt + 1;
-        result = await collectListing(context, job.marketplace, job.pid, job.urlBuilder);
+        let context = sharedContext;
+        let transientContext = false;
+        let proxyLease = null;
+        let result;
+        try {
+          if (PROXY_URLS.length) {
+            proxyLease = await acquireProxyIndex(failedProxyIndexes);
+            if (proxyLease === null) break;
+            context = await browser.newContext({
+              ...contextOptions,
+              proxy: playwrightProxyOptions(PROXY_URLS[proxyLease]),
+            });
+            await context.addInitScript(() => {
+              Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+            });
+            transientContext = true;
+          }
+          captureAttempts = attempt + 1;
+          result = await collectListing(context, job.marketplace, job.pid, job.urlBuilder);
+        } catch (error) {
+          result = {
+            marketplace: job.marketplace,
+            pid: job.pid,
+            url: job.urlBuilder(job.pid),
+            error: redactProxyText(error.message || error),
+          };
+        } finally {
+          if (transientContext && context) await context.close().catch(() => {});
+          if (proxyLease !== null) {
+            activeProxyIndexes.delete(proxyLease);
+            failedProxyIndexes.add(proxyLease);
+          }
+        }
+
+        finalResult = result;
         const reasons = [];
         if (result.error) reasons.push('listing error');
         for (const option of result.options || []) {
@@ -511,22 +630,30 @@ async function runWorker(workerId, queue, context, onDone) {
           if (option.priceChanged && !option.priceStable) reasons.push('unstable changed price');
         }
         if (reasons.length === 0 || attempt === CAPTURE_RETRIES) break;
-        retryReasons.push(...reasons);
+        allRetryReasons.push(...reasons);
         process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)} — retry ${attempt + 1}/${CAPTURE_RETRIES}: ${[...new Set(reasons)].join(', ')}\n`);
       }
-      result.captureAttempts = captureAttempts;
-      result.captureRetryReasons = [...new Set(retryReasons)];
-      onDone(result);
-      process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)} — ${result.controlsClicked || 0}/${result.controlCount || 0} clicked in ${Date.now() - t0}ms\n`);
     } catch (e) {
-      onDone({ marketplace: job.marketplace, pid: job.pid, url: job.urlBuilder(job.pid), error: String(e.message || e) });
-      process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)} — FAIL in ${Date.now() - t0}ms: ${e.message}\n`);
+      const safeError = redactProxyText(e.message || e);
+      finalResult = { marketplace: job.marketplace, pid: job.pid, url: job.urlBuilder(job.pid), error: safeError };
+    }
+    if (!finalResult) finalResult = { marketplace: job.marketplace, pid: job.pid, url: job.urlBuilder(job.pid), error: 'no proxy available' };
+    finalResult.captureAttempts = captureAttempts;
+    finalResult.captureRetryReasons = [...new Set(allRetryReasons)];
+    onDone(finalResult);
+    if (finalResult.error) {
+      process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)} — FAIL in ${Date.now() - t0}ms: ${redactProxyText(finalResult.error)}\n`);
+    } else {
+      process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)} — ${finalResult.controlsClicked || 0}/${finalResult.controlCount || 0} clicked in ${Date.now() - t0}ms\n`);
     }
   }
 }
 
 (async () => {
   const remoteBrowser = Boolean(CDP_URL);
+  if (remoteBrowser && PROXY_URLS.length) {
+    throw new Error('Proxy lists require isolated browser mode; configured CDP mode was not changed.');
+  }
   const browser = remoteBrowser
     ? await chromium.connectOverCDP(CDP_URL)
     : await chromium.launch({
@@ -550,20 +677,20 @@ async function runWorker(workerId, queue, context, onDone) {
   ];
   // A real browser context owns live user tabs, so keep CDP collection
   // sequential. Isolated collection remains parallel.
-  const workerCount = remoteBrowser ? 1 : WORKERS;
-  const chromeVersion = browser.version();
+  const workerCount = remoteBrowser ? 1 : PROXY_URLS.length ? Math.min(WORKERS, PROXY_URLS.length) : WORKERS;
+  const contextOptions = {
+    locale: 'ru-RU',
+    userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${browser.version()} Safari/537.36`,
+  };
   const workers = [];
   for (let i = 0; i < workerCount; i++) {
-    const ctx = remoteBrowser ? remoteContexts[0] : await browser.newContext({
-      locale: 'ru-RU',
-      userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${chromeVersion} Safari/537.36`,
-    });
-    if (!remoteBrowser) {
+    const ctx = remoteBrowser ? remoteContexts[0] : PROXY_URLS.length ? null : await browser.newContext(contextOptions);
+    if (!remoteBrowser && ctx) {
       await ctx.addInitScript(() => {
         Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
       });
     }
-    workers.push(runWorker(i, queue, ctx, appendListing));
+    workers.push(runWorker(i, queue, browser, ctx, contextOptions, appendListing));
   }
   await Promise.all(workers);
   const final = JSON.parse(fs.readFileSync(OUT_PATH, 'utf8'));

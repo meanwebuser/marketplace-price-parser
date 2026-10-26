@@ -102,6 +102,158 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
             }
 
 
+_REGION_PATTERNS = {
+    "US": re.compile(r"(?:\busa\b|\bunited states\b|\bu\.?s\.?\b|сша)", re.I),
+    "TR": re.compile(r"(?:\bturkey\b|\bturkiye\b|\btur\b|турц\w*)", re.I),
+}
+_REGION_CURRENCIES = {"US": "USD", "TR": "TRY"}
+_GIFT_CARD_OUT_OF_STOCK_RE = re.compile(
+    r"\b(?:нет\s+в\s+наличии|нет\s+в\s+продаже|недоступ(?:ен|на|но|ны)?|"
+    r"out\s+of\s+stock|sold\s+out|unavailable|not\s+available)\b", re.I,
+)
+_GIFT_CARD_IN_STOCK_RE = re.compile(r"\b(?:in\s+stock|available\s+now|в\s+наличии)\b", re.I)
+
+
+def _gift_card_availability(listing: dict, option: dict, option_text: str) -> tuple[bool | None, str, str]:
+    """Read stock only from explicit selected-option or purchase-control evidence."""
+    for owner in (option, listing):
+        for key in ("availabilityStatus", "availability_status", "stockStatus", "stock_status"):
+            raw_status = str(owner.get(key) or "").strip().lower().replace("-", "_")
+            if raw_status in {"in_stock", "available"}:
+                return True, "in_stock", f"explicit {key}={raw_status}"
+            if raw_status in {"out_of_stock", "unavailable", "sold_out"}:
+                return False, "out_of_stock", f"explicit {key}={raw_status}"
+            if raw_status == "unknown":
+                return None, "unknown", f"explicit {key}=unknown"
+        purchase_available = owner.get("purchaseAvailable")
+        if isinstance(purchase_available, bool):
+            status = "in_stock" if purchase_available else "out_of_stock"
+            return purchase_available, status, "purchase control availability captured"
+        buy_disabled = owner.get("buyButtonDisabled")
+        if isinstance(buy_disabled, bool):
+            status = "out_of_stock" if buy_disabled else "in_stock"
+            return not buy_disabled, status, "buy button disabled state captured"
+        buy_text = str(owner.get("buyButtonText") or owner.get("buy_button_text") or "")
+        if _GIFT_CARD_OUT_OF_STOCK_RE.search(buy_text):
+            return False, "out_of_stock", f"buy button text: {buy_text.strip()}"
+        if _GIFT_CARD_IN_STOCK_RE.search(buy_text):
+            return True, "in_stock", f"buy button text: {buy_text.strip()}"
+    if _GIFT_CARD_OUT_OF_STOCK_RE.search(option_text):
+        return False, "out_of_stock", "selected option text explicitly says out of stock"
+    if _GIFT_CARD_IN_STOCK_RE.search(option_text):
+        return True, "in_stock", "selected option text explicitly says in stock"
+    return None, "unknown", "purchase availability not captured"
+
+
+_DENOMINATION_PATTERNS = {
+    "US": (
+        re.compile(r"\$\s*(\d+(?:[.,]\d{1,2})?)\s*(?:usd)?\b", re.I),
+        re.compile(r"\b(\d+(?:[.,]\d{1,2})?)\s*(?:usd|\$)\b", re.I),
+    ),
+    "TR": (
+        re.compile(r"\b(\d+(?:[.,]\d{1,2})?)\s*(?:try|tl|₺)(?![a-z])", re.I),
+        re.compile(r"₺\s*(\d+(?:[.,]\d{1,2})?)\b", re.I),
+    ),
+}
+
+
+def gift_card_offers_from_raw(raw: dict, region: str = "US") -> Iterable[dict]:
+    """Extract region-locked Apple gift-card offers without subscription fields.
+
+    A row is emitted only when the listing identifies Apple/iTunes, the page
+    explicitly identifies the requested region, and the selected option names
+    a denomination in that region's currency. Price verification follows the collector's selected
+    state and price evidence; the listing's generic metadata price is ignored.
+    """
+    region = str(region).upper()
+    if region not in _REGION_PATTERNS:
+        raise ValueError(f"unsupported gift-card region {region!r}")
+    for listing in raw.get("listings", []):
+        initial_price, initial_strong = select_real_price(listing.get("initialPrices", []))
+        title = str(listing.get("title") or "")
+        page_text = " ".join(str(listing.get(key) or "") for key in ("descText", "pageText"))
+        evidence = f"{title} {page_text}"
+        if not re.search(r"\b(?:apple|itunes)\b", evidence, re.I):
+            continue
+        if not _REGION_PATTERNS[region].search(evidence):
+            continue
+        # Do not infer the region from currency alone; storefronts can sell
+        # denominations that use another region's currency.
+        if any(code != region and pattern.search(evidence) for code, pattern in _REGION_PATTERNS.items()):
+            continue
+        for opt in listing.get("options", []):
+            if not opt.get("clicked"):
+                continue
+            option_text = str(opt.get("text") or "").strip()
+            denomination = None
+            currency = None
+            for pattern in _DENOMINATION_PATTERNS[region]:
+                match = pattern.search(option_text)
+                if match:
+                    value = match.group(1).replace(",", ".")
+                    try:
+                        denomination = float(value)
+                    except ValueError:
+                        continue
+                    currency = _REGION_CURRENCIES[region]
+                    break
+            if denomination is None or currency is None:
+                continue
+            available, availability_status, availability_reason = _gift_card_availability(
+                listing, opt, option_text,
+            )
+            price, strong = select_real_price(opt.get("prices", []))
+            if price is None:
+                continue
+            price_changed = opt.get("priceChanged")
+            delta = option_price_delta(option_text)
+            price = apply_delta_correction(
+                option_text, price, price_changed=price_changed, initial_price=initial_price,
+            )
+            if opt.get("selectedAfter") is False:
+                price_verified = False
+            elif opt.get("priceVerified") is None:
+                price_verified = bool(strong)
+            else:
+                price_verified = bool(opt.get("priceVerified"))
+                # A visible surcharge plus the live initial buy-block price
+                # independently accounts for the selected variant total when
+                # the option click did not refresh the price block.
+                if not price_verified and delta is not None and initial_price is not None and initial_strong:
+                    price_verified = True
+            text = f"{title} {page_text} {option_text}"
+            delivery = "digital_code" if re.search(r"\b(?:code|key|код|ключ)\b", text, re.I) else "unknown"
+            automatic = bool(re.search(r"auto(?:matic)?\s*[- ]?delivery|автовыдач|автоматическ\w*", text, re.I))
+            yield {
+                "marketplace": listing.get("marketplace"),
+                "pid": str(listing.get("pid") or ""),
+                "url": listing.get("url", ""),
+                "title": title,
+                "option_text": option_text.replace("\n", " | ")[:200],
+                "raw_option_text": option_text,
+                "control_kind": opt.get("kind"),
+                "control_dom_index": opt.get("domIndex"),
+                "control_input_id": opt.get("inputId"),
+                "control_value": opt.get("value"),
+                "region": region,
+                "denomination": denomination,
+                "denomination_currency": currency,
+                "price_per_unit": price / denomination,
+                "delivery": delivery,
+                "automatic_delivery": automatic,
+                "price_rub": price,
+                "price_changed": price_changed,
+                "price_delta": delta,
+                "strong_signal": strong,
+                "available": available,
+                "availability_status": availability_status,
+                "availability_reason": availability_reason,
+                "price_verified": price_verified,
+                "final_verified": False,
+                "final_observed_price": None,
+            }
+
+
 def dedupe(offers: list[dict]) -> list[dict]:
     """Keep the LAST (post-click) state per (marketplace, pid, option_text).
     Prefer rows with strong_signal if duplicate."""
