@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Build latest scan catalogue
-        run: python scripts/build_pages_data.py --out docs/data/latest.json
+        run: python scripts/build_pages_data.py --out docs/data/latest.json --preserve-existing-products
       - uses: actions/configure-pages@v5
         with:
           enablement: true

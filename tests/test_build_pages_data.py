@@ -6,6 +6,12 @@ import pytest
 from scripts.build_pages_data import normalize_csv
 
 
+def test_pages_workflow_preserves_existing_non_gift_card_products():
+    workflow = Path(__file__).resolve().parents[1] / ".github/workflows/deploy-pages.yml"
+
+    assert "python scripts/build_pages_data.py --out docs/data/latest.json --preserve-existing-products" in workflow.read_text()
+
+
 def test_absolute_snapshot_source_path_is_relative_to_repository_docs_root():
     csv_path = (Path(__file__).resolve().parents[1] / "docs/snapshots/targeted/2026-10-25-zai-max.csv").resolve()
 
