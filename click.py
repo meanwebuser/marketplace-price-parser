@@ -249,6 +249,44 @@ const snapshotPrices = () => {
   })).filter(p => !/Steam RUB|Steam KZT|Steam UAH|USD\\s*=/.test(p.text));
 };
 
+// Read only purchase controls in an identified product block. A variant chip,
+// sidebar Buy link, or multiple visible Buy controls is not stock evidence.
+const snapshotPurchaseState = () => {
+  const roots = new Set(document.querySelectorAll('[class*="ProductBuyBlock"]'));
+  document.querySelectorAll('[class*="id_product_price"]').forEach(price => {
+    const form = price.closest('form');
+    if (form) roots.add(form);
+  });
+  const buttons = new Set();
+  for (const root of roots) {
+    root.querySelectorAll('button, input[type="submit"], [role="button"]').forEach(el => {
+      if (!el.getClientRects().length) return;
+      const text = (el.innerText || el.value || el.textContent || '').replace(/\\s+/g, ' ').trim();
+      if (text.length > 120) return;
+      if (/^(?:купить(?: сейчас)?|buy(?: now)?|purchase|оплатить)(?:\\s+(?:за\\s+)?[\\d\\s.,]+\\s*(?:₽|руб\\.?|RUB|\\$|USD))?$/i.test(text) || isUnavailableText(text)) {
+        buttons.add(el);
+      }
+    });
+  }
+  const unique = Array.from(buttons);
+  const el = unique.length === 1 ? unique[0] : null;
+  // The selected storefront currency is useful raw evidence even when no RUB
+  // total was rendered. It never authorizes an exchange-rate conversion.
+  const currencies = new Set();
+  document.querySelectorAll('button, [role="button"], select option:checked').forEach(control => {
+    if (!control.getClientRects().length) return;
+    const label = (control.innerText || control.textContent || '').trim();
+    const currency = label.match(/^(?:Dollars?|Доллары?|Рубли|Rubles?)\\s*\\((USD|RUB)\\)$/i);
+    if (currency) currencies.add(currency[1].toUpperCase());
+  });
+  return {
+    buyButtonDisabled: el ? Boolean(el.disabled || el.matches(':disabled') || el.closest('[aria-disabled="true"]')) : null,
+    buyButtonText: el ? (el.innerText || el.value || el.textContent || '').replace(/\\s+/g, ' ').trim() : '',
+    buyButtonCount: unique.length,
+    storeCurrency: currencies.size === 1 ? Array.from(currencies)[0] : null,
+  };
+};
+
 const detectTemplate = () => {
   if (document.querySelector('[class*="ProductBuyBlock"]')) return 'ggsel';
   if (!document.querySelector('[class*="id_product_price"]')) return 'unknown';
@@ -286,6 +324,10 @@ const collectVariantControls = () => {
   // looks like a variant control is still recorded into "skipped" so a
   // manual audit can see variants the filter silently rejected.
   const KEY = /Max|Pro|Lite|Plus|Ultra|Explore|Build|Плюс|GO|Токен|Месяц|Год|month|year|Первая|Продление|Subscription|Случайный|Требуется|месяц|год|нов(?:ый|ая)\s+(?:аккаунт|учетн)|предоставлю|свой\s+аккаунт|account/i;
+  const appleGiftCard = /\\b(?:apple|itunes)\\b/i.test(document.title || '') &&
+    /gift|подарочн|itunes/i.test(document.title || '');
+  const denominationControl = text => appleGiftCard &&
+    /^(?:[$₺]\\s*\\d+(?:[.,]\\d+)?|\\d+(?:[.,]\\d+)?\\s*(?:[$₺]|USD\\b|TRY\\b|TL\\b))/i.test(text);
   const availabilityMeta = (el, text) => {
     const input = el && (el.matches && el.matches('input, option')
       ? el
@@ -307,7 +349,7 @@ const collectVariantControls = () => {
   const record = (kind, text, meta, el) => {
     const k = (text || '').trim();
     if (!k || k.length > 250 || seen.has(k)) return;
-    if (!KEY.test(k)) {
+    if (!KEY.test(k) && !denominationControl(k)) {
       if (k.length >= 3 && !seenSkipped.has(k) && skipped.length < 80) {
         seenSkipped.add(k);
         skipped.push({ kind, text: k });
@@ -346,7 +388,8 @@ const collectVariantControls = () => {
   document.querySelectorAll('select').forEach(s => {
     Array.from(s.options).forEach(o => record('select-option', (o.textContent || '').trim(), { value: o.value }, o));
   });
-  return { controls, skipped };
+  const variantControlCount = document.querySelectorAll('input[type="radio"], [role="radio"], select').length;
+  return { controls, skipped, variantControlCount };
 };
 
 const resolveControl = (ctrl) => {
@@ -398,6 +441,11 @@ async function snapshotPrices(page) {
   try {
     return await page.evaluate(new Function(PAGE_FN + '\nreturn snapshotPrices();'));
   } catch (e) { return []; }
+}
+async function snapshotPurchaseState(page) {
+  try {
+    return await page.evaluate(new Function(PAGE_FN + '\nreturn snapshotPurchaseState();'));
+  } catch (e) { return { buyButtonDisabled: null, buyButtonText: '', buyButtonCount: 0, storeCurrency: null }; }
 }
 
 const priceFingerprint = (prices) => {
@@ -489,17 +537,19 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
   const url = urlBuilder(pid);
   const page = await context.newPage();
   page.setDefaultTimeout(PAGE_TIMEOUT_MS);
-  const out = { marketplace, pid, url, title: '', template: '', initialPrices: [], pageText: '', descText: '', skippedControls: [], options: [], error: null };
+  const out = { marketplace, pid, url, title: '', template: '', initialPrices: [], pageText: '', descText: '', skippedControls: [], options: [], buyButtonDisabled: null, buyButtonText: '', buyButtonCount: 0, storeCurrency: null, variantControlCount: null, error: null };
   try {
     await withTimeout(page.goto(url, { waitUntil: 'domcontentloaded', timeout: PAGE_TIMEOUT_MS }), PAGE_TIMEOUT_MS + 5000, 'goto');
     await sleep(2500);
     out.title = await page.title();
     out.template = await detectTemplate(page);
     out.initialPrices = await snapshotPrices(page);
+    Object.assign(out, await snapshotPurchaseState(page));
     out.pageText = await grabPageText(page);
     out.descText = await grabDescText(page);
-    const { controls, skipped } = await collectVariantControls(page);
+    const { controls, skipped, variantControlCount } = await collectVariantControls(page);
     out.skippedControls = skipped;
+    out.variantControlCount = variantControlCount;
     // Defer the initially selected control.  Some reactive buy blocks do not
     // render any price until another variant is selected; returning to the
     // default afterwards produces an auditable snapshot for both variants.
@@ -524,6 +574,7 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
       const settled = await waitForSettledPrices(page, beforePrices, Boolean(ctrl.selected));
       const selectedAfter = await controlIsSelected(page, ctrl);
       out.options.push(Object.assign({}, ctrl, {
+        ...await snapshotPurchaseState(page),
         clicked: true,
         beforePrices,
         prices: settled.prices,

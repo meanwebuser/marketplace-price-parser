@@ -25,14 +25,15 @@ def _offer(price=1234):
     }
 
 
-def _fake_run(monkeypatch, *, observed, returncode=0, verified=True):
+def _fake_run(monkeypatch, *, observed, returncode=0, verified=True, selected=True, selection_evidence=None):
     def run(command, **kwargs):
         payload = json.loads(open(command[command.index("--input") + 1], encoding="utf-8").read())
         requested = payload["offers"][0]
         result = {
             **requested,
             "observedPrice": observed,
-            "selected": True,
+            "selected": selected,
+            "selectionEvidence": selection_evidence,
             "stable": True,
             "verified": verified,
             "error": None if verified else "price mismatch",
@@ -54,6 +55,43 @@ def test_final_verifier_annotates_only_independently_confirmed_winner(monkeypatc
     assert winner["final_verified"] is True
     assert winner["final_observed_price"] == 1234
     assert rows[1]["final_verified"] is False
+
+
+def test_final_verifier_accepts_stable_price_change_when_site_has_no_selected_marker(monkeypatch):
+    winner = _offer()
+    _fake_run(monkeypatch, observed=1234, selected=False, selection_evidence="stable_price_change")
+
+    results = final_verify.verify_winners([winner], [winner])
+
+    assert results[0]["selected"] is False
+    assert results[0]["selectionEvidence"] == "stable_price_change"
+    assert winner["final_verified"] is True
+    assert winner["final_observed_price"] == 1234
+
+
+def test_final_verifier_sends_fixed_product_evidence_to_independent_browser(monkeypatch):
+    winner = _offer()
+    winner.update({
+        "control_kind": "fixed-denomination", "region": "US",
+        "denomination": 50, "denomination_currency": "USD",
+    })
+    captured = {}
+
+    def run(command, **_kwargs):
+        payload = json.loads(Path(command[command.index("--input") + 1]).read_text())
+        captured.update(payload["offers"][0])
+        report = {**payload["offers"][0], "observedPrice": 1234, "selected": True,
+                  "selectionEvidence": "fixed_product", "stable": True, "verified": True}
+        Path(command[command.index("--out") + 1]).write_text(json.dumps({"results": [report]}))
+        return SimpleNamespace(returncode=0, stderr="", stdout="")
+
+    monkeypatch.setattr(final_verify.subprocess, "run", run)
+    final_verify.verify_winners([winner], [winner])
+
+    assert captured["controlKind"] == "fixed-denomination"
+    assert captured["region"] == "US"
+    assert captured["denomination"] == 50
+    assert captured["denominationCurrency"] == "USD"
 
 
 def test_final_verifier_rejects_price_mismatch_without_known_price_fixture(monkeypatch):

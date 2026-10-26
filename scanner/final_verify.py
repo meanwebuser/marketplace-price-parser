@@ -64,6 +64,9 @@ def verify_winners(
                 "controlDomIndex": item.get("control_dom_index"),
                 "controlInputId": item.get("control_input_id"),
                 "controlValue": item.get("control_value"),
+                "region": item.get("region"),
+                "denomination": item.get("denomination"),
+                "denominationCurrency": item.get("denomination_currency"),
                 "tier": item.get("tier"),
                 "duration": item.get("duration"),
                 "delivery": item.get("delivery"),
@@ -110,7 +113,7 @@ def verify_winners(
                 wanted is not None
                 and key not in seen
                 and item.get("verified")
-                and item.get("selected")
+                and (item.get("selected") or item.get("selectionEvidence") == "stable_price_change")
                 and item.get("stable")
                 and item.get("observedPrice") == wanted.get("price_rub")
             )

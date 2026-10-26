@@ -25,7 +25,7 @@ from urllib.parse import urlencode
 from urllib.request import ProxyHandler, Request, build_opener, urlopen
 
 from families.base import FamilyConfig
-from scanner.proxy_source import playwright_proxy_options
+from scanner.proxy_source import playwright_proxy_options, redact_proxy_details
 
 DEFAULT_PLATI_API_URL = "https://api.digiseller.com/api/cataloguer/front/products"
 DEFAULT_PLATI_BASE_URL = "https://plati.market"
@@ -90,6 +90,10 @@ def discover_plati(
     max_results: int = 80,
     *,
     query_errors: list[str] | None = None,
+    max_pages: int = 6,
+    max_total_results: int | None = None,
+    coverage: dict | None = None,
+    candidate_filter=None,
     proxy_urls: tuple[str, ...] | list[str] = (),
 ) -> tuple[list[dict], str]:
     api_url = os.getenv("PLATI_API_URL", DEFAULT_PLATI_API_URL)
@@ -98,13 +102,16 @@ def discover_plati(
     out: list[dict] = []
     transport = "urllib-proxy" if proxy_urls else "urllib"
 
-    def fetch_query(index: int, query: str) -> tuple[dict | None, str | None]:
+    if max_results < 1 or max_pages < 1 or (max_total_results is not None and max_total_results < 1):
+        raise ValueError("result limits and max_pages must be positive")
+
+    def fetch_page(index: int, query: str, page: int) -> tuple[dict | None, str | None]:
         params = {
             "categoryId": "", "getProductsRecursive": "true",
             "sellerCategoryId": "", "productId": "",
             "productName": query, "ownerId": "plati",
             "ownerCategoryId": "", "sellerId": "", "sellerName": "",
-            "currency": "RUB", "page": "1", "count": str(max_results),
+            "currency": "RUB", "page": str(page), "count": str(max_results),
             "individual": "false", "video": "false", "image": "false",
             "attributes": "", "sortBy": "price-asc", "priceFrom": "", "priceTo": "",
             "includeAggregations": "true", "fuzzy": "false", "lang": "ru-RU",
@@ -120,12 +127,50 @@ def discover_plati(
                 response = urlopen(req, timeout=30)
             with response as resp:
                 payload = json.loads(resp.read().decode("utf-8"))
+            if not isinstance(payload, dict) or not isinstance(payload.get("content"), dict) or not isinstance(payload["content"].get("items"), list):
+                raise ValueError("invalid catalog response")
             return payload, None
         except Exception as error:
             # Error strings can include proxy URLs/user-info. Keep evidence
             # useful without serializing any configured proxy value.
-            failure = f"plati search '{query}': request failed" if proxy_urls else f"plati search '{query}': {error}"
+            reason = redact_proxy_details(str(error), proxy_urls).strip()
+            suffix = f": {reason}" if reason else " request failed"
+            failure = f"plati search {query!r} page {page}: {type(error).__name__}{suffix}"
             return None, failure
+
+    def fetch_query(index: int, query: str):
+        items, failures = [], []
+        info = {"query": query, "pagesFetched": 0, "itemsReceived": 0,
+                "totalPages": None, "totalItems": None, "stopReason": "page_cap"}
+        for page in range(1, max_pages + 1):
+            payload, failure = fetch_page(index, query, page)
+            if failure:
+                failures.append(failure)
+                info["stopReason"] = "error"
+                break
+            content = payload["content"]
+            batch = content["items"]
+            items.extend(batch)
+            info["pagesFetched"] += 1
+            info["itemsReceived"] += len(batch)
+            for target, names in (("totalPages", ("total_pages", "totalPages")),
+                                  ("totalItems", ("total_items", "totalItems", "total_count"))):
+                value = next((content[key] for key in names if content.get(key) is not None), None)
+                if value is not None:
+                    try:
+                        info[target] = max(0, int(value))
+                    except (TypeError, ValueError):
+                        pass
+            has_next = content.get("has_next_page", content.get("hasNextPage"))
+            if not batch or has_next is False or (info["totalPages"] is not None and page >= info["totalPages"]):
+                info["stopReason"] = "exhausted"
+                break
+            if info["totalPages"] is None and has_next is None and len(batch) < max_results:
+                info["stopReason"] = "short_page"
+                break
+        info["status"] = "failed" if not info["pagesFetched"] else "partial" if info["stopReason"] in {"error", "page_cap"} else "ok"
+        info["errors"] = failures
+        return items, info
 
     indexed_queries = list(enumerate(family.search_terms))
     if proxy_urls and len(indexed_queries) > 1:
@@ -133,16 +178,20 @@ def discover_plati(
             query_results = list(pool.map(lambda pair: fetch_query(*pair), indexed_queries))
     else:
         query_results = [fetch_query(index, query) for index, query in indexed_queries]
-
-    for query, (payload, failure) in zip(family.search_terms, query_results):
-        if failure:
+    candidates_before_cap = 0
+    if coverage is not None:
+        infos = [info for _, info in query_results]
+        coverage.update({"queries": infos, "pageSize": max_results, "maxPages": max_pages,
+                         "pagesFetched": sum(info["pagesFetched"] for info in infos),
+                         "status": "failed" if infos and all(info["status"] == "failed" for info in infos) else "partial" if any(info["status"] != "ok" for info in infos) else "ok"})
+    for items, info in query_results:
+        for failure in info["errors"]:
             print(f"  {failure}", file=sys.stderr)
             if query_errors is not None:
                 query_errors.append(failure)
-            continue
-        for item in (payload.get("content", {}) or {}).get("items", []) or []:
+        for item in items:
             label = name_from_locales(item)
-            if not _candidate_matches_family(label, family):
+            if not (candidate_filter(label) if candidate_filter else _candidate_matches_family(label, family)):
                 continue
             pid = str(item.get("product_id") or "")
             if not pid or pid in seen:
@@ -158,6 +207,19 @@ def discover_plati(
                 "seller": item.get("seller_name"),
                 "sales": item.get("total_sales"),
             })
+    candidates_before_cap = len(out)
+    if max_total_results is not None and candidates_before_cap > max_total_results:
+        out = out[:max_total_results]
+        if coverage is not None:
+            coverage["status"] = "partial"
+            coverage["candidateLimit"] = max_total_results
+            coverage["candidateCapReached"] = True
+    elif coverage is not None and max_total_results is not None:
+        coverage["candidateLimit"] = max_total_results
+        coverage["candidateCapReached"] = False
+    if coverage is not None:
+        coverage["candidatesBeforeCap"] = candidates_before_cap
+        coverage["candidatesReturned"] = len(out)
     return out, transport
 
 
@@ -376,8 +438,9 @@ def discover_all(
     proxy_urls: tuple[str, ...] | list[str] = (),
 ) -> dict:
     plati_query_errors: list[str] = []
+    plati_coverage: dict = {}
     plati, plati_t = discover_plati(
-        family, max_results, query_errors=plati_query_errors, proxy_urls=proxy_urls
+        family, max_results, query_errors=plati_query_errors, proxy_urls=proxy_urls, coverage=plati_coverage
     )
     ggsel_request_failures: list[str] = []
     ggsel, ggsel_t = discover_ggsel(
@@ -392,6 +455,7 @@ def discover_all(
         "family": family.name,
         "candidates": plati + ggsel,
         "plati_found": len(plati),
+        "coverage": {"plati": plati_coverage},
         "ggsel_found": len(ggsel),
         "transports": {
             "plati": plati_t,
@@ -440,11 +504,48 @@ def _extract_ggsel_gift_cards(html: str, region: str) -> list[dict]:
     return out
 
 
+def _gift_card_matches_region(text: str, region: str) -> bool:
+    text = normalise(text)
+    other = "TR" if region == "US" else "US"
+    return bool(re.search(r"\b(?:apple|itunes)\b", text)
+                and _GIFT_CARD_REGION_RE[region].search(text)
+                and not _GIFT_CARD_REGION_RE[other].search(text))
+
+
+async def _ggsel_gift_card_query(page, query, region, max_results, found, info, max_pages=6):
+    """Read only the submitted query's results, never the initial catalog."""
+    info.update(query=query, pagesFetched=0, status="failed", stopReason="error")
+    search = page.get_by_placeholder(re.compile(r"Найти товар|Поиск по товарам", re.I)).first
+    await search.fill(query)
+    await search.press("Enter")
+    # GGSEL navigates asynchronously after submission; domcontentloaded alone
+    # can still refer to the original catalog and produce a false empty result.
+    await page.wait_for_url(re.compile(r"/search(?:/|\?)"), timeout=15000)
+    ready_script = """() => document.querySelector('a[href*="/catalog/product/"]') ||
+        /ничего не найдено|товары не найдены|нет результатов|no results|nothing found/i.test(document.body.innerText)"""
+    for page_number in range(1, max_pages + 1):
+        await page.wait_for_function(ready_script, timeout=12000)
+        html = await page.content()
+        info["pagesFetched"] += 1
+        for candidate in _extract_ggsel_gift_cards(html, region):
+            found.setdefault(candidate["native_id"], candidate)
+        more = page.get_by_role("button", name=re.compile(r"показать (?:больше|ещ[её])|load more", re.I)).first
+        if await more.count() == 0 or not await more.is_visible():
+            info.update(status="ok", stopReason="exhausted")
+            break
+        if len(found) >= max_results or page_number == max_pages:
+            info.update(status="partial", stopReason="result_cap" if len(found) >= max_results else "page_cap")
+            break
+        await more.click()
+        await page.wait_for_timeout(700)
+
+
 async def _ggsel_gift_card_search_async(
     region: str,
     max_results: int,
     failures: list[str],
     proxy_urls: tuple[str, ...] | list[str] = (),
+    coverage: dict | None = None,
 ) -> list[dict]:
     """Search GGSEL's visible catalog search for query variants and load-more pages."""
     from crawlee import ConcurrencySettings, Request
@@ -470,39 +571,22 @@ async def _ggsel_gift_card_search_async(
     crawler = PlaywrightCrawler(**crawler_options)
     found: dict[str, dict] = {}
 
+    query_infos = {query: {"query": query, "pagesFetched": 0, "status": "failed", "stopReason": "error"}
+                   for query in queries}
+
     @crawler.failed_request_handler
     async def on_failure(ctx, error):
-        if proxy_urls:
-            failures.append("GGSEL gift-card query failed through configured proxy")
-        else:
-            failures.append(f"GGSEL gift-card query failed: {ctx.request.url}: {error}")
+        failures.append(f"GGSEL gift-card query failed: {type(error).__name__}")
 
     @crawler.router.default_handler
     async def handle(ctx):
         query = str(ctx.request.user_data.get("gift_card_query", ""))
+        info = query_infos[query]
         try:
-            search = ctx.page.get_by_placeholder(re.compile(r"Найти товар|Поиск по товарам", re.I)).first
-            await search.fill(query)
-            await search.press("Enter")
-            await ctx.page.wait_for_load_state("domcontentloaded", timeout=10000)
-            await ctx.page.wait_for_timeout(700)
-            # Search results are progressively loaded. Stop at the bounded page
-            # cap or when the visible show-more control disappears.
-            for _ in range(6):
-                for candidate in _extract_ggsel_gift_cards(await ctx.page.content(), region):
-                    found.setdefault(candidate["native_id"], candidate)
-                if len(found) >= max_results:
-                    break
-                more = ctx.page.get_by_role("button", name=re.compile(r"показать (?:больше|ещ[её])|load more", re.I)).first
-                if await more.count() == 0 or not await more.is_visible():
-                    break
-                await more.click()
-                await ctx.page.wait_for_timeout(500)
+            await _ggsel_gift_card_query(ctx.page, query, region, max_results, found, info)
         except Exception as error:
-            if proxy_urls:
-                failures.append(f"GGSEL gift-card query {query!r} failed through configured proxy")
-            else:
-                failures.append(f"GGSEL gift-card query {query!r}: {error}")
+            info.update(status="partial" if info["pagesFetched"] else "failed", stopReason="error")
+            failures.append(f"GGSEL gift-card query {query!r}: {type(error).__name__} search/results failed")
 
     await crawler.run([
         Request.from_url(
@@ -511,6 +595,13 @@ async def _ggsel_gift_card_search_async(
         )
         for index, query in enumerate(queries)
     ])
+    if coverage is not None:
+        infos = list(query_infos.values())
+        coverage.update(queries=infos, pagesFetched=sum(info["pagesFetched"] for info in infos), maxPages=6,
+                        status="failed" if all(info["status"] == "failed" for info in infos) else "partial" if any(info["status"] != "ok" for info in infos) else "ok")
+        if len(found) > max_results:
+            coverage["status"] = "partial"
+        coverage["candidatesBeforeCap"] = len(found)
     return list(found.values())[:max_results]
 
 
@@ -520,37 +611,55 @@ def discover_gift_cards(
     *,
     proxy_urls: tuple[str, ...] | list[str] = (),
 ) -> dict:
-    """Search generic GGSEL queries for one region-locked Apple gift-card type."""
+    """Search both marketplaces for one region-locked Apple gift-card type."""
     region = str(region).upper()
     if region == "TR":
         return {
             "product": "apple_gift_card", "region": region, "candidates": [],
-            "ggsel_found": 0, "queries": [], "transport": "not-collected",
+            "ggsel_found": 0, "plati_found": 0, "status": "deferred", "sources": {}, "queries": [], "transport": "not-collected",
             "errors": [], "coverage": "Turkey scan is intentionally deferred",
         }
     if region not in GIFT_CARD_QUERIES:
         raise ValueError(f"unsupported gift-card region {region!r}")
+    plati_errors: list[str] = []
+    plati_coverage: dict = {}
+    gift_family = FamilyConfig(
+        name="apple_gift_card", search_terms=list(GIFT_CARD_QUERIES[region]),
+        purpose_preset="any", marketplaces=["plati", "ggsel"], tier_filter=[],
+        duration_filter=[], delivery_filter=[],
+    )
+    plati, plati_transport = discover_plati(
+        gift_family, max_results, query_errors=plati_errors, proxy_urls=proxy_urls,
+        max_total_results=max_results, coverage=plati_coverage,
+        candidate_filter=lambda label: _gift_card_matches_region(label, region),
+    )
+    for candidate in plati:
+        candidate["region"] = region
     failures: list[str] = []
+    ggsel_coverage: dict = {}
     try:
-        candidates = asyncio.run(
-            _ggsel_gift_card_search_async(region, max_results, failures, proxy_urls)
+        ggsel = asyncio.run(
+            _ggsel_gift_card_search_async(region, max_results, failures, proxy_urls, coverage=ggsel_coverage)
         )
-        transport = "playwright-search-partial" if failures else "playwright-search"
+        ggsel_coverage.setdefault("status", "partial" if failures else "ok")
+        transport = {"ok": "playwright-search", "partial": "playwright-search-partial",
+                     "failed": "playwright-search-error"}[ggsel_coverage["status"]]
     except Exception as error:
-        candidates = []
-        failures.append("GGSEL gift-card search failed through configured proxy" if proxy_urls else str(error))
-        transport = "playwright-proxy-error" if proxy_urls else f"playwright-error: {error}"
+        ggsel = []
+        failures.append(f"GGSEL gift-card search: {type(error).__name__} request failed")
+        ggsel_coverage.update(status="failed", pagesFetched=0)
+        transport = "playwright-search-error"
+    sources = {"plati": plati_coverage, "ggsel": ggsel_coverage}
+    statuses = [source["status"] for source in sources.values()]
+    status = "failed" if all(value == "failed" for value in statuses) else "partial" if any(value != "ok" for value in statuses) else "ok"
     return {
-        "product": "apple_gift_card",
-        "region": region,
-        "candidates": candidates,
-        "ggsel_found": len(candidates),
-        "queries": list(GIFT_CARD_QUERIES[region]),
-        "transport": transport,
-        "errors": failures,
-        "coverage": "visible catalog search query variants; bounded load-more pages, not exhaustive",
-        "proxyMode": "configured" if proxy_urls else "direct",
-        "proxyCount": len(proxy_urls),
+        "product": "apple_gift_card", "region": region, "candidates": plati + ggsel,
+        "plati_found": len(plati), "ggsel_found": len(ggsel),
+        "queries": list(GIFT_CARD_QUERIES[region]), "status": status, "sources": sources,
+        "transport": transport, "transports": {"plati": plati_transport, "ggsel": transport},
+        "errors": plati_errors + failures,
+        "coverage": "query variants on both marketplaces; bounded API/search pages, not exhaustive",
+        "proxyMode": "configured" if proxy_urls else "direct", "proxyCount": len(proxy_urls),
     }
 
 

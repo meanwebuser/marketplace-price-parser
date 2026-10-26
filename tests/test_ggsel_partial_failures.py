@@ -50,9 +50,9 @@ def test_discover_all_keeps_curated_candidates_and_records_permanent_ggsel_failu
     monkeypatch.setattr(
         discover,
         "discover_plati",
-        lambda _family, _max_results, query_errors=None, proxy_urls=(): (
-            [{"source": "plati", "native_id": "5001", "label": "Kimi Pro 1 месяц"}],
-            "urllib",
+        lambda _family, _max_results, query_errors=None, proxy_urls=(), coverage=None: (
+            coverage.update(status="ok", pagesFetched=1, queries=[]) or
+            ([{"source": "plati", "native_id": "5001", "label": "Kimi Pro 1 месяц"}], "urllib")
         ),
     )
 

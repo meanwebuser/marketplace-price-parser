@@ -47,6 +47,28 @@ def test_cli_persists_structured_failed_final_verification_before_raising(monkey
     }
 
 
+def test_failed_apple_verification_persists_offer_identity_even_without_results(monkeypatch, tmp_path):
+    raw_path = tmp_path / "apple.raw.json"
+    raw = {"listings": [], "discovery": {"product": "apple_gift_card", "region": "US"}}
+    winner = {
+        "marketplace": "ggsel", "pid": "fixed-id", "raw_option_text": "50 USD",
+        "option_text": "50 USD", "region": "US", "denomination": 50,
+        "denomination_currency": "USD", "price_rub": 5200,
+    }
+    monkeypatch.setattr(cli, "verify_winners", lambda *_args, **_kwargs: (_ for _ in ()).throw(
+        FinalVerificationError("verifier unavailable", [], "startup failed")
+    ))
+
+    with pytest.raises(FinalVerificationError):
+        cli._verify_winners_and_persist_failure(raw, [winner], [winner], raw_path)
+
+    saved = json.loads(raw_path.read_text(encoding="utf-8"))
+    assert saved["finalVerification"]["results"] == []
+    assert saved["finalVerification"]["excludedOffers"] == [{
+        "marketplace": "ggsel", "pid": "fixed-id", "optionText": "50 USD",
+    }]
+
+
 def test_cli_persists_top_level_verifier_startup_error_with_no_results(monkeypatch, tmp_path):
     raw_path = tmp_path / "family.raw.json"
     raw = {"listings": []}

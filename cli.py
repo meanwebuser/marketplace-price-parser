@@ -210,6 +210,13 @@ def _verify_winners_and_persist_failure(
             "error": str(error),
             "results": error.results,
         }
+        requested_target = targets[0] if len(targets) == 1 else None
+        if raw.get("discovery", {}).get("product") == "apple_gift_card" and requested_target is not None:
+            failure_record["excludedOffers"] = [{
+                "marketplace": requested_target.get("marketplace"),
+                "pid": str(requested_target.get("pid")),
+                "optionText": requested_target.get("raw_option_text") or requested_target.get("option_text"),
+            }]
         if error.verifier_error:
             failure_record["verifierError"] = error.verifier_error
         raw["finalVerification"] = failure_record
@@ -261,6 +268,28 @@ def gift_card_unit_price(offer: dict) -> float:
     return float(offer["price_rub"]) / float(offer["denomination"])
 
 
+def _exclude_failed_gift_card_verifications(
+    offers: list[dict], results: list[dict], excluded_offers: list[dict] = (),
+) -> bool:
+    excluded = False
+    failures = [result for result in results if result.get("verified") is not True]
+    failures.extend(excluded_offers or [])
+    for result in failures:
+        identity = (
+            result.get("marketplace"), str(result.get("pid")),
+            result.get("optionText") or result.get("raw_option_text") or result.get("option_text"),
+        )
+        for offer in offers:
+            offer_identity = (
+                offer.get("marketplace"), str(offer.get("pid")),
+                offer.get("raw_option_text") or offer.get("option_text"),
+            )
+            if identity == offer_identity:
+                offer["price_verified"] = False
+                excluded = True
+    return excluded
+
+
 def rank_gift_card_offers(offers: list[dict]) -> list[dict]:
     """Sort current rows by RUB per one unit of face value, retaining unchecked offers."""
     return sorted(
@@ -283,46 +312,103 @@ def best_gift_card_value(offers: list[dict]) -> dict | None:
 def _run_gift_card_scan(args: argparse.Namespace) -> int:
     """Run the separate prepaid path; never invent subscription tier/term."""
     proxy_urls = getattr(args, "proxy_urls", [])
-    discovery_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
-    discovery = discover_gift_cards(args.region, args.max, **discovery_kwargs)
-    print(f"[apple_gift_card/{args.region}] GGSEL curated candidates: {len(discovery['candidates'])}")
-    if not discovery["candidates"]:
-        print(f"[apple_gift_card/{args.region}] no curated listing IDs; no scan performed")
-        return 0
     raw_path, csv_path, md_path = Path(args.raw), Path(args.csv), Path(args.md)
     _ensure_parent_dirs(raw_path, csv_path, md_path)
-    # The top-up path is always headless; on hosts where variant controls do
-    # not react in headless mode those options remain unverified and are not
-    # published as a confirmed price.
-    collect_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
-    raw = collect(
-        discovery["candidates"], raw_path, workers=args.workers,
-        headless=True, **collect_kwargs,
-    )
-    raw["discovery"] = {
-        "product": discovery["product"], "region": args.region,
-        "ggselFound": discovery["ggsel_found"], "coverage": discovery["coverage"],
-        "proxyMode": discovery.get("proxyMode", "direct"),
-        "proxyCount": discovery.get("proxyCount", 0),
-    }
+    if args.skip_discover:
+        if not raw_path.exists():
+            print(f"[apple_gift_card/{args.region}] cannot reuse missing raw snapshot: {raw_path}", file=sys.stderr)
+            return 2
+        raw = json.loads(raw_path.read_text(encoding="utf-8"))
+        discovery_metadata = raw.get("discovery", {})
+        print(f"[apple_gift_card/{args.region}] reusing {raw_path}: {len(raw.get('listings', []))} listings")
+    else:
+        discovery_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
+        discovery = discover_gift_cards(args.region, args.max, **discovery_kwargs)
+        print(f"[apple_gift_card/{args.region}] plati: {discovery.get('plati_found', 0)}, "
+              f"ggsel: {discovery['ggsel_found']}; discovery: {discovery.get('status', 'unknown')}")
+        discovery_metadata = {key: value for key, value in discovery.items() if key != "candidates"}
+        discovery_metadata.update(platiFound=discovery.get("plati_found", 0), ggselFound=discovery["ggsel_found"])
+        for error in discovery.get("errors", []):
+            print(f"  {error}", file=sys.stderr)
+        if not discovery["candidates"]:
+            raw_path.write_text(json.dumps({"listings": [], "discovery": discovery_metadata}, ensure_ascii=False, indent=2), encoding="utf-8")
+            write_csv([], csv_path)
+            with md_path.open("w", encoding="utf-8") as target:
+                target.write(f"# Apple gift cards — region {args.region}\n\n")
+                target.write(f"No candidates; discovery status: {discovery.get('status', 'unknown')} ({discovery.get('coverage', 'coverage unavailable')}).\n\n")
+                target.write("No tier or subscription duration is inferred for gift cards.\n\n")
+                for error in discovery.get("errors", []):
+                    target.write(f"- Discovery error: {error}\n")
+            print(f"[apple_gift_card/{args.region}] no candidates; discovery status: {discovery.get('status', 'unknown')}")
+            return 2 if discovery.get("status") in {"failed", "partial"} or discovery.get("errors") else 0
+        # The top-up path is always headless; on hosts where variant controls do
+        # not react in headless mode those options remain unverified and are not
+        # published as a confirmed price.
+        collect_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
+        raw = collect(
+            discovery["candidates"], raw_path, workers=args.workers,
+            headless=True, **collect_kwargs,
+        )
+        raw["discovery"] = discovery_metadata
     offers = list(gift_card_offers_from_raw(raw, args.region))
     winner = best_gift_card_value(offers)
     results = []
-    if winner and not args.skip_final_verify:
-        results = _verify_winners_and_persist_failure(
-            raw, [winner], offers, raw_path, proxy_urls=proxy_urls
+    verification_failed = bool(args.skip_final_verify and raw.get("finalVerification", {}).get("failed"))
+    if verification_failed:
+        _exclude_failed_gift_card_verifications(
+            offers, raw.get("finalVerification", {}).get("results", []),
+            raw.get("finalVerification", {}).get("excludedOffers", []),
         )
+        winner = None
+    if winner and not args.skip_final_verify:
+        try:
+            results = _verify_winners_and_persist_failure(
+                raw, [winner], offers, raw_path, proxy_urls=proxy_urls
+            )
+            verification_failed = False
+            raw["finalVerification"] = {"skipped": False, "results": results}
+        except FinalVerificationError as error:
+            verification_failed = True
+            results = error.results
+            failed_identity = (
+                winner.get("marketplace"), str(winner.get("pid")),
+                winner.get("raw_option_text") or winner.get("option_text"),
+            )
+            for offer in offers:
+                offer_identity = (
+                    offer.get("marketplace"), str(offer.get("pid")),
+                    offer.get("raw_option_text") or offer.get("option_text"),
+                )
+                if offer_identity == failed_identity:
+                    offer["price_verified"] = False
+            winner = None
+            raw["finalVerification"] = {
+                "skipped": False, "failed": True, "error": str(error), "results": results,
+                "excludedOffers": [{
+                    "marketplace": failed_identity[0], "pid": failed_identity[1],
+                    "optionText": failed_identity[2],
+                }],
+            }
+            print("[apple_gift_card] final verification failed; affected offer marked unverified and excluded from the site", file=sys.stderr)
     elif args.skip_final_verify:
         print(f"[apple_gift_card/{args.region}] final verification skipped")
-    raw["finalVerification"] = {
-        "skipped": bool(args.skip_final_verify), "results": results,
-    }
+        if not verification_failed:
+            raw["finalVerification"] = {"skipped": True, "results": []}
     raw_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
     write_csv(offers, csv_path)
     with md_path.open("w", encoding="utf-8") as target:
         target.write(f"# Apple gift cards — region {args.region}\n\n")
-        target.write(f"Candidates: {discovery['ggsel_found']} ({discovery['coverage']}).\n\n")
+        target.write(
+            f"Candidates: Plati {discovery_metadata.get('plati_found', discovery_metadata.get('platiFound', 0))}, "
+            f"GGSEL {discovery_metadata.get('ggsel_found', discovery_metadata.get('ggselFound', 0))}; "
+            f"status {discovery_metadata.get('status', 'unknown')} "
+            f"({discovery_metadata.get('coverage', 'coverage unavailable')}).\n\n"
+        )
         target.write("No tier or subscription duration is inferred for gift cards.\n\n")
+        if verification_failed:
+            target.write("Final browser verification: failed; the affected offer is unverified and excluded from the site.\n\n")
+        elif raw.get("finalVerification", {}).get("skipped"):
+            target.write("Final browser verification: skipped.\n\n")
         target.write("| Denomination | Price | RUB per unit | Availability | Price verified | Marketplace | Listing |\n|---|---:|---:|---|---|---|---|\n")
         for offer in rank_gift_card_offers(offers):
             stock_status = offer.get("availability_status") or ("in_stock" if offer.get("available") is True else "out_of_stock" if offer.get("available") is False else "unknown")
@@ -340,7 +426,7 @@ def _run_gift_card_scan(args: argparse.Namespace) -> int:
               f"{winner['denomination']:g} {winner['denomination_currency']} for {winner['price_rub']:.0f} ₽ "
               f"(availability: {availability}) — {winner['url']}")
     print(f"CSV: {csv_path}\nMD: {md_path}")
-    return 0
+    return 2 if verification_failed else 0
 
 
 def _maybe_llm(offers: list, args: argparse.Namespace) -> None:
@@ -459,7 +545,7 @@ def _print_dry_run_summary(family_name: str, meta: dict) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
-    needs_proxy = args.family == "apple_gift_card" or not (args.skip_discover and args.skip_final_verify)
+    needs_proxy = not (args.skip_discover and args.skip_final_verify)
     try:
         args.proxy_urls = fetch_proxy_urls() if needs_proxy else []
     except ProxySourceError as error:

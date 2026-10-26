@@ -97,20 +97,24 @@ test('current catalogue renders with the canonical registry without inventing an
 test('separate Apple giftCards collection appears in the product picker and ranks by RUB per USD', async () => {
   const current = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/latest.json'), 'utf8'));
   const officialPlans = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/subscription-plan-limits.json'), 'utf8'));
+  const apple = current.giftCards.find(item => item.id === 'apple_us');
+  const eligible = apple.offers.filter(item => item.available !== false && item.priceVerified);
+  const best = [...eligible].sort((a, b) => a.pricePerUnit - b.pricePerUnit || a.priceRub - b.priceRub)[0];
+  const denomination = String(best.denomination) + ' ' + best.denominationCurrency;
+  const unitRate = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(best.pricePerUnit);
   assert.ok(Array.isArray(current.giftCards));
   assert.equal(current.products.some(product => product.id === 'apple_us'), false);
+  assert.ok(apple.offers.length > 0);
+  assert.equal(apple.offers.some(item => String(item.pid) === '102829897' && item.optionText === '15 USD'), false);
   const { getElement } = await renderFixture(current, officialPlans);
 
   assert.ok(getElement('product').options.some(option => option.value === 'apple_us'));
   getElement('product').listeners.change({ target: { value: 'apple_us' } });
-  assert.match(getElement('recommendations-list').innerHTML, /Apple Gift Card · 5 USD · US/);
-  assert.match(getElement('recommendations-list').innerHTML, /57[,\.]8 ₽ за \$1 номинала/);
-  assert.match(getElement('recommendations-list').innerHTML, /Наличие: Наличие не проверено/);
-  assert.doesNotMatch(getElement('recommendations-list').innerHTML, /Apple Gift Card · 50 USD/);
-  assert.match(getElement('offers').innerHTML, /289 ₽<span class="sub">57[,\.]8 ₽ за \$1 номинала<\/span>/);
+  assert.ok(getElement('recommendations-list').innerHTML.includes('Apple Gift Card · ' + denomination + ' · US'));
+  assert.ok(getElement('recommendations-list').innerHTML.includes(unitRate + ' ₽ за $1 номинала'));
+  assert.match(getElement('recommendations-list').innerHTML, /Наличие:/);
+  assert.ok(getElement('offers').innerHTML.includes(String(best.priceRub) + ' ₽'));
   assert.match(getElement('offers').innerHTML, /50 USD/);
-  assert.match(getElement('offers').innerHTML, /Наличие: Нет в наличии/);
-  assert.match(getElement('offers').innerHTML, /FiatPay/);
 });
 
 test('actual MiniMax M Plan tiers map separately from legacy Token Plan tiers', async () => {

@@ -49,10 +49,10 @@ async function primaryPrice(page) {
       return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
     };
     const selectors = [
-      '[class*="id_product_price"]',
-      '[id*="id_product_price"]',
       '[class*="ProductBuyBlock"] [class*="amount"]',
       '[class*="ProductBuyBlock"] [class*="Amount"]',
+      '[class*="id_product_price"]',
+      '[id*="id_product_price"]',
     ];
     for (const selector of selectors) {
       for (const el of document.querySelectorAll(selector)) {
@@ -129,6 +129,45 @@ async function selectedState(locator) {
   });
 }
 
+function fixedProductEvidence(offer, pageEvidence) {
+  const text = String((pageEvidence.title || "") + " " + (pageEvidence.description || ""))
+    .replace(/\s+/g, " ").trim();
+  const region = String(offer.region || "").toUpperCase();
+  const currency = String(offer.denominationCurrency || "").toUpperCase();
+  const expected = Number(offer.denomination);
+  if (!/\b(?:apple|itunes)\b/i.test(text)) return { ok: false, reason: "Apple product evidence missing" };
+  const regionPattern = region === "US"
+    ? /\b(?:USA|U\.?S\.?A?\.?|United States)\b|сша/i
+    : region === "TR" ? /\b(?:Turkey|Türkiye|TR)\b|турц\w*/i : null;
+  if (!regionPattern || !regionPattern.test(text)) return { ok: false, reason: "product region evidence missing" };
+  const conflictingRegion = region === "US"
+    ? /\b(?:Turkey|Türkiye|TR|Canada|Canadian|Australia|Australian|Europe|European|Germany|UK|Japan|China|Global)\b|турц\w*|Канад\w*|Австрали\w*|Европ\w*|Германи\w*|Япони\w*|Кита\w*|глобальн\w*/i
+    : /\b(?:USA|United States|US|Canada|Canadian|Australia|Australian|Europe|European|Germany|UK|Japan|China|Global)\b|сша|Канад\w*|Австрали\w*|Европ\w*|Германи\w*|Япони\w*|Кита\w*|глобальн\w*/i;
+  if (conflictingRegion.test(text)) return { ok: false, reason: "conflicting region evidence" };
+  const foreignCurrency = region === "US"
+    ? /\b(?:EUR|TRY|TL|USDT|CAD|AUD|GBP|CNY|RMB|AED|HKD|NZD)\b|[€£₺¥]/i
+    : /\b(?:USD|EUR|USDT|CAD|AUD|GBP|CNY|RMB|AED|HKD|NZD)\b|[$€£¥]/i;
+  if (foreignCurrency.test(text)) return { ok: false, reason: "foreign currency evidence" };
+  if (pageEvidence.variantControlCount > 0) return { ok: false, reason: "variant controls exist on fixed product" };
+  if ((pageEvidence.amountControls || []).length > 0) return { ok: false, reason: "denomination controls exist on fixed product" };
+  if (/(?:[$₺]\s*\d+(?:[.,]\d+)?\s*(?:[-–—/]|to|до)\s*[$₺]?\s*\d+|\b\d+(?:[.,]\d+)?\s*(?:[-–—/]|to|до)\s*\d+(?:\s*(?:USD|TRY|TL))?\b)/i.test(text)) {
+    return { ok: false, reason: "denomination range found on fixed product" };
+  }
+  const patterns = currency === "USD"
+    ? [/\$\s*(\d+(?:[.,]\d{1,2})?)/gi, /\b(\d+(?:[.,]\d{1,2})?)\s*(?:USD\b|\$(?!\w))/gi]
+    : currency === "TRY"
+      ? [/\b(\d+(?:[.,]\d{1,2})?)\s*(?:TRY\b|TL\b|₺)/gi, /₺\s*(\d+(?:[.,]\d{1,2})?)\b/gi]
+      : [];
+  const amounts = new Set();
+  for (const pattern of patterns) {
+    for (const match of text.matchAll(pattern)) amounts.add(Number(match[1].replace(",", ".")));
+  }
+  if (amounts.size !== 1 || !amounts.has(expected)) {
+    return { ok: false, reason: "single denomination evidence does not match offer" };
+  }
+  return { ok: true, reason: "exact region and denomination; no variant controls" };
+}
+
 async function verifyOne(browser, offer, proxyUrl = null) {
   const result = { ...offer, observedPrice: null, selected: false, stable: false, verified: false, verifiedAt: new Date().toISOString(), error: null };
   const contextOptions = {
@@ -145,22 +184,57 @@ async function verifyOne(browser, offer, proxyUrl = null) {
   try {
     await page.goto(offer.url, { waitUntil: "domcontentloaded", timeout: 35000 });
     await sleep(2200);
-    const target = await locateExact(page, offer);
-    if (!target) {
-      const nearby = await page.locator('label,button,[role="radio"]').evaluateAll((nodes) => nodes
-        .map((el) => (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim())
-        .filter((text) => /pro|20x|20х|месяц/i.test(text)).slice(0, 8));
-      throw new Error(`exact variant control not found; nearby=${JSON.stringify(nearby)}`);
-    }
-    if (target.selector === "select option") {
-      const value = await target.locator.getAttribute("value");
-      await target.locator.locator("xpath=..").selectOption(value);
+    let beforePrice = null;
+    if (offer.controlKind === "fixed-denomination") {
+      const pageEvidence = await page.evaluate(() => {
+        const selectors = ['[itemprop="description"]', '[class*="escription"]', '[id*="escription"]', '[class*="desc"]'];
+        const descriptions = [];
+        for (const selector of selectors) {
+          for (const element of document.querySelectorAll(selector)) {
+            const value = (element.textContent || "").replace(/\s+/g, " ").trim();
+            if (value.length > 40 && !descriptions.includes(value)) descriptions.push(value);
+          }
+        }
+        const visible = element => {
+          const style = getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+        };
+        const amountControls = Array.from(document.querySelectorAll('button,label,[role="button"],[role="radio"],input,select'))
+          .filter(visible)
+          .map(element => (element.innerText || element.value || element.getAttribute("aria-label") || element.textContent || "").replace(/\s+/g, " ").trim())
+          .filter(value => !/^(?:купить|buy|purchase|оплатить)\b/i.test(value))
+          .filter(value => /(?:\$\s*\d+(?:[.,]\d+)?|\b\d+(?:[.,]\d+)?\s*(?:USD|TRY|TL|₺|\$(?!\w)))/i.test(value));
+        return {
+          title: document.title || "",
+          description: descriptions.slice(0, 5).join(" "),
+          variantControlCount: document.querySelectorAll('input[type="radio"],[role="radio"],select').length,
+          amountControls,
+        };
+      });
+      const evidence = fixedProductEvidence(offer, pageEvidence);
+      if (!evidence.ok) throw new Error("fixed product evidence failed: " + evidence.reason);
+      result.selected = true;
+      result.selectionEvidence = "fixed_product";
     } else {
-      await target.locator.click({ timeout: 12000 });
+      const target = await locateExact(page, offer);
+      if (!target) {
+        const nearby = await page.locator('label,button,[role="radio"]').evaluateAll((nodes) => nodes
+          .map((el) => (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim())
+          .filter((text) => /pro|20x|20х|месяц/i.test(text)).slice(0, 8));
+        throw new Error(`exact variant control not found; nearby=${JSON.stringify(nearby)}`);
+      }
+      const beforeText = await primaryPrice(page);
+      beforePrice = beforeText ? parseRub(beforeText) : null;
+      if (target.selector === "select option") {
+        const value = await target.locator.getAttribute("value");
+        await target.locator.locator("xpath=..").selectOption(value);
+      } else {
+        await target.locator.click({ timeout: 12000 });
+      }
+      await sleep(400);
+      result.selected = await selectedState(target.locator);
     }
-    await sleep(400);
-    result.selected = await selectedState(target.locator);
-    if (!result.selected) throw new Error("variant click has no selected-state proof");
     let previous = null;
     let stableSamples = 0;
     const deadline = Date.now() + 8000;
@@ -173,6 +247,13 @@ async function verifyOne(browser, offer, proxyUrl = null) {
       await sleep(350);
     }
     result.observedPrice = previous;
+    result.priceChanged = beforePrice !== null && result.observedPrice !== null && result.observedPrice !== beforePrice;
+    result.selectionEvidence = result.selectionEvidence || (result.selected
+      ? "selected_marker"
+      : result.priceChanged && result.stable
+        ? "stable_price_change"
+        : null);
+    if (!result.selectionEvidence) throw new Error("variant click has no selected-state or stable-price-change proof");
     if (!result.stable || result.observedPrice === null) throw new Error("primary price did not become stable");
     if (Number(result.observedPrice) !== Number(offer.expectedPrice)) {
       throw new Error(`price mismatch: expected ${offer.expectedPrice}, observed ${result.observedPrice}`);

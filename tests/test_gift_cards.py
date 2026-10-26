@@ -50,9 +50,33 @@ def test_gift_card_parser_rejects_region_mismatch_and_currency_only_evidence():
     assert list(gift_card_offers_from_raw(_raw_listing(option="€4"), "US")) == []
 
 
+def test_unrelated_other_region_recommendation_does_not_hide_us_listing():
+    raw = _raw_listing()
+    raw["listings"][0]["pageText"] = "Related items: Apple Gift Card Turkey 50 TRY"
+    offer, = gift_card_offers_from_raw(raw, "US")
+    assert offer["region"] == "US"
+    assert offer["denomination_currency"] == "USD"
+
+
 def test_gift_card_price_stays_unverified_when_option_selection_failed():
     offer, = gift_card_offers_from_raw(_raw_listing(selected_after=False))
     assert offer["price_rub"] == 458
+    assert offer["price_verified"] is False
+
+
+def test_stable_price_change_verifies_clicked_option_without_selected_marker():
+    raw = _raw_listing(selected_after=False, price_verified=False)
+    option = raw["listings"][0]["options"][0]
+    option.update(priceChanged=True, priceStable=True)
+    offer, = gift_card_offers_from_raw(raw)
+    assert offer["price_verified"] is True
+
+
+def test_unstable_price_change_stays_unverified_without_selected_marker():
+    raw = _raw_listing(selected_after=False, price_verified=False)
+    option = raw["listings"][0]["options"][0]
+    option.update(priceChanged=True, priceStable=False)
+    offer, = gift_card_offers_from_raw(raw)
     assert offer["price_verified"] is False
 
 
