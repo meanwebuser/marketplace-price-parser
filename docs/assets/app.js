@@ -1,6 +1,6 @@
 const labels = { own_account: 'На личный аккаунт', new_account: 'Отдельный аккаунт', shared_account: 'Общий аккаунт', unknown: 'Уточнить у продавца', '1m': '1 месяц', '3m': '3 месяца', '6m': '6 месяцев', '12m': '1 год' };
 const availabilityLabels = { in_stock: 'В наличии', out_of_stock: 'Нет в наличии', unknown: 'Наличие не проверено' };
-const ids = ['product','recommendations-list','recommendation-mode-price','recommendation-mode-value','search','tier','duration','delivery','marketplace','sort','hide-glitched','reset','offers','result','updated','offer-count','minimum-price','marketplace-count','product-kicker','product-title','product-description','source-note'];
+const ids = ['product','recommendations-list','recommendation-mode-price','recommendation-mode-value','search','tier','duration','delivery','marketplace','sort','hide-glitched','reset','offers','result','updated','offer-count','minimum-price','marketplace-count','product-kicker','product-title','product-description','source-note','gift-card-combo','gift-card-target','gift-card-combo-result'];
 const els = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
 const rub = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
 const scoreFormat = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 });
@@ -129,6 +129,64 @@ function recommendation(product, selection, mode) {
     || Number(a.delivery !== 'own_account')-Number(b.delivery !== 'own_account'))[0] || null;
   return cheapest ? { offer: cheapest, multiplier: null, score: null } : null;
 }
+function cheapestGiftCardCombo(product, targetCents) {
+  const listings = new Map();
+  for (const offer of product.offers) {
+    if (offer.region !== 'US' || offer.denominationCurrency !== 'USD' || offer.availabilityStatus !== 'in_stock'
+      || offer.available === false || offer.priceVerified !== true || offer.glitched
+      || !Number.isFinite(offer.priceRub) || offer.priceRub <= 0) continue;
+    const cents = Math.round(Number(offer.denomination) * 100);
+    if (!Number.isInteger(cents) || cents <= 0 || Math.abs(cents - Number(offer.denomination) * 100) > 0.001) continue;
+    const listing = String(offer.pid || offer.listingId || offer.url || `${offer.marketplace}:${offer.title}`);
+    const key = `${offer.marketplace}:${listing}`;
+    if (!listings.has(key)) listings.set(key, []);
+    listings.get(key).push({ offer, cents });
+  }
+  let states = new Map([[0, { cost: 0, picks: [] }]]);
+  for (const choices of listings.values()) {
+    const next = new Map(states);
+    for (const [sum, state] of states) for (const { offer, cents } of choices) {
+      const total = sum + cents;
+      if (total > targetCents) continue;
+      const candidate = { cost: state.cost + offer.priceRub, picks: [...state.picks, offer] };
+      const previous = next.get(total);
+      if (!previous || candidate.cost < previous.cost
+        || (candidate.cost === previous.cost && candidate.picks.length < previous.picks.length)) next.set(total, candidate);
+    }
+    states = next;
+  }
+  return states.get(targetCents) || null;
+}
+function renderGiftCardCombo(product) {
+  const container = els['gift-card-combo'];
+  if (!container) return;
+  const isAppleUS = product?.kind === 'gift_card' && product.id === 'apple_us';
+  container.hidden = !isAppleUS;
+  if (!isAppleUS) return;
+  const target = Number(els['gift-card-target']?.value || 50);
+  if (!Number.isFinite(target) || target <= 0 || target > 1000) {
+    els['gift-card-combo-result'].innerHTML = '<p class="combo-message">Введите сумму от $0,01 до $1 000.</p>';
+    return;
+  }
+  const targetCents = Math.round(target * 100);
+  if (Math.abs(targetCents - target * 100) > 0.001) {
+    els['gift-card-combo-result'].innerHTML = '<p class="combo-message">Сумма должна быть указана с точностью до цента.</p>';
+    return;
+  }
+  const combo = cheapestGiftCardCombo(product, targetCents);
+  if (!combo) {
+    const hasUnknown = product.offers.some(o => o.region === 'US' && o.denominationCurrency === 'USD' && o.availabilityStatus === 'unknown');
+    els['gift-card-combo-result'].innerHTML = `<p class="combo-message">Не нашёл комбинацию ровно на $${scoreFormat.format(target)} среди предложений, отмеченных «в наличии» в последнем скане.${hasUnknown ? ' Предложения с неизвестным наличием не считаются доступными.' : ''}</p>`;
+    return;
+  }
+  const rate = combo.cost / target;
+  const lines = combo.picks.map(offer => `<li><span>$${scoreFormat.format(offer.denomination)} · ${rub.format(offer.priceRub)} ₽ · ${offer.marketplace.toUpperCase()}${offer.optionText ? `<small>Выбрать на странице: ${esc(offer.optionText)}</small>` : ''}</span><a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Открыть лот</a></li>`).join('');
+  const scannedAt = product.metadata?.scanCompletedAt || product.metadata?.scanDate;
+  const scanned = scannedAt ? new Date(scannedAt).toLocaleString('ru-RU') : 'неизвестно';
+  const count = combo.picks.length;
+  const countLabel = count === 1 ? '1 объявление' : count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14) ? `${count} объявления` : `${count} объявлений`;
+  els['gift-card-combo-result'].innerHTML = `<div class="combo-summary"><strong>Итого $${scoreFormat.format(target)} за ${rub.format(combo.cost)} ₽</strong><span>≈ ${scoreFormat.format(rate)} ₽ за $1 · ${countLabel}</span></div><ul class="combo-list">${lines}</ul><p class="combo-footnote">Минимум по сохранённому скану от ${esc(scanned)}: учитываются только подтверждённые US/USD варианты с ценой и статусом «в наличии». Один вариант с каждого объявления; комиссии оплаты не учтены. Остаток и цену перед оплатой проверьте на странице продавца.</p>`;
+}
 function ordered(values, order) {
   return [...new Set(values)].sort((a,b) => {
     const ai = order.indexOf(a), bi = order.indexOf(b);
@@ -202,7 +260,7 @@ function chooseProduct(id) {
   els['source-note'].textContent = active.kind === 'gift_card'
     ? 'Регион Apple Account должен совпадать с регионом карты. Номинал — в валюте карты, цена продавца — в рублях. Цена и наличие проверяются отдельно; неизвестное наличие не означает, что товар можно купить.'
     : `${active.metadata.detailLevel === 'summary' ? 'Это сохранённая итоговая сводка: полный raw/CSV этого исторического Z.ai-скана не был закоммичен. ' : 'Полный CSV и raw-снимок доступны в репозитории. '}Тип выдачи «не определён» требует ручной проверки условий продавца.`;
-  resetFilters(); render();
+  resetFilters(); render(); renderGiftCardCombo(active);
 }
 function filtered() {
   const query = els.search.value.trim().toLowerCase();
@@ -218,6 +276,7 @@ function filtered() {
       : isGiftCard ? unitPrice(a)-unitPrice(b) || a.priceRub-b.priceRub : a.priceRub-b.priceRub);
 }
 function render() {
+  renderGiftCardCombo(active);
   const rows = filtered(); els.result.textContent = `Показано ${rows.length} из ${offers.length} вариантов`;
   els['offer-count'].textContent = rows.length;
   const isGiftCard = active?.kind === 'gift_card';
@@ -237,7 +296,7 @@ function render() {
 async function init() {
   try {
     const [data, registry] = await Promise.all([
-      fetch('data/latest.json?v=8').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
+      fetch('data/latest.json?v=9').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
       fetch('data/subscription-plan-limits.json').then(r => { if (!r.ok) throw new Error(); return r.json(); })
     ]);
     planRegistry = registry;
@@ -261,6 +320,7 @@ els['recommendations-list'].addEventListener('change', event => {
 });
 els['recommendation-mode-price'].addEventListener('click', () => { recommendationMode = 'price'; renderRecommendations(); });
 els['recommendation-mode-value'].addEventListener('click', () => { recommendationMode = 'value'; renderRecommendations(); });
+els['gift-card-target']?.addEventListener('input', () => renderGiftCardCombo(active));
 els['recommendations-list'].addEventListener('click', event => {
   const link = event.target.closest?.('a.show-product-offers');
   if (!link) return;

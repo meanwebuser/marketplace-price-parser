@@ -117,6 +117,42 @@ test('separate Apple giftCards collection appears in the product picker and rank
   assert.match(getElement('offers').innerHTML, /50 USD/);
 });
 
+test('Apple combo calculator finds the cheapest exact amount without reusing one listing', async () => {
+  const apple = {
+    id: 'apple_us', kind: 'gift_card', region: 'US', label: 'Apple US',
+    metadata: { scanCompletedAt: '2026-10-26T02:40:49.363Z' },
+    offers: [
+      { marketplace: 'ggsel', pid: 'one-listing', denomination: 25, denominationCurrency: 'USD', priceRub: 900, priceVerified: true, available: true, availabilityStatus: 'in_stock', region: 'US', url: 'https://example.test/a', optionText: '$25' },
+      { marketplace: 'ggsel', pid: 'one-listing', denomination: 50, denominationCurrency: 'USD', priceRub: 1700, priceVerified: true, available: true, availabilityStatus: 'in_stock', region: 'US', url: 'https://example.test/a', optionText: '$50' },
+      { marketplace: 'plati', pid: 'second', denomination: 25, denominationCurrency: 'USD', priceRub: 700, priceVerified: true, available: true, availabilityStatus: 'in_stock', region: 'US', url: 'https://example.test/b', optionText: '$25' },
+      { marketplace: 'plati', pid: 'unavailable', denomination: 50, denominationCurrency: 'USD', priceRub: 10, priceVerified: true, available: false, availabilityStatus: 'out_of_stock', region: 'US', url: 'https://example.test/c', optionText: '$50' }
+    ]
+  };
+  const { getElement } = await renderFixture({ products: [], giftCards: [apple] });
+  getElement('product').listeners.change({ target: { value: 'apple_us' } });
+  let html = getElement('gift-card-combo-result').innerHTML;
+  assert.match(html, /Итого \$50 за 1[\s\u00a0]600 ₽/);
+  assert.match(html, /https:\/\/example\.test\/a/);
+  assert.match(html, /https:\/\/example\.test\/b/);
+  assert.doesNotMatch(html, /example\.test\/c/);
+
+  getElement('gift-card-target').value = '75';
+  getElement('gift-card-target').listeners.input();
+  html = getElement('gift-card-combo-result').innerHTML;
+  assert.match(html, /Итого \$75 за 2[\s\u00a0]400 ₽/);
+});
+
+test('Apple combo calculator only includes captured in-stock listings and reports no exact match', async () => {
+  const apple = {
+    id: 'apple_us', kind: 'gift_card', region: 'US', label: 'Apple US', metadata: { scanDate: '2026-10-26' },
+    offers: [{ marketplace: 'plati', pid: 'unknown', denomination: 10, denominationCurrency: 'USD', priceRub: 900, priceVerified: true, available: null, availabilityStatus: 'unknown', region: 'US', url: 'https://example.test/unknown' }]
+  };
+  const { getElement } = await renderFixture({ products: [], giftCards: [apple] });
+  getElement('product').listeners.change({ target: { value: 'apple_us' } });
+  assert.match(getElement('gift-card-combo-result').innerHTML, /не нашёл комбинацию ровно на \$50/i);
+  assert.match(getElement('gift-card-combo-result').innerHTML, /неизвестным наличием/);
+});
+
 test('actual MiniMax M Plan tiers map separately from legacy Token Plan tiers', async () => {
   const officialPlans = JSON.parse(fs.readFileSync(path.join(__dirname, '../docs/data/subscription-plan-limits.json'), 'utf8'));
   const items = [

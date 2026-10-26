@@ -17,6 +17,17 @@ input,select { min-height: 2.6rem; } button { cursor: pointer; border-color: #a9
 .table-wrap { overflow-x: auto; border: 1px solid #30343d; border-radius: 14px; background: #17191f; } table { width: 100%; border-collapse: collapse; min-width: 900px; } th,td { text-align: left; padding: .88rem .95rem; border-bottom: 1px solid #2d3038; vertical-align: top; } th { color: #a9e76c; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; } td.price { font-weight: 800; white-space: nowrap; } td.title { max-width: 430px; } .sub { display:block; color:#a9aaa6; font-size:.82rem; margin-top:.28rem; } a { color:#a9e76c; } .tag { display:inline-block; padding:.22rem .45rem; border-radius:99px; background:#292d37; white-space:nowrap; } .warning { color:#ffcb6b; }
 @media (max-width: 680px) { .shell { padding-top: 2.5rem; }.metrics { grid-template-columns: 1fr; }.filters { display:grid; grid-template-columns: 1fr 1fr; }.filters .search { grid-column: 1 / -1; }.checkbox { grid-column: 1 / -1; } }
 .recommendations { margin: 1.8rem 0 1.5rem; }
+.combo-section { margin: 1.4rem 0; padding: 1.1rem; border: 1px solid #566a45; border-radius: 14px; background: linear-gradient(145deg, #20271f, #17191f 72%); }
+.combo-section[hidden] { display: none; }
+.combo-target { min-width: 12rem; }
+.combo-result { display: grid; gap: .55rem; }
+.combo-summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: .8rem; }
+.combo-summary strong { font-size: 1.4rem; }
+.combo-summary span,.combo-footnote,.combo-message { color: #c0c1bc; font-size: .85rem; line-height: 1.45; }
+.combo-list { list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; }
+.combo-list li { display: flex; justify-content: space-between; gap: 1rem; padding: .6rem .75rem; border-radius: 8px; background: #111319; }
+.combo-list small { display: block; margin-top: .2rem; color: #9a9d97; font-size: .78rem; }
+.combo-footnote { margin: .1rem 0 0; color: #9a9d97; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; margin-bottom: .8rem; }
 .section-heading .eyebrow { margin-bottom: .35rem; }
 .section-heading h2 { margin: 0; font-size: clamp(1.35rem, 3vw, 2rem); }
