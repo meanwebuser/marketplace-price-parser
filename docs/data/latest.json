@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T01:50:32.139037+00:00",
+  "generatedAt": "2026-10-27T14:04:53.888668+00:00",
   "products": [
     {
       "id": "minimax",
@@ -12742,9 +12742,9 @@
         "sourceRows": 1521,
         "publishedRows": 1271,
         "finalVerifiedWinners": 0,
-        "manualPriceChecks": 0,
-        "manualPriceChecksDate": null,
-        "priceCheckSourcePath": null,
+        "manualPriceChecks": 3,
+        "manualPriceChecksDate": "2026-10-27",
+        "priceCheckSourcePath": "snapshots/targeted/2026-10-27-1755-apple-us-price-checks.json",
         "detailLevel": "full",
         "discoveryCoverage": {
           "auditPath": "audits/2026-10-27-full-refresh.md",
@@ -14812,16 +14812,17 @@
           "region": "US",
           "denomination": 4.0,
           "denominationCurrency": "USD",
-          "pricePerUnit": 48.5,
+          "pricePerUnit": 114.75,
           "delivery": "digital_code",
           "automaticDelivery": true,
-          "priceRub": 194.0,
+          "priceRub": 459.0,
           "strongSignal": true,
           "available": null,
           "availabilityStatus": "unknown",
           "availabilityEvidence": "availability was not checked",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -16641,7 +16642,8 @@
           "availabilityStatus": "unknown",
           "availabilityEvidence": "availability was not checked",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
@@ -26581,7 +26583,8 @@
           "availabilityStatus": "unknown",
           "availabilityEvidence": "availability was not checked",
           "priceVerified": true,
-          "finalVerified": false
+          "finalVerified": true,
+          "manualPriceCheckDate": "2026-10-27"
         },
         {
           "marketplace": "ggsel",
