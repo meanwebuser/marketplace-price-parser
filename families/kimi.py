@@ -43,7 +43,7 @@ CONFIG = FamilyConfig(
     duration_filter=["1m", "3m", "6m", "12m"],
     delivery_filter=["own_account", "new_account", "shared_account", "unknown"],
     forbid_shared=False,
-    ggssel_category="kimi",
+    ggssel_category="kimi-ai",
     # Listing identities from the 2026-10-02 snapshot, never historical prices.
     # Category discovery supplements these seeds; collection checks live state.
     ggsel_ids=[

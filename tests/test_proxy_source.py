@@ -32,7 +32,14 @@ def test_parse_proxy_list_rejects_non_http_or_ambiguous_entries(entry):
 
 def test_fetch_proxy_urls_returns_empty_when_source_is_not_configured(monkeypatch):
     monkeypatch.delenv("MARKETPLACE_PROXY_SOURCE_URL", raising=False)
+    monkeypatch.delenv("MARKETPLACE_PROXY_URL", raising=False)
     assert proxy_source.fetch_proxy_urls() == []
+
+
+def test_fetch_proxy_urls_accepts_one_rotating_http_proxy_from_runtime_config(monkeypatch):
+    monkeypatch.delenv("MARKETPLACE_PROXY_SOURCE_URL", raising=False)
+    monkeypatch.setenv("MARKETPLACE_PROXY_URL", "http://127.0.0.1:18190")
+    assert proxy_source.fetch_proxy_urls() == ["http://127.0.0.1:18190"]
 
 
 def test_fetch_proxy_urls_uses_curl_stdin_config_without_printing_addresses(monkeypatch):
@@ -104,9 +111,12 @@ def test_collector_passes_proxy_list_through_private_temp_file_and_deletes_it(mo
 
     monkeypatch.setattr(collect_module.subprocess, "run", fake_run)
     result = collect_module.collect(
-        [], output_path, workers=1, headless=True, proxy_urls=proxy_urls
+        [{"source": "plati", "native_id": "1"}], output_path,
+        workers=1, http_workers=10, headless=True, proxy_urls=proxy_urls
     )
-    assert result == {"listings": []}
+    assert result["listings"] == []
+    assert result["config"]["httpWorkers"] == 10
+    assert result["config"]["browserWorkers"] == 1
     assert seen["mode"] == 0o600
     assert "secret" in seen["payload"]
     assert not seen["path"].exists()

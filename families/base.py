@@ -42,8 +42,6 @@ class FamilyConfig:
             return False
         if offer.get("delivery") not in self.delivery_filter:
             return False
-        if offer.get("available") is False:
-            return False
         if offer.get("price_verified") is False:
             return False
         if offer.get("glitched"):

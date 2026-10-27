@@ -6,6 +6,8 @@ This reference is for the public `low_price` scanner. It describes an interface,
 
 Set `MARKETPLACE_PROXY_SOURCE_URL` in the local process environment to the user-configured HTTP(S) URL that returns the list. If that endpoint requires bearer authentication, set `MARKETPLACE_PROXY_SOURCE_TOKEN` separately; do not add credentials to the URL.
 
+For catalog discovery that needs one rotating HTTP proxy, set `MARKETPLACE_PROXY_URL`. When both variables are set, the list handles concurrent detail/price requests and the rotating proxy handles discovery. Do not commit either value or its source.
+
 The endpoint body is UTF-8 `text/plain`, with one HTTP or HTTPS proxy URL per non-empty line. Blank lines and lines beginning with `#` are ignored. Example format using reserved documentation-only hostnames:
 
 ```text
@@ -67,4 +69,4 @@ If there is no usable LLM key, skip the LLM pass without requesting or printing 
 
 After the deterministic parser meets or exceeds the LLM prediction on the checked gold cases, use `--analyzer auto` for routine runs. `auto` is deterministic and makes no LLM calls, regardless of whether an API key is set. Use `--analyzer llm` only for an explicit calibration run; `--analyzer selective` is an explicit uncertainty-gated mode for the family that currently supports it.
 
-For Apple gift cards, the separate prepaid parser does not assign subscription tiers or terms. Validate region, denomination currency, selected-option total, and stock state from the raw capture or headless browser. Compare its deterministic parser against a gold set of those fields instead of routing cards through the subscription LLM schema.
+For Apple gift cards, the separate prepaid parser does not assign subscription tiers or terms. Validate region, denomination currency, and selected-option total from the raw capture or headless browser. Do not inspect or infer stock state. For an exact-total optimization, use only price-verified denominations and state any assumption that multiple units of one listing can be purchased.

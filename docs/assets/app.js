@@ -1,5 +1,4 @@
 const labels = { own_account: 'На личный аккаунт', new_account: 'Отдельный аккаунт', shared_account: 'Общий аккаунт', unknown: 'Уточнить у продавца', '1m': '1 месяц', '3m': '3 месяца', '6m': '6 месяцев', '12m': '1 год' };
-const availabilityLabels = { in_stock: 'В наличии', out_of_stock: 'Нет в наличии', unknown: 'Наличие не проверено' };
 const ids = ['product','recommendations-list','recommendation-mode-price','recommendation-mode-value','search','tier','duration','delivery','marketplace','sort','hide-glitched','reset','offers','result','updated','offer-count','minimum-price','marketplace-count','product-kicker','product-title','product-description','source-note','gift-card-combo','gift-card-target','gift-card-combo-result'];
 const els = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
 const rub = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 });
@@ -18,7 +17,6 @@ const durationRank = ['1m', '3m', '6m', '12m'];
 
 const esc = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 const label = value => labels[value] || value;
-const availabilityLabel = offer => availabilityLabels[offer.availabilityStatus] || (offer.available === true ? 'В наличии' : offer.available === false ? 'Нет в наличии' : 'Наличие не проверено');
 const safeUrl = value => /^https:\/\//.test(value) ? value : '#';
 const denominationUnit = offer => offer.denominationCurrency === 'USD' ? '$1' : `1 ${offer.denominationCurrency || 'ед.'}`;
 function resetOptions(id, initial) { els[id].innerHTML = `<option value="">${initial}</option>`; }
@@ -51,7 +49,7 @@ function resetFilters() {
   els.sort.value = 'price-asc'; els['hide-glitched'].checked = true;
 }
 function eligibleOffers(product) {
-  return product.offers.filter(o => o.available !== false && o.priceVerified !== false && !o.glitched && Number.isFinite(o.priceRub) && o.priceRub > 0);
+  return product.offers.filter(o => o.priceVerified !== false && !o.glitched && Number.isFinite(o.priceRub) && o.priceRub > 0);
 }
 function normalizePlanAlias(value) { return String(value || '').toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim(); }
 function planForOffer(product, offer) {
@@ -130,33 +128,32 @@ function recommendation(product, selection, mode) {
   return cheapest ? { offer: cheapest, multiplier: null, score: null } : null;
 }
 function cheapestGiftCardCombo(product, targetCents, finalVerifiedOnly = false) {
-  const listings = new Map();
+  const options = new Map();
   for (const offer of product.offers) {
-    if (offer.region !== 'US' || offer.denominationCurrency !== 'USD' || offer.availabilityStatus !== 'in_stock'
+    if (offer.region !== 'US' || offer.denominationCurrency !== 'USD'
       || (finalVerifiedOnly && offer.finalVerified !== true)
-      || offer.available === false || offer.priceVerified !== true || offer.glitched
+      || offer.priceVerified !== true || offer.glitched
       || !Number.isFinite(offer.priceRub) || offer.priceRub <= 0) continue;
     const cents = Math.round(Number(offer.denomination) * 100);
     if (!Number.isInteger(cents) || cents <= 0 || Math.abs(cents - Number(offer.denomination) * 100) > 0.001) continue;
-    const listing = String(offer.pid || offer.listingId || offer.url || `${offer.marketplace}:${offer.title}`);
-    const key = `${offer.marketplace}:${listing}`;
-    if (!listings.has(key)) listings.set(key, []);
-    listings.get(key).push({ offer, cents });
+    const key = `${offer.marketplace}:${offer.pid}:${cents}`;
+    const previous = options.get(key);
+    if (!previous || offer.priceRub < previous.offer.priceRub) options.set(key, { offer, cents });
   }
-  let states = new Map([[0, { cost: 0, picks: [] }]]);
-  for (const choices of listings.values()) {
-    const next = new Map(states);
-    for (const [sum, state] of states) for (const { offer, cents } of choices) {
-      const total = sum + cents;
-      if (total > targetCents) continue;
-      const candidate = { cost: state.cost + offer.priceRub, picks: [...state.picks, offer] };
-      const previous = next.get(total);
+  const choices = [...options.values()];
+  const states = Array(targetCents + 1).fill(null);
+  states[0] = { cost: 0, picks: [] };
+  for (let total = 1; total <= targetCents; total++) {
+    for (const { offer, cents } of choices) {
+      if (cents > total || !states[total - cents]) continue;
+      const candidate = { cost: states[total - cents].cost + offer.priceRub,
+        picks: [...states[total - cents].picks, offer] };
+      const previous = states[total];
       if (!previous || candidate.cost < previous.cost
-        || (candidate.cost === previous.cost && candidate.picks.length < previous.picks.length)) next.set(total, candidate);
+        || (candidate.cost === previous.cost && candidate.picks.length < previous.picks.length)) states[total] = candidate;
     }
-    states = next;
   }
-  return states.get(targetCents) || null;
+  return states[targetCents] || null;
 }
 function renderGiftCardCombo(product) {
   const container = els['gift-card-combo'];
@@ -177,20 +174,25 @@ function renderGiftCardCombo(product) {
   const currentCombo = cheapestGiftCardCombo(product, targetCents, true);
   const combo = currentCombo || cheapestGiftCardCombo(product, targetCents);
   if (!combo) {
-    const hasUnknown = product.offers.some(o => o.region === 'US' && o.denominationCurrency === 'USD' && o.availabilityStatus === 'unknown');
-    els['gift-card-combo-result'].innerHTML = `<p class="combo-message">Не нашёл комбинацию ровно на $${scoreFormat.format(target)} среди предложений, отмеченных «в наличии» в последнем скане.${hasUnknown ? ' Предложения с неизвестным наличием не считаются доступными.' : ''}</p>`;
+    els['gift-card-combo-result'].innerHTML = `<p class="combo-message">Не нашёл комбинацию ровно на $${scoreFormat.format(target)} среди цен, подтверждённых в последнем скане.</p>`;
     return;
   }
   const rate = combo.cost / target;
-  const lines = combo.picks.map(offer => `<li><span>$${scoreFormat.format(offer.denomination)} · ${rub.format(offer.priceRub)} ₽ · ${offer.marketplace.toUpperCase()}${offer.optionText ? `<small>Выбрать на странице: ${esc(offer.optionText)}</small>` : ''}${offer.finalVerified ? '<small>Цена повторно проверена</small>' : ''}</span><a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Открыть лот</a></li>`).join('');
+  const grouped = new Map();
+  for (const offer of combo.picks) {
+    const key = `${offer.marketplace}:${offer.pid}:${offer.denomination}`;
+    if (!grouped.has(key)) grouped.set(key, { offer, count: 0 });
+    grouped.get(key).count++;
+  }
+  const lines = [...grouped.values()].map(({offer, count}) => `<li><span>${count} × $${scoreFormat.format(offer.denomination)} · ${rub.format(offer.priceRub)} ₽ за карту · ${offer.marketplace.toUpperCase()}${offer.optionText ? `<small>Выбрать на странице: ${esc(offer.optionText)}</small>` : ''}${offer.finalVerified ? '<small>Цена повторно проверена</small>' : ''}</span><a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Открыть лот</a></li>`).join('');
   const scannedAt = currentCombo ? product.metadata?.manualPriceChecksDate : product.metadata?.scanCompletedAt || product.metadata?.scanDate;
   const scanned = scannedAt ? (String(scannedAt).includes('T') ? new Date(scannedAt).toLocaleString('ru-RU') : new Date(`${scannedAt}T12:00:00`).toLocaleDateString('ru-RU')) : 'неизвестно';
   const count = combo.picks.length;
-  const countLabel = count === 1 ? '1 объявление' : count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14) ? `${count} объявления` : `${count} объявлений`;
+  const countLabel = count === 1 ? '1 карта' : count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14) ? `${count} карты` : `${count} карт`;
   const checkScope = currentCombo
     ? `Это минимум среди ${Number(product.metadata?.manualPriceChecks || 0)} вариантов, чьи цены повторно проверены ${esc(scanned)}; другие лоты не входят в этот минимум.`
-    : `Это предварительная оценка по сохранённому скану от ${esc(scanned)}; текущие цены могут отличаться.`;
-  els['gift-card-combo-result'].innerHTML = `<div class="combo-summary"><strong>${currentCombo ? 'Цена перепроверена:' : 'Оценка по скану:'} $${scoreFormat.format(target)} за ${rub.format(combo.cost)} ₽</strong><span>≈ ${scoreFormat.format(rate)} ₽ за $1 · ${countLabel}</span></div><ul class="combo-list">${lines}</ul><p class="combo-footnote">${checkScope} Один вариант с каждого объявления; комиссии оплаты не учтены. Наличие/остаток не перепроверены — проверьте их и итоговую цену на странице продавца перед оплатой.</p>`;
+    : `Это минимум по подтверждённым ценам снимка от ${esc(scanned)}; цены продавцов могут измениться.`;
+  els['gift-card-combo-result'].innerHTML = `<div class="combo-summary"><strong>${currentCombo ? 'Цена перепроверена:' : 'Оценка по скану:'} $${scoreFormat.format(target)} за ${rub.format(combo.cost)} ₽</strong><span>≈ ${scoreFormat.format(rate)} ₽ за $1 · ${countLabel}</span></div><ul class="combo-list">${lines}</ul><p class="combo-footnote">${checkScope} Оптимизация допускает повтор одного и того же лота; остатки не проверялись. Комиссии оплаты не учтены — перед оплатой проверьте выбранные варианты и итоговую сумму на странице продавца.</p>`;
 }
 function ordered(values, order) {
   return [...new Set(values)].sort((a,b) => {
@@ -240,7 +242,7 @@ function renderRecommendation(product) {
     <span class="recommended-price">Полная цена: ${rub.format(offer.priceRub)} ₽${isGiftCard ? ` · ${scoreFormat.format(offer.pricePerUnit ?? (offer.priceRub / offer.denomination))} ₽ за ${denominationUnit(offer)} номинала` : ''}</span>
     <span class="recommended-detail">${esc(offer.optionText || offer.title)}</span>
     ${offer.sellerNote ? `<span class="recommended-detail">Заметка продавца (не проверена): ${esc(offer.sellerNote)}</span>` : ''}
-    <span class="recommended-meta">${isGiftCard ? `Наличие: ${esc(availabilityLabel(offer))} · ` : ''}${esc(details)}${offer.finalVerified ? ' · проверено в браузере' : ''}</span>
+    <span class="recommended-meta">${esc(details)}${offer.finalVerified ? ' · цена повторно проверена' : ''}</span>
     <a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Смотреть предложение</a>
   </article>`;
 }
@@ -261,10 +263,19 @@ function chooseProduct(id) {
   els['product-title'].textContent = active.label;
   els['product-description'].textContent = active.description;
   const finished = active.metadata.scanCompletedAt || active.metadata.scanStartedAt;
-  els.updated.textContent = `Скан: ${finished ? new Date(finished).toLocaleString('ru-RU') : active.metadata.scanDate} · ${active.metadata.listings || '—'} карточек`;
+  els.updated.textContent = `Скан: ${finished ? new Date(finished).toLocaleString('ru-RU') : active.metadata.scanDate} · ${active.metadata.listings || '—'} уникальных объявлений`;
   els['source-note'].textContent = active.kind === 'gift_card'
-    ? 'Регион Apple Account должен совпадать с регионом карты. Номинал — в валюте карты, цена продавца — в рублях. Цена и наличие проверяются отдельно; неизвестное наличие не означает, что товар можно купить.'
+    ? 'Регион Apple Account должен совпадать с регионом карты. Номинал — в валюте карты, цена продавца — в рублях. В каталоге проверяются цены; наличие и остатки не проверяются.'
     : `${active.metadata.detailLevel === 'summary' ? 'Это сохранённая итоговая сводка: полный raw/CSV этого исторического Z.ai-скана не был закоммичен. ' : 'Полный CSV и raw-снимок доступны в репозитории. '}Тип выдачи «не определён» требует ручной проверки условий продавца.`;
+  if (active.metadata.coverageSummary) {
+    els['source-note'].append(document.createTextNode(` Охват: ${active.metadata.coverageSummary}.`));
+  }
+  if (active.metadata.discoveryCoverage?.auditPath && /^audits\/[\w.-]+\.md$/.test(active.metadata.discoveryCoverage.auditPath)) {
+    const link = document.createElement('a');
+    link.href = active.metadata.discoveryCoverage.auditPath;
+    link.textContent = 'Подробности поиска и его ограничения';
+    els['source-note'].append(document.createTextNode(' '), link);
+  }
   resetFilters(); render(); renderGiftCardCombo(active);
 }
 function filtered() {
@@ -288,20 +299,19 @@ function render() {
   const metricLabel = els['minimum-price'].parentElement?.querySelector?.('span');
   if (metricLabel) metricLabel.textContent = isGiftCard ? `Минимум за ${denominationUnit(rows[0] || {})}` : 'Минимальная цена';
   if (isGiftCard) {
-    const buyableOrUnknown = rows.filter(o => o.available !== false);
-    const bestUnitPrice = buyableOrUnknown.length ? Math.min(...buyableOrUnknown.map(o => o.pricePerUnit ?? o.priceRub / o.denomination)) : null;
+    const bestUnitPrice = rows.length ? Math.min(...rows.map(o => o.pricePerUnit ?? o.priceRub / o.denomination)) : null;
     els['minimum-price'].textContent = bestUnitPrice === null ? '—' : `${scoreFormat.format(bestUnitPrice)} ₽`;
   } else {
     const minimumPrice = rows.length ? Math.min(...rows.map(o => o.priceRub)) : null;
     els['minimum-price'].textContent = minimumPrice === null ? '—' : `${rub.format(minimumPrice)} ₽`;
   }
   els['marketplace-count'].textContent = new Set(rows.map(o => o.marketplace)).size;
-  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${isGiftCard ? `<span class="sub">${scoreFormat.format(o.pricePerUnit ?? (o.priceRub / o.denomination))} ₽ за ${denominationUnit(o)} номинала</span><span class="sub">Наличие: ${esc(availabilityLabel(o))}</span>` : ''}${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(isGiftCard ? `${o.denomination} ${o.denominationCurrency}` : o.tier)}</span></td><td>${esc(isGiftCard ? o.region : label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span>${o.seller ? `<span class="sub">${esc(o.seller)}</span>` : ''}${o.sellerNote ? `<span class="sub">Заметка продавца (не проверена): ${esc(o.sellerNote)}</span>` : ''}</td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
+  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${isGiftCard ? `<span class="sub">${scoreFormat.format(o.pricePerUnit ?? (o.priceRub / o.denomination))} ₽ за ${denominationUnit(o)} номинала</span>` : ''}${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(isGiftCard ? `${o.denomination} ${o.denominationCurrency}` : o.tier)}</span></td><td>${esc(isGiftCard ? o.region : label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span>${o.seller ? `<span class="sub">${esc(o.seller)}</span>` : ''}${o.sellerNote ? `<span class="sub">Заметка продавца (не проверена): ${esc(o.sellerNote)}</span>` : ''}</td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
 }
 async function init() {
   try {
     const [data, registry] = await Promise.all([
-      fetch('data/latest.json?v=10').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
+      fetch('data/latest.json?v=13').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
       fetch('data/subscription-plan-limits.json').then(r => { if (!r.ok) throw new Error(); return r.json(); })
     ]);
     planRegistry = registry;

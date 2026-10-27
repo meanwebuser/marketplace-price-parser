@@ -135,7 +135,7 @@ def listing_uncertainty_reasons(listing: dict, offers: list[dict]) -> list[str]:
         reasons.append("no_deterministic_rows")
 
     for option in listing.get("options") or []:
-        if not option.get("clicked") or option.get("available") is False:
+        if not option.get("clicked"):
             continue
         text = str(option.get("text") or "")
         if not _option_is_offer_like(text, listing):
@@ -274,8 +274,6 @@ def _llm_price_verified(offer: dict, listing: dict) -> bool:
 
     option = _matching_clicked_option(offer, listing)
     if option is None:
-        return False
-    if option.get("available") is False or option.get("disabled") or option.get("ariaDisabled"):
         return False
     selected, strong = select_real_price(option.get("prices") or [])
     return bool(

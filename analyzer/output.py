@@ -16,12 +16,55 @@ from analyzer.price import (
     classify_duration,
     classify_duration_from_title,
     classify_delivery,
-    classify_availability,
     select_real_price,
     is_glitched,
     apply_delta_correction,
     option_price_delta,
 )
+
+_SSR_PRICE_METHOD = "ggsel_ssr_modifier"
+_PLATI_PRICE_METHOD = "plati_price_options"
+_PLATI_CATALOG_METHOD = "plati_catalog_price"
+_INVENTORY_WORDING_RE = re.compile(
+    r"\b(?:нет\s+в\s+наличии|нет\s+в\s+продаже|out\s+of\s+stock|sold\s+out|"
+    r"unavailable|not\s+available|in\s+stock|available\s+now|в\s+наличии)\b",
+    re.I,
+)
+
+
+def redact_availability_text(value: object) -> str:
+    """Remove inventory phrases from price labels without classifying stock."""
+    text = _INVENTORY_WORDING_RE.sub("", str(value or ""))
+    return re.sub(r"\s{2,}", " ", text).strip(" \t\r\n|·,-")
+
+
+def _ssr_price_verified(option: dict, price: float) -> bool:
+    evidence = option.get("priceEvidence") or {}
+    if option.get("priceEvidenceMethod") != _SSR_PRICE_METHOD or option.get("priceVerified") is not True:
+        return False
+    try:
+        expected = round(float(evidence["basePriceRub"]) + float(evidence["modifierRub"]))
+    except (KeyError, TypeError, ValueError):
+        return False
+    return expected == round(float(price)) == round(float(evidence.get("totalPriceRub", expected)))
+
+
+def _plati_price_verified(option: dict, price: float) -> bool:
+    evidence = option.get("priceEvidence") or {}
+    if option.get("priceEvidenceMethod") != _PLATI_PRICE_METHOD or option.get("priceVerified") is not True:
+        return False
+    try:
+        expected = float(evidence["amountRub"])
+    except (KeyError, TypeError, ValueError):
+        return False
+    return (
+        evidence.get("sourcePath") == "/asp/price_options.asp"
+        and str(evidence.get("productId")) == str(option.get("pid") or evidence.get("productId"))
+        and bool(evidence.get("optionGroupId")) and bool(evidence.get("optionValueId"))
+        and str(evidence.get("currency", "")).upper() == "RUB"
+        and str(evidence.get("error")) == "0"
+        and round(expected) == round(float(price))
+    )
 
 
 def offers_from_raw(raw: dict) -> Iterable[dict]:
@@ -29,41 +72,47 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
     for listing in raw.get("listings", []):
         initial_price, initial_strong = select_real_price(listing.get("initialPrices", []))
         for opt in listing.get("options", []):
-            if not opt.get("clicked"):
+            price_method = opt.get("priceEvidenceMethod")
+            http_price = price_method in {_SSR_PRICE_METHOD, _PLATI_PRICE_METHOD, _PLATI_CATALOG_METHOD}
+            if not opt.get("clicked") and not http_price:
                 continue
-            text = opt.get("text", "")
-            title = listing.get("title", "")
+            text = redact_availability_text(opt.get("text", ""))
+            title = redact_availability_text(listing.get("title", ""))
             tier = classify_tier(text)
             duration = classify_duration(text) or classify_duration_from_title(title)
             delivery = classify_delivery(
                 text,
                 title,
-                listing.get("descText", ""),
-                page_text=listing.get("pageText", ""),
+                redact_availability_text(listing.get("descText", "")),
+                page_text=redact_availability_text(listing.get("pageText", "")),
             )
             if not tier or not duration:
                 continue
-            available, availability_reason = classify_availability(
-                text,
-                disabled=bool(opt.get("disabled")),
-                aria_disabled=bool(opt.get("ariaDisabled")),
-                explicit_available=opt.get("available"),
-            )
+            # Marketplace scans compare prices only. Availability can change
+            # independently and is deliberately never queried or inferred.
+            available, availability_reason = None, "availability not checked"
             price, strong = select_real_price(opt.get("prices", []))
             if price is None:
                 continue
             price_changed = opt.get("priceChanged")
             delta = option_price_delta(text)
-            price = apply_delta_correction(
-                text,
-                price,
-                price_changed=price_changed,
-                initial_price=initial_price,
-            )
+            if not http_price:
+                price = apply_delta_correction(
+                    text,
+                    price,
+                    price_changed=price_changed,
+                    initial_price=initial_price,
+                )
             price_verified = opt.get("priceVerified")
             # Old collectors trusted the page-load default selection even if
             # the return click failed and left another variant's price visible.
-            if opt.get("selectedAfter") is False:
+            if price_method == _SSR_PRICE_METHOD:
+                price_verified = _ssr_price_verified(opt, price)
+            elif price_method == _PLATI_PRICE_METHOD:
+                price_verified = _plati_price_verified({**opt, "pid": listing.get("pid")}, price)
+            elif price_method == _PLATI_CATALOG_METHOD:
+                price_verified = False
+            elif opt.get("selectedAfter") is False:
                 price_verified = False
             elif price_verified is None:
                 # Historical captures predate price-state verification.  Keep
@@ -78,7 +127,7 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
                 "marketplace": listing.get("marketplace"),
                 "pid": listing.get("pid"),
                 "url": listing.get("url"),
-                "title": listing.get("title", ""),
+                "title": title,
                 "option_text": text.replace("\n", " | ")[:200],
                 "raw_option_text": text,
                 "control_kind": opt.get("kind"),
@@ -107,44 +156,6 @@ _REGION_PATTERNS = {
     "TR": re.compile(r"(?:\bturkey\b|\bturkiye\b|\btur\b|турц\w*)", re.I),
 }
 _REGION_CURRENCIES = {"US": "USD", "TR": "TRY"}
-_GIFT_CARD_OUT_OF_STOCK_RE = re.compile(
-    r"\b(?:нет\s+в\s+наличии|нет\s+в\s+продаже|недоступ(?:ен|на|но|ны)?|"
-    r"out\s+of\s+stock|sold\s+out|unavailable|not\s+available)\b", re.I,
-)
-_GIFT_CARD_IN_STOCK_RE = re.compile(r"\b(?:in\s+stock|available\s+now|в\s+наличии)\b", re.I)
-
-
-def _gift_card_availability(listing: dict, option: dict, option_text: str) -> tuple[bool | None, str, str]:
-    """Read stock only from explicit selected-option or purchase-control evidence."""
-    for owner in (option, listing):
-        buy_text = str(owner.get("buyButtonText") or owner.get("buy_button_text") or "")
-        if _GIFT_CARD_OUT_OF_STOCK_RE.search(buy_text):
-            return False, "out_of_stock", f"buy button text: {buy_text.strip()}"
-        for key in ("availabilityStatus", "availability_status", "stockStatus", "stock_status"):
-            raw_status = str(owner.get(key) or "").strip().lower().replace("-", "_")
-            if raw_status in {"in_stock", "available"}:
-                return True, "in_stock", f"explicit {key}={raw_status}"
-            if raw_status in {"out_of_stock", "unavailable", "sold_out"}:
-                return False, "out_of_stock", f"explicit {key}={raw_status}"
-            if raw_status == "unknown":
-                return None, "unknown", f"explicit {key}=unknown"
-        purchase_available = owner.get("purchaseAvailable")
-        if isinstance(purchase_available, bool):
-            status = "in_stock" if purchase_available else "out_of_stock"
-            return purchase_available, status, "purchase control availability captured"
-        buy_disabled = owner.get("buyButtonDisabled")
-        if isinstance(buy_disabled, bool):
-            status = "out_of_stock" if buy_disabled else "in_stock"
-            return not buy_disabled, status, "buy button disabled state captured"
-        if _GIFT_CARD_IN_STOCK_RE.search(buy_text):
-            return True, "in_stock", f"buy button text: {buy_text.strip()}"
-    if _GIFT_CARD_OUT_OF_STOCK_RE.search(option_text):
-        return False, "out_of_stock", "selected option text explicitly says out of stock"
-    if _GIFT_CARD_IN_STOCK_RE.search(option_text):
-        return True, "in_stock", "selected option text explicitly says in stock"
-    return None, "unknown", "purchase availability not captured"
-
-
 _DENOMINATION_PATTERNS = {
     "US": (
         re.compile(r"\$\s*(\d+(?:[.,]\d{1,2})?)\s*(?:usd)?\b", re.I),
@@ -231,11 +242,12 @@ def gift_card_offers_from_raw(raw: dict, region: str = "US") -> Iterable[dict]:
     region = str(region).upper()
     if region not in _REGION_PATTERNS:
         raise ValueError(f"unsupported gift-card region {region!r}")
+    collected: dict[tuple[str, str, float, str], dict] = {}
     for listing in raw.get("listings", []):
         initial_price, initial_strong = select_real_price(listing.get("initialPrices", []))
-        title = str(listing.get("title") or "")
-        desc_text = str(listing.get("descText") or "")
-        page_text = f"{desc_text} {listing.get('pageText') or ''}"
+        title = redact_availability_text(listing.get("title"))
+        desc_text = redact_availability_text(listing.get("descText"))
+        page_text = f"{desc_text} {redact_availability_text(listing.get('pageText'))}"
         evidence = f"{title} {page_text}"
         product_evidence = f"{title} {desc_text}"
         if not re.search(r"\b(?:apple|itunes)\b", evidence, re.I):
@@ -255,9 +267,11 @@ def gift_card_offers_from_raw(raw: dict, region: str = "US") -> Iterable[dict]:
             fixed = _fixed_gift_card_option(listing, product_evidence, region)
             options = [fixed] if fixed else []
         for opt in options:
-            if not opt.get("clicked"):
+            price_method = opt.get("priceEvidenceMethod")
+            http_price = price_method in {_SSR_PRICE_METHOD, _PLATI_PRICE_METHOD, _PLATI_CATALOG_METHOD}
+            if not opt.get("clicked") and not http_price:
                 continue
-            option_text = str(opt.get("text") or "").strip()
+            option_text = redact_availability_text(opt.get("text"))
             if any(code != region and pattern.search(option_text) for code, pattern in _REGION_PATTERNS.items()):
                 continue
             denomination = None
@@ -274,18 +288,28 @@ def gift_card_offers_from_raw(raw: dict, region: str = "US") -> Iterable[dict]:
                     break
             if denomination is None or currency is None:
                 continue
-            available, availability_status, availability_reason = _gift_card_availability(
-                listing, opt, option_text,
+            # Gift-card scans are price-only by design. Do not infer or
+            # persist stock state from option labels, disabled controls, or
+            # purchase buttons.
+            available, availability_status, availability_reason = (
+                None, "unknown", "availability not checked"
             )
             price, strong = select_real_price(opt.get("prices", []))
             if price is None:
                 continue
             price_changed = opt.get("priceChanged")
             delta = option_price_delta(option_text)
-            price = apply_delta_correction(
-                option_text, price, price_changed=price_changed, initial_price=initial_price,
-            )
-            if opt.get("selectedAfter") is False:
+            if not http_price:
+                price = apply_delta_correction(
+                    option_text, price, price_changed=price_changed, initial_price=initial_price,
+                )
+            if price_method == _SSR_PRICE_METHOD:
+                price_verified = _ssr_price_verified(opt, price)
+            elif price_method == _PLATI_PRICE_METHOD:
+                price_verified = _plati_price_verified({**opt, "pid": listing.get("pid")}, price)
+            elif price_method == _PLATI_CATALOG_METHOD:
+                price_verified = False
+            elif opt.get("selectedAfter") is False:
                 price_verified = False
                 # Some Plati variants do not expose selected styling/ARIA.
                 # A successful exact-control click followed by a stable,
@@ -304,7 +328,7 @@ def gift_card_offers_from_raw(raw: dict, region: str = "US") -> Iterable[dict]:
             text = f"{title} {page_text} {option_text}"
             delivery = "digital_code" if re.search(r"\b(?:code|key|код|ключ)\b", text, re.I) else "unknown"
             automatic = bool(re.search(r"auto(?:matic)?\s*[- ]?delivery|автовыдач|автоматическ\w*", text, re.I))
-            yield {
+            offer = {
                 "marketplace": listing.get("marketplace"),
                 "pid": str(listing.get("pid") or ""),
                 "url": listing.get("url", ""),
@@ -329,9 +353,20 @@ def gift_card_offers_from_raw(raw: dict, region: str = "US") -> Iterable[dict]:
                 "availability_status": availability_status,
                 "availability_reason": availability_reason,
                 "price_verified": price_verified,
+                "price_evidence_method": price_method or "browser-option-capture",
                 "final_verified": False,
                 "final_observed_price": None,
             }
+            key = (str(offer["marketplace"] or ""), offer["pid"], denomination, currency)
+            previous = collected.get(key)
+            # An HTTP/browser retry can leave two captures for the same lot.
+            # Keep only one row per denomination, preferring verified selected
+            # price evidence and then the later capture.
+            if previous is None or (offer["price_verified"] and not previous["price_verified"]):
+                collected[key] = offer
+            else:
+                collected[key] = offer if offer["price_verified"] == previous["price_verified"] else previous
+    yield from collected.values()
 
 
 def dedupe(offers: list[dict]) -> list[dict]:
@@ -392,12 +427,28 @@ def write_markdown(
                     headless = context.get("headless")
                     mode = "headless" if headless is True else "visible browser" if headless is False else "unknown"
                     counts = context.get("listingCounts", {})
-                    f.write(
-                        f"Collection: {mode}, {context.get('workers', 'unknown')} workers; "
-                        f"Plati {counts.get('plati', 0)}, GGSEL {counts.get('ggsel', 0)} listings.\n\n"
-                    )
+                    if context.get("httpWorkers") is not None:
+                        f.write(
+                            f"Collection: {mode}, {context.get('httpWorkers')} HTTP workers + "
+                            f"{context.get('workers', 'unknown')} browser workers; "
+                            f"Plati {counts.get('plati', 0)}, GGSEL {counts.get('ggsel', 0)} listings.\n\n"
+                        )
+                    else:
+                        f.write(
+                            f"Collection: {mode}, {context.get('workers', 'unknown')} workers; "
+                            f"Plati {counts.get('plati', 0)}, GGSEL {counts.get('ggsel', 0)} listings.\n\n"
+                        )
                     if context.get("collectionCommand"):
-                        f.write(f"Collection command: `{context['collectionCommand']}`\n\n")
+                        if context.get("httpWorkers") is not None:
+                            counts = context.get("transportCounts", {})
+                            f.write(
+                                "HTTP SSR: Impit, curl_cffi fallback; "
+                                f"{counts.get('impit', 0)} Impit, {counts.get('curl_cffi', 0)} curl_cffi, "
+                                f"{counts.get('browser_fallback', 0)} browser fallback listing(s).\n\n"
+                            )
+                            f.write(f"Browser fallback command: `{context['collectionCommand']}`\n\n")
+                        else:
+                            f.write(f"Collection command: `{context['collectionCommand']}`\n\n")
                 verification = raw.get("finalVerification", {})
                 verified = sum(1 for item in verification.get("results", []) if item.get("verified"))
                 status = "skipped" if verification.get("skipped") else f"{verified} winner(s) verified"

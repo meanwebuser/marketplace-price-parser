@@ -10,9 +10,12 @@ from scanner.collect import collect
 
 def test_cli_parses_headless_mode():
     assert _parse_args(["--family", "minimax", "--headless"]).headless is True
+    args = _parse_args(["--family", "minimax", "--http-workers", "10", "--workers", "2"])
+    assert args.http_workers == 10
+    assert args.workers == 2
 
 
-def test_collector_forwards_headless_flag(tmp_path, monkeypatch):
+def test_empty_collection_skips_browser_launch(tmp_path, monkeypatch):
     out_path = tmp_path / "raw.json"
     commands = []
 
@@ -22,10 +25,12 @@ def test_collector_forwards_headless_flag(tmp_path, monkeypatch):
         return subprocess.CompletedProcess(command, 0, "", "")
 
     monkeypatch.setattr("scanner.collect.subprocess.run", run)
-    collect([], out_path, workers=2, headless=True)
+    raw = collect([], out_path, workers=2, headless=True, http_workers=10)
 
-    assert "--headless" in commands[0]
-    assert commands[0][commands[0].index("--workers") + 1] == "2"
+    assert not commands
+    assert raw["listings"] == []
+    assert raw["config"]["httpWorkers"] == 10
+    assert raw["config"]["headless"] is True
 
 
 def test_reanalysis_restores_only_matching_verified_rows():
@@ -61,6 +66,20 @@ def test_markdown_records_collection_mode_and_raw_hash(tmp_path):
     assert "Raw SHA-256:" in report
     assert "Collection: headless, 2 workers; Plati 3, GGSEL 1 listings." in report
     assert "Final browser verification: skipped." in report
+
+
+def test_markdown_reports_http_and_browser_worker_pools_separately(tmp_path):
+    raw_path = tmp_path / "hybrid.raw.json"
+    raw_path.write_text(json.dumps({
+        "scanContext": {"headless": True, "workers": 2, "httpWorkers": 10,
+                         "listingCounts": {"plati": 8, "ggsel": 10}},
+        "finalVerification": {"skipped": True, "results": []},
+    }), encoding="utf-8")
+    markdown_path = tmp_path / "hybrid.md"
+
+    write_markdown([], {}, FAMILY_REGISTRY["minimax"], markdown_path, source_path=raw_path)
+
+    assert "Collection: headless, 10 HTTP workers + 2 browser workers; Plati 8, GGSEL 10 listings." in markdown_path.read_text(encoding="utf-8")
 
 
 def test_analysis_only_rerun_preserves_original_headless_collection_context():

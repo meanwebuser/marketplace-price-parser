@@ -27,8 +27,8 @@ from families import FAMILY_REGISTRY
 from scanner.discover import discover_all
 from scanner.discover import discover_gift_cards
 from scanner.collect import collect
-from scanner.proxy_source import ProxySourceError, fetch_proxy_urls
-from analyzer.output import offers_from_raw, gift_card_offers_from_raw, dedupe, cheapest_per_tier, write_csv, write_markdown
+from scanner.proxy_source import ProxySourceError, fetch_proxy_urls, discovery_proxy_urls
+from analyzer.output import offers_from_raw, gift_card_offers_from_raw, dedupe, cheapest_per_tier, write_csv, write_markdown, redact_availability_text
 from analyzer.validate import validate_rankings
 from scanner.final_verify import FinalVerificationError, verify_winners
 
@@ -48,6 +48,33 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
             raise argparse.ArgumentTypeError("browser workers must be between 1 and 2 under the reviewed local budget")
         return workers
 
+    def http_workers(value: str) -> int:
+        try:
+            workers = int(value)
+        except ValueError as error:
+            raise argparse.ArgumentTypeError("HTTP workers must be an integer from 1 to 10") from error
+        if workers < 1 or workers > 10:
+            raise argparse.ArgumentTypeError("HTTP workers must be between 1 and 10 under the measured Impit budget")
+        return workers
+
+    def positive_int(value: str) -> int:
+        try:
+            parsed = int(value)
+        except ValueError as error:
+            raise argparse.ArgumentTypeError("value must be a positive integer") from error
+        if parsed < 1:
+            raise argparse.ArgumentTypeError("value must be a positive integer")
+        return parsed
+
+    def capture_retries(value: str) -> int:
+        try:
+            parsed = int(value)
+        except ValueError as error:
+            raise argparse.ArgumentTypeError("capture retries must be an integer from 0 to 4") from error
+        if parsed < 0 or parsed > 4:
+            raise argparse.ArgumentTypeError("capture retries must be an integer from 0 to 4")
+        return parsed
+
     p.add_argument("--family", required=True,
                    help="Family: minimax, zai, chatgpt, claude, kimi, apple_gift_card (comma-separated for multi)")
     p.add_argument("--region", default="US", choices=["US", "TR"],
@@ -58,7 +85,19 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--tier", default=None)
     p.add_argument("--delivery", default=None)
     p.add_argument("--max", type=int, default=80)
+    p.add_argument("--max-pages", type=positive_int, default=6,
+                   help="maximum result/load-more pages per query (default: 6)")
+    p.add_argument("--max-candidates", type=positive_int, default=None,
+                   help="optional candidate cap per marketplace; capped results are marked partial")
+    p.add_argument("--full-discovery", action="store_true",
+                   help="use up to 100 pages and 10,000 candidates per marketplace; coverage still reports any cap")
+    p.add_argument("--allow-direct-discovery-fallback", action="store_true",
+                   help="after five proxy 401/block failures, allow headless direct category discovery and record it")
     p.add_argument("--workers", type=browser_workers, default=2)
+    p.add_argument("--capture-retries", type=capture_retries, default=2,
+                   help="retry a blocked/unverified listing through another proxy (0..4)")
+    p.add_argument("--http-workers", type=http_workers, default=10,
+                   help="headless Impit/curl_cffi concurrency for GGSEL SSR price options")
     p.add_argument("--headless", action="store_true", help="force browser collection to stay hidden on both marketplaces")
     p.add_argument("--raw", default=str(ROOT / ".tmp" / "raw.json"))
     p.add_argument("--csv", default=str(ROOT / ".tmp" / "table.csv"))
@@ -81,6 +120,9 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--llm-model", default=None)
     p.add_argument("--llm-required", action="store_true")
     args = p.parse_args(argv)
+    if args.full_discovery:
+        args.max_pages = max(args.max_pages, 100)
+        args.max_candidates = max(args.max_candidates or 0, 10_000)
     args.proxy_urls = []
     return args
 
@@ -115,20 +157,50 @@ def _ensure_parent_dirs(*paths: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
 
 
+def _strip_availability(raw: dict) -> None:
+    """Keep price scans free of seller inventory and purchase-state data."""
+    keys = {
+        "available", "unavailableReason", "availabilityStatus", "availability_status",
+        "stockStatus", "stock_status", "purchaseAvailable", "buyButtonDisabled",
+        "buyButtonText", "buyButtonCount", "disabled", "ariaDisabled",
+    }
+    for listing in raw.get("listings", []):
+        for key in keys:
+            listing.pop(key, None)
+        for key in ("title", "pageText", "descText"):
+            if key in listing:
+                listing[key] = redact_availability_text(listing[key])
+        for option in listing.get("options", []):
+            for key in keys:
+                option.pop(key, None)
+            if "text" in option:
+                option["text"] = redact_availability_text(option["text"])
+
+
 def _run_one(family, args, raw_path: Path) -> dict:
     """Discover + collect for one family. Returns raw dict."""
     if args.skip_discover and raw_path.exists():
         raw = json.loads(raw_path.read_text())
         print(f"[{family.name}] reusing {raw_path}: {len(raw.get('listings', []))} listings")
+        _strip_availability(raw)
         return raw
     print(f"[{family.name}] discovering...")
-    proxy_urls = getattr(args, "proxy_urls", [])
-    discovery_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
-    discovery = discover_all(family, args.max, **discovery_kwargs)
+    detail_proxy_urls = getattr(args, "proxy_urls", [])
+    discovery_urls = getattr(args, "discovery_proxy_urls", detail_proxy_urls)
+    discovery_kwargs = {"http_workers": args.http_workers}
+    if discovery_urls:
+        discovery_kwargs["proxy_urls"] = discovery_urls
+    discovery = discover_all(
+        family, args.max, max_pages=args.max_pages,
+        max_candidates=args.max_candidates,
+        allow_direct_fallback=args.allow_direct_discovery_fallback,
+        **discovery_kwargs,
+    )
     print(f"[{family.name}]   plati: {discovery['plati_found']}, ggsel: {discovery['ggsel_found']}")
     discovery_metadata = {
         "platiFound": discovery["plati_found"],
         "ggselFound": discovery["ggsel_found"],
+        "coverage": discovery.get("coverage", {}),
         "transports": discovery["transports"],
         "errors": discovery["errors"],
         "proxyMode": discovery.get("proxyMode", "direct"),
@@ -137,16 +209,17 @@ def _run_one(family, args, raw_path: Path) -> dict:
     if discovery["plati_found"] + discovery["ggsel_found"] == 0:
         print(f"[{family.name}] WARNING: no candidates found", file=sys.stderr)
         return {"listings": [], "discovery": discovery_metadata}
-    print(f"[{family.name}] collecting via {args.workers} workers...")
+    print(f"[{family.name}] collecting via {args.http_workers} HTTP workers and {args.workers} browser fallback workers...")
     # discover_all already merges curated GGSEL IDs into canonical candidates.
     # Passing slugs separately would collect the same listing twice because
     # collect deduplicates the slug and numeric native ID as different strings.
-    collect_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
+    collect_kwargs = {"proxy_urls": detail_proxy_urls} if detail_proxy_urls else {}
     raw = collect(
-        discovery["candidates"], raw_path, workers=args.workers,
-        headless=args.headless, **collect_kwargs,
+        discovery["candidates"], raw_path, workers=args.workers, http_workers=args.http_workers,
+        capture_retries=args.capture_retries, headless=args.headless, **collect_kwargs,
     )
     raw["discovery"] = discovery_metadata
+    _strip_availability(raw)
     print(f"[{family.name}]   collected {len(raw.get('listings', []))} listings → {raw_path}")
     return raw
 
@@ -322,8 +395,16 @@ def _run_gift_card_scan(args: argparse.Namespace) -> int:
         discovery_metadata = raw.get("discovery", {})
         print(f"[apple_gift_card/{args.region}] reusing {raw_path}: {len(raw.get('listings', []))} listings")
     else:
-        discovery_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
-        discovery = discover_gift_cards(args.region, args.max, **discovery_kwargs)
+        discovery_kwargs = {"http_workers": args.http_workers}
+        discovery_proxy_urls = getattr(args, "discovery_proxy_urls", proxy_urls)
+        if discovery_proxy_urls:
+            discovery_kwargs["proxy_urls"] = discovery_proxy_urls
+        discovery = discover_gift_cards(
+            args.region, args.max, max_pages=args.max_pages,
+            max_candidates=args.max_candidates,
+            allow_direct_fallback=args.allow_direct_discovery_fallback,
+            **discovery_kwargs,
+        )
         print(f"[apple_gift_card/{args.region}] plati: {discovery.get('plati_found', 0)}, "
               f"ggsel: {discovery['ggsel_found']}; discovery: {discovery.get('status', 'unknown')}")
         discovery_metadata = {key: value for key, value in discovery.items() if key != "candidates"}
@@ -346,10 +427,12 @@ def _run_gift_card_scan(args: argparse.Namespace) -> int:
         # published as a confirmed price.
         collect_kwargs = {"proxy_urls": proxy_urls} if proxy_urls else {}
         raw = collect(
-            discovery["candidates"], raw_path, workers=args.workers,
-            headless=True, **collect_kwargs,
+            discovery["candidates"], raw_path, workers=args.workers, http_workers=args.http_workers,
+            capture_retries=args.capture_retries, headless=True, **collect_kwargs,
         )
         raw["discovery"] = discovery_metadata
+    # This scan is deliberately price-only; discard legacy stock evidence.
+    _strip_availability(raw)
     offers = list(gift_card_offers_from_raw(raw, args.region))
     winner = best_gift_card_value(offers)
     results = []
@@ -409,22 +492,20 @@ def _run_gift_card_scan(args: argparse.Namespace) -> int:
             target.write("Final browser verification: failed; the affected offer is unverified and excluded from the site.\n\n")
         elif raw.get("finalVerification", {}).get("skipped"):
             target.write("Final browser verification: skipped.\n\n")
-        target.write("| Denomination | Price | RUB per unit | Availability | Price verified | Marketplace | Listing |\n|---|---:|---:|---|---|---|---|\n")
+        target.write("| Denomination | Price | RUB per unit | Price verified | Marketplace | Listing |\n|---|---:|---:|---|---|---|\n")
         for offer in rank_gift_card_offers(offers):
-            stock_status = offer.get("availability_status") or ("in_stock" if offer.get("available") is True else "out_of_stock" if offer.get("available") is False else "unknown")
             target.write(
                 f"| {offer['denomination']:g} {offer['denomination_currency']} | "
-                f"{offer['price_rub']:.0f} ₽ | {offer['price_per_unit']:.2f} ₽ per unit | {stock_status} | {offer['price_verified']} | "
+                f"{offer['price_rub']:.0f} ₽ | {offer['price_per_unit']:.2f} ₽ per unit | {offer['price_verified']} | "
                 f"{offer['marketplace']} | [{offer['pid']}]({offer['url']}) |\n"
             )
     print(f"[apple_gift_card/{args.region}] parsed {len(offers)} selected variants; "
           f"{sum(bool(offer.get('price_verified')) for offer in offers)} price-verified")
     if winner:
         unit = "$1" if winner["denomination_currency"] == "USD" else f"1 {winner['denomination_currency']}"
-        availability = winner.get("availability_status") or ("in_stock" if winner.get("available") is True else "unknown")
         print(f"best verified rate: {winner['price_rub'] / winner['denomination']:.2f} ₽ per {unit}; "
               f"{winner['denomination']:g} {winner['denomination_currency']} for {winner['price_rub']:.0f} ₽ "
-              f"(availability: {availability}) — {winner['url']}")
+              f"— {winner['url']}")
     print(f"CSV: {csv_path}\nMD: {md_path}")
     return 2 if verification_failed else 0
 
@@ -548,6 +629,7 @@ def main(argv: list[str] | None = None) -> int:
     needs_proxy = not (args.skip_discover and args.skip_final_verify)
     try:
         args.proxy_urls = fetch_proxy_urls() if needs_proxy else []
+        args.discovery_proxy_urls = discovery_proxy_urls(args.proxy_urls)
     except ProxySourceError as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 2
@@ -607,8 +689,12 @@ def main(argv: list[str] | None = None) -> int:
                 "results": final_report,
             }
         collection_workers = int(raw.get("config", {}).get("workers", args.workers))
-        plati_ids = [str(item.get("pid")) for item in raw.get("listings", []) if item.get("marketplace") == "plati"]
-        ggsel_ids = [str(item.get("pid")) for item in raw.get("listings", []) if item.get("marketplace") == "ggsel"]
+        plati_ids = raw.get("config", {}).get("httpFallbackPlatiIds")
+        if plati_ids is None:
+            plati_ids = [str(item.get("pid")) for item in raw.get("listings", []) if item.get("marketplace") == "plati"]
+        ggsel_ids = raw.get("config", {}).get("httpFallbackGGSELIds")
+        if ggsel_ids is None:
+            ggsel_ids = [str(item.get("pid")) for item in raw.get("listings", []) if item.get("marketplace") == "ggsel"]
         collection_command = ["node", "click.py", "--workers", str(collection_workers), "--out", str(fam_raw_path)]
         if args.headless:
             collection_command.append("--headless")
@@ -628,11 +714,18 @@ def main(argv: list[str] | None = None) -> int:
         collection_context = {
             "collectionCommand": "PYTHONPATH=. " + shlex.join(collection_command),
             "headless": bool(args.headless or not ggsel_ids),
-            "collectionContextSource": "effective collector mode",
+            "collectionContextSource": "hybrid HTTP and browser collector",
             "workers": collection_workers,
+            "httpWorkers": raw.get("config", {}).get("httpWorkers", args.http_workers),
+            "transportCounts": raw.get("config", {}).get("transportCounts", {}),
+            "httpPlatiIds": raw.get("config", {}).get("httpPlatiIds", []),
+            "httpFallbackPlatiIds": raw.get("config", {}).get("httpFallbackPlatiIds", []),
+            "httpGGSELIds": raw.get("config", {}).get("httpGGSELIds", []),
             "proxyMode": "configured" if getattr(args, "proxy_urls", []) else "direct",
             "proxyCount": len(getattr(args, "proxy_urls", [])),
             "maxResults": args.max,
+            "maxPages": args.max_pages,
+            "maxCandidates": args.max_candidates,
             "discoveryCounts": discovered_counts,
             "discoveryCountsSource": "saved discovery result" if discovery else "reconstructed from collected raw listings",
             "listingCounts": listing_counts,

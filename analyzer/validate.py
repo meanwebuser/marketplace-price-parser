@@ -58,8 +58,6 @@ def validate_rankings(
         minimum = min(item["price_rub"] for item in candidates)
         if winner.get("price_rub") != minimum:
             issues.append(f"winner for {key!r} is not the observed minimum")
-        if winner.get("available") is False:
-            issues.append(f"winner for {key!r} is unavailable")
         if winner.get("price_verified") is False:
             issues.append(f"winner for {key!r} has an unverified price")
 
@@ -69,19 +67,15 @@ def validate_rankings(
         for listing_index, listing in enumerate(raw.get("listings", [])):
             for option_index, option in enumerate(listing.get("options", [])):
                 where = f"listing[{listing_index}].option[{option_index}]"
-                if option.get("clicked") and (
-                    option.get("available") is False
-                    or option.get("disabled")
-                    or option.get("ariaDisabled")
-                ):
-                    issues.append(f"{where} clicked an unavailable control")
-                if option.get("available") is not False and not option.get("clicked"):
-                    issues.append(f"{where} left an available control unclicked")
-                if option.get("clicked") and not option.get("prices"):
-                    issues.append(f"{where} has no post-click price snapshot")
+                if (option.get("clicked") and not option.get("prices")
+                        and option.get("priceVerified") is True):
+                    issues.append(f"{where} marks a price verified without a price snapshot")
                 if option.get("priceChanged") and not option.get("priceStable"):
                     issues.append(f"{where} changed price but never became stable")
-                if option.get("priceVerified") and not option.get("clicked"):
+                if (option.get("priceVerified") and not option.get("clicked")
+                        and option.get("priceEvidenceMethod") not in {
+                            "plati_price_options", "ggsel_ssr_modifier",
+                        }):
                     issues.append(f"{where} verifies a price without a click")
 
     return sorted(set(issues))

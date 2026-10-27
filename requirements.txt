@@ -1,4 +1,6 @@
 impit>=0.13,<1
+curl_cffi>=0.14,<1
 crawlee[parsel,impit]>=0.6
+curl_cffi>=0.14,<1
 playwright>=1.60
 pytest>=8.0

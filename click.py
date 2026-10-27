@@ -82,6 +82,11 @@ const PROXY_REDACTIONS = PROXY_URLS.flatMap((proxyUrl) => {
     return [proxyUrl];
   }
 });
+const REUSE_ROTATING_PROXY = args['proxy-reuse'] === true || args['proxy-reuse'] === 'true';
+if (REUSE_ROTATING_PROXY && PROXY_URLS.length !== 1) {
+  process.stderr.write('Proxy reuse requires exactly one configured rotating HTTP proxy.\n');
+  process.exit(2);
+}
 function redactProxyText(value) {
   let text = String(value || '');
   for (const secret of PROXY_REDACTIONS) text = text.split(secret).join('[proxy]');
@@ -233,9 +238,6 @@ const isSelectedElement = (el, text) => {
   );
 };
 
-const isUnavailableText = (text) =>
-  /нет\\s+в\\s+наличии|нет\\s+в\\s+продаже|недоступ|законч|распродан|out\\s+of\\s+stock|sold\\s+out|unavailable|not\\s+available/i.test(text || '');
-
 const snapshotPrices = () => {
   const els = Array.from(document.querySelectorAll('*')).filter(el => {
     if (el.children.length !== 0) return false;
@@ -249,29 +251,9 @@ const snapshotPrices = () => {
   })).filter(p => !/Steam RUB|Steam KZT|Steam UAH|USD\\s*=/.test(p.text));
 };
 
-// Read only purchase controls in an identified product block. A variant chip,
-// sidebar Buy link, or multiple visible Buy controls is not stock evidence.
+// Read only the displayed storefront currency. Do not inspect stock or purchase
+// button state; price collection must not become an availability check.
 const snapshotPurchaseState = () => {
-  const roots = new Set(document.querySelectorAll('[class*="ProductBuyBlock"]'));
-  document.querySelectorAll('[class*="id_product_price"]').forEach(price => {
-    const form = price.closest('form');
-    if (form) roots.add(form);
-  });
-  const buttons = new Set();
-  for (const root of roots) {
-    root.querySelectorAll('button, input[type="submit"], [role="button"]').forEach(el => {
-      if (!el.getClientRects().length) return;
-      const text = (el.innerText || el.value || el.textContent || '').replace(/\\s+/g, ' ').trim();
-      if (text.length > 120) return;
-      if (/^(?:купить(?: сейчас)?|buy(?: now)?|purchase|оплатить)(?:\\s+(?:за\\s+)?[\\d\\s.,]+\\s*(?:₽|руб\\.?|RUB|\\$|USD))?$/i.test(text) || isUnavailableText(text)) {
-        buttons.add(el);
-      }
-    });
-  }
-  const unique = Array.from(buttons);
-  const el = unique.length === 1 ? unique[0] : null;
-  // The selected storefront currency is useful raw evidence even when no RUB
-  // total was rendered. It never authorizes an exchange-rate conversion.
   const currencies = new Set();
   document.querySelectorAll('button, [role="button"], select option:checked').forEach(control => {
     if (!control.getClientRects().length) return;
@@ -280,9 +262,6 @@ const snapshotPurchaseState = () => {
     if (currency) currencies.add(currency[1].toUpperCase());
   });
   return {
-    buyButtonDisabled: el ? Boolean(el.disabled || el.matches(':disabled') || el.closest('[aria-disabled="true"]')) : null,
-    buyButtonText: el ? (el.innerText || el.value || el.textContent || '').replace(/\\s+/g, ' ').trim() : '',
-    buyButtonCount: unique.length,
     storeCurrency: currencies.size === 1 ? Array.from(currencies)[0] : null,
   };
 };
@@ -328,23 +307,11 @@ const collectVariantControls = () => {
     /gift|подарочн|itunes/i.test(document.title || '');
   const denominationControl = text => appleGiftCard &&
     /^(?:[$₺]\\s*\\d+(?:[.,]\\d+)?|\\d+(?:[.,]\\d+)?\\s*(?:[$₺]|USD\\b|TRY\\b|TL\\b))/i.test(text);
-  const availabilityMeta = (el, text) => {
+  const selectedMeta = (el, text) => {
     const input = el && (el.matches && el.matches('input, option')
       ? el
       : el.querySelector && el.querySelector('input[type="radio"], input[type="checkbox"], option'));
-    const disabled = Boolean(
-      (el && el.disabled) || (input && input.disabled) ||
-      (el && el.getAttribute && el.getAttribute('aria-disabled') === 'true') ||
-      (input && input.getAttribute && input.getAttribute('aria-disabled') === 'true')
-    );
-    const unavailableText = isUnavailableText(text);
-    return {
-      disabled,
-      ariaDisabled: Boolean(el && el.getAttribute && el.getAttribute('aria-disabled') === 'true'),
-      available: !(disabled || unavailableText),
-      unavailableReason: disabled ? 'disabled control' : (unavailableText ? 'unavailable text' : ''),
-      selected: isSelectedElement(el, text),
-    };
+    return { selected: isSelectedElement(el, text) };
   };
   const record = (kind, text, meta, el) => {
     const k = (text || '').trim();
@@ -363,7 +330,7 @@ const collectVariantControls = () => {
     else if (kind === 'radio') domIndex = Array.from(document.querySelectorAll('input[type="radio"]')).indexOf(el);
     else if (kind === 'role-radio') domIndex = Array.from(document.querySelectorAll('[role="radio"]')).indexOf(el);
     else if (kind === 'select-option') domIndex = Array.from(document.querySelectorAll('select option')).indexOf(el);
-    controls.push({ kind, text: k, domIndex, ...(meta || {}), ...availabilityMeta(el, k) });
+    controls.push({ kind, text: k, domIndex, ...(meta || {}), ...selectedMeta(el, k) });
   };
   document.querySelectorAll('button').forEach(b => record('button', b.innerText || '', null, b));
   document.querySelectorAll('label').forEach(l => {
@@ -445,7 +412,7 @@ async function snapshotPrices(page) {
 async function snapshotPurchaseState(page) {
   try {
     return await page.evaluate(new Function(PAGE_FN + '\nreturn snapshotPurchaseState();'));
-  } catch (e) { return { buyButtonDisabled: null, buyButtonText: '', buyButtonCount: 0, storeCurrency: null }; }
+  } catch (e) { return { storeCurrency: null }; }
 }
 
 const priceFingerprint = (prices) => {
@@ -537,11 +504,19 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
   const url = urlBuilder(pid);
   const page = await context.newPage();
   page.setDefaultTimeout(PAGE_TIMEOUT_MS);
-  const out = { marketplace, pid, url, title: '', template: '', initialPrices: [], pageText: '', descText: '', skippedControls: [], options: [], buyButtonDisabled: null, buyButtonText: '', buyButtonCount: 0, storeCurrency: null, variantControlCount: null, error: null };
+  const out = { marketplace, pid, url, title: '', template: '', initialPrices: [], pageText: '', descText: '', skippedControls: [], options: [], storeCurrency: null, variantControlCount: null, error: null };
   try {
-    await withTimeout(page.goto(url, { waitUntil: 'domcontentloaded', timeout: PAGE_TIMEOUT_MS }), PAGE_TIMEOUT_MS + 5000, 'goto');
+    const response = await withTimeout(page.goto(url, { waitUntil: 'domcontentloaded', timeout: PAGE_TIMEOUT_MS }), PAGE_TIMEOUT_MS + 5000, 'goto');
+    if (response && [401, 403, 429, 503].includes(response.status())) {
+      out.error = `marketplace blocked page (HTTP ${response.status()})`;
+      return out;
+    }
     await sleep(2500);
     out.title = await page.title();
+    if (/DDoS[- ]Guard|Access Denied|Attention Required|Just a moment|Checking your browser/i.test(out.title)) {
+      out.error = 'marketplace anti-bot challenge page';
+      return out;
+    }
     out.template = await detectTemplate(page);
     out.initialPrices = await snapshotPrices(page);
     Object.assign(out, await snapshotPurchaseState(page));
@@ -555,10 +530,6 @@ async function collectListing(context, marketplace, pid, urlBuilder) {
     // default afterwards produces an auditable snapshot for both variants.
     const orderedControls = controls.slice().sort((a, b) => Number(a.selected) - Number(b.selected));
     for (const ctrl of orderedControls) {
-      if (ctrl.available === false) {
-        out.options.push(Object.assign({}, ctrl, { clicked: false }));
-        continue;
-      }
       const beforePrices = await snapshotPrices(page);
       let clicked = false;
       try {
@@ -612,6 +583,7 @@ let proxyCursor = 0;
 const activeProxyIndexes = new Set();
 
 async function acquireProxyIndex(excluded = new Set()) {
+  if (REUSE_ROTATING_PROXY) return PROXY_URLS.length ? 0 : null;
   while (true) {
     for (let offset = 0; offset < PROXY_URLS.length; offset++) {
       const index = (proxyCursor + offset) % PROXY_URLS.length;
@@ -667,8 +639,10 @@ async function runWorker(workerId, queue, browser, sharedContext, contextOptions
         } finally {
           if (transientContext && context) await context.close().catch(() => {});
           if (proxyLease !== null) {
-            activeProxyIndexes.delete(proxyLease);
-            failedProxyIndexes.add(proxyLease);
+            if (!REUSE_ROTATING_PROXY) {
+              activeProxyIndexes.delete(proxyLease);
+              failedProxyIndexes.add(proxyLease);
+            }
           }
         }
 
@@ -676,7 +650,7 @@ async function runWorker(workerId, queue, browser, sharedContext, contextOptions
         const reasons = [];
         if (result.error) reasons.push('listing error');
         for (const option of result.options || []) {
-          if (option.available !== false && option.clicked !== true) reasons.push('available control not clicked');
+          if (option.clicked !== true) reasons.push('option control not clicked');
           if (option.clicked && (!option.prices || option.prices.length === 0)) reasons.push('missing price snapshot');
           if (option.priceChanged && !option.priceStable) reasons.push('unstable changed price');
         }
@@ -728,7 +702,9 @@ async function runWorker(workerId, queue, browser, sharedContext, contextOptions
   ];
   // A real browser context owns live user tabs, so keep CDP collection
   // sequential. Isolated collection remains parallel.
-  const workerCount = remoteBrowser ? 1 : PROXY_URLS.length ? Math.min(WORKERS, PROXY_URLS.length) : WORKERS;
+  const workerCount = remoteBrowser ? 1 : PROXY_URLS.length
+    ? (REUSE_ROTATING_PROXY ? WORKERS : Math.min(WORKERS, PROXY_URLS.length))
+    : WORKERS;
   const contextOptions = {
     locale: 'ru-RU',
     userAgent: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${browser.version()} Safari/537.36`,

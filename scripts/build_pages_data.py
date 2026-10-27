@@ -71,6 +71,98 @@ def docs_source_path(source: Path, *, docs_root: Path | None = None) -> str:
     except ValueError as error:
         raise ValueError(f"Snapshot source is outside docs root: {source}") from error
 
+def discovery_metadata(raw: dict, csv_path: Path) -> dict:
+    """Expose the actual discovery boundary beside published offer counts."""
+    discovery = raw.get("discovery") or {}
+    sources = discovery.get("sources") if isinstance(discovery.get("sources"), dict) else discovery.get("coverage", {})
+    if not isinstance(sources, dict):
+        sources = {}
+    captured: dict[str, set[str]] = {}
+    for listing in raw.get("listings", []):
+        market = str(listing.get("marketplace") or "unknown").lower()
+        pid = str(listing.get("pid") or "")
+        if pid:
+            captured.setdefault(market, set()).add(pid)
+    summary = {}
+    for market in ("plati", "ggsel"):
+        info = sources.get(market) or {}
+        if not isinstance(info, dict):
+            info = {}
+        found = info.get("candidatesBeforeCap")
+        if found is None:
+            found = info.get("candidatesReturned")
+        captured_count = len(captured.get(market, set()))
+        try:
+            found_count = int(found) if found is not None else None
+        except (TypeError, ValueError):
+            found_count = None
+        summary[market] = {
+            "status": info.get("status", "unknown"),
+            "pagesFetched": info.get("proxyPagesFetched", info.get("pagesFetched")),
+            "candidateCount": found_count,
+            "capturedListings": captured_count,
+            "seedListings": max(0, captured_count - found_count) if found_count is not None else None,
+            "candidateCapReached": bool(info.get("candidateCapReached")),
+            "pageCap": info.get("maxPages"),
+            "queryCount": len(info.get("queries", [])) if isinstance(info.get("queries"), list) else None,
+        }
+        if isinstance(info.get("directRecheck"), dict):
+            summary[market]["directRecheck"] = info["directRecheck"]
+    supplement = discovery.get("ggselSearchSupplement")
+    if isinstance(supplement, dict):
+        supplemental_candidates = supplement.get("uniqueCandidates")
+        try:
+            supplemental_candidates = int(supplemental_candidates)
+        except (TypeError, ValueError):
+            supplemental_candidates = None
+        if supplemental_candidates is not None:
+            summary["ggsel"]["candidateCount"] = supplemental_candidates
+            summary["ggsel"]["seedListings"] = max(0, summary["ggsel"]["capturedListings"] - supplemental_candidates)
+            summary["ggsel"]["status"] = "partial" if supplement.get("categoryDiscoveryStatus") != "ok" else "ok"
+        summary["ggsel"]["supplementalSearch"] = {
+            "status": "partial" if supplement.get("categoryDiscoveryStatus") != "ok" else "ok",
+            "uniqueCandidates": supplement.get("uniqueCandidates"),
+            "additionalListingsCaptured": supplement.get("additionalListingsCaptured"),
+            "routes": [str(item.get("query", "")).replace("https://ggsel.net", "") for item in supplement.get("queries", []) if isinstance(item, dict)],
+            "coverageNote": supplement.get("coverageNote"),
+        }
+    audit_path = "audits/2026-10-27-full-refresh.md" if csv_path.name.startswith("2026-10-27-") else None
+    return {"auditPath": audit_path, "marketplaces": summary}
+
+def unique_listing_count(raw: dict) -> int:
+    return len({(str(item.get("marketplace") or "unknown").lower(), str(item.get("pid") or ""))
+                for item in raw.get("listings", []) if item.get("pid")})
+
+def discovery_summary_text(metadata: dict) -> str:
+    """A short user-facing explanation of coverage and seeded listing counts."""
+    coverage = metadata.get("discoveryCoverage") or metadata or {}
+    marketplaces = coverage.get("marketplaces", {})
+    parts = []
+    for market, label in (("plati", "Plati"), ("ggsel", "GGSEL")):
+        item = marketplaces.get(market, {})
+        supplement = item.get("supplementalSearch")
+        if market == "ggsel" and supplement and supplement.get("uniqueCandidates") is not None:
+            text = f"GGSEL: {supplement['uniqueCandidates']} совпадений в дополнительном поиске"
+            if item.get("seedListings"):
+                text += f" + {item['seedListings']} карточек из сохранённого списка"
+            if supplement.get("coverageNote"):
+                text += "; полный охват не подтверждён"
+            parts.append(text)
+            continue
+        if item.get("candidateCount") is not None:
+            text = f"{label}: {item['candidateCount']} найдено"
+            if item.get("seedListings"):
+                text += f" + {item['seedListings']} карточек из заранее известного списка"
+            parts.append(text)
+            direct = item.get("directRecheck")
+            if direct and direct.get("status") != "ok":
+                matched = direct.get("matchedSnapshotIds")
+                match_note = f", {matched} ID совпали" if matched is not None else ""
+                parts.append(f"прямой повторный обход частичный ({direct.get('pagesFetched', 0)} стр.{match_note})")
+        elif item.get("status") not in (None, "unknown", "ok"):
+            parts.append(f"{label}: поиск завершился со статусом {item['status']}")
+    return "; ".join(parts)
+
 def normalize_csv(csv_path: Path, product_id: str, *, docs_root: Path | None = None) -> tuple[list[dict], dict]:
     if PRODUCT_CONFIGS[product_id].get("kind") == "gift_card":
         return normalize_gift_card_csv(csv_path, product_id, docs_root=docs_root)
@@ -93,10 +185,6 @@ def normalize_csv(csv_path: Path, product_id: str, *, docs_root: Path | None = N
             continue
         if allowed_tiers and tier not in allowed_tiers:
             continue
-        # Old snapshots predate these columns and remain readable.  New scans
-        # explicitly state both invariants; unsafe rows must never be published.
-        if row.get("available") not in (None, "") and not as_bool(row.get("available")):
-            continue
         try:
             price = float(row["price_rub"])
         except (KeyError, TypeError, ValueError):
@@ -110,14 +198,17 @@ def normalize_csv(csv_path: Path, product_id: str, *, docs_root: Path | None = N
                 continue
             if not as_bool(row.get("final_verified")) or not math.isfinite(final_price) or final_price != price:
                 continue
-        item = {"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", ""), "available": True, "priceVerified": True, "finalVerified": as_bool(row.get("final_verified"))}
+        item = {"marketplace": row.get("marketplace", "unknown"), "pid": row.get("pid", ""), "url": row.get("url", ""), "title": title, "optionText": row.get("option_text", ""), "tier": tier, "duration": row.get("duration", "unknown"), "delivery": row.get("delivery", "unknown"), "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")), "glitched": as_bool(row.get("glitched")), "glitchReason": row.get("glitch_reason", ""), "available": None, "priceVerified": True, "finalVerified": as_bool(row.get("final_verified"))}
         if seller_note := str(row.get("seller_note") or "").strip():
             item.update(sellerNote=seller_note, sellerNoteVerified=False)
         offers.append(item)
     raw_path = csv_path.with_suffix(".raw.json")
     raw = json.loads(raw_path.read_text(encoding="utf-8")) if raw_path.exists() else {}
     final_results = raw.get("finalVerification", {}).get("results", [])
-    return offers, {"scanDate": csv_path.name[:10], "sourcePath": source_path, "scanStartedAt": raw.get("startedAt"), "scanCompletedAt": raw.get("finishedAt") or raw.get("lastUpdate"), "listings": len(raw.get("listings", [])) or None, "sourceRows": len(rows), "publishedRows": len(offers), "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")), "detailLevel": "full"}
+    metadata = {"scanDate": csv_path.name[:10], "sourcePath": source_path, "scanStartedAt": raw.get("startedAt"), "scanCompletedAt": raw.get("finishedAt") or raw.get("lastUpdate"), "listings": unique_listing_count(raw) or None, "sourceRows": len(rows), "publishedRows": len(offers), "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")), "detailLevel": "full"}
+    metadata["discoveryCoverage"] = discovery_metadata(raw, csv_path)
+    metadata["coverageSummary"] = discovery_summary_text(metadata["discoveryCoverage"])
+    return offers, metadata
 
 
 def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path | None = None) -> tuple[list[dict], dict]:
@@ -151,7 +242,6 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
                 spec["region"] != "US"
                 or row.get("comparison_status") != "confirmed option mapping"
                 or row.get("http_status") != "200"
-                or row.get("disabled", "").lower() != "false"
                 or "USD/$" not in str(row.get("face_evidence", ""))
                 or row.get("modifier_currency") != "RUB"
                 or not str(row.get("variant_id", "")).strip()
@@ -222,8 +312,6 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
                 verified = True
         if not math.isfinite(denomination) or denomination <= 0 or not math.isfinite(price) or price <= 0:
             continue
-        if row.get("available") not in (None, "") and not as_bool(row.get("available")):
-            continue
         manual_snapshot_verified = (
             row.get("price_evidence_status") == "verified_ssr_offer_plus_default_variant_zero_modifier"
             and str(row.get("http_status", "")) == "200"
@@ -236,13 +324,8 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
         final_verified = bool(manual_price_check) or (as_bool(row.get("final_verified")) and final_price == price)
         if not verified and not final_verified and not manual_snapshot_verified:
             continue
-        availability_status = str(row.get("availability_status") or "").strip().lower()
-        if availability_status not in {"in_stock", "out_of_stock", "unknown"}:
-            if row.get("available") in (None, ""):
-                availability_status = "unknown"
-            else:
-                availability_status = "in_stock" if as_bool(row.get("available")) else "out_of_stock"
-        available = {"in_stock": True, "out_of_stock": False, "unknown": None}[availability_status]
+        availability_status = "unknown"
+        available = None
         offers.append({
             "marketplace": str(row.get("marketplace") or ("ggsel" if "ggsel.net" in str(row.get("url", "")).lower() else "unknown")).lower(),
             "pid": row.get("pid") or row.get("listing_id", ""), "url": row.get("url", ""),
@@ -253,7 +336,7 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
             "automaticDelivery": as_bool(row.get("automatic_delivery")),
             "priceRub": price, "strongSignal": as_bool(row.get("strong_signal")),
             "available": available, "availabilityStatus": availability_status,
-            "availabilityEvidence": row.get("availability_evidence") or row.get("availability_reason") or "stock status not captured",
+            "availabilityEvidence": "availability was not checked",
             "priceVerified": True, "finalVerified": final_verified,
             **({"manualPriceCheckDate": manual_price_check.get("checkedDate")} if manual_price_check else {}),
             **({"seller": row["seller"]} if row.get("seller") else {}),
@@ -267,7 +350,7 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
         "scanDate": csv_path.name[:10], "sourcePath": source_path,
         "scanStartedAt": raw.get("startedAt"),
         "scanCompletedAt": raw.get("finishedAt") or raw.get("lastUpdate"),
-        "listings": len(raw.get("listings", [])) or None,
+        "listings": unique_listing_count(raw) or None,
         "sourceRows": len(rows), "publishedRows": len(offers),
         "finalVerifiedWinners": sum(1 for item in final_results if item.get("verified")),
         "manualPriceChecks": len(manual_price_checks),
@@ -275,6 +358,8 @@ def normalize_gift_card_csv(csv_path: Path, product_id: str, *, docs_root: Path 
         "priceCheckSourcePath": docs_source_path(price_check_supplements[-1][0], docs_root=docs_root) if price_check_supplements else None,
         "detailLevel": "full",
     }
+    metadata["discoveryCoverage"] = discovery_metadata(raw, csv_path)
+    metadata["coverageSummary"] = discovery_summary_text(metadata["discoveryCoverage"])
     return offers, metadata
 
 def load_product(root: Path, product_id: str) -> dict | None:

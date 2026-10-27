@@ -2,9 +2,9 @@
 
 Семейство-ориентированный парсер для двух маркетплейсов — [GGSEL](https://ggsel.net/) и [Plati](https://plati.market/). Канонический путь — `cli.py --family <name>`: добавить новый продукт (Cursor, Claude, Grok, Kimi) теперь стоит 30 строк конфига, а не копию всего сканера.
 
-Поддерживаемые семейства: `minimax` (Token Plan Max), `zai` (GLM Coding Max), `chatgpt` (Plus / Pro / Pro X5 / Pro X20), `claude` (Pro / Max), `kimi` (Kimi AI / Kimi K3 Plus / Pro / Max / Ultra), `apple_gift_card` (отдельный prepaid-каталог по региону и номиналу).
+Поддерживаемые семейства: `minimax` (M Plan GO / Explore / Build и Token Plan Plus / Max / Ultra), `zai` (GLM Coding), `chatgpt` (Plus / Pro / Pro X5 / Pro X20), `claude` (Pro / Max), `kimi` (Kimi AI / Kimi K3 Plus / Pro / Max / Ultra), `apple_gift_card` (отдельный prepaid-каталог по региону и номиналу).
 
-Kimi uses the parser's `1m`, `3m`, `6m`, and `12m` durations and includes all four delivery types for the public catalogue, including shared and unknown delivery. API, top-up, balance, and credit listings are excluded during discovery and eligibility filtering. GGSEL category discovery merges curated listing IDs from the 2026-10-02 snapshot without importing historical prices. Availability and verified-price checks still apply.
+Kimi uses the parser's `1m`, `3m`, `6m`, and `12m` durations and includes all four delivery types for the public catalogue, including shared and unknown delivery. API, top-up, balance, and credit listings are excluded during discovery and eligibility filtering. GGSEL category discovery merges curated listing IDs from the 2026-10-02 snapshot without importing historical prices. The scanner compares prices only; it does not inspect or infer seller availability or inventory.
 
 ## Что умеет
 
@@ -12,7 +12,8 @@ Kimi uses the parser's `1m`, `3m`, `6m`, and `12m` durations and includes all fo
 - при настройке пользователя загружать HTTP-прокси из endpoint и менять proxy по карточкам, не сохраняя адреса прокси в снимках;
 - открывать карточки товаров в браузере и кликать каждый вариант (Max / Pro+ / Lite × 1/3/12 мес × свой аккаунт / случайный email);
 - читать финальную цену выбранного варианта, а не доверять минимальной цене каталога;
-- различать `own_account`, `new_account`, `shared_account` и `unknown` виды выдачи;
+- получать цену Plati для выбранных вариантов через `price_options.asp`, без последовательного открытия страниц в браузере;
+- различать `own_account`, `new_account`, `shared_account` и `unknown` условия выдачи;
 - различать варианты ChatGPT Pro X5 / Pro X20 как отдельные тарифы;
 - pass 2 через LLM: `--analyzer llm` строит компактные evidence-pack'и
   (описание, зона товара, чипы с ценами, пропущенные варианты, цены
@@ -23,7 +24,8 @@ Kimi uses the parser's `1m`, `3m`, `6m`, and `12m` durations and includes all fo
 - чинить цену варианта, когда блок цены не успел обновиться после клика (чип «+N ₽» = наценка к базовой цене лота);
 - фильтровать по eligibility-правилам конкретного семейства (tier × duration × delivery, purpose preset);
 - детектить UI-глитчи цен (12-мес Max за 1.5M RUB вместо 162K — отбрасываем);
-- ограниченный параллельный сбор (не более 2 Playwright-воркеров) с ротацией прокси;
+- до 10 параллельных headless HTTP-запросов Impit/curl_cffi для SSR-вариантов GGSEL и Plati, с Playwright-fallback до 2 воркеров только для неподдержанных страниц;
+- расчёт самой дешёвой точной комбинации Apple Gift Card; цена допускает повтор одного лота, количество не проверяется;
 - выводить результат в CSV + Markdown.
 
 ## Быстрый запуск
@@ -38,13 +40,18 @@ npm ci --prefix ggsel_plati
 
 ```bash
 # Свежий скан: discovery → collect → deterministic analyze (без LLM по умолчанию)
-PYTHONPATH=. .venv/bin/python cli.py --family zai --workers 2 --headless --analyzer auto
+PYTHONPATH=. .venv/bin/python cli.py --family zai --http-workers 10 --workers 2 --headless --analyzer auto
 
 # Kimi AI / Kimi K3: fresh subscription catalogue, no visible browser windows
-PYTHONPATH=. .venv/bin/python cli.py --family kimi --workers 2 --headless
+PYTHONPATH=. .venv/bin/python cli.py --family kimi --http-workers 10 --workers 2 --headless
+
+# Exhaust result/load-more pagination (up to 100 pages and 10,000 candidates
+# per marketplace); scan metadata marks any reached cap as partial.
+PYTHONPATH=. .venv/bin/python cli.py --family apple_gift_card --region US \
+  --full-discovery --http-workers 10 --workers 2 --headless
 
 # Headless collection for either marketplace
-PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --workers 2 --headless
+PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --http-workers 10 --workers 2 --headless
 
 # Повторный анализ по уже собранным данным
 PYTHONPATH=. .venv/bin/python cli.py --family zai --skip-discover --raw .tmp/zai_raw.json
@@ -72,6 +79,9 @@ PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --analyzer llm --llm-dry-r
 `MARKETPLACE_PROXY_SOURCE_URL`. Endpoint должен возвращать `text/plain`, по
 одному HTTP(S) URL прокси на непустую строку. Если источнику нужен bearer token,
 передайте его через `MARKETPLACE_PROXY_SOURCE_TOKEN`; не включайте token в URL.
+`MARKETPLACE_PROXY_URL` задаёт один rotating proxy для catalog discovery.
+Если обе переменные заданы, список идёт в параллельный сбор карточек и цен,
+а одиночный rotating proxy — только в discovery.
 Не добавляйте endpoint, прокси, user-info или token в Git. Если переменная URL
 не задана, используется прямое подключение; если настроенный источник ошибся
 или вернул пустой список, сбор завершается с ошибкой вместо скрытого перехода
@@ -79,7 +89,7 @@ PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --analyzer llm --llm-dry-r
 
 ## Бюджет локального сравнения (Mac, 2026-10-22)
 
-База замера: 32 GiB RAM, 10 CPU, 66% свободной памяти; swap уже занят на 1.58 GiB из 3 GiB; свободно 288.8 GiB диска. Для свежего сравнения ставим пределы: не более 2 headless browser workers и 2 CPU-ядер, один нагрузочный запуск за раз, не более 40 дочерних процессов проекта, до 4 GiB обычного и 6 GiB предельного RAM, прирост swap не более 1 GiB, временные данные до 1 GiB и минимум 100 GiB свободного диска. LLM batch concurrency — 1. GPU не используется. Во время сбора контролировать память, swap и процессный пик; остановить запуск при превышении лимита или если свободный диск опустится ниже резерва.
+База замера: 32 GiB RAM, 10 CPU; browser fallback ограничен 2 headless workers. 27 октября 2026 Impit загрузил 7 GGSEL карточек с 27 option prices за 5.97 секунды (27/27 совпали с браузером после округления до рубля, peak RSS около 59 MiB). Plati HTTP canary получил 32/32 option totals через `/asp/price_options.asp` за 17 секунд; вариант $2 дал 214 ₽, как и browser buy-block. Предел: до 10 HTTP workers и до 2 Playwright workers; один нагрузочный запуск за раз, 40 дочерних процессов, 4 GiB soft / 6 GiB hard RAM, swap growth ≤1 GiB, temp ≤1 GiB и минимум 100 GiB свободного диска. LLM batch concurrency — 1, GPU не используется. Остановить запуск при превышении этих пределов.
 
 Артефакты:
 - `.tmp/raw.json` — сырой сбор (pass 1; при нескольких family отдельный файл на каждую)
@@ -111,7 +121,7 @@ low_price/
 ├── families/                       # Per-product configs
 │   ├── __init__.py                 # FAMILY_REGISTRY
 │   ├── base.py                     # FamilyConfig dataclass
-│   ├── minimax.py                  # MiniMax Token Plan Max
+│   ├── minimax.py                  # MiniMax M Plan / Token Plan
 │   ├── zai.py                      # Z.ai GLM Coding Max
 │   ├── chatgpt.py                  # ChatGPT Plus / Pro (purpose presets)
 │   ├── claude.py                   # Claude Pro / Max
@@ -120,8 +130,10 @@ low_price/
 ├── marketplaces/                   # Per-marketplace adapters
 │
 ├── scanner/                        # Pass 1: collect raw data
-│   ├── discover.py                 # Plati API + Crawlee PlaywrightCrawler
-│   └── collect.py                  # Run click.py via subprocess
+│   ├── discover.py                 # Plati API + GGSEL category pagination
+│   ├── ggsel_ssr.py                # 10-way Impit/curl_cffi SSR price capture
+│   ├── plati_http.py               # selected-option totals via Plati HTTP endpoint
+│   └── collect.py                  # SSR fast path + bounded click.py fallback
 │
 ├── analyzer/                       # Pass 2: interpret
 │   ├── price.py                    # tier × duration × delivery classification
@@ -187,12 +199,12 @@ cookies и не закрывает браузер пользователя.
 ```bash
 PYTHONPATH=. .venv/bin/python -m pytest tests/ -v
 PYTHONPATH=. .venv/bin/python -m py_compile cli.py scanner/*.py analyzer/*.py families/*.py
-node --check click.py
+node --check < click.py
 ```
 
 ## Важно
 
-Цены, наличие и тексты карточек меняются. Результат нужно считать снимком на время запуска. Проект не хранит учётные данные маркетплейсов и не должен использоваться для передачи продавцу паролей без осознанного решения пользователя.
+Цены и тексты карточек меняются; результат — снимок на время запуска. Сборщик намеренно не проверяет наличие и остатки. Проект не хранит учётные данные маркетплейсов и не должен использоваться для передачи продавцу паролей без осознанного решения пользователя.
 
 ## Лицензия
 

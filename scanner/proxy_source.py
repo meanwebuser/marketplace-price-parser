@@ -128,6 +128,14 @@ def fetch_proxy_urls(
     )
     configured_url = configured_url.strip()
     if not configured_url:
+        # A single rotating HTTP proxy can also be supplied by runtime config.
+        # This is useful for a local SSH forward to a managed proxy pool: each
+        # HTTP CONNECT is rotated upstream, while the repository stores no
+        # host, port, credentials, or proxy list.
+        direct_proxy = os.environ.get("MARKETPLACE_PROXY_URL", "").strip()
+        if direct_proxy:
+            _validate_proxy_url(direct_proxy, 1)
+            return [direct_proxy]
         return []
     _validate_source_url(configured_url)
 
@@ -180,3 +188,18 @@ def fetch_proxy_urls(
     if not urls:
         raise ProxySourceError("configured proxy source returned no proxy URLs")
     return urls
+
+
+def discovery_proxy_urls(detail_proxy_urls: list[str] | tuple[str, ...] = ()) -> list[str]:
+    """Use an optional single rotating proxy for catalog discovery.
+
+    Some marketplace catalog APIs behave differently from product-detail and
+    option-price endpoints. ``MARKETPLACE_PROXY_URL`` may point to an authorized
+    rotating proxy for discovery, while ``MARKETPLACE_PROXY_SOURCE_URL`` feeds
+    the larger URL list to the concurrent detail collector.
+    """
+    direct_proxy = os.environ.get("MARKETPLACE_PROXY_URL", "").strip()
+    if direct_proxy:
+        _validate_proxy_url(direct_proxy, 1)
+        return [direct_proxy]
+    return list(detail_proxy_urls)
