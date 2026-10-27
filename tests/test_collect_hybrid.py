@@ -1,7 +1,9 @@
 import json
 import subprocess
+import io
+from types import SimpleNamespace
 
-from scanner import ggsel_ssr
+from scanner import ggsel_ssr, plati_http
 from scanner.collect import collect
 
 
@@ -37,10 +39,19 @@ def test_collect_sends_only_unsupported_http_listings_to_playwright(tmp_path, mo
     ]
 
     async def fake_collect(items, *, workers, proxy_urls):
-        assert workers == 10
+        assert workers == 7
         return [{"marketplace": "ggsel", "pid": "2", "options": []}], [candidates[2]], {
             "impit": 1, "curl_cffi": 0, "browser_fallback": 1,
         }
+
+    async def fake_plati(items, *, workers, proxy_urls):
+        assert workers == 3
+        assert items == [candidates[0]]
+        assert set(proxy_urls).isdisjoint(set([
+            "http://proxy-2.example:8085", "http://proxy-4.example:8085",
+        ]))
+        return [], [candidates[0]], {"pageRequests": 1, "optionRequests": 0,
+                                      "priceOptions": 0, "failedOptions": 0}
 
     def fake_browser(command, **kwargs):
         assert command[command.index("--plati-pids") + 1] == "1"
@@ -48,14 +59,27 @@ def test_collect_sends_only_unsupported_http_listings_to_playwright(tmp_path, mo
         output.write_text(json.dumps({"config": {"workers": 2}, "listings": [
             {"marketplace": "plati", "pid": "1"}, {"marketplace": "ggsel", "pid": "3"},
         ]}), encoding="utf-8")
-        return subprocess.CompletedProcess(command, 0, "", "")
+        return SimpleNamespace(returncode=0, stdout=io.StringIO(""), wait=lambda: 0)
 
     monkeypatch.setattr(ggsel_ssr, "collect_ggsel_ssr", fake_collect)
-    monkeypatch.setattr("scanner.collect.subprocess.run", fake_browser)
+    monkeypatch.setattr(plati_http, "collect_plati_http", fake_plati)
+    monkeypatch.setattr("scanner.collect.subprocess.Popen", fake_browser)
 
-    raw = collect(candidates, output, workers=2, http_workers=10, headless=True)
+    raw = collect(candidates, output, workers=2, http_workers=10, headless=True,
+                  proxy_urls=[f"http://proxy-{i}.example:8085" for i in range(1, 5)])
 
     assert [(item["marketplace"], item["pid"]) for item in raw["listings"]] == [
         ("ggsel", "2"), ("plati", "1"), ("ggsel", "3"),
     ]
-    assert raw["config"]["transportCounts"] == {"impit": 1, "curl_cffi": 0, "browser_fallback": 1}
+    assert raw["config"]["transportCounts"] == {
+        "plati_http": 0,
+        "impit": 1,
+        "curl_cffi": 0,
+        "plati_browser_fallback": 1,
+        "browser_fallback": 1,
+        "plati_pageRequests": 1,
+        "plati_optionRequests": 0,
+        "plati_priceOptions": 0,
+        "plati_failedOptions": 0,
+    }
+    assert set(raw["config"]["transportDurationsMs"]) == {"platiHttp", "ggselSsr", "browserFallback"}

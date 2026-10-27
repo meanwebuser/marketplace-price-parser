@@ -15,12 +15,21 @@ Kimi uses the parser's `1m`, `3m`, `6m`, and `12m` durations and includes all fo
 - получать цену Plati для выбранных вариантов через `price_options.asp`, без последовательного открытия страниц в браузере;
 - различать `own_account`, `new_account`, `shared_account` и `unknown` условия выдачи;
 - различать варианты ChatGPT Pro X5 / Pro X20 как отдельные тарифы;
-- pass 2 через LLM: `--analyzer llm` строит компактные evidence-pack'и
-  (описание, зона товара, чипы с ценами, пропущенные варианты, цены
-  «плоских» лотов) и классифицирует батчами ~24 КБ — контекст не
-  накапливается, `--llm-dry-run` показывает точные размеры промптов;
-  регэксп-анализатор остаётся офлайн-фолбэком (`--analyzer regex`);
-- analyzer `auto` по умолчанию использует детерминированный regex и не делает LLM-вызов даже при заданном API key; `--analyzer llm` включается явно для калибровки;
+- pass 2 по умолчанию через `adaptive`: deterministic-first, LLM получает
+  только неоднозначные строки и до трёх представителей нового отпечатка
+  структуры страницы; `--analyzer regex` всегда остаётся zero-call режимом;
+- без `LLM_API_KEY` адаптивный режим не делает вызовов и оставляет
+  неподтверждённые поля неизвестными; `--analyzer llm` включает полный разбор
+  явно, `--analyzer regex` — чистый офлайн-анализ;
+- свежие сканы записываются в уникальный `.tmp/scans/<run-id>/`, чтобы
+  предыдущие карточки не смешивались с новым проходом;
+- до двух семейств могут собираться параллельно в пределах общего бюджета
+  до 10 HTTP и 2 браузерных workers; Plati HTTP и GGSEL SSR тоже работают
+  параллельно, браузер получает только неподдержанные или заблокированные карточки;
+- каждый свежий снимок сравнивает отпечатки структуры карточек с последним
+  снимком, помечая новые шаблоны сайта без сохранения динамических цен или текста;
+- GGSEL discovery объединяет категорию с rendered search aliases, если семья
+  задаёт их явно; новые ID повторно разбираются тем же парсером вариантов;
 - чинить цену варианта, когда блок цены не успел обновиться после клика (чип «+N ₽» = наценка к базовой цене лота);
 - фильтровать по eligibility-правилам конкретного семейства (tier × duration × delivery, purpose preset);
 - детектить UI-глитчи цен (12-мес Max за 1.5M RUB вместо 162K — отбрасываем);
@@ -40,7 +49,12 @@ npm ci --prefix ggsel_plati
 
 ```bash
 # Свежий скан: discovery → collect → deterministic analyze (без LLM по умолчанию)
-PYTHONPATH=. .venv/bin/python cli.py --family zai --http-workers 10 --workers 2 --headless --analyzer auto
+# Перед запуском при необходимости локально задайте свой
+# MARKETPLACE_PROXY_SOURCE_URL; значение и endpoint не сохраняются в репозитории.
+PYTHONPATH=. .venv/bin/python cli.py \
+  --family minimax,zai,chatgpt,claude,kimi --full-discovery \
+  --require-proxy --parallel-families 2 --http-workers 10 --workers 2 \
+  --headless --analyzer adaptive
 
 # Kimi AI / Kimi K3: fresh subscription catalogue, no visible browser windows
 PYTHONPATH=. .venv/bin/python cli.py --family kimi --http-workers 10 --workers 2 --headless
@@ -92,9 +106,9 @@ PYTHONPATH=. .venv/bin/python cli.py --family chatgpt --analyzer llm --llm-dry-r
 База замера: 32 GiB RAM, 10 CPU; browser fallback ограничен 2 headless workers. 27 октября 2026 Impit загрузил 7 GGSEL карточек с 27 option prices за 5.97 секунды (27/27 совпали с браузером после округления до рубля, peak RSS около 59 MiB). Plati HTTP canary получил 32/32 option totals через `/asp/price_options.asp` за 17 секунд; вариант $2 дал 214 ₽, как и browser buy-block. Предел: до 10 HTTP workers и до 2 Playwright workers; один нагрузочный запуск за раз, 40 дочерних процессов, 4 GiB soft / 6 GiB hard RAM, swap growth ≤1 GiB, temp ≤1 GiB и минимум 100 GiB свободного диска. LLM batch concurrency — 1, GPU не используется. Остановить запуск при превышении этих пределов.
 
 Артефакты:
-- `.tmp/raw.json` — сырой сбор (pass 1; при нескольких family отдельный файл на каждую)
-- `.tmp/table.csv` — все офферы с классификацией (pass 2)
-- `.tmp/table.md` — канонический отчёт с самой дешёвой ценой по (tier × duration × delivery)
+- `.tmp/scans/<run-id>/raw.<family>.json` — уникальные исходные снимки каждого семейства
+- `.tmp/scans/<run-id>/table.csv` — нормализованные офферы (pass 2)
+- `.tmp/scans/<run-id>/table.md` — канонический отчёт с самой дешёвой ценой по (tier × duration × delivery)
 - `.tmp/llm-efficiency/llm_prompts/` — сохранённые prompt batches для `--llm-dry-run`
 
 ### Backward-compat wrappers

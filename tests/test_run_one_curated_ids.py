@@ -25,7 +25,7 @@ def test_run_one_collects_discovered_canonical_curated_ids_once(monkeypatch, tmp
         "transports": {"plati": "none", "ggsel": "playwright"},
         "errors": [],
     }
-    monkeypatch.setattr(cli, "discover_all", lambda _family, _limit: discovery)
+    monkeypatch.setattr(cli, "discover_all", lambda _family, _limit, **_kwargs: discovery)
     observed = {}
 
     def fake_collect(discovered_candidates, _out_path, **kwargs):
@@ -41,7 +41,9 @@ def test_run_one_collects_discovered_canonical_curated_ids_once(monkeypatch, tmp
     monkeypatch.setattr(cli, "collect", fake_collect)
     raw = cli._run_one(
         family,
-        Namespace(skip_discover=False, max=80, workers=1, headless=True),
+        Namespace(skip_discover=False, max=80, max_pages=6, max_candidates=None,
+                  allow_direct_discovery_fallback=False, workers=1, http_workers=4,
+                  capture_retries=2, headless=True, parallel_families=1),
         tmp_path / "claude.raw.json",
     )
 

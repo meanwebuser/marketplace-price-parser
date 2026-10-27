@@ -70,7 +70,8 @@ def validate_rankings(
                 if (option.get("clicked") and not option.get("prices")
                         and option.get("priceVerified") is True):
                     issues.append(f"{where} marks a price verified without a price snapshot")
-                if option.get("priceChanged") and not option.get("priceStable"):
+                if (option.get("priceChanged") and not option.get("priceStable")
+                        and option.get("priceVerified") is True):
                     issues.append(f"{where} changed price but never became stable")
                 if (option.get("priceVerified") and not option.get("clicked")
                         and option.get("priceEvidenceMethod") not in {

@@ -655,6 +655,10 @@ async function runWorker(workerId, queue, browser, sharedContext, contextOptions
           if (option.priceChanged && !option.priceStable) reasons.push('unstable changed price');
         }
         if (reasons.length === 0 || attempt === CAPTURE_RETRIES) break;
+        // Reopening a listing through more proxies cannot recover a route
+        // that returned an explicit marketplace block. Preserve the failure
+        // and move on instead of spending the full retry budget.
+        if (/marketplace blocked page \(HTTP (?:401|403)\)/i.test(result.error || '')) break;
         allRetryReasons.push(...reasons);
         process.stderr.write(`[w${workerId}] ${job.marketplace} ${String(job.pid).slice(0, 50)} — retry ${attempt + 1}/${CAPTURE_RETRIES}: ${[...new Set(reasons)].join(', ')}\n`);
       }

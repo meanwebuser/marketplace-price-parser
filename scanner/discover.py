@@ -20,10 +20,11 @@ import json
 import os
 import re
 import sys
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 from html.parser import HTMLParser
-from urllib.parse import urlencode
+from urllib.parse import quote, urlencode
 from urllib.request import ProxyHandler, Request, build_opener, urlopen
 
 from families.base import FamilyConfig
@@ -35,6 +36,7 @@ DEFAULT_GGSEL_BASE_URL = "https://ggsel.net"
 GGSEL_CATEGORY_URL = f"{DEFAULT_GGSEL_BASE_URL}/catalog/{{category}}"
 GGSEL_SEARCH_URL = f"{DEFAULT_GGSEL_BASE_URL}/search?text={{q}}"
 CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+_GGSEL_DISCOVERY_LOCK = threading.Lock()
 
 # Query variants are intentionally generic; never ship a dated listing-ID list
 # as if it were a live marketplace inventory.
@@ -66,6 +68,18 @@ def _candidate_matches_family(text: str, family: FamilyConfig) -> bool:
     n = normalise(text)
     if not n:
         return False
+    if family.name == "zai":
+        brand = re.search(r"\b(?:z[.\s-]*ai|glm|zhipu)\b|智谱", n)
+        subscription = re.search(r"подпис\w*|subscription|coding\s*plan|тариф\w*", n)
+        excluded = re.search(
+            r"api\s*key|\bapi\b|top\s*-?up|попол\w*|\b(?:balance|credit|credits)\b|кредит\w*|баланс\w*",
+            n,
+        )
+        # Search results often omit duration or the word "subscription" even
+        # though the detail page exposes plan selectors. Keep mixed listings
+        # when the title also advertises a subscription; the selected option
+        # decides whether the captured variant is a subscription or top-up.
+        return bool(brand and (subscription or not excluded))
     if family.name == "minimax":
         from families.minimax import is_subscription_candidate
         return is_subscription_candidate(n)
@@ -108,6 +122,9 @@ def discover_plati(
 
     if max_results < 1 or max_pages < 1 or (max_total_results is not None and max_total_results < 1):
         raise ValueError("result limits and max_pages must be positive")
+    # Digiseller rejects oversized `count` values (for example 1000) with
+    # HTTP 400. Keep full-discovery candidate caps independent from page size.
+    page_size = min(max_results, 80)
 
     def fetch_page(index: int, query: str, page: int) -> tuple[dict | None, str | None]:
         params = {
@@ -115,7 +132,7 @@ def discover_plati(
             "sellerCategoryId": "", "productId": "",
             "productName": query, "ownerId": "plati",
             "ownerCategoryId": "", "sellerId": "", "sellerName": "",
-            "currency": "RUB", "page": str(page), "count": str(max_results),
+            "currency": "RUB", "page": str(page), "count": str(page_size),
             "individual": "false", "video": "false", "image": "false",
             "attributes": "", "sortBy": "price-asc", "priceFrom": "", "priceTo": "",
             "includeAggregations": "true", "fuzzy": "false", "lang": "ru-RU",
@@ -188,7 +205,7 @@ def discover_plati(
     candidates_before_cap = 0
     if coverage is not None:
         infos = [info for _, info in query_results]
-        coverage.update({"queries": infos, "pageSize": max_results, "maxPages": max_pages,
+        coverage.update({"queries": infos, "pageSize": page_size, "maxPages": max_pages,
                          "pagesFetched": sum(info["pagesFetched"] for info in infos),
                          "status": "failed" if infos and all(info["status"] == "failed" for info in infos) else "partial" if any(info["status"] != "ok" for info in infos) else "ok"})
     for items, info in query_results:
@@ -482,6 +499,7 @@ def discover_ggsel(
         failures.extend(attempt_failures)
         if attempt_coverage.get("status") != "failed" or attempt_coverage.get("pagesFetched", 0) > 0:
             break
+    category_coverage = dict(final_coverage)
     if coverage is not None:
         coverage.update(final_coverage)
         coverage["proxyAttempts"] = attempts_used
@@ -492,9 +510,25 @@ def discover_ggsel(
         transport = "playwright-partial" if final_coverage.get("status") == "partial" else "playwright"
         if proxy_urls and attempts_used > min(5, len(proxy_urls)):
             transport = "playwright-direct-fallback"
-    if request_failures is not None:
-        request_failures.extend(failures)
     merged = {str(p["native_id"]): p for p in products}
+    category_ids = set(merged)
+    search_coverage: dict = {}
+    search_terms = list(getattr(family, "ggsel_search_terms", []) or [])
+    search_ids: set[str] = set()
+    if search_terms:
+        try:
+            searched = asyncio.run(_ggsel_search_async(
+                family, search_terms, max_results=max_results,
+                proxy_urls=proxy_urls[:1], max_pages=max_pages,
+                coverage=search_coverage,
+            ))
+            for candidate in searched:
+                candidate_id = str(candidate["native_id"])
+                search_ids.add(candidate_id)
+                merged.setdefault(candidate_id, candidate)
+        except Exception as error:
+            search_coverage.update(status="failed", error=type(error).__name__)
+            failures.append(f"GGSEL search discovery failed: {type(error).__name__}")
     for curated in family.ggsel_ids:
         # Existing configs contain both numeric IDs and slug-ID paths.
         path = str(curated).strip()
@@ -508,7 +542,134 @@ def discover_ggsel(
                 "url": f"{DEFAULT_GGSEL_BASE_URL}/catalog/product/{path}",
                 "catalog_price_rub": None, "seller": None, "sales": None,
             }
+    if request_failures is not None:
+        request_failures.extend(failures)
+    if coverage is not None:
+        coverage["category"] = category_coverage
+        if search_terms:
+            coverage["search"] = search_coverage
+            coverage["combinedUniqueCandidates"] = len(merged)
+            coverage["searchSupplement"] = {
+                "uniqueCandidates": len(search_ids),
+                "additionalListingsCaptured": len(search_ids - category_ids),
+                "queries": search_coverage.get("queries", []),
+                "categoryDiscoveryStatus": category_coverage.get("status", "unknown"),
+                "coverageNote": "GGSEL rendered search aliases supplement the category; counts are not marketplace totals.",
+            }
     return list(merged.values())[:max_results], transport
+
+
+async def _ggsel_search_async(
+    family: FamilyConfig,
+    terms: list[str],
+    *,
+    max_results: int,
+    proxy_urls: tuple[str, ...] | list[str] = (),
+    max_pages: int = 6,
+    coverage: dict | None = None,
+) -> list[dict]:
+    """Search GGSEL's rendered `/search/<term>` route for additional IDs.
+
+    The regular category route is still collected first. Each search term gets
+    its own page, and visible load-more is followed only while it adds new
+    matching product IDs. This avoids treating recommendation cards or a
+    category result count as an exhaustive marketplace inventory.
+    """
+    from crawlee import ConcurrencySettings, Request
+    from crawlee.crawlers import PlaywrightCrawler
+
+    queries = [str(term).strip() for term in terms if str(term).strip()]
+    products: dict[str, dict] = {}
+    query_info: list[dict] = []
+    crawler_options = {
+        "max_requests_per_crawl": len(queries),
+        "max_request_retries": 0,
+        "retry_on_blocked": False,
+        "use_session_pool": False,
+        "request_handler_timeout": timedelta(minutes=5),
+        "navigation_timeout": timedelta(seconds=30),
+        "goto_options": {"wait_until": "domcontentloaded"},
+        "concurrency_settings": ConcurrencySettings(
+            min_concurrency=1, max_concurrency=1, desired_concurrency=1
+        ),
+        "browser_type": "chromium",
+        "browser_launch_options": {
+            "executable_path": CHROME_PATH,
+            "headless": True,
+            "args": ["--no-sandbox"],
+        },
+    }
+    if proxy_urls:
+        crawler_options["browser_new_context_options"] = {
+            "proxy": playwright_proxy_options(proxy_urls[0])
+        }
+    crawler = PlaywrightCrawler(**crawler_options)
+
+    @crawler.router.default_handler
+    async def handle(ctx):
+        term = str(ctx.request.user_data.get("term") or "")
+        info = {"term": term, "url": ctx.request.url, "pagesFetched": 0,
+                "status": "failed", "stopReason": "error", "newCandidates": 0}
+        query_info.append(info)
+        before = len(products)
+        try:
+            for page_number in range(1, max_pages + 1):
+                try:
+                    await ctx.page.wait_for_function(
+                        "() => document.querySelector('a[href*=\"/catalog/product/\"]')",
+                        timeout=8000,
+                    )
+                except Exception:
+                    pass
+                before_content = await ctx.page.content()
+                for candidate in _extract_ggsel_products(before_content, family):
+                    products.setdefault(str(candidate["native_id"]), candidate)
+                info["pagesFetched"] += 1
+                if len(products) >= max_results:
+                    info.update(status="partial", stopReason="candidate_cap")
+                    break
+                more = ctx.page.get_by_role(
+                    "button", name=re.compile(r"показать (?:больше|ещ[её])|load more|ещ[её]", re.I)
+                ).first
+                if not await more.count() or not await more.is_visible():
+                    info.update(status="ok", stopReason="exhausted")
+                    break
+                if page_number == max_pages:
+                    info.update(status="partial", stopReason="page_cap")
+                    break
+                await more.click()
+                await ctx.page.wait_for_timeout(1200)
+                after_content = await ctx.page.content()
+                if after_content == before_content:
+                    info.update(status="partial", stopReason="load_more_no_page_change")
+                    break
+            if info["status"] == "failed":
+                info.update(status="partial", stopReason="page_cap")
+            info["newCandidates"] = len(products) - before
+        except Exception as error:
+            info.update(status="partial" if info["pagesFetched"] else "failed",
+                         stopReason="error", error=type(error).__name__)
+
+    @crawler.failed_request_handler
+    async def failed(ctx, error):
+        query_info.append({"term": ctx.request.user_data.get("term", ""),
+                           "url": ctx.request.url, "pagesFetched": 0,
+                           "status": "failed", "stopReason": "request_failed",
+                           "error": type(error).__name__, "newCandidates": 0})
+
+    requests = [Request.from_url(
+        f"{DEFAULT_GGSEL_BASE_URL}/search/{quote(term, safe='')}",
+        user_data={"term": term},
+    ) for term in queries]
+    if requests:
+        await crawler.run(requests)
+    if coverage is not None:
+        coverage.update({"queries": query_info, "maxPages": max_pages,
+                         "pagesFetched": sum(item["pagesFetched"] for item in query_info),
+                         "status": "failed" if not query_info or all(item["status"] == "failed" for item in query_info)
+                         else "partial" if any(item["status"] != "ok" for item in query_info) else "ok",
+                         "candidatesReturned": len(products)})
+    return list(products.values())[:max_results]
 
 
 def discover_all(
@@ -523,18 +684,36 @@ def discover_all(
 ) -> dict:
     plati_query_errors: list[str] = []
     plati_coverage: dict = {}
-    plati, plati_t = discover_plati(
-        family, max_results, query_errors=plati_query_errors, proxy_urls=proxy_urls,
-        coverage=plati_coverage, http_workers=http_workers, max_pages=max_pages,
-        max_total_results=max_candidates,
-    )
     ggsel_request_failures: list[str] = []
     ggsel_coverage: dict = {}
-    ggsel, ggsel_t = discover_ggsel(
-        family, max_candidates or max_results, request_failures=ggsel_request_failures,
-        proxy_urls=proxy_urls, max_pages=max_pages, coverage=ggsel_coverage,
-        allow_direct_fallback=allow_direct_fallback,
-    )
+
+    def collect_plati():
+        return discover_plati(
+            family, max_results, query_errors=plati_query_errors, proxy_urls=proxy_urls,
+            coverage=plati_coverage, http_workers=http_workers, max_pages=max_pages,
+            max_total_results=max_candidates,
+        )
+
+    def collect_ggsel():
+        # Crawlee/Playwright is not reliable when separate asyncio runners
+        # launch Chromium concurrently from family worker threads. Keep its
+        # single headless discovery browser serialized; Plati HTTP and later
+        # collection continue in parallel under their separate budgets.
+        with _GGSEL_DISCOVERY_LOCK:
+            return discover_ggsel(
+                family, max_candidates or max_results, request_failures=ggsel_request_failures,
+                proxy_urls=proxy_urls, max_pages=max_pages, coverage=ggsel_coverage,
+                allow_direct_fallback=allow_direct_fallback,
+            )
+
+    # The two marketplaces have independent discovery routes (Plati API and
+    # GGSEL's rendered category). Overlap them per family to avoid waiting for
+    # a slow category page after all Plati search terms have completed.
+    with ThreadPoolExecutor(max_workers=2, thread_name_prefix=f"discover-{family.name}") as pool:
+        plati_future = pool.submit(collect_plati)
+        ggsel_future = pool.submit(collect_ggsel)
+        plati, plati_t = plati_future.result()
+        ggsel, ggsel_t = ggsel_future.result()
     errors = list(plati_query_errors)
     errors.extend(ggsel_request_failures)
     if "error" in ggsel_t:
@@ -544,6 +723,7 @@ def discover_all(
         "candidates": plati + ggsel,
         "plati_found": len(plati),
         "coverage": {"plati": plati_coverage, "ggsel": ggsel_coverage},
+        "ggselSearchSupplement": ggsel_coverage.get("searchSupplement"),
         "ggsel_found": len(ggsel),
         "transports": {
             "plati": plati_t,

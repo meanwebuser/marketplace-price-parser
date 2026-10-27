@@ -3,13 +3,29 @@ import json
 from pathlib import Path
 import pytest
 
-from scripts.build_pages_data import normalize_csv
+from scripts.build_pages_data import discovery_metadata, normalize_csv
 
 
 def test_pages_workflow_preserves_existing_non_gift_card_products():
     workflow = Path(__file__).resolve().parents[1] / ".github/workflows/deploy-pages.yml"
 
     assert "python scripts/build_pages_data.py --out docs/data/latest.json --preserve-existing-products" in workflow.read_text()
+
+
+def test_discovery_metadata_uses_snapshot_audit_path():
+    raw = {"discovery": {"auditPath": "audits/2026-10-27-fast-scan.md"}}
+    metadata = discovery_metadata(raw, Path("2026-10-27-2118-chatgpt.csv"))
+    assert metadata["auditPath"] == "audits/2026-10-27-fast-scan.md"
+
+
+def test_latest_csv_prefers_later_run_stamp_after_family_name(tmp_path):
+    from scripts.build_pages_data import latest_csv
+
+    older = tmp_path / "2026-10-27-chatgpt.csv"
+    newer = tmp_path / "2026-10-27-chatgpt-2122.csv"
+    older.write_text("old")
+    newer.write_text("new")
+    assert latest_csv(tmp_path, "chatgpt") == newer
 
 
 def test_absolute_snapshot_source_path_is_relative_to_repository_docs_root():
@@ -60,12 +76,13 @@ def test_zai_seller_account_note_does_not_bypass_product_and_price_gates(tmp_pat
 
     offers, _ = normalize_csv(csv_path, "zai", docs_root=tmp_path)
 
-    assert [offer["pid"] for offer in offers] == ["subscription", "mixed-subscription"]
+    # Marketplace inventory is intentionally not checked for this catalogue.
+    assert [offer["pid"] for offer in offers] == ["subscription", "mixed-subscription", "unavailable"]
     assert offers[0]["delivery"] == "unknown"
     assert offers[0]["sellerNoteVerified"] is False
 
 
-def test_new_snapshot_excludes_unavailable_and_unverified_rows(tmp_path):
+def test_new_snapshot_excludes_unverified_rows_but_ignores_inventory(tmp_path):
     csv_path = tmp_path / "2026-01-02-chatgpt.csv"
     fields = ["marketplace", "pid", "url", "title", "option_text", "tier", "duration", "delivery", "price_rub", "strong_signal", "glitched", "glitch_reason", "available", "price_verified", "final_verified"]
     rows = [
@@ -81,11 +98,51 @@ def test_new_snapshot_excludes_unavailable_and_unverified_rows(tmp_path):
 
     offers, metadata = normalize_csv(csv_path, "chatgpt", docs_root=tmp_path)
 
-    assert [offer["pid"] for offer in offers] == ["ok"]
+    # `available` is not an input gate; only price evidence is.
+    assert [offer["pid"] for offer in offers] == ["ok", "unavailable"]
     assert offers[0]["finalVerified"] is True
     assert metadata["sourceRows"] == 3
-    assert metadata["publishedRows"] == 1
+    assert metadata["publishedRows"] == 2
     assert metadata["finalVerifiedWinners"] == 1
+
+
+def test_glm_coverage_summary_deduplicates_search_category_and_curated_ids(tmp_path):
+    from scripts.build_pages_data import discovery_metadata, discovery_summary_text
+
+    raw = {
+        "listings": [
+            {"marketplace": "ggsel", "pid": str(pid)} for pid in range(47)
+        ] + [{"marketplace": "plati", "pid": str(pid)} for pid in range(33)],
+        "discovery": {
+            "auditPath": "audits/current.md",
+            "coverage": {
+                "ggsel": {
+                    "status": "ok", "pagesFetched": 1, "candidateCount": 36,
+                    "candidatesBeforeCap": 36, "queries": [{"query": "/catalog/zai"}],
+                },
+                "plati": {"status": "ok", "pagesFetched": 6, "candidatesBeforeCap": 33,
+                          "queries": [{"query": "GLM"}]},
+            },
+            "ggselSearchSupplement": {
+                "uniqueCandidates": 39,
+                "additionalListingsCaptured": 3,
+                "queries": [{"term": "GLM", "url": "https://ggsel.net/search/GLM"}],
+                "coverageNote": "counts are not marketplace totals",
+            },
+        },
+    }
+
+    metadata = discovery_metadata(raw, tmp_path / "2026-10-27-zai-2122.csv")
+    ggsel = metadata["marketplaces"]["ggsel"]
+    summary = discovery_summary_text(metadata)
+    assert ggsel["candidateCount"] == 36
+    assert ggsel["capturedListings"] == 47
+    assert ggsel["searchCandidateCount"] == 39
+    assert ggsel["additionalCandidates"] == 3
+    assert ggsel["curatedSeedListings"] == ggsel["seedListings"] == 8
+    assert ggsel["supplementalSearch"]["routes"] == ["/search/GLM"]
+    assert ggsel["supplementalSearch"]["status"] == "partial"
+    assert "47 карточек" in summary and "39 совпадений" in summary
 
 
 def test_historical_snapshot_without_safety_columns_remains_readable(tmp_path):

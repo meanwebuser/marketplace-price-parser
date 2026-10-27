@@ -1,11 +1,15 @@
 """Tests for family-specific marketplace candidate discovery."""
 
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor
+import threading
+import time
 
 from families.minimax import CONFIG as MINIMAX
 from families.zai import CONFIG as ZAI
 from scanner.discover import (
     GIFT_CARD_QUERIES,
+    _candidate_matches_family,
     _extract_ggsel_gift_cards,
     _extract_ggsel_products,
     discover_gift_cards,
@@ -22,6 +26,120 @@ def test_ggsel_titleless_cards_fall_back_to_slug_and_filter_other_max_products()
 
     assert [offer["native_id"] for offer in offers] == ["102927393"]
     assert offers[0]["label"] == "minimax token plan explore 1 month"
+
+
+def test_zai_discovery_keeps_brand_matched_rows_without_duration_but_drops_api_and_topups():
+    assert _candidate_matches_family("GLM Max coding plan", ZAI)
+    assert _candidate_matches_family("Z.ai subscription", ZAI)
+    assert _candidate_matches_family("Z AI subscription 1/3/12m + top up balance", ZAI)
+    assert not _candidate_matches_family("GLM API key 5 USD", ZAI)
+    assert not _candidate_matches_family("Z.ai balance top-up", ZAI)
+
+
+def test_ggsel_search_continues_after_page_adds_no_new_matching_cards(monkeypatch):
+    import asyncio
+    import sys
+    from types import ModuleType
+    from scanner import discover
+
+    pages = [
+        '<div data-testid="card"><a href="/catalog/product/9001">Z.ai GLM Coding Max 1 month</a></div>',
+        '<div data-testid="card"><a href="/catalog/product/9001">Z.ai GLM Coding Max 1 month</a></div>'
+        '<div data-testid="card"><a href="/catalog/product/9002">Claude Pro 1 month</a></div>',
+        '<div data-testid="card"><a href="/catalog/product/9001">Z.ai GLM Coding Max 1 month</a></div>'
+        '<div data-testid="card"><a href="/catalog/product/9003">Z.ai GLM Coding Max 3 months</a></div>',
+    ]
+
+    class FakeRequest:
+        def __init__(self, url, user_data=None):
+            self.url, self.user_data = url, user_data or {}
+        @classmethod
+        def from_url(cls, url, user_data=None):
+            return cls(url, user_data)
+
+    class FakeButton:
+        def __init__(self, page): self.page = page
+        async def count(self): return int(self.page.index < 2)
+        async def is_visible(self): return self.page.index < 2
+        async def click(self): self.page.index += 1
+
+    class FakePage:
+        def __init__(self): self.index = 0
+        async def wait_for_function(self, *_args, **_kwargs): pass
+        async def content(self): return pages[self.index]
+        async def wait_for_timeout(self, *_args): pass
+        def get_by_role(self, *_args, **_kwargs): return self
+        @property
+        def first(self): return FakeButton(self)
+
+    class FakeCrawler:
+        def __init__(self, **_kwargs): self.router = self; self.handler = None
+        def default_handler(self, function): self.handler = function; return function
+        def failed_request_handler(self, function): return function
+        async def run(self, requests):
+            page = FakePage()
+            for request in requests:
+                await self.handler(type("Context", (), {"request": request, "page": page})())
+
+    crawlee = ModuleType("crawlee")
+    crawlee.ConcurrencySettings = lambda **_kwargs: None
+    crawlee.Request = FakeRequest
+    crawlers = ModuleType("crawlee.crawlers")
+    crawlers.PlaywrightCrawler = FakeCrawler
+    monkeypatch.setitem(sys.modules, "crawlee", crawlee)
+    monkeypatch.setitem(sys.modules, "crawlee.crawlers", crawlers)
+
+    coverage = {}
+    found = asyncio.run(discover._ggsel_search_async(
+        ZAI, ["GLM"], max_results=20, max_pages=10, coverage=coverage
+    ))
+    assert [item["native_id"] for item in found] == ["9001", "9003"]
+    assert coverage["queries"][0]["pagesFetched"] == 3
+    assert coverage["status"] == "ok"
+
+
+def test_plati_full_discovery_keeps_api_page_size_within_limit(monkeypatch):
+    import io
+    import json
+    from dataclasses import replace
+    from urllib.parse import parse_qs, urlsplit
+    from scanner import discover
+
+    observed = []
+    def response(request, timeout):
+        observed.append(parse_qs(urlsplit(request.full_url).query))
+        return io.BytesIO(json.dumps({"content": {"items": [], "total_pages": 1}}).encode())
+    monkeypatch.setattr(discover, "urlopen", response)
+    coverage = {}
+    discover.discover_plati(replace(ZAI, search_terms=["GLM"]), 1000,
+                            max_total_results=10000, coverage=coverage)
+    assert observed[0]["count"] == ["80"]
+    assert coverage["pageSize"] == 80
+
+
+def test_parallel_family_discovery_serializes_playwright_crawlers(monkeypatch):
+    from dataclasses import replace
+    from scanner import discover
+    from families.claude import CONFIG as CLAUDE
+
+    state = {"active": 0, "peak": 0}
+    guard = threading.Lock()
+
+    def fake_ggsel(*_args, **_kwargs):
+        with guard:
+            state["active"] += 1
+            state["peak"] = max(state["peak"], state["active"])
+        time.sleep(0.03)
+        with guard:
+            state["active"] -= 1
+        return [], "playwright"
+
+    monkeypatch.setattr(discover, "discover_ggsel", fake_ggsel)
+    monkeypatch.setattr(discover, "discover_plati", lambda *_args, **_kwargs: ([], "urllib"))
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(discover.discover_all, [ZAI, replace(CLAUDE, ggsel_search_terms=[])]))
+    assert len(results) == 2
+    assert state["peak"] == 1
 
 
 def test_ggsel_numeric_cards_use_only_their_own_span_text_or_image_alt():
@@ -243,27 +361,47 @@ def test_gift_cli_failed_empty_is_nonzero_and_saved(tmp_path, monkeypatch):
     assert 'status: failed' in md_path.read_text()
 
 
-def test_ggsel_search_waits_for_query_route_and_marks_empty_page():
+def test_ggsel_gift_card_search_marks_empty_category_page_ok(monkeypatch):
     import asyncio
+    import sys
+    from types import ModuleType
     from scanner import discover
-    class Search:
-        first = property(lambda self: self)
-        async def fill(self, value): pass
-        async def press(self, key): pass
-    class Page:
-        waited = False
-        def get_by_placeholder(self, regex): return Search()
-        async def wait_for_url(self, regex, timeout): self.waited = True
-        async def wait_for_function(self, script, timeout):
-            assert self.waited
-        async def content(self): return '<main>По вашему запросу ничего не найдено</main>'
-        def get_by_role(self, *args, **kwargs): return self
+
+    class FakeRequest:
+        @classmethod
+        def from_url(cls, url): return type("Request", (), {"url": url})()
+
+    class NoMore:
         first = property(lambda self: self)
         async def count(self): return 0
-    info, found = {}, {}
-    asyncio.run(discover._ggsel_gift_card_query(Page(), 'Apple Gift Card USA', 'US', 80, found, info))
-    assert info['status'] == 'ok' and info['pagesFetched'] == 1
-    assert found == {}
+        async def is_visible(self): return False
+
+    class FakePage:
+        async def wait_for_function(self, *_args, **_kwargs): pass
+        async def content(self): return '<main>В категории нет товаров</main>'
+        def locator(self, *_args): return NoMore()
+        def get_by_role(self, *_args, **_kwargs): return NoMore()
+
+    class FakeCrawler:
+        def __init__(self, **_kwargs): self.router = self
+        def default_handler(self, function): self.handler = function; return function
+        def failed_request_handler(self, function): return function
+        async def run(self, requests):
+            for request in requests:
+                await self.handler(type("Context", (), {"request": request, "page": FakePage()})())
+
+    crawlee = ModuleType("crawlee")
+    crawlee.ConcurrencySettings = lambda **_kwargs: None
+    crawlee.Request = FakeRequest
+    crawlers = ModuleType("crawlee.crawlers")
+    crawlers.PlaywrightCrawler = FakeCrawler
+    monkeypatch.setitem(sys.modules, "crawlee", crawlee)
+    monkeypatch.setitem(sys.modules, "crawlee.crawlers", crawlers)
+
+    coverage = {}
+    found = asyncio.run(discover._ggsel_gift_card_search_async("US", 80, [], coverage=coverage))
+    assert found == []
+    assert coverage["status"] == "ok" and coverage["pagesFetched"] == 1
 
 
 def test_gift_successful_empty_stays_ok(monkeypatch):

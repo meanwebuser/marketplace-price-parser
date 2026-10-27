@@ -28,6 +28,9 @@ class FamilyConfig:
     # eligibility_extra).
     price_floors: dict = field(default_factory=dict)
     description: str = ""
+    # Optional broader marketplace-native search aliases, used in addition
+    # to the main category route when category coverage is known to be narrow.
+    ggsel_search_terms: list[str] = field(default_factory=list)
 
     def matches_offer(self, offer: dict) -> bool:
         """Return True if an offer (post-pass-2 classification) passes

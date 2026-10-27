@@ -1,4 +1,4 @@
-"""Opt-in uncertainty gate for the ChatGPT LLM analyzer.
+"""Uncertainty gate for selective, evidence-constrained LLM classification.
 
 The deterministic analyzer remains the baseline. Only listings with concrete
 classification or capture uncertainty are sent to the existing LLM extractor.
@@ -19,7 +19,13 @@ from analyzer.price import (
     select_real_price,
 )
 
-_CHATGPT_RE = re.compile(r"\bchat\s*gpt\b|\bchatgpt\b|\bgpt\b", re.I)
+_FAMILY_TERMS = {
+    "minimax": ("minimax", "mini max", "мини макс", "m plan", "token plan"),
+    "zai": ("z.ai", "zai", "glm", "zhipu"),
+    "chatgpt": ("chatgpt", "chat gpt", "gpt"),
+    "claude": ("claude", "клод"),
+    "kimi": ("kimi", "kimi k3", "k3"),
+}
 _SUBSCRIPTION_RE = re.compile(
     r"подпис\w*|subscription|renew\w*|продлен\w*|обновлен\w*|активац\w*", re.I
 )
@@ -69,14 +75,23 @@ def _offer_like_option(text: str) -> bool:
     return bool(classify_tier(value) or classify_duration(value) or _DELIVERY_VARIANT_RE.search(value))
 
 
-def _offer_like_listing(listing: dict) -> bool:
+def _family_matches(listing: dict, family=None) -> bool:
+    if family is None:
+        return True
     context = _context_text(listing)
-    if not _CHATGPT_RE.search(context):
+    terms = _FAMILY_TERMS.get(str(getattr(family, "name", "")).lower(), ())
+    return not terms or any(term.casefold() in context.casefold() for term in terms)
+
+
+def _offer_like_listing(listing: dict, family=None) -> bool:
+    context = _context_text(listing)
+    if not _family_matches(listing, family):
         return False
     has_subscription_shape = bool(
         classify_tier(context)
         or classify_duration(context)
         or _SUBSCRIPTION_RE.search(context)
+        or (family is not None and _family_matches(listing, family))
     )
     has_capture = bool(
         _has_price_evidence(listing)
@@ -88,14 +103,12 @@ def _offer_like_listing(listing: dict) -> bool:
     return has_subscription_shape and has_capture
 
 
-def _option_is_offer_like(text: str, listing: dict) -> bool:
-    context = _context_text(listing)
+def _option_is_offer_like(text: str, listing: dict, family=None) -> bool:
+    if not _family_matches(listing, family):
+        return False
     return bool(
-        _CHATGPT_RE.search(context)
-        and (
-            _offer_like_option(text)
-            or (_SUBSCRIPTION_RE.search(text or "") and _DELIVERY_VARIANT_RE.search(text or ""))
-        )
+        _offer_like_option(text)
+        or (_SUBSCRIPTION_RE.search(text or "") and _DELIVERY_VARIANT_RE.search(text or ""))
     )
 
 
@@ -125,20 +138,23 @@ def _has_conflicting_classification(text: str, listing: dict) -> bool:
     )
 
 
-def listing_uncertainty_reasons(listing: dict, offers: list[dict]) -> list[str]:
+def listing_uncertainty_reasons(listing: dict, offers: list[dict], family=None) -> list[str]:
     """Return stable reason codes; an empty list means deterministic is enough."""
     reasons: list[str] = []
     if listing.get("error"):
         reasons.append("collector_error")
 
-    if not offers and _offer_like_listing(listing):
+    if not offers and _offer_like_listing(listing, family):
         reasons.append("no_deterministic_rows")
 
     for option in listing.get("options") or []:
-        if not option.get("clicked"):
+        evidenced = option.get("clicked") or (
+            option.get("priceVerified") is True and bool(option.get("priceEvidenceMethod"))
+        )
+        if not evidenced:
             continue
         text = str(option.get("text") or "")
-        if not _option_is_offer_like(text, listing):
+        if not _option_is_offer_like(text, listing, family):
             continue
 
         option_tier = classify_tier(text) or classify_tier(str(listing.get("title") or ""))
@@ -174,7 +190,7 @@ def listing_uncertainty_reasons(listing: dict, offers: list[dict]) -> list[str]:
 
     for item in listing.get("skippedControls") or []:
         text = str((item or {}).get("text") or "")
-        if _offer_like_option(text) and _option_is_offer_like(text, listing):
+        if _offer_like_option(text) and _option_is_offer_like(text, listing, family):
             reasons.append("unparsed_offer_option")
             break
 
@@ -185,6 +201,7 @@ def listing_uncertainty_reasons(listing: dict, offers: list[dict]) -> list[str]:
 def select_uncertain_listings(
     raw: dict,
     deterministic_offers: list[dict],
+    family=None,
 ) -> tuple[list[dict], dict[tuple[str, str], list[str]]]:
     """Select raw listing objects that merit LLM review, with reason codes."""
     offers_by_listing: dict[tuple[str, str], list[dict]] = defaultdict(list)
@@ -195,10 +212,32 @@ def select_uncertain_listings(
     reasons_by_listing: dict[tuple[str, str], list[str]] = {}
     for listing in raw.get("listings", []):
         key = _listing_key(listing)
-        reasons = listing_uncertainty_reasons(listing, offers_by_listing.get(key, []))
+        reasons = listing_uncertainty_reasons(listing, offers_by_listing.get(key, []), family)
         if reasons:
             selected.append(listing)
             reasons_by_listing[key] = reasons
+
+    # A new capture shape is the concrete signal that the marketplace UI or
+    # template changed. Send a small representative sample per new signature
+    # through the same evidence-constrained LLM gate; ordinary stable rows
+    # remain deterministic.
+    schema = raw.get("siteSchema") or {}
+    new_signatures = set(schema.get("newSignatures") or []) if schema.get("driftDetected") else set()
+    if new_signatures:
+        sampled: dict[str, int] = defaultdict(int)
+        selected_keys = set(reasons_by_listing)
+        for listing in raw.get("listings", []):
+            signature = listing.get("schemaFingerprint")
+            if signature not in new_signatures or sampled[signature] >= 3:
+                continue
+            key = _listing_key(listing)
+            sampled[signature] += 1
+            if key in selected_keys:
+                reasons_by_listing[key].append("new_schema_signature")
+                continue
+            selected.append(listing)
+            reasons_by_listing[key] = ["new_schema_signature"]
+            selected_keys.add(key)
     return selected, reasons_by_listing
 
 
@@ -258,7 +297,9 @@ def _matching_clicked_option(offer: dict, listing: dict) -> dict | None:
     option_key = _norm_option(offer.get("option_text", ""))
     return next((
         option for option in listing.get("options") or []
-        if option.get("clicked") and _norm_option(option.get("text", "")) == option_key
+        if (option.get("clicked") or (
+            option.get("priceVerified") is True and bool(option.get("priceEvidenceMethod"))
+        )) and _norm_option(option.get("text", "")) == option_key
     ), None)
 
 

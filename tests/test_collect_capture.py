@@ -75,6 +75,7 @@ def test_collector_retries_integrity_failures_and_ignores_sidebar_price_noise():
     assert "MAX_CAPTURE_RETRIES = 4" in CLICK
     assert "missing price snapshot" in CLICK
     assert "unstable changed price" in CLICK
+    assert "marketplace blocked page \\(HTTP (?:401|403)\\)" in CLICK
     assert "primary.length > 0 ? primary : all" in CLICK
 
 

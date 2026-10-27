@@ -17,16 +17,21 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import os
 import shlex
 import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 from pathlib import Path
 
 from families import FAMILY_REGISTRY
 from scanner.discover import discover_all
 from scanner.discover import discover_gift_cards
 from scanner.collect import collect
+from scanner.schema import annotate_schema
 from scanner.proxy_source import ProxySourceError, fetch_proxy_urls, discovery_proxy_urls
 from analyzer.output import offers_from_raw, gift_card_offers_from_raw, dedupe, cheapest_per_tier, write_csv, write_markdown, redact_availability_text
 from analyzer.validate import validate_rankings
@@ -75,6 +80,15 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
             raise argparse.ArgumentTypeError("capture retries must be an integer from 0 to 4")
         return parsed
 
+    def family_workers(value: str) -> int:
+        try:
+            workers = int(value)
+        except ValueError as error:
+            raise argparse.ArgumentTypeError("parallel family workers must be 1 or 2") from error
+        if workers < 1 or workers > 2:
+            raise argparse.ArgumentTypeError("parallel family workers must be 1 or 2 under the reviewed browser budget")
+        return workers
+
     p.add_argument("--family", required=True,
                    help="Family: minimax, zai, chatgpt, claude, kimi, apple_gift_card (comma-separated for multi)")
     p.add_argument("--region", default="US", choices=["US", "TR"],
@@ -94,21 +108,25 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--allow-direct-discovery-fallback", action="store_true",
                    help="after five proxy 401/block failures, allow headless direct category discovery and record it")
     p.add_argument("--workers", type=browser_workers, default=2)
+    p.add_argument("--parallel-families", type=family_workers, default=2,
+                   help="scan up to two product families concurrently while sharing worker budgets")
     p.add_argument("--capture-retries", type=capture_retries, default=2,
                    help="retry a blocked/unverified listing through another proxy (0..4)")
     p.add_argument("--http-workers", type=http_workers, default=10,
                    help="headless Impit/curl_cffi concurrency for GGSEL SSR price options")
     p.add_argument("--headless", action="store_true", help="force browser collection to stay hidden on both marketplaces")
-    p.add_argument("--raw", default=str(ROOT / ".tmp" / "raw.json"))
-    p.add_argument("--csv", default=str(ROOT / ".tmp" / "table.csv"))
-    p.add_argument("--md", default=str(ROOT / ".tmp" / "table.md"))
+    p.add_argument("--require-proxy", action="store_true",
+                   help="fail before discovery if no proxy source is configured")
+    p.add_argument("--raw", default=None,
+                   help="output raw snapshot; fresh scans default to a unique .tmp/scans run directory")
+    p.add_argument("--csv", default=None)
+    p.add_argument("--md", default=None)
     p.add_argument("--skip-discover", action="store_true")
     p.add_argument("--skip-final-verify", action="store_true",
                    help="unsafe/offline mode: do not independently reopen and verify ranked winners")
-    p.add_argument("--analyzer", default="auto", choices=["auto", "regex", "llm", "selective"],
-                   help="pass-2 engine: llm = all-listing evidence packs; selective = ChatGPT-only uncertainty gate; "
-                        "regex = offline heuristics; auto = regex (no LLM calls). Use llm for calibration or "
-                        "selective explicitly when the uncertainty gate is needed")
+    p.add_argument("--analyzer", default="adaptive", choices=["adaptive", "auto", "regex", "llm", "selective"],
+                   help="adaptive = deterministic first, LLM only for uncertain captured rows; auto/regex = zero LLM; "
+                        "llm = all listings; selective = legacy ChatGPT-only uncertainty gate")
     p.add_argument("--llm-batch-chars", type=int, default=6000,
                    help="evidence-pack chars per LLM batch; local models stop "
                         "following the strict JSON schema above ~3 listings")
@@ -120,6 +138,23 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--llm-model", default=None)
     p.add_argument("--llm-required", action="store_true")
     args = p.parse_args(argv)
+    if args.raw is None:
+        if args.skip_discover:
+            args.raw = ROOT / ".tmp" / "raw.json"
+        else:
+            run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S_%fZ") + f"-{os.getpid()}"
+            args.raw = ROOT / ".tmp" / "scans" / run_id / "raw.json"
+    else:
+        args.raw = Path(args.raw)
+    raw_path = Path(args.raw)
+    if args.csv is None:
+        args.csv = raw_path.parent / "table.csv"
+    else:
+        args.csv = Path(args.csv)
+    if args.md is None:
+        args.md = raw_path.parent / "table.md"
+    else:
+        args.md = Path(args.md)
     if args.full_discovery:
         args.max_pages = max(args.max_pages, 100)
         args.max_candidates = max(args.max_candidates or 0, 10_000)
@@ -149,7 +184,7 @@ def _resolve_families(args: argparse.Namespace) -> list:
 def _family_raw_path(raw_path: Path, family_count: int, family_name: str) -> Path:
     if family_count == 1:
         return raw_path
-    return ROOT / ".tmp" / f"{family_name}_raw.json"
+    return raw_path.with_name(f"{raw_path.stem}.{family_name}{raw_path.suffix or '.json'}")
 
 
 def _ensure_parent_dirs(*paths: Path) -> None:
@@ -179,23 +214,32 @@ def _strip_availability(raw: dict) -> None:
 
 def _run_one(family, args, raw_path: Path) -> dict:
     """Discover + collect for one family. Returns raw dict."""
+    scan_started = time.perf_counter()
     if args.skip_discover and raw_path.exists():
         raw = json.loads(raw_path.read_text())
         print(f"[{family.name}] reusing {raw_path}: {len(raw.get('listings', []))} listings")
         _strip_availability(raw)
         return raw
+    if not args.skip_discover and raw_path.exists():
+        raise FileExistsError(
+            f"fresh scan output already exists: {raw_path}; choose a new --raw path instead of mixing old captures"
+        )
     print(f"[{family.name}] discovering...")
-    detail_proxy_urls = getattr(args, "proxy_urls", [])
+    discovery_started = time.perf_counter()
+    detail_proxy_urls = getattr(args, "proxy_urls", []) or []
     discovery_urls = getattr(args, "discovery_proxy_urls", detail_proxy_urls)
-    discovery_kwargs = {"http_workers": args.http_workers}
+    http_workers = getattr(args, "http_workers", 10)
+    browser_workers = getattr(args, "workers", 2)
+    discovery_kwargs = {"http_workers": http_workers}
     if discovery_urls:
         discovery_kwargs["proxy_urls"] = discovery_urls
     discovery = discover_all(
-        family, args.max, max_pages=args.max_pages,
-        max_candidates=args.max_candidates,
-        allow_direct_fallback=args.allow_direct_discovery_fallback,
+        family, args.max, max_pages=getattr(args, "max_pages", 6),
+        max_candidates=getattr(args, "max_candidates", None),
+        allow_direct_fallback=getattr(args, "allow_direct_discovery_fallback", False),
         **discovery_kwargs,
     )
+    discovery_ms = round((time.perf_counter() - discovery_started) * 1000)
     print(f"[{family.name}]   plati: {discovery['plati_found']}, ggsel: {discovery['ggsel_found']}")
     discovery_metadata = {
         "platiFound": discovery["plati_found"],
@@ -208,20 +252,89 @@ def _run_one(family, args, raw_path: Path) -> dict:
     }
     if discovery["plati_found"] + discovery["ggsel_found"] == 0:
         print(f"[{family.name}] WARNING: no candidates found", file=sys.stderr)
-        return {"listings": [], "discovery": discovery_metadata}
-    print(f"[{family.name}] collecting via {args.http_workers} HTTP workers and {args.workers} browser fallback workers...")
+        raw = {"listings": [], "discovery": discovery_metadata,
+               "scanTimingsMs": {"discovery": discovery_ms,
+                                 "collection": 0,
+                                 "total": round((time.perf_counter() - scan_started) * 1000)}}
+        return annotate_schema(raw, family.name)
+    print(f"[{family.name}] collecting via {http_workers} HTTP workers and {browser_workers} browser fallback workers...")
     # discover_all already merges curated GGSEL IDs into canonical candidates.
     # Passing slugs separately would collect the same listing twice because
     # collect deduplicates the slug and numeric native ID as different strings.
     collect_kwargs = {"proxy_urls": detail_proxy_urls} if detail_proxy_urls else {}
+    collection_started = time.perf_counter()
     raw = collect(
-        discovery["candidates"], raw_path, workers=args.workers, http_workers=args.http_workers,
-        capture_retries=args.capture_retries, headless=args.headless, **collect_kwargs,
+        discovery["candidates"], raw_path, workers=browser_workers, http_workers=http_workers,
+        capture_retries=getattr(args, "capture_retries", 2),
+        headless=getattr(args, "headless", False), **collect_kwargs,
     )
+    collection_ms = round((time.perf_counter() - collection_started) * 1000)
     raw["discovery"] = discovery_metadata
+    raw.setdefault("config", {})["proxyCount"] = len(detail_proxy_urls)
+    raw["config"]["parallelFamilies"] = getattr(args, "parallel_families", 1)
+    raw["scanTimingsMs"] = {
+        "discovery": discovery_ms,
+        "collection": collection_ms,
+        "total": round((time.perf_counter() - scan_started) * 1000),
+    }
+    annotate_schema(raw, family.name)
     _strip_availability(raw)
     print(f"[{family.name}]   collected {len(raw.get('listings', []))} listings → {raw_path}")
     return raw
+
+
+def _budget_shares(total: int, count: int) -> list[int]:
+    """Split a reviewed global worker budget across concurrent family scans."""
+    if count < 1 or total < count:
+        raise ValueError("worker budget must provide one slot per concurrent family")
+    base, remainder = divmod(total, count)
+    return [base + (1 if index < remainder else 0) for index in range(count)]
+
+
+def _scan_families(families: list, args: argparse.Namespace, raw_path: Path) -> dict[str, dict]:
+    """Run discovery+collection concurrently without multiplying project limits."""
+    requested = min(args.parallel_families, len(families), args.workers, args.http_workers)
+    detail_proxies = list(getattr(args, "proxy_urls", []) or [])
+    discovery_proxies = list(getattr(args, "discovery_proxy_urls", detail_proxies) or [])
+    if detail_proxies:
+        requested = min(requested, len(detail_proxies))
+    if discovery_proxies:
+        requested = min(requested, len(discovery_proxies))
+    requested = max(1, requested)
+    if requested > 1:
+        print(f"[scanner] family parallelism={requested}; aggregate budget="
+              f"{args.http_workers} HTTP / {args.workers} browser workers")
+
+    outputs: dict[str, dict] = {}
+    for start in range(0, len(families), requested):
+        batch = families[start:start + requested]
+        count = len(batch)
+        http_shares = _budget_shares(args.http_workers, count)
+        browser_shares = _budget_shares(args.workers, count)
+        tasks = []
+        for index, family in enumerate(batch):
+            family_args = copy.copy(args)
+            family_args.http_workers = http_shares[index]
+            family_args.workers = browser_shares[index]
+            family_args.proxy_urls = detail_proxies[index::count] if detail_proxies else []
+            family_args.discovery_proxy_urls = discovery_proxies[index::count] if discovery_proxies else []
+            family_raw_path = _family_raw_path(raw_path, len(families), family.name)
+            _ensure_parent_dirs(family_raw_path)
+            tasks.append((family, family_args, family_raw_path))
+
+        if count == 1:
+            family, family_args, family_raw_path = tasks[0]
+            outputs[family.name] = _run_one(family, family_args, family_raw_path)
+            continue
+
+        with ThreadPoolExecutor(max_workers=count, thread_name_prefix="marketplace-family") as pool:
+            futures = {
+                family.name: pool.submit(_run_one, family, family_args, family_raw_path)
+                for family, family_args, family_raw_path in tasks
+            }
+            for family, _, _ in tasks:
+                outputs[family.name] = futures[family.name].result()
+    return outputs
 
 
 def _tier_matches(tier: str, wanted: str) -> bool:
@@ -295,6 +408,38 @@ def _verify_winners_and_persist_failure(
         raw["finalVerification"] = failure_record
         raw_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")
         raise
+
+
+def _reject_failed_final_prices(raw: dict, offers: list[dict], results: list[dict]) -> int:
+    """Fail closed on exact winner prices rejected by the independent browser.
+
+    Keep the captured evidence and rejection reason, but remove that exact
+    option/price from ranking so another candidate can become the winner.
+    """
+    failed = [item for item in results if item.get("verified") is not True]
+    rejected = 0
+    for result in failed:
+        marketplace, pid = result.get("marketplace"), str(result.get("pid"))
+        option_text = str(result.get("optionText") or "")
+        expected = result.get("expectedPrice")
+        matched = False
+        for listing in raw.get("listings", []):
+            if listing.get("marketplace") != marketplace or str(listing.get("pid")) != pid:
+                continue
+            for option in listing.get("options") or []:
+                if str(option.get("text") or "") == option_text:
+                    option["priceVerified"] = False
+                    option["finalVerificationRejected"] = result.get("error") or "price or selection did not verify"
+                    matched = True
+        for offer in offers:
+            if (offer.get("marketplace") == marketplace and str(offer.get("pid")) == pid
+                    and str(offer.get("raw_option_text") or offer.get("option_text") or "") == option_text
+                    and (expected is None or float(offer.get("price_rub") or 0) == float(expected))):
+                offer["price_verified"] = False
+                matched = True
+        if matched:
+            rejected += 1
+    return rejected
 
 
 def _print_table(cheapest: dict, args: argparse.Namespace, *, multi: bool) -> None:
@@ -433,6 +578,8 @@ def _run_gift_card_scan(args: argparse.Namespace) -> int:
         raw["discovery"] = discovery_metadata
     # This scan is deliberately price-only; discard legacy stock evidence.
     _strip_availability(raw)
+    raw.setdefault("config", {})["proxyCount"] = len(proxy_urls)
+    annotate_schema(raw, "apple_gift_card")
     offers = list(gift_card_offers_from_raw(raw, args.region))
     winner = best_gift_card_value(offers)
     results = []
@@ -540,22 +687,22 @@ def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
     if analyzer == "auto":
         analyzer = "regex"
 
-    if analyzer == "selective":
-        if family.name != "chatgpt":
+    if analyzer in {"adaptive", "selective"}:
+        if analyzer == "selective" and family.name != "chatgpt":
             raise ValueError("--analyzer selective currently supports only the ChatGPT family")
         from analyzer.selective import merge_selective_offers, select_uncertain_listings
 
         deterministic = list(dedupe(offers_from_raw(raw)))
         if family.eligibility_extra:
             deterministic = [offer for offer in deterministic if family.eligibility_extra(offer)]
-        selected, reason_map = select_uncertain_listings(raw, deterministic)
+        selected, reason_map = select_uncertain_listings(raw, deterministic, family=family)
         reason_counts: dict[str, int] = {}
         for reasons in reason_map.values():
             for reason in reasons:
                 reason_counts[reason] = reason_counts.get(reason, 0) + 1
 
         meta = {
-            "analyzer": "selective",
+            "analyzer": analyzer,
             "totalListings": len(raw.get("listings", [])),
             "routedListings": len(selected),
             "routeReasons": reason_counts,
@@ -582,7 +729,7 @@ def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
             dry_dir=str(LLM_PROMPTS_DIR),
         )
         meta.update(llm_meta)
-        meta["analyzer"] = "selective-dry" if args.llm_dry_run else "selective"
+        meta["analyzer"] = f"{analyzer}-dry" if args.llm_dry_run else analyzer
         offers = merge_selective_offers(deterministic, llm_offers, selected)
         if family.eligibility_extra:
             offers = [offer for offer in offers if family.eligibility_extra(offer)]
@@ -616,7 +763,7 @@ def _analyze(raw: dict, family, args: argparse.Namespace) -> tuple[list, dict]:
 def _print_dry_run_summary(family_name: str, meta: dict) -> None:
     routed = (
         f", {meta.get('routedListings', 0)}/{meta.get('totalListings', 0)} listings routed"
-        if meta.get("analyzer") == "selective-dry" else ""
+        if meta.get("analyzer") in {"selective-dry", "adaptive-dry"} else ""
     )
     sizes = meta.get("batch_bytes") or []
     print(f"[{family_name}] analyzer={meta['analyzer']}: {meta['batches']} batches{routed}, "
@@ -633,6 +780,13 @@ def main(argv: list[str] | None = None) -> int:
     except ProxySourceError as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 2
+    if args.require_proxy and not args.proxy_urls:
+        print("ERROR: --require-proxy was set but no runtime proxy source is configured", file=sys.stderr)
+        return 2
+    if not args.skip_discover and Path(args.raw).exists():
+        print(f"ERROR: refusing to append a fresh scan to existing raw data: {args.raw}; choose a new --raw path",
+              file=sys.stderr)
+        return 2
     if args.proxy_urls:
         print(f"Proxy source: {len(args.proxy_urls)} HTTP proxies loaded (addresses hidden)")
     else:
@@ -648,20 +802,24 @@ def main(argv: list[str] | None = None) -> int:
     all_offers: list = []
     all_cheapest: dict = {}
     primary_raw_path: Path | None = None
+    raw_by_family = _scan_families(families, args, raw_path)
     for fam in families:
         fam_raw_path = _family_raw_path(raw_path, len(families), fam.name)
         _ensure_parent_dirs(fam_raw_path)
         if primary_raw_path is None:
             primary_raw_path = fam_raw_path
-        raw = _run_one(fam, args, fam_raw_path)
+        raw = raw_by_family[fam.name]
+        analysis_started = time.perf_counter()
         fam_offers, meta = _analyze(raw, fam, args)
-        if meta["analyzer"] in ("llm-dry", "selective-dry"):
+        analysis_ms = round((time.perf_counter() - analysis_started) * 1000)
+        if meta["analyzer"] in ("llm-dry", "selective-dry", "adaptive-dry"):
             _print_dry_run_summary(fam.name, meta)
         else:
             print(f"[{fam.name}] analyzer={meta['analyzer']}"
                   + (f", {meta.get('routedListings', 0)}/{meta.get('totalListings', 0)} listings routed, "
                      f"{meta.get('batches', 0)} batches, {meta.get('called', 0)} calls, "
-                     f"{meta.get('failed', 0)} failed" if meta["analyzer"].startswith("selective") else "")
+                     f"{meta.get('failed', 0)} failed"
+                     if meta["analyzer"].startswith(("selective", "adaptive")) else "")
                   + (f", batches={meta.get('batches')}, called={meta.get('called')}, failed={meta.get('failed')}"
                      if meta["analyzer"] == "llm" else ""))
         all_offers.extend(fam_offers)
@@ -673,21 +831,70 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[{fam.name}] zero-knowledge validation: OK ({len(fam_offers)} offers)")
         prior_verification = raw.get("finalVerification")
         prior_results = prior_verification.get("results", []) if prior_verification else []
+        verification_started = time.perf_counter()
         if args.skip_final_verify:
             print(f"[{fam.name}] WARNING: final browser verification skipped", file=sys.stderr)
             final_report = prior_results
             _apply_verification_results(fam_offers, prior_results)
         else:
-            targets = _selected_winners(cheapest, args)
-            final_report = _verify_winners_and_persist_failure(
-                raw, targets, fam_offers, fam_raw_path, proxy_urls=args.proxy_urls
+            final_report = [item for item in prior_results if item.get("verified") is True]
+            rejected_results: list[dict] = list(
+                prior_verification.get("rejectedResults", []) if prior_verification else []
             )
-            print(f"[{fam.name}] final browser verification: OK ({len(final_report)} winners)")
-        if not args.skip_final_verify or not prior_verification:
+            if prior_verification and prior_verification.get("failed"):
+                rejected_results.extend(item for item in prior_results if item.get("verified") is not True)
+            targets = [item for item in _selected_winners(cheapest, args)
+                       if not item.get("final_verified")]
+            for _attempt in range(len(fam_offers) + 1):
+                if not targets:
+                    break
+                try:
+                    batch = _verify_winners_and_persist_failure(
+                        raw, targets, fam_offers, fam_raw_path, proxy_urls=args.proxy_urls
+                    )
+                    final_report.extend(batch)
+                    break
+                except FinalVerificationError as error:
+                    successful = [item for item in error.results if item.get("verified") is True]
+                    failed = [item for item in error.results if item.get("verified") is not True]
+                    if not failed:
+                        raise
+                    _apply_verification_results(fam_offers, successful)
+                    newly_rejected = _reject_failed_final_prices(raw, fam_offers, failed)
+                    if not newly_rejected:
+                        raise
+                    rejected_results.extend(failed)
+                    fam_offers = [item for item in fam_offers if item.get("price_verified") is not False]
+                    cheapest = cheapest_per_tier(fam_offers, fam)
+                    validation_issues = validate_rankings(raw, fam_offers, cheapest, fam)
+                    if validation_issues:
+                        joined = "\n  - ".join(validation_issues)
+                        raise RuntimeError(f"zero-knowledge validation failed after rejecting unverified prices:\n  - {joined}")
+                    targets = [item for item in _selected_winners(cheapest, args)
+                               if not item.get("final_verified")]
+                    print(f"[{fam.name}] rejected {newly_rejected} final-verification failure(s); "
+                          f"rechecking {len(targets)} remaining winners")
+            else:
+                raise RuntimeError(f"[{fam.name}] final verification rejection loop exceeded offer count")
             raw["finalVerification"] = {
-                "skipped": bool(args.skip_final_verify),
+                "skipped": False,
+                "failed": False,
+                "results": final_report,
+                "rejectedResults": rejected_results,
+            }
+            print(f"[{fam.name}] final browser verification: OK ({len(final_report)} winners, "
+                  f"{len(rejected_results)} rejected price(s))")
+        verification_ms = round((time.perf_counter() - verification_started) * 1000)
+        if args.skip_final_verify and not prior_verification:
+            raw["finalVerification"] = {
+                "skipped": True,
                 "results": final_report,
             }
+        timings = raw.setdefault("scanTimingsMs", {})
+        timings["analysis"] = analysis_ms
+        timings["finalVerification"] = verification_ms
+        timings["total"] = sum(int(timings.get(key, 0) or 0)
+                               for key in ("discovery", "collection", "analysis", "finalVerification"))
         collection_workers = int(raw.get("config", {}).get("workers", args.workers))
         plati_ids = raw.get("config", {}).get("httpFallbackPlatiIds")
         if plati_ids is None:
@@ -718,11 +925,13 @@ def main(argv: list[str] | None = None) -> int:
             "workers": collection_workers,
             "httpWorkers": raw.get("config", {}).get("httpWorkers", args.http_workers),
             "transportCounts": raw.get("config", {}).get("transportCounts", {}),
+            "transportDurationsMs": raw.get("config", {}).get("transportDurationsMs", {}),
             "httpPlatiIds": raw.get("config", {}).get("httpPlatiIds", []),
             "httpFallbackPlatiIds": raw.get("config", {}).get("httpFallbackPlatiIds", []),
             "httpGGSELIds": raw.get("config", {}).get("httpGGSELIds", []),
             "proxyMode": "configured" if getattr(args, "proxy_urls", []) else "direct",
-            "proxyCount": len(getattr(args, "proxy_urls", [])),
+            "proxyCount": raw.get("config", {}).get("proxyCount", len(getattr(args, "proxy_urls", []))),
+            "parallelFamilies": raw.get("config", {}).get("parallelFamilies", 1),
             "maxResults": args.max,
             "maxPages": args.max_pages,
             "maxCandidates": args.max_candidates,
@@ -732,8 +941,12 @@ def main(argv: list[str] | None = None) -> int:
         }
         analysis_context = {
             "command": "PYTHONPATH=. " + shlex.join([sys.executable, *sys.argv]),
-            "workers": args.workers,
+            "workers": raw.get("config", {}).get("workers", args.workers),
+            "httpWorkers": raw.get("config", {}).get("httpWorkers", args.http_workers),
             "analyzer": meta["analyzer"],
+            "llmCalls": meta.get("called", 0),
+            "llmRoutedListings": meta.get("routedListings", 0),
+            "schemaStatus": raw.get("siteSchema", {}).get("status", "unknown"),
             "discoveryReused": bool(args.skip_discover),
             "finalVerificationReused": bool(args.skip_final_verify and prior_verification),
         }

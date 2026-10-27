@@ -123,3 +123,20 @@ def test_cli_persists_verifier_process_launch_os_error(monkeypatch, tmp_path):
     assert saved["finalVerification"]["results"] == []
     assert saved["finalVerification"]["verifierError"] == str(launch_error)
     assert str(launch_error) in saved["finalVerification"]["error"]
+
+
+def test_failed_final_price_is_rejected_from_exact_raw_option_and_offer():
+    text = "Max 3 months | own account"
+    raw = {"listings": [{"marketplace": "ggsel", "pid": "101", "options": [
+        {"text": text, "priceVerified": True},
+        {"text": "Max 1 month | own account", "priceVerified": True},
+    ]}]}
+    offers = [{"marketplace": "ggsel", "pid": "101", "raw_option_text": text,
+               "option_text": text, "price_rub": 42000, "price_verified": True}]
+    failed = [{"marketplace": "ggsel", "pid": "101", "optionText": text,
+               "expectedPrice": 42000, "verified": False, "error": "price mismatch"}]
+
+    assert cli._reject_failed_final_prices(raw, offers, failed) == 1
+    assert raw["listings"][0]["options"][0]["priceVerified"] is False
+    assert raw["listings"][0]["options"][1]["priceVerified"] is True
+    assert offers[0]["price_verified"] is False

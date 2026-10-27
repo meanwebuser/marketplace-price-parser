@@ -7,6 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from analyzer.output import offers_from_raw
 from analyzer.selective import merge_selective_offers, select_uncertain_listings
+from families.minimax import CONFIG as MINIMAX
 
 
 def _listing(**over):
@@ -132,7 +133,7 @@ def test_cli_passes_only_gate_selected_listings_to_llm(monkeypatch):
     assert len(offers) == 2
 
 
-def test_auto_with_key_stays_deterministic_for_chatgpt(monkeypatch):
+def test_adaptive_with_key_routes_only_uncertain_chatgpt_listing(monkeypatch):
     import cli
     import analyzer.llm_extract
 
@@ -142,20 +143,23 @@ def test_auto_with_key_stays_deterministic_for_chatgpt(monkeypatch):
     raw = {"listings": [clean, uncertain]}
     seen = []
 
-    def unexpected_call(*_args, **_kwargs):
-        raise AssertionError("auto must not invoke the LLM")
+    def fake_extract(subset, **_kwargs):
+        seen.extend(item["pid"] for item in subset["listings"])
+        return [], {"called": 1, "batches": 1, "failed": 0}
 
     monkeypatch.setenv("LLM_API_KEY", "unit-test-key")
-    monkeypatch.setattr(analyzer.llm_extract, "extract_offers", unexpected_call)
+    monkeypatch.setattr(analyzer.llm_extract, "extract_offers", fake_extract)
     args = cli._parse_args(["--family", "chatgpt"])
     family = cli._resolve_families(args)[0]
     offers, meta = cli._analyze(raw, family, args)
 
-    assert meta["analyzer"] == "regex"
+    assert meta["analyzer"] == "adaptive"
+    assert seen == ["uncertain"]
+    assert meta["called"] == 1
     assert len(offers) == 2
 
 
-def test_auto_without_key_keeps_regex_and_never_calls_llm(monkeypatch):
+def test_adaptive_without_key_keeps_regex_and_never_calls_llm(monkeypatch):
     import cli
     import analyzer.llm_extract
 
@@ -170,15 +174,20 @@ def test_auto_without_key_keeps_regex_and_never_calls_llm(monkeypatch):
     family = cli._resolve_families(args)[0]
     offers, meta = cli._analyze(raw, family, args)
 
-    assert meta == {"analyzer": "regex"}
+    assert meta["analyzer"] == "adaptive"
+    assert meta["called"] == 0
+    assert meta["llmSkipped"] == "LLM_API_KEY is not set"
     assert offers
 
 
-def test_auto_is_deterministic_but_explicit_llm_uses_all_listings(monkeypatch):
+def test_adaptive_routes_uncertain_but_explicit_llm_uses_all_listings(monkeypatch):
     import cli
     import analyzer.llm_extract
 
-    raw = {"listings": [_listing(pid="one"), _listing(pid="two")]}
+    raw = {"listings": [
+        _listing(pid="one", title="Claude Pro подписка 1 месяц", options=[_option("Pro 1 месяц")]),
+        _listing(pid="two", title="Claude Pro подписка 1 месяц", options=[_option("Pro 1 месяц")]),
+    ]}
     seen = []
 
     def fake_extract(subset, **kwargs):
@@ -190,23 +199,24 @@ def test_auto_is_deterministic_but_explicit_llm_uses_all_listings(monkeypatch):
     args = cli._parse_args(["--family", "claude"])
     family = cli._resolve_families(args)[0]
     _, meta = cli._analyze(raw, family, args)
-    assert meta["analyzer"] == "regex"
+    assert meta["analyzer"] == "adaptive"
+    assert seen == [["one", "two"]]
 
     args = cli._parse_args(["--family", "chatgpt", "--analyzer", "llm"])
     family = cli._resolve_families(args)[0]
     _, meta = cli._analyze(raw, family, args)
     assert meta["analyzer"] == "llm"
-    assert seen == [["one", "two"]]
+    assert seen == [["one", "two"], ["one", "two"]]
 
 
-def test_default_analyzer_remains_auto(monkeypatch):
+def test_default_analyzer_is_adaptive(monkeypatch):
     import cli
 
     args = cli._parse_args(["--family", "chatgpt"])
-    assert args.analyzer == "auto"
+    assert args.analyzer == "adaptive"
 
 
-def test_auto_analyzer_stays_deterministic_when_llm_key_is_configured(monkeypatch):
+def test_adaptive_analyzer_uses_zero_calls_when_no_rows_are_uncertain(monkeypatch):
     import cli
 
     monkeypatch.setenv("LLM_API_KEY", "unit-test-key")
@@ -214,7 +224,8 @@ def test_auto_analyzer_stays_deterministic_when_llm_key_is_configured(monkeypatc
     family = cli._resolve_families(args)[0]
     offers, meta = cli._analyze({"listings": []}, family, args)
     assert offers == []
-    assert meta["analyzer"] == "regex"
+    assert meta["analyzer"] == "adaptive"
+    assert meta["called"] == 0
 
 
 def test_dry_run_report_includes_selective_routing_metric_only(capsys):
@@ -280,3 +291,69 @@ def test_llm_upgrades_only_uncertain_matching_option_with_captured_price():
     bad_price = {**candidate, "price_rub": 8000.0}
     unchanged = merge_selective_offers([baseline], [bad_price], [listing])
     assert unchanged == [baseline]
+
+
+def test_adaptive_gate_routes_new_family_labels_but_accepts_only_price_evidence():
+    listing = _listing(
+        pid="new-minimax-label",
+        title="MiniMax M Plan subscription on your account",
+        options=[{
+            "text": "Studio · 1 month · renew on your account",
+            "clicked": False,
+            "priceVerified": True,
+            "priceEvidenceMethod": "ggsel_ssr_modifier",
+            "prices": [{"text": "2 500 ₽", "cls": "id_product_price"}],
+        }],
+    )
+    raw = {"listings": [listing]}
+    selected, reasons = select_uncertain_listings(raw, [], family=MINIMAX)
+
+    assert selected == [listing]
+    assert "unknown_tier" in reasons[("ggsel", "new-minimax-label")]
+
+    candidate = {
+        "marketplace": "ggsel", "pid": "new-minimax-label",
+        "option_text": "Studio · 1 month · renew on your account",
+        "tier": "Max", "duration": "1m", "delivery": "own_account",
+        "price_rub": 2500, "strong_signal": True, "glitched": False,
+    }
+    # A changed label is surfaced for review, but a model cannot invent an
+    # existing tier when neither the raw option nor title proves it.
+    baseline = {
+        "marketplace": "ggsel", "pid": "new-minimax-label",
+        "option_text": candidate["option_text"], "raw_option_text": candidate["option_text"],
+        "tier": "", "duration": "1m", "delivery": "unknown",
+        "price_rub": 2500, "strong_signal": False, "price_verified": True,
+        "glitched": False,
+    }
+    merged = merge_selective_offers([baseline], [candidate], selected)
+    assert merged == [baseline]
+
+
+def test_adaptive_is_the_fresh_scan_default_but_auto_remains_zero_llm():
+    import cli
+
+    assert cli._parse_args(["--family", "minimax"]).analyzer == "adaptive"
+    assert cli._parse_args(["--family", "minimax", "--analyzer", "auto"]).analyzer == "auto"
+
+
+def test_adaptive_without_key_keeps_deterministic_rows_and_makes_zero_calls(monkeypatch):
+    import cli
+    monkeypatch.delenv("LLM_API_KEY", raising=False)
+    args = cli._parse_args(["--family", "minimax"])
+    listing = _listing(
+        pid="new-minimax-label", title="MiniMax M Plan subscription on your account",
+        options=[{
+            "text": "Studio · 1 month · renew on your account", "clicked": True,
+            "priceVerified": True, "priceStable": True,
+            "prices": [{"text": "2 500 ₽", "cls": "id_product_price"}],
+        }],
+    )
+
+    offers, meta = cli._analyze({"listings": [listing]}, MINIMAX, args)
+
+    assert offers == []
+    assert meta["analyzer"] == "adaptive"
+    assert meta["routedListings"] == 1
+    assert meta["called"] == 0
+    assert meta["llmSkipped"] == "LLM_API_KEY is not set"

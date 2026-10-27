@@ -21,13 +21,16 @@ def _is_zai_offer(offer: dict) -> bool:
 
 CONFIG = FamilyConfig(
     name="zai",
-    search_terms=["z.ai", "GLM Coding", "Zhipu", "Z.AI"],
+    search_terms=["GLM", "Z.ai", "Z AI", "GLM Coding", "Zhipu", "智谱"],
     marketplaces=["plati", "ggsel"],
     tier_filter=["Max"],
     duration_filter=["1m", "3m", "12m"],
     delivery_filter=["own_account", "new_account", "unknown"],
     purpose_preset="renew",
     ggssel_category="zai",
+    # GGSEL's Z.ai category is a useful seed, not full coverage. Its own
+    # rendered search route exposes additional GLM-tagged listings.
+    ggsel_search_terms=["GLM", "Z.ai", "Z AI", "GLM Coding", "Zhipu", "智谱"],
     # Supplement Playwright category discovery with manually curated
     # product IDs for known top sellers.
     ggsel_ids=[

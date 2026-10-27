@@ -122,6 +122,11 @@ def offers_from_raw(raw: dict) -> Iterable[dict]:
                 # A marketplace base price plus an option surcharge is an
                 # independent, self-consistent proof even if the DOM stayed put.
                 price_verified = True
+            if opt.get("finalVerificationRejected"):
+                # The independent browser observed a different price or could
+                # not prove selection for this exact option; do not let an
+                # arithmetic surcharge fallback restore it to rankings.
+                price_verified = False
             glitch, reason = is_glitched(price, duration, tier)
             yield {
                 "marketplace": listing.get("marketplace"),
@@ -325,6 +330,8 @@ def gift_card_offers_from_raw(raw: dict, region: str = "US") -> Iterable[dict]:
                 # the option click did not refresh the price block.
                 if not price_verified and delta is not None and initial_price is not None and initial_strong:
                     price_verified = True
+            if opt.get("finalVerificationRejected"):
+                price_verified = False
             text = f"{title} {page_text} {option_text}"
             delivery = "digital_code" if re.search(r"\b(?:code|key|код|ключ)\b", text, re.I) else "unknown"
             automatic = bool(re.search(r"auto(?:matic)?\s*[- ]?delivery|автовыдач|автоматическ\w*", text, re.I))

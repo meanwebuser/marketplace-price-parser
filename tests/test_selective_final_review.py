@@ -82,7 +82,7 @@ def test_run_one_preserves_discovery_failure_metadata_when_no_candidates(monkeyp
         "transports": {"plati": "error: 503", "ggsel": "playwright-partial"},
         "errors": ["Plati query failed: HTTP 503", "GGSEL request failed after retries: 404"],
     }
-    monkeypatch.setattr(cli, "discover_all", lambda *_args: discovery)
+    monkeypatch.setattr(cli, "discover_all", lambda *_args, **_kwargs: discovery)
     monkeypatch.setattr(
         cli, "collect",
         lambda *_args, **_kwargs: pytest.fail("collect must not run without candidates"),
@@ -90,18 +90,21 @@ def test_run_one_preserves_discovery_failure_metadata_when_no_candidates(monkeyp
 
     raw = cli._run_one(
         SimpleNamespace(name="chatgpt"),
-        Namespace(skip_discover=False, max=80, workers=1, headless=True),
+        Namespace(skip_discover=False, max=80, max_pages=6, max_candidates=None,
+                  allow_direct_discovery_fallback=False, workers=1, http_workers=2,
+                  capture_retries=2, headless=True, parallel_families=1),
         tmp_path / "raw.json",
     )
 
-    assert raw == {
-        "listings": [],
-        "discovery": {
-            "platiFound": 0,
-            "ggselFound": 0,
-            "transports": discovery["transports"],
-            "errors": discovery["errors"],
-            "proxyMode": "direct",
-            "proxyCount": 0,
-        },
+    assert raw["listings"] == []
+    assert raw["discovery"] == {
+        "platiFound": 0,
+        "ggselFound": 0,
+        "coverage": {},
+        "transports": discovery["transports"],
+        "errors": discovery["errors"],
+        "proxyMode": "direct",
+        "proxyCount": 0,
     }
+    assert raw["scanTimingsMs"]["discovery"] >= 0
+    assert raw["scanTimingsMs"]["total"] >= raw["scanTimingsMs"]["discovery"]

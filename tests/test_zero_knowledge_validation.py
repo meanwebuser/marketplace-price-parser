@@ -55,7 +55,7 @@ def test_tampered_winner_is_rejected_without_an_expected_price():
     assert any("not the observed minimum" in issue for issue in issues)
 
 
-def test_unavailable_and_unverified_offers_cannot_enter_ranking():
+def test_availability_is_not_used_but_unverified_prices_cannot_enter_ranking():
     offers = [
         _offer("available", 900),
         _offer("unavailable", 1, available=False),
@@ -63,7 +63,9 @@ def test_unavailable_and_unverified_offers_cannot_enter_ranking():
     ]
     cheapest = cheapest_per_tier(offers, _family())
 
-    assert next(iter(cheapest.values()))["pid"] == "available"
+    # The catalogue intentionally does not inspect inventory; a verified
+    # price remains comparable even when an old capture carries an availability flag.
+    assert next(iter(cheapest.values()))["pid"] == "unavailable"
     assert validate_rankings({}, offers, cheapest, _family()) == []
 
 
@@ -76,15 +78,25 @@ def test_schema_v2_rejects_impossible_capture_states():
             "prices": [],
             "priceChanged": True,
             "priceStable": False,
+            "priceVerified": True,
         },
         {"clicked": False, "priceVerified": True},
     ]}]}
 
     issues = validate_rankings(raw, [], {}, _family())
 
-    assert len(issues) == 5
-    assert any("unavailable control" in issue for issue in issues)
-    assert any("no post-click price" in issue for issue in issues)
+    assert len(issues) == 3
+    assert any("without a price snapshot" in issue for issue in issues)
     assert any("never became stable" in issue for issue in issues)
     assert any("without a click" in issue for issue in issues)
-    assert any("available control unclicked" in issue for issue in issues)
+
+
+def test_unstable_changed_raw_price_is_allowed_when_marked_unverified():
+    raw = {"schemaVersion": 2, "listings": [{"options": [{
+        "clicked": True,
+        "prices": [{"text": "100 ₽"}],
+        "priceChanged": True,
+        "priceStable": False,
+        "priceVerified": False,
+    }]}]}
+    assert validate_rankings(raw, [], {}, _family()) == []

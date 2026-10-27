@@ -10,21 +10,22 @@ Use the unified scanner in this repository, not a one-off spreadsheet or copied 
 ## Standard scan
 
 1. Read the current source skill, project README, existing snapshots, and relevant coverage benchmark before searching. Preserve prior evidence and user changes.
-2. Search multiple query variants and pages. For a complete requested pass use `--full-discovery` (up to 100 pages and 10,000 candidates per marketplace); keep coverage partial if either cap is reached. When proxy discovery is enabled, cross-check catalog discovery directly and union unique IDs because marketplace routes can return different catalog subsets. Record the routes, pages, queries, IDs, and variants visited.
-3. Collect raw prices headlessly with the bounded project browser budget. The default is at most 2 browser workers and 10 HTTP workers. Plati selected-option prices use its price endpoint; GGSEL embedded base prices and modifiers use SSR when supported. Blocked or unsupported detail pages go to bounded browser fallback. Use the shared proxy interface only when configured; otherwise the scanner uses direct requests.
+2. Search multiple query variants and pages. For a complete requested pass use `--full-discovery` (up to 100 pages and 10,000 candidates per marketplace); keep coverage partial if either cap is reached. When a family defines `ggsel_search_terms`, union those rendered `/search/<term>` routes with the category and curated candidates. Proxy routes can expose different catalog subsets; record each route, page count, query, ID, and any unvisited scope. Do not interpret a search result count as a marketplace total.
+3. Collect raw prices headlessly with the bounded project browser budget. For a full refresh, use a unique raw output path (the CLI default is `.tmp/scans/<run-id>/`) and `--require-proxy` when a proxy source is part of the run. Up to two families run concurrently while sharing the overall cap of 10 HTTP and 2 browser workers. Within a family, Plati HTTP and GGSEL SSR overlap; the browser only gets blocked or unsupported detail pages. A definitive GGSEL HTTP 401/403 is recorded immediately without retrying the same blocked route. Never append a fresh pass to an older raw file.
 4. Keep price, denomination/tier, term, delivery method, and selected-state proof separate. Do not inspect or infer seller stock, button availability, or inventory. Listing-level price is not the selected-option total.
-5. Rebuild `docs/data/latest.json` from the recorded raw and normalized snapshots with the existing builder. Do not make a PDF or separate workbook for catalogue work.
+5. The default `adaptive` analyzer parses all evidence-backed rows deterministically and routes only uncertain classifications plus up to three examples per newly detected page-shape fingerprint. Without `LLM_API_KEY`, it makes zero LLM calls and preserves uncertain values as unknown. New raw snapshots record structure-only fingerprints and compare them with the last snapshot; listing titles, prices, proxy data, and inventory are not part of the fingerprint. Review `siteSchema.status` and the analyzer call/routing counts before publishing.
+6. Rebuild `docs/data/latest.json` from the recorded raw and normalized snapshots with the existing builder. Do not make a PDF or separate workbook for catalogue work.
 
 ## LLM calibration and deterministic replay
 
 For a new product family or a material parser change, calibrate on a small fixed sample before scaling up. The detailed sequence and commands are in [references/proxy-and-two-pass.md](references/proxy-and-two-pass.md).
 
-- Capture the raw pages once and keep that file immutable while comparing analyzers.
+- Capture the raw pages once into a unique run directory and keep each file immutable while comparing analyzers.
 - Run the explicit LLM analyzer on the same raw sample and save its CSV as a prediction, not as ground truth.
 - Build or update a small gold set from independent source evidence. Resolve LLM/rule disagreements by reopening the exact marketplace option and checking its current page state.
 - Replay the same raw file with `--analyzer regex` and compare exact rows, row recall, and relevant fields using `scripts/benchmark_analyzer_quality.py`.
 - Claim “no worse” only for the fields and rows present in the source-backed gold set. A partial benchmark is not proof of whole-marketplace accuracy.
-- Once the deterministic parser meets the agreed benchmark, keep normal scans on `--analyzer auto` (deterministic, no LLM call). Use `--analyzer llm` for an explicit calibration run and `--analyzer selective` only for its supported uncertainty-gated family. An API key in the environment must not silently enable all-LLM analysis.
+- Keep normal scans on the default `--analyzer adaptive`; an API key never silently enables all-listing LLM analysis. Use `--analyzer llm` only for an explicit calibration run, or `--analyzer regex` for zero-call replay.
 
 Apple gift-card scans use a separate prepaid path. Rank face-value cards by the requested measure (for example total RUB for an exact $50 top-up, or RUB per USD when denomination size does not matter). For exact-total combinations, state whether repeated units of one listing are assumed; do not claim that quantity is available. Do not assign subscription tiers or durations to cards. LLM subscription analyzers are not a substitute for source-checking gift-card region, denomination, and selected price.
 

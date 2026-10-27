@@ -6,6 +6,7 @@ import json
 import os
 import subprocess
 import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
@@ -64,45 +65,96 @@ def collect(
     browser_ggsel = ggsel_unique
     transport_counts = {"plati_http": 0, "impit": 0, "curl_cffi": 0,
                         "plati_browser_fallback": 0, "browser_fallback": 0}
+    transport_durations_ms: dict[str, int] = {}
+    plati_candidates: list[dict] = []
+    ggsel_candidates: list[dict] = []
     if plati_unique:
         original = {str(c.get("native_id")): c for c in (candidates or [])
                     if c.get("source") == "plati" and c.get("native_id")}
-        http_candidates = [original.get(str(pid), {
+        plati_candidates = [original.get(str(pid), {
             "source": "plati", "native_id": str(pid), "url": f"https://plati.market/itm/{pid}"
         }) for pid in plati_unique]
-        try:
-            import asyncio
-            from scanner.plati_http import collect_plati_http
-            plati_fast, plati_fallback, plati_counts = asyncio.run(
-                collect_plati_http(http_candidates, workers=http_workers, proxy_urls=urls)
-            )
-            fast_listings.extend(plati_fast)
-            browser_plati = [str(item.get("native_id")) for item in plati_fallback]
-            transport_counts["plati_http"] = len(plati_fast)
-            transport_counts["plati_browser_fallback"] = len(browser_plati)
-            transport_counts.update({f"plati_{key}": value for key, value in plati_counts.items()})
-        except Exception as error:
-            browser_plati = plati_unique
-            transport_counts["plati_browser_fallback"] = len(browser_plati)
-            transport_counts["plati_http_error"] = type(error).__name__
     if ggsel_unique:
         original = {str(c.get("native_id")): c for c in (candidates or [])
                     if c.get("source") == "ggsel" and c.get("native_id")}
-        http_candidates = [original.get(str(g), {"source": "ggsel", "native_id": str(g),
-                                                 "url": f"https://ggsel.net/catalog/product/{g}"})
-                           for g in ggsel_unique]
+        ggsel_candidates = [original.get(str(g), {"source": "ggsel", "native_id": str(g),
+                                                  "url": f"https://ggsel.net/catalog/product/{g}"})
+                            for g in ggsel_unique]
+
+    async def run_plati_http(worker_count: int, proxy_slice: Sequence[str]) -> tuple[list[dict], list[dict], dict, int, str | None]:
+        if not plati_candidates:
+            return [], [], {}, 0, None
+        from scanner.plati_http import collect_plati_http
+        started = time.perf_counter()
         try:
-            import asyncio
-            from scanner.ggsel_ssr import collect_ggsel_ssr
-            ggsel_fast, fallback, ggsel_counts = asyncio.run(
-                collect_ggsel_ssr(http_candidates, workers=http_workers, proxy_urls=urls)
+            fast, fallback, counts = await collect_plati_http(
+                plati_candidates, workers=worker_count, proxy_urls=proxy_slice
             )
-            fast_listings.extend(ggsel_fast)
-            browser_ggsel = [str(item.get("native_id")) for item in fallback]
-            transport_counts.update(ggsel_counts)
+            return fast, fallback, counts, round((time.perf_counter() - started) * 1000), None
         except Exception as error:
-            transport_counts["browser_fallback"] = len(ggsel_unique)
-            transport_counts["ggsel_http_error"] = type(error).__name__
+            return [], plati_candidates, {}, round((time.perf_counter() - started) * 1000), type(error).__name__
+
+    async def run_ggsel_ssr(worker_count: int, proxy_slice: Sequence[str]) -> tuple[list[dict], list[dict], dict, int, str | None]:
+        if not ggsel_candidates:
+            return [], [], {}, 0, None
+        from scanner.ggsel_ssr import collect_ggsel_ssr
+        started = time.perf_counter()
+        try:
+            fast, fallback, counts = await collect_ggsel_ssr(
+                ggsel_candidates, workers=worker_count, proxy_urls=proxy_slice
+            )
+            return fast, fallback, counts, round((time.perf_counter() - started) * 1000), None
+        except Exception as error:
+            return [], ggsel_candidates, {}, round((time.perf_counter() - started) * 1000), type(error).__name__
+
+    if plati_candidates or ggsel_candidates:
+        import asyncio
+        total_http_workers = max(1, min(int(http_workers), 10))
+        parallel_http = (
+            bool(plati_candidates and ggsel_candidates)
+            and total_http_workers >= 2
+            and len(urls) != 1
+        )
+        if parallel_http:
+            total_candidates = len(plati_candidates) + len(ggsel_candidates)
+            plati_workers = max(1, min(total_http_workers - 1,
+                                       round(total_http_workers * len(plati_candidates) / total_candidates)))
+            ggsel_workers = total_http_workers - plati_workers
+            # Disjoint proxy slices prevent both marketplace clients from
+            # leasing the same proxy at once. A single rotating proxy uses the
+            # sequential branch above.
+            plati_proxies, ggsel_proxies = urls[::2], urls[1::2]
+
+            async def run_parallel():
+                return await asyncio.gather(
+                    run_plati_http(plati_workers, plati_proxies),
+                    run_ggsel_ssr(ggsel_workers, ggsel_proxies),
+                )
+
+            plati_result, ggsel_result = asyncio.run(run_parallel())
+        else:
+            async def run_sequential():
+                plati_result = await run_plati_http(total_http_workers, urls)
+                ggsel_result = await run_ggsel_ssr(total_http_workers, urls)
+                return plati_result, ggsel_result
+
+            plati_result, ggsel_result = asyncio.run(run_sequential())
+
+        plati_fast, plati_fallback_rows, plati_counts, plati_ms, plati_error = plati_result
+        ggsel_fast, ggsel_fallback_rows, ggsel_counts, ggsel_ms, ggsel_error = ggsel_result
+        fast_listings.extend(plati_fast)
+        fast_listings.extend(ggsel_fast)
+        browser_plati = [str(item.get("native_id")) for item in plati_fallback_rows]
+        browser_ggsel = [str(item.get("native_id")) for item in ggsel_fallback_rows]
+        transport_counts["plati_http"] = len(plati_fast)
+        transport_counts["plati_browser_fallback"] = len(browser_plati)
+        transport_counts.update({f"plati_{key}": value for key, value in plati_counts.items()})
+        transport_counts.update(ggsel_counts)
+        if plati_error:
+            transport_counts["plati_http_error"] = plati_error
+        if ggsel_error:
+            transport_counts["ggsel_http_error"] = ggsel_error
+        transport_durations_ms.update({"platiHttp": plati_ms, "ggselSsr": ggsel_ms})
     cmd = ["node", str(CLICK_JS), "--workers", str(workers), "--out", str(out_path)]
     cmd.extend(["--capture-retries", str(capture_retries)])
     if headless:
@@ -113,6 +165,7 @@ def collect(
         cmd.extend(["--ggsel-ids", ",".join(browser_ggsel)])
     proxy_file: str | None = None
     browser_candidates = bool(browser_plati or browser_ggsel)
+    browser_started = time.perf_counter()
     if urls and browser_candidates:
         fd, proxy_file = tempfile.mkstemp(prefix="marketplace-proxies-", suffix=".json")
         try:
@@ -167,7 +220,9 @@ def collect(
                           "httpGGSELIds": [str(item.get("pid")) for item in fast_listings if item.get("marketplace") == "ggsel"],
                           "httpFallbackPlatiIds": browser_plati,
                           "httpFallbackGGSELIds": browser_ggsel,
-                          "transportCounts": transport_counts})
+                          "transportCounts": transport_counts,
+                          "transportDurationsMs": {**transport_durations_ms,
+                                                    "browserFallback": round((time.perf_counter() - browser_started) * 1000) if browser_candidates else 0}})
     raw["finishedAt"] = datetime.now(timezone.utc).isoformat()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8")

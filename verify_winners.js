@@ -8,6 +8,7 @@ const { chromium } = require(
     ? path.join(__dirname, "ggsel_plati", "node_modules", "playwright")
     : "playwright"
 );
+const { controlKey } = require("./scanner/variant_key");
 
 const argv = process.argv.slice(2);
 const args = {};
@@ -31,9 +32,6 @@ const proxyOptions = (proxyUrl) => {
 };
 // Variant labels may embed a live surcharge.  It is page state, not part of
 // the variant identity; tier/duration/delivery text must still match exactly.
-const controlKey = (value) => normalize(value)
-  .replace(/[+-]?\s*\d[\d\s\u00a0]*(?:[.,]\d+)?\s*(?:₽|руб|RUB)(?:\s+за\s+.+)?$/i, "")
-  .trim();
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function parseRub(text) {
@@ -291,20 +289,30 @@ async function verifyOne(browser, offer, proxyUrl = null) {
   let proxyIndex = 0;
   const nextProxy = () => proxyUrls.length ? proxyUrls[proxyIndex++ % proxyUrls.length] : null;
   try {
-    for (const offer of input.offers || []) {
-      const first = await verifyOne(browser, offer, nextProxy());
-      if (first.verified) {
-        first.attempts = 1;
-        results.push(first);
-        continue;
+    const offers = input.offers || [];
+    const orderedResults = new Array(offers.length);
+    let cursor = 0;
+    const worker = async () => {
+      while (true) {
+        const index = cursor++;
+        if (index >= offers.length) return;
+        const offer = offers[index];
+        const first = await verifyOne(browser, offer, nextProxy());
+        if (first.verified) {
+          first.attempts = 1;
+          orderedResults[index] = first;
+          continue;
+        }
+        // Fresh contexts can recover from a transient marketplace navigation
+        // or variant-control hiccup without weakening verification evidence.
+        const retry = await verifyOne(browser, offer, nextProxy());
+        retry.attempts = 2;
+        retry.firstAttemptError = first.error;
+        orderedResults[index] = retry;
       }
-      // Fresh contexts can recover from a transient marketplace navigation or
-      // variant-control hiccup without weakening the price/selection checks.
-      const retry = await verifyOne(browser, offer, nextProxy());
-      retry.attempts = 2;
-      retry.firstAttemptError = first.error;
-      results.push(retry);
-    }
+    };
+    await Promise.all(Array.from({length: Math.min(2, offers.length)}, () => worker()));
+    results.push(...orderedResults.filter(Boolean));
   } finally {
     await browser.close();
   }

@@ -48,7 +48,11 @@ def as_bool(value: str | None) -> bool:
 def latest_csv(root: Path, product_id: str) -> Path | None:
     pattern_id = product_id.replace("_", "[-_]") if product_id.startswith("apple_") else product_id
     files = [p for p in root.glob(f"*-{pattern_id}*.csv") if DATE_PREFIX.match(p.name)]
-    return max(files, default=None, key=lambda p: p.name)
+    def order(path: Path):
+        match = re.search(r"-(\d{4,6})\.csv$", path.name)
+        stamped_run = int(match.group(1)) if match else 0
+        return path.name[:10], stamped_run, path.name
+    return max(files, default=None, key=order)
 
 def gift_card_price_check_supplements(csv_path: Path) -> list[tuple[Path, dict]]:
     """Load dated manual price checks that explicitly name this immutable scan."""
@@ -116,17 +120,31 @@ def discovery_metadata(raw: dict, csv_path: Path) -> dict:
         except (TypeError, ValueError):
             supplemental_candidates = None
         if supplemental_candidates is not None:
-            summary["ggsel"]["candidateCount"] = supplemental_candidates
-            summary["ggsel"]["seedListings"] = max(0, summary["ggsel"]["capturedListings"] - supplemental_candidates)
-            summary["ggsel"]["status"] = "partial" if supplement.get("categoryDiscoveryStatus") != "ok" else "ok"
+            summary["ggsel"]["searchCandidateCount"] = supplemental_candidates
+            additional = supplement.get("additionalListingsCaptured")
+            try:
+                additional = max(0, int(additional))
+            except (TypeError, ValueError):
+                additional = 0
+            summary["ggsel"]["additionalCandidates"] = additional
+            summary["ggsel"]["curatedSeedListings"] = max(
+                0, summary["ggsel"]["seedListings"] - additional
+            )
+            # Search additions were previously counted as saved seeds too.
+            summary["ggsel"]["seedListings"] = summary["ggsel"]["curatedSeedListings"]
         summary["ggsel"]["supplementalSearch"] = {
-            "status": "partial" if supplement.get("categoryDiscoveryStatus") != "ok" else "ok",
+            "status": "partial",
             "uniqueCandidates": supplement.get("uniqueCandidates"),
             "additionalListingsCaptured": supplement.get("additionalListingsCaptured"),
-            "routes": [str(item.get("query", "")).replace("https://ggsel.net", "") for item in supplement.get("queries", []) if isinstance(item, dict)],
+            "routes": [
+                str(item.get("url") or item.get("query") or item.get("term") or "").replace("https://ggsel.net", "")
+                for item in supplement.get("queries", []) if isinstance(item, dict)
+            ],
             "coverageNote": supplement.get("coverageNote"),
         }
-    audit_path = "audits/2026-10-27-full-refresh.md" if csv_path.name.startswith("2026-10-27-") else None
+    audit_path = discovery.get("auditPath") or (
+        "audits/2026-10-27-full-refresh.md" if csv_path.name.startswith("2026-10-27-") else None
+    )
     return {"auditPath": audit_path, "marketplaces": summary}
 
 def unique_listing_count(raw: dict) -> int:
@@ -142,11 +160,18 @@ def discovery_summary_text(metadata: dict) -> str:
         item = marketplaces.get(market, {})
         supplement = item.get("supplementalSearch")
         if market == "ggsel" and supplement and supplement.get("uniqueCandidates") is not None:
-            text = f"GGSEL: {supplement['uniqueCandidates']} совпадений в дополнительном поиске"
-            if item.get("seedListings"):
-                text += f" + {item['seedListings']} карточек из сохранённого списка"
-            if supplement.get("coverageNote"):
-                text += "; полный охват не подтверждён"
+            text = f"GGSEL: {item.get('capturedListings', 0)} карточек"
+            details = []
+            if item.get("candidateCount") is not None:
+                details.append(f"{item['candidateCount']} в категории")
+            if item.get("additionalCandidates"):
+                details.append(f"{item['additionalCandidates']} добавлены поиском")
+            if item.get("curatedSeedListings"):
+                details.append(f"{item['curatedSeedListings']} из сохранённого списка")
+            if details:
+                text += " (" + " + ".join(details) + ")"
+            text += f"; {supplement['uniqueCandidates']} совпадений в поисковых выдачах"
+            text += "; полный охват не подтверждён"
             parts.append(text)
             continue
         if item.get("candidateCount") is not None:

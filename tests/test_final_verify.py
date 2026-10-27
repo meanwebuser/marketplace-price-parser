@@ -1,4 +1,5 @@
 import json
+import subprocess
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -140,3 +141,13 @@ def test_final_verifier_uses_task_local_temp_directory(monkeypatch, tmp_path):
     assert observed_input_parents == [task_temp]
     assert task_temp.is_dir()
     assert list(task_temp.iterdir()) == []
+
+
+def test_verify_control_identity_ignores_trailing_rendered_separator():
+    script = """
+const {controlKey} = require('./scanner/variant_key');
+const expected = controlKey('Тариф «Макс» | 1 месяц');
+const rendered = controlKey('Тариф «Макс» | 1 месяц |');
+if (expected !== rendered) process.exit(1);
+"""
+    subprocess.run(["node", "-e", script], cwd=Path(__file__).resolve().parents[1], check=True)

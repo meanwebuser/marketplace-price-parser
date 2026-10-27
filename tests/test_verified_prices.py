@@ -53,3 +53,20 @@ def test_surcharge_cannot_override_explicit_failed_selection():
         offer, = offers_from_raw(raw)
         assert offer["price_rub"] == 2500
         assert offer["price_verified"] is (selection.get("selectedAfter") is not False)
+
+
+def test_final_browser_rejection_cannot_be_overridden_by_surcharge_fallback():
+    from analyzer.output import offers_from_raw
+
+    raw = {"listings": [{
+        "marketplace": "plati", "pid": "final-rejected", "title": "Kimi Pro subscription",
+        "initialPrices": [{"text": "2 000 ₽", "cls": "id_product_price"}],
+        "options": [{
+            "text": "Kimi Pro 1 month +500 ₽", "clicked": True,
+            "priceVerified": False, "finalVerificationRejected": "observed a different price",
+            "priceChanged": False, "priceStable": True,
+            "prices": [{"text": "2 000 ₽", "cls": "id_product_price"}],
+        }],
+    }]}
+    offer, = offers_from_raw(raw)
+    assert offer["price_verified"] is False

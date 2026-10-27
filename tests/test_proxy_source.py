@@ -99,7 +99,8 @@ def test_collector_passes_proxy_list_through_private_temp_file_and_deletes_it(mo
     output_path = tmp_path / "raw.json"
     seen = {}
 
-    def fake_run(command, **kwargs):
+    def fake_popen(command, **kwargs):
+        import io
         option_index = command.index("--proxy-list-file")
         proxy_file = __import__("pathlib").Path(command[option_index + 1])
         seen["mode"] = proxy_file.stat().st_mode & 0o777
@@ -107,9 +108,17 @@ def test_collector_passes_proxy_list_through_private_temp_file_and_deletes_it(mo
         seen["path"] = proxy_file
         out_path = __import__("pathlib").Path(command[command.index("--out") + 1])
         out_path.write_text('{"listings": []}', encoding="utf-8")
-        return SimpleNamespace(returncode=0, stdout="", stderr="")
+        return SimpleNamespace(returncode=0, stdout=io.StringIO(""), wait=lambda: 0)
 
-    monkeypatch.setattr(collect_module.subprocess, "run", fake_run)
+    monkeypatch.setattr(collect_module.subprocess, "Popen", fake_popen)
+    from scanner import plati_http
+
+    async def fake_plati(candidates, *, workers, proxy_urls):
+        assert workers == 10
+        return [], candidates, {"pageRequests": 0, "optionRequests": 0,
+                                "priceOptions": 0, "failedOptions": 0}
+
+    monkeypatch.setattr(plati_http, "collect_plati_http", fake_plati)
     result = collect_module.collect(
         [{"source": "plati", "native_id": "1"}], output_path,
         workers=1, http_workers=10, headless=True, proxy_urls=proxy_urls
