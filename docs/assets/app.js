@@ -311,7 +311,7 @@ function render() {
 async function init() {
   try {
     const [data, registry] = await Promise.all([
-      fetch('data/latest.json?v=13').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
+      fetch('data/latest.json?v=14').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
       fetch('data/subscription-plan-limits.json').then(r => { if (!r.ok) throw new Error(); return r.json(); })
     ]);
     planRegistry = registry;
