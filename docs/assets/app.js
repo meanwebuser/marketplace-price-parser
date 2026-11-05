@@ -242,6 +242,7 @@ function renderRecommendation(product) {
     <span class="recommended-price">Полная цена: ${rub.format(offer.priceRub)} ₽${isGiftCard ? ` · ${scoreFormat.format(offer.pricePerUnit ?? (offer.priceRub / offer.denomination))} ₽ за ${denominationUnit(offer)} номинала` : ''}</span>
     <span class="recommended-detail">${esc(offer.optionText || offer.title)}</span>
     ${offer.sellerNote ? `<span class="recommended-detail">Заметка продавца (не проверена): ${esc(offer.sellerNote)}</span>` : ''}
+    ${offer.verificationNote ? `<span class="recommended-detail">${esc(offer.verificationNote)}</span>` : ''}
     <span class="recommended-meta">${esc(details)}${offer.finalVerified ? ' · цена повторно проверена' : ''}</span>
     <a href="${esc(safeUrl(offer.url))}" target="_blank" rel="noopener noreferrer">Смотреть предложение</a>
   </article>`;
@@ -306,12 +307,12 @@ function render() {
     els['minimum-price'].textContent = minimumPrice === null ? '—' : `${rub.format(minimumPrice)} ₽`;
   }
   els['marketplace-count'].textContent = new Set(rows.map(o => o.marketplace)).size;
-  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${isGiftCard ? `<span class="sub">${scoreFormat.format(o.pricePerUnit ?? (o.priceRub / o.denomination))} ₽ за ${denominationUnit(o)} номинала</span>` : ''}${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(isGiftCard ? `${o.denomination} ${o.denominationCurrency}` : o.tier)}</span></td><td>${esc(isGiftCard ? o.region : label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span>${o.seller ? `<span class="sub">${esc(o.seller)}</span>` : ''}${o.sellerNote ? `<span class="sub">Заметка продавца (не проверена): ${esc(o.sellerNote)}</span>` : ''}</td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
+  els.offers.innerHTML = rows.map(o => `<tr><td class="price">${rub.format(o.priceRub)} ₽${isGiftCard ? `<span class="sub">${scoreFormat.format(o.pricePerUnit ?? (o.priceRub / o.denomination))} ₽ за ${denominationUnit(o)} номинала</span>` : ''}${o.finalVerified ? '<span class="sub">повторно проверено</span>' : o.glitched ? '<span class="sub warning">нужна проверка</span>' : ''}</td><td><span class="tag">${esc(isGiftCard ? `${o.denomination} ${o.denominationCurrency}` : o.tier)}</span></td><td>${esc(isGiftCard ? o.region : label(o.duration))}</td><td>${esc(label(o.delivery))}</td><td>${esc(o.marketplace.toUpperCase())}</td><td class="title">${esc(o.title)}<span class="sub">${esc(o.optionText || 'Базовый вариант')}</span>${o.seller ? `<span class="sub">${esc(o.seller)}</span>` : ''}${o.sellerNote ? `<span class="sub">Заметка продавца (не проверена): ${esc(o.sellerNote)}</span>` : ''}${o.verificationNote ? `<span class="sub">${esc(o.verificationNote)}</span>` : ''}</td><td><a href="${esc(safeUrl(o.url))}" target="_blank" rel="noopener noreferrer">Открыть</a></td></tr>`).join('') || '<tr><td colspan="7">Ничего не найдено: измените фильтры.</td></tr>';
 }
 async function init() {
   try {
     const [data, registry] = await Promise.all([
-      fetch('data/latest.json?v=14').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
+      fetch('data/latest.json?v=15').then(r => { if (!r.ok) throw new Error(); return r.json(); }),
       fetch('data/subscription-plan-limits.json').then(r => { if (!r.ok) throw new Error(); return r.json(); })
     ]);
     planRegistry = registry;
