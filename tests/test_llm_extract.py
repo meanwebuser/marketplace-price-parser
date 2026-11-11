@@ -2,6 +2,7 @@
 lossless) and the batch LLM extractor."""
 
 import json
+import csv
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -159,6 +160,18 @@ def test_extract_offers_parses_llm_rows_including_go_and_flat():
     assert ("Plus", "new_account", 983.0) in tiers        # flat listing ranked
     for o in offers:
         assert o["source"] == "llm"
+
+
+def test_write_csv_accepts_mixed_deterministic_and_llm_fields(tmp_path):
+    from analyzer.output import write_csv
+    path = tmp_path / "mixed.csv"
+    write_csv([
+        {"pid": "deterministic", "price_rub": 100},
+        {"pid": "llm", "price_rub": 200, "source": "llm", "llm_evidence": "captured"},
+    ], path)
+    rows = list(csv.DictReader(path.open(encoding="utf-8", newline="")))
+    assert rows[0]["source"] == ""
+    assert rows[1]["source"] == "llm"
 
 
 def test_extract_offers_guards_implausible_prices():

@@ -406,6 +406,10 @@ def write_csv(rows: list[dict], path: Path) -> None:
         path.write_text("")
         return
     fieldnames = list(rows[0].keys())
+    for row in rows[1:]:
+        for field in row:
+            if field not in fieldnames:
+                fieldnames.append(field)
     with path.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
