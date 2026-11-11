@@ -860,6 +860,7 @@ def main(argv: list[str] | None = None) -> int:
                     if not failed:
                         raise
                     _apply_verification_results(fam_offers, successful)
+                    final_report.extend(successful)
                     newly_rejected = _reject_failed_final_prices(raw, fam_offers, failed)
                     if not newly_rejected:
                         raise
