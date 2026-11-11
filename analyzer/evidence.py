@@ -88,6 +88,7 @@ def _pack_option(opt: dict) -> dict:
     return {
         "t": (opt.get("text") or "")[:OPT_TEXT_CAP],
         "c": 1 if opt.get("clicked") else 0,
+        "v": 1 if opt.get("priceVerified") else 0,
         "strong": strong,
         "p": nums,
     }

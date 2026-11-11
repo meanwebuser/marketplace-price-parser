@@ -7,13 +7,15 @@ from families.zai import CONFIG as ZAI
 from scripts.build_pages_data import normalize_csv
 
 
-def _pack(option_text="Max", *, title="Z.ai GLM Coding Max subscription", clicked=True, price=12000):
+def _pack(option_text="Max", *, title="Z.ai GLM Coding Max subscription", clicked=True, price=12000, price_verified=None):
+    if price_verified is None:
+        price_verified = clicked
     return build_pack({
         "marketplace": "ggsel", "pid": "duration-fixture",
         "url": "https://example.test/duration", "title": title,
         "options": [{
             "text": option_text, "clicked": clicked, "selectedAfter": clicked,
-            "priceVerified": clicked, "priceChanged": True, "priceStable": True,
+            "priceVerified": price_verified, "priceChanged": True, "priceStable": True,
             "prices": [{"text": f"{price} ₽", "cls": "ProductBuyBlock__amount"}],
         }],
     })
@@ -57,6 +59,13 @@ def test_other_or_unclicked_or_ambiguous_term_is_not_selected_term_evidence():
         _pack("Max 1/3/12 months"),
     ):
         assert _row_to_offer(pack, _row("Max 12 months", duration="12m"), None) is None
+
+
+def test_verified_ssr_variant_can_supply_term_evidence_without_click():
+    pack = _pack("Max 12 months", clicked=False, price_verified=True)
+    offer = _row_to_offer(pack, _row("Max 12 months", duration="12m"), None)
+    assert offer is not None
+    assert offer["duration"] == "12m"
 
 
 def test_paraphrased_model_label_can_use_matching_captured_tier_price_and_year():

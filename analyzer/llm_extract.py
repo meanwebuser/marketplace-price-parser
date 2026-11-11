@@ -17,7 +17,7 @@ import urllib.request
 from pathlib import Path
 
 from analyzer.evidence import build_pack, build_batches
-from analyzer.price import classify_duration_from_title, classify_tier, is_glitched
+from analyzer.price import classify_duration, classify_duration_from_title, classify_tier, is_glitched
 from analyzer.llm import _extract_json
 
 DEFAULT_LLM_BASE_URL = "https://llm.bezrabotnyi.com/v1"
@@ -164,7 +164,7 @@ def _source_duration(text: str) -> str:
     if re.search(r"\b\d+\s*(?:[/–—-]\s*\d+)+\s*(?:m\b|months?\b|месяц\w*|мес\.?)", text, re.I):
         return ""
     text = re.sub(r"\b(12|6|3|1)\s*(?:m\b|м\b|мес\.?(?=\W|$))", r"\1 months", text, flags=re.I)
-    return classify_duration_from_title(text)
+    return classify_duration(text)
 
 
 def _duration_is_supported(pack: dict, row: dict, tier: str, duration: str, price: float) -> bool:
@@ -172,8 +172,12 @@ def _duration_is_supported(pack: dict, row: dict, tier: str, duration: str, pric
         return False
     options = pack.get("opts") or []
     clicked = [option for option in options if option.get("c")]
+    captured = clicked or [
+        option for option in options
+        if option.get("v") and (option.get("strong") is not None or option.get("p"))
+    ]
     normalize = lambda text: re.sub(r"[\s|]+", " ", str(text or "")).strip().lower()
-    exact = [option for option in clicked if normalize(option.get("t")) == normalize(row.get("opt"))]
+    exact = [option for option in captured if normalize(option.get("t")) == normalize(row.get("opt"))]
     if exact:
         terms = [_source_duration(option.get("t") or "") for option in exact]
         if any(terms):
@@ -182,14 +186,14 @@ def _duration_is_supported(pack: dict, row: dict, tier: str, duration: str, pric
         if any(re.search(r"\d+\s*(?:m\b|month|мес|год)|year", option.get("t") or "", re.I) for option in exact):
             return False
         return _source_duration(" ".join(str(pack.get(key) or "") for key in ("title", "desc"))) == duration
-    if options:
+    if captured:
         # A model may shorten the label; bind it to a captured tier, its own
         # post-click price and explicit term rather than trusting that label.
         return any(
             classify_tier(option.get("t") or "") == tier
             and _source_duration(option.get("t") or "") == duration
             and (price == option["strong"] if option.get("strong") is not None else price in (option.get("p") or []))
-            for option in clicked
+            for option in captured
         )
     # Flat listings have no selectable variants. Their product details must
     # state one term; missing or contradictory detail evidence stays unknown.
