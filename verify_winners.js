@@ -22,6 +22,11 @@ if (!args.input || !args.out) throw new Error("--input and --out are required");
 
 const CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const normalize = (value) => String(value || "").replace(/\s+/g, " ").trim();
+const fuzzyControlKey = (value) => controlKey(value)
+  .replace(/\([^)]*\)/g, "")
+  .replace(/\s+/g, " ")
+  .trim()
+  .toLocaleLowerCase();
 const proxyOptions = (proxyUrl) => {
   const parsed = new URL(proxyUrl);
   const host = parsed.hostname.includes(":") ? `[${parsed.hostname}]` : parsed.hostname;
@@ -109,6 +114,27 @@ async function locateExact(page, offer) {
       if (controlKey(text) === wanted) return { locator: item, selector, index };
     }
   }
+  // Some GGSEL cards append a delivery/account qualifier in parentheses to
+  // the live label while SSR keeps the shorter plan label. Use this only when
+  // exactly one control remains after removing that presentation suffix.
+  const fuzzyMatches = [];
+  const fuzzyWanted = fuzzyControlKey(wanted);
+  for (const selector of candidates) {
+    const locator = page.locator(selector);
+    const count = await locator.count();
+    for (let index = 0; index < count; index++) {
+      const item = locator.nth(index);
+      const text = await item.evaluate((el) => {
+        if (el.matches('input[type="radio"]')) {
+          const label = el.closest("label") || (el.id && document.querySelector('label[for="' + CSS.escape(el.id) + '"]'));
+          return (label && (label.innerText || label.textContent)) || el.value || el.name || "";
+        }
+        return el.innerText || el.textContent || "";
+      });
+      if (fuzzyControlKey(text) === fuzzyWanted) fuzzyMatches.push({ locator: item, selector, index });
+    }
+  }
+  if (fuzzyMatches.length === 1) return fuzzyMatches[0];
   return null;
 }
 
